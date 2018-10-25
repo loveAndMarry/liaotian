@@ -1,0 +1,95 @@
+<template>
+    <div class="group" @click="showExchange">
+        <div class="item_img" :style="{ backgroundImage: 'url(' + item.img + ')'}"></div>
+        <div class="item_content">
+          <div class="item_content_user">
+            <p><b>许晴</b>油团团·招聘主管</p>
+            <p style="float:right">19:23</p>
+          </div>
+          <div class="item_content_info">
+            <p>你好，方便沟通一下吗</p>
+            <i>2</i>
+          </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      item: {
+        img: '../../../../../static/images/8f321a8827b2c5e72aace876fb78d7e6.jpg'
+      }
+    }
+  },
+  methods: {
+    showExchange(){
+      console.log("点击")
+      this.$router.push('/exchange')
+    }
+  }
+}
+</script>
+
+<style lang="css" scoped>
+  p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
+    color: #aaaaaa;
+    font-size: .23rem;
+  }
+  .group{
+    width: 100%;
+    margin-top: .45rem;
+    overflow: hidden;
+    text-align: left
+  }
+  .item_img{
+    width:1rem;
+    height: 1rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+    float: left;
+  }
+  .item_content{
+    float: left;
+    width: calc( 100% - 1rem);
+    padding-left: .25rem;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+  }
+  .item_content_user p{
+    display: inline-block;
+  }
+  .item_content_user p b{
+    font-size: .29rem;
+    color: #333333;
+    margin-right: .16rem;
+  }
+  .item_content_info{
+    margin-top: .2rem;
+    position: relative;
+  }
+  .item_content_info p{
+    width: calc(100% - .5rem);
+  }
+  .item_content_info i{
+    display: block;
+    width: .3rem;
+    height: .3rem;
+    background-color: #f33333;
+    color:#fff;
+    line-height: .3rem;
+    font-size: .14rem;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    bottom: .05rem;
+    border-radius: 50%;
+    font-style: inherit;
+  }
+</style>

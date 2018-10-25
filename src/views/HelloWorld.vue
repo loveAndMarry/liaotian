@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <Button>hello</Button>
+    <Button>主页</Button>
   </div>
 </template>
 
