@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  
+  name: 'exchange'
 }
 </script>
 
@@ -18,5 +18,3 @@ export default {
 
 }
 </style>
-
-

@@ -13,40 +13,40 @@
 </template>
 
 <script>
-import { Tabs, Tab } from "vant";
+import { Tabs, Tab } from 'vant'
 
 export default {
-  data() {
+  data () {
     return {
-      msg: "联系人",
-      active:0,
+      msg: '联系人',
+      active: 0,
       lists: [
         {
-          name: "查看附近人",
+          name: '查看附近人',
           index: 1
         },
         {
-          name: "手机通讯录",
+          name: '手机通讯录',
           index: 2
         },
         {
-          name: "推荐人",
+          name: '推荐人',
           index: 3
         }
       ]
-    };
+    }
   },
   methods: {
-    tabClick(index) {
-      console.log(index);
-      this.$toast(index);
+    tabClick (index) {
+      console.log(index)
+      this.$toast(index)
     }
   },
   components: {
     Tabs,
     Tab
   }
-};
+}
 </script>
 
 <style scoped>

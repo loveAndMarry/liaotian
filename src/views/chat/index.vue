@@ -9,22 +9,21 @@
 </template>
 
 <script>
-import { Button, Cell } from "vant";
-import Title from "./components/title";
-import List from "./list";
-import Activity from "./activity";
+import { Button, Cell } from 'vant'
+import Title from './components/title'
+import List from './list'
+import Activity from './activity'
 
 export default {
-  name: "chat",
-  data() {
+  name: 'chat',
+  data () {
     return {
-      msg: "Welcome to Your Vue.js App",
       num: 0
-    };
+    }
   },
   methods: {
-    onInput(num) {
-      this.num = num;
+    onInput (num) {
+      this.num = num
     }
   },
   components: {
@@ -34,7 +33,7 @@ export default {
     List,
     Activity
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

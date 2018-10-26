@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import ListItem from "./conponents/ListItem";
+import ListItem from './conponents/ListItem'
 // import BScroll from 'better-scroll'
 
 export default {
-  data() {
+  data () {
     return {
-      msg: "列表"
-    };
+      msg: '列表'
+    }
   },
   components: {
     ListItem
@@ -35,7 +35,7 @@ export default {
   //     })
   //   })
   // }
-};
+}
 </script>
 
 <style scoped>

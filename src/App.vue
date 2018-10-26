@@ -1,35 +1,42 @@
 <template>
   <div id="app">
     <transition :name="transitionName">
-        <router-view class="Router"/>
+      <keep-alive>
+        <router-view class="Router"></router-view>
+      </keep-alive>
     </transition>
-    <router-view name="tabber"/>
+    <transition :name="transitionName1">
+      <router-view class="Router1" name="content"></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
+
 export default {
-  name: "App",
-  data() {
+  name: 'App',
+  data () {
     return {
-      transitionName: "slide-right" // 默认动态路由变化为slide-right
-    };
+      transitionName: 'slide-left', // 默认动态路由变化为slide-right
+      transitionName1: 'slide-right' // 默认动态路由变化为slide-right
+    }
   },
   watch: {
-    $route(to, from) {
-      let isBack = this.$router.isBack; //  监听路由变化时的状态为前进还是后退
+    $route (to, from) {
+      let isBack = this.$router.isBack //  监听路由变化时的状态为前进还是后退
       if (isBack) {
-        this.transitionName = "slide-right";
+        this.transitionName = 'slide-left'
+        this.transitionName1 = 'slide-right'
       } else {
-        this.transitionName = "slide-left";
+        this.transitionName = 'slide-left'
+        this.transitionName1 = 'slide-right'
       }
-      this.$router.isBack = false;
+      this.$router.isBack = false
     }
   }
-};
+}
 
-document.documentElement.style.fontSize =
-  (document.documentElement.clientWidth / 750) * 100 + "px";
+document.documentElement.style.fontSize = (document.documentElement.clientWidth / 750) * 100 + 'px'
 </script>
 
 <style>
@@ -48,24 +55,129 @@ body {
   overflow: hidden;
 }
 
-.Router {
+.Router,.Router1 {
   position: absolute;
   width: 100%;
-  transition: all 0.8s ease;
   top:0;
+  height: 100%
+}
+.Router{
+  transition: all 0.8s ease;
+}
+.Router1{
+  transition: all 0.3s ease;
 }
 
-.slide-left-enter,
+.slide-left-enter{
+  -webkit-transform: translate(-80%, 0);
+  transform: translate(-80%, 0);
+}
+.slide-left-enter-active {
+  animation: slide 1.1s
+}
+.slide-left-enter-to {
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+/* .slide-left-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+} */
+.slide-right-enter{
+   -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+}
+
+.slide-right-enter-active{
+  transition: all .8s
+}
+
+.slide-right-enter-to{
+     -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+.slide-right-leave{
+   -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+}
+
+.slide-right-leave-active{
+  transition: all .8s
+}
+
+.slide-right-leave-to{
+     -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+}
+
+/* .slide-right-enter{ */
+  /* -webkit-transform: translate(80%, 0);
+  transform: translate(80%, 0); */
+/* }
+.slide-right-enter-active {
+  animation: slide_Right 1.1s ease
+}
+.slide-right-enter-to { */
+  /* -webkit-transform: translate(100%, 0);
+  transform: translate(100%, 0); */
+/* } */
+/* .slide-right-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+} */
+
+@keyframes slide_Right {
+  0% {
+    -webkit-transform: translate(0%, 0);
+    transform: translate(0%, 0);
+  }
+  20% {
+    -webkit-transform: translate(80%, 0);
+    transform: translate(80%, 0);
+  }
+  80% {
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100%, 0);
+  }
+}
+
+/* .slide-left-leave-active {
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100% 0);
+} */
+
+/* .slide-right-enter {
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+
 .slide-right-leave-active {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+} */
+
+/* .slide-right-active {
+  animation: bounce-in 1s
+} */
+/* .slide-right-leave-active {
   opacity: 0;
   -webkit-transform: translate(100%, 0);
   transform: translate(100%, 0);
-}
+} */
 
-.slide-left-leave-active,
-.slide-right-enter {
-  opacity: 0;
-  -webkit-transform: translate(-100%, 0);
-  transform: translate(-100% 0);
-}
+/* @keyframes bounce-in {
+  0% {
+    -webkit-transform: translate(100%, 0);
+    transform: translate(100% 0);
+  }
+  50% {
+    opacity: .5;
+     -webkit-transform: translate(20%, 0);
+    transform: translate(20% 0);
+  }
+  100% {
+    opacity: 0;
+     -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+} */
 </style>

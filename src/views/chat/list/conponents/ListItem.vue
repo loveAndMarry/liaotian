@@ -24,8 +24,8 @@ export default {
     }
   },
   methods: {
-    showExchange(){
-      console.log("点击")
+    showExchange () {
+      console.log('点击')
       this.$router.push('/exchange')
     }
   }
