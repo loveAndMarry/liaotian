@@ -61,23 +61,39 @@ body {
   top:0;
   height: 100%
 }
-.Router{
+/* .Router{
   transition: all 0.8s ease;
 }
 .Router1{
   transition: all 0.3s ease;
-}
+} */
 
 .slide-left-enter{
-  -webkit-transform: translate(-80%, 0);
-  transform: translate(-80%, 0);
+   -webkit-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
 }
-.slide-left-enter-active {
-  animation: slide 1.1s
+
+.slide-left-enter-active{
+  transition: all .3s ease
 }
-.slide-left-enter-to {
-  -webkit-transform: translate(-100%, 0);
-  transform: translate(-100%, 0);
+
+.slide-left-enter-to{
+     -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+.slide-left-leave{
+   -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+.slide-left-leave-active{
+  transition: all .3s
+}
+
+.slide-left-leave-to{
+     -webkit-transform: translate(-100%, 0);
+    transform: translate(-100%, 0);
 }
 /* .slide-left-leave-active {
   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
@@ -88,7 +104,7 @@ body {
 }
 
 .slide-right-enter-active{
-  transition: all .8s
+  transition: all .3s
 }
 
 .slide-right-enter-to{
@@ -102,7 +118,7 @@ body {
 }
 
 .slide-right-leave-active{
-  transition: all .8s
+  transition: all .3s
 }
 
 .slide-right-leave-to{
@@ -125,7 +141,7 @@ body {
   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 } */
 
-@keyframes slide_Right {
+/* @keyframes slide_Right {
   0% {
     -webkit-transform: translate(0%, 0);
     transform: translate(0%, 0);
@@ -138,7 +154,7 @@ body {
     -webkit-transform: translate(100%, 0);
     transform: translate(100%, 0);
   }
-}
+} */
 
 /* .slide-left-leave-active {
   -webkit-transform: translate(-100%, 0);
