@@ -1,19 +1,10 @@
 <template>
     <div class="back" id="content">
       <div>
-        <left-content></left-content>
-        <right-content></right-content>
-        <left-content></left-content>
-        <right-content></right-content>
-        <left-content></left-content>
-        <right-content></right-content>
-        <left-content></left-content>
-        <right-content></right-content>
-        <left-content></left-content>
-        <right-content></right-content>
-        <left-content></left-content>
-        <right-content></right-content>
-        <left-content></left-content>
+        <div v-for="(el, index) in recordList" :key="index">
+          <left-content v-if="el.msgType === 1"></left-content>
+          <right-content v-if="el.msgType === 2"></right-content>
+        </div>
       </div>
     </div>
 </template>
@@ -21,21 +12,35 @@
 <script>
 import LeftContent from './LeftContent'
 import RightContent from './RightContent'
+import utils from '@/common/utils'
 export default {
+  props: ['id'],
+  data () {
+    return {
+      recordList: []
+    }
+  },
   components: {
     LeftContent,
     RightContent
   },
   methods: {
+    // 获取当前消息列表
+    getRecord () {
+      this.recordList = utils.arraySort((JSON.parse(localStorage.getItem('record')))[this.id],'time',15)
+    },
     scrollToBottom () {
-      this.$nextTick(() => {
         var dome = document.getElementById('content')
         dome.scrollTop = dome.scrollHeight
-      })
     }
   },
   mounted () {
-    this.scrollToBottom()
+    // 将滚动条置为底部
+    this.$nextTick(()=> {
+      this.scrollToBottom();
+      // 获取当前信息列表
+      this.getRecord()
+    })
   }
 }
 </script>

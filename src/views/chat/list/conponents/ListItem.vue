@@ -1,13 +1,13 @@
 <template>
     <div class="group" @click="showExchange">
-        <div class="item_img" :style="{ backgroundImage: 'url(' + item.img + ')'}"></div>
+        <div class="item_img" :style="{ backgroundImage: 'url(' + item.imgUrl + ')'}"></div>
         <div class="item_content">
           <div class="item_content_user">
-            <p><b>许晴</b>油团团·招聘主管</p>
+            <p><b>{{ item.nickName }}</b>油团团·招聘主管</p>
             <p style="float:right">19:23</p>
           </div>
           <div class="item_content_info">
-            <p>你好，方便沟通一下吗</p>
+            <p></p>
             <i>2</i>
           </div>
         </div>
@@ -16,17 +16,16 @@
 
 <script>
 export default {
+  props: ['item'],
   data () {
-    return {
-      item: {
-        img: '../../../../../static/images/8f321a8827b2c5e72aace876fb78d7e6.jpg'
-      }
-    }
+    return {}
   },
   methods: {
     showExchange () {
       console.log('点击')
-      this.$router.push('/exchange')
+      // 点击传值
+      console.log(this.item,"点击完成后传值")
+      this.$router.push({path: '/exchange',query:{nickName: this.item.nickName, id: this.item.id}})
     }
   }
 }

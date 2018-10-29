@@ -7,20 +7,46 @@
         <p>联系人</p>
         <span>极速处理·5</span>
       </div>
-      <list-item v-for="el in 20" :key="el" ></list-item>
+      <list-item v-for="(el, value) in friendsList" :key="value" :item='el'></list-item>
     <!-- </div>
     </div> -->
   </div>
 </template>
 
 <script>
-import ListItem from './conponents/ListItem'
+import ListItem from "./conponents/ListItem";
 // import BScroll from 'better-scroll'
 
 export default {
-  data () {
+  data() {
     return {
-      msg: '列表'
+      msg: "列表",
+      friendsList: []
+    };
+  },
+  mounted() {
+    // 在请求好友列表之后，将存在缓存中的数据取出来
+    window.YTX.getFriendsList().then(() => {
+      this.getFriendsList();
+    })
+  },
+  methods: {
+    // 在进入当前页面的时候，现将缓存中没有上传的聊天数据上传
+    postRecord() {
+      window.YTX.postRecord({
+        id: 1,
+        content: "你猜猜我是谁啊！2",
+        type: 1,
+        time: "2018-10-30"
+      }).then(() => {
+        console.log("数据发送成功");
+      });
+    },
+    // 获取当前好友列表信息
+    getFriendsList() {
+      console.log();
+      console.log(typeof JSON.parse(localStorage.getItem("friendsList")));
+      this.friendsList = JSON.parse(localStorage.getItem("friendsList"));
     }
   },
   components: {
@@ -35,7 +61,7 @@ export default {
   //     })
   //   })
   // }
-}
+};
 </script>
 
 <style scoped>
@@ -44,12 +70,12 @@ export default {
   height: 100%;
   overflow: hidden;
 } */
-.border{
+.border {
   border-top-color: #f5f5f6;
   border-top-style: solid;
   border-top-width: 5px;
-  width: calc(100% + .88rem);
-  transform: translateX(-.44rem);
+  width: calc(100% + 0.88rem);
+  transform: translateX(-0.44rem);
 }
 .content_title {
   text-align: left;
@@ -64,8 +90,8 @@ export default {
   top: 1.35rem;
   left: 0;
 }
-.title{
-  margin-top: .25rem;
+.title {
+  margin-top: 0.25rem;
 }
 .title p {
   margin: 0;

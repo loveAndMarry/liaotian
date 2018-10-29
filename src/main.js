@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import 'vant/lib/vant-css/index.css'
 import './IM'
+window.YTX.init()
 
 Vue.config.productionTip = false
 
@@ -15,8 +16,5 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>',
-  mounted () {
-    window.YTX.init()
-  }
+  template: '<App/>'
 })
