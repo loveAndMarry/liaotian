@@ -2,8 +2,8 @@
     <div class="back" id="content">
       <div>
         <div v-for="(el, index) in recordList" :key="index">
-          <left-content v-if="el.msgType === 1"></left-content>
-          <right-content v-if="el.msgType === 2"></right-content>
+          <left-content v-if="el.msgType === 1" :item="el"></left-content>
+          <right-content v-if="el.msgType === 2" :item="el"></right-content>
         </div>
       </div>
     </div>
@@ -14,7 +14,7 @@ import LeftContent from './LeftContent'
 import RightContent from './RightContent'
 import utils from '@/common/utils'
 export default {
-  props: ['id'],
+  props: ['username'],
   data () {
     return {
       recordList: []
@@ -26,21 +26,25 @@ export default {
   },
   methods: {
     // 获取当前消息列表
-    getRecord () {
-      this.recordList = utils.arraySort((JSON.parse(localStorage.getItem('record')))[this.id],'time',15)
+    getRecord (username) {
+      var record = (JSON.parse(localStorage.getItem('record')))[username]
+      var notSubmitRocerd = (JSON.parse(localStorage.getItem('notSubmitRocerd')))[username]
+      record.push(...notSubmitRocerd)
+      this.recordList = utils.arraySort(record, 'time', 15)
+      this.$nextTick(() => {
+        // 将滚动条置为底部
+        this.scrollToBottom()
+      })
     },
     scrollToBottom () {
-        var dome = document.getElementById('content')
-        dome.scrollTop = dome.scrollHeight
+      var dome = document.getElementById('content')
+      console.log(dome.scrollTop, dome.scrollHeight, '我擦')
+      dome.scrollTop = dome.scrollHeight
     }
   },
   mounted () {
-    // 将滚动条置为底部
-    this.$nextTick(()=> {
-      this.scrollToBottom();
-      // 获取当前信息列表
-      this.getRecord()
-    })
+    // 获取当前信息列表
+    this.getRecord(localStorage.getItem('username'))
   }
 }
 </script>

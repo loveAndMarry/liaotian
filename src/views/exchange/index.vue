@@ -1,8 +1,8 @@
 <template>
   <div class="exchange">
     <Head :title="item.nickName"></Head>
-    <Content :id="item.id"></Content>
-    <Send :id="item.id"></Send>
+    <Content :username="item.username" ref="content"></Content>
+    <Send :username="item.username" @getContent="getContent"></Send>
   </div>
 </template>
 
@@ -20,6 +20,11 @@ export default {
   mounted () {
     // 当前信息为好友信息
     this.item = this.$route.query
+  },
+  methods: {
+    getContent (username) {
+      this.$refs.content.getRecord(username)
+    }
   },
   components: {
     Head,

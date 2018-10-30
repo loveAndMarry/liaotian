@@ -28,6 +28,15 @@ const utils = {
       return arr.slice(0, num)
     }
     return arr.reverse()
+  },
+  /**
+   * 设置localStorage
+   */
+  pushStorage (key, name, data) {
+    let notSubmitRecord = JSON.parse(localStorage.getItem(key))
+    console.log(notSubmitRecord)
+    notSubmitRecord[name].push(data)
+    localStorage.setItem(key, JSON.stringify(notSubmitRecord))
   }
 }
 

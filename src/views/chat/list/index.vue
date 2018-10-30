@@ -14,39 +14,39 @@
 </template>
 
 <script>
-import ListItem from "./conponents/ListItem";
+import ListItem from './conponents/ListItem'
 // import BScroll from 'better-scroll'
 
 export default {
-  data() {
+  data () {
     return {
-      msg: "列表",
+      msg: '列表',
       friendsList: []
-    };
+    }
   },
-  mounted() {
+  mounted () {
     // 在请求好友列表之后，将存在缓存中的数据取出来
     window.YTX.getFriendsList().then(() => {
-      this.getFriendsList();
+      this.getFriendsList()
     })
   },
   methods: {
     // 在进入当前页面的时候，现将缓存中没有上传的聊天数据上传
-    postRecord() {
+    postRecord () {
       window.YTX.postRecord({
         id: 1,
-        content: "你猜猜我是谁啊！2",
+        content: '你猜猜我是谁啊！2',
         type: 1,
-        time: "2018-10-30"
+        time: '2018-10-30'
       }).then(() => {
-        console.log("数据发送成功");
-      });
+        console.log('数据发送成功')
+      })
     },
     // 获取当前好友列表信息
-    getFriendsList() {
-      console.log();
-      console.log(typeof JSON.parse(localStorage.getItem("friendsList")));
-      this.friendsList = JSON.parse(localStorage.getItem("friendsList"));
+    getFriendsList () {
+      console.log()
+      console.log(typeof JSON.parse(localStorage.getItem('friendsList')))
+      this.friendsList = JSON.parse(localStorage.getItem('friendsList'))
     }
   },
   components: {
@@ -61,7 +61,7 @@ export default {
   //     })
   //   })
   // }
-};
+}
 </script>
 
 <style scoped>

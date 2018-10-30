@@ -69,6 +69,10 @@ IM.prototype = {
       // 登录成功回调
     // 注册接收消息事件监听
       console.log('用户登录成功')
+      RL_YTX.onMsgReceiveListener(function (obj) {
+        // 收到push消息或者离线消息或判断输入状态//如果obj.msgType==12  判断obj.msgDomainn的值//obj.msgDomain 0 无输入状态  1 正在输入  2 正在录音
+        console.log('有新的消息', obj)
+      })
     }, function (obj) {
       console.log('登录失败')
     })
@@ -90,6 +94,48 @@ IM.prototype = {
    */
   postRecord (data) {
     return axios.POST('record', data)
+  },
+  /**
+   * 当前只能够发送文本信息和图片信息
+   * 向当前好友发送信息
+   */
+  postMsg (msgType, data, id, callback) {
+    var msgid = new Date().getTime()
+    // 新建消息体对象
+    var obj = new RL_YTX.MsgBuilder()
+    // 设置自定义消息id
+    obj.setId(msgid)
+    // 设置发送的消息类型1:文本消息 4:图片消息 6:压缩文件 7:非压缩文件
+    // 发送非文本消息时，text字段将被忽略，发送文本消息时 file字段将被忽略
+    obj.setType(msgType)
+    // 设置接收者
+    obj.setReceiver(id)
+    if (msgType === 1) {
+      // 设置发送的文本内容
+      obj.setText(data)
+      RL_YTX.sendMsg(obj, function (res) {
+      // 发送消息成功
+      // 处理用户逻辑，通知页面
+        callback(res)
+        console.log(res, '消息发送成功')
+      }, function (res) { // 失败
+      // 发送消息失败
+      // 处理用户逻辑，通知页面刷新，展现重发按钮
+        console.log(res, '发送消息失败')
+      })
+    } else if (msgType === 4) {
+      obj.setFile(data)
+      RL_YTX.sendMsg(obj, function () {
+      // 发送消息成功
+      // 处理用户逻辑，通知页面
+      }, function (obj) { // 失败
+      // 发送消息失败
+      // 处理用户逻辑，通知页面刷新，展现重发按钮
+      }, function (sended, total) {
+      // 发送图片或附件时的进度条
+      // 如果发送文本消息，可以不传该参数
+      })
+    }
   },
   /**
    * 获取当前个人信息

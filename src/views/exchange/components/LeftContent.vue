@@ -1,15 +1,17 @@
 <template>
     <div class="left">
         <div class="left_img">
-            <img src="../../../../static/images/8f321a8827b2c5e72aace876fb78d7e6.jpg" alt="">
+            <img :src="item.imgUrl" alt="">
         </div>
         <div class="left_content">
-          fhjaohdjfkdjfkd没那个贾湖骨笛
+          {{item.content}}
         </div>
     </div>
 </template>
 <script>
-export default {}
+export default {
+  props: ['item']
+}
 </script>
 
 <style scoped>

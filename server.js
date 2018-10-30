@@ -47,10 +47,7 @@ app.post('/record', function (req, res) {
     } else {
       var item = req.body.data;
       data = JSON.parse(data)
-      console.log(data)
-      console.log(item)
       data[item.id].push(item)
-      console.log(data)
       fs.writeFile(file, JSON.stringify(data) , function () {
         res.json({
           msg: "添加成功",

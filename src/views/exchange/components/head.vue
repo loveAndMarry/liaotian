@@ -6,7 +6,7 @@
   @click-left="onClickLeft"
   @click-right="onClickRight">
     <Icon name="more-o" slot="right"/>
-    <nav-bar-title slot="title" :name='this.title'></nav-bar-title>
+    <!-- <nav-bar-title slot="title" :name='this.title'></nav-bar-title> -->
   </nav-bar>
 </div>
 </template>

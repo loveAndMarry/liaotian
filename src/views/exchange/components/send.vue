@@ -1,7 +1,7 @@
 <template>
     <div class="bottom">
         <div class="inputText">
-          <input type="text" placeholder="输入后点击回车发送内容">
+          <input type="text" placeholder="输入后点击回车发送内容" @keyup.enter="postMsg()" v-model="content">
         </div>
         <div class="icon biaoqing"></div>
         <div class="icon tianjia"></div>
@@ -9,8 +9,35 @@
 </template>
 
 <script>
+import utils from '@/common/utils'
+
 export default {
-  props:['id']
+  props: ['username'],
+  data () {
+    return {
+      content: ''
+    }
+  },
+  methods: {
+    postMsg () {
+      var that = this
+      window.YTX.postMsg(1, '测试消息', this.username, function (res) {
+        let record = {
+          id: res.msgClientNo, // 服务器返回的消息ID
+          content: that.content,
+          type: 1,
+          imgUrl: 'http://tx.haiqq.com/uploads/allimg/170507/0524512614-5.jpg',
+          msgType: 2,
+          time: new Date().getTime()
+        }
+
+        utils.pushStorage('notSubmitRocerd', that.username, record)
+
+        that.content = ''
+        that.$emit('getContent', that.username)
+      })
+    }
+  }
 }
 </script>
 

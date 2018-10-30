@@ -24,8 +24,9 @@ export default {
     showExchange () {
       console.log('点击')
       // 点击传值
-      console.log(this.item,"点击完成后传值")
-      this.$router.push({path: '/exchange',query:{nickName: this.item.nickName, id: this.item.id}})
+      console.log(this.item, '点击完成后传值')
+      localStorage.setItem('username', this.item.username)
+      this.$router.push({path: '/exchange', query: {nickName: this.item.nickName, username: this.item.username}})
     }
   }
 }
