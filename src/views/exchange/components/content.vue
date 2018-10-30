@@ -31,7 +31,6 @@ export default {
   methods: {
     // 获取当前消息列表
     getRecord (username) {
-      var that = this;
       this.$store.dispatch('getMsg').then(() => {
         console.log('getMsg之后的回调')
         this.recordList = utils.arraySort(this.getContentMsg, 'time', 15)
