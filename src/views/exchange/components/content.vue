@@ -13,6 +13,7 @@
 import LeftContent from './LeftContent'
 import RightContent from './RightContent'
 import utils from '@/common/utils'
+import { mapGetters } from 'vuex'
 export default {
   props: ['username'],
   data () {
@@ -24,16 +25,20 @@ export default {
     LeftContent,
     RightContent
   },
+  computed: {
+    ...mapGetters(['getContentMsg'])
+  },
   methods: {
     // 获取当前消息列表
     getRecord (username) {
-      var record = (JSON.parse(localStorage.getItem('record')))[username]
-      var notSubmitRocerd = (JSON.parse(localStorage.getItem('notSubmitRocerd')))[username]
-      record.push(...notSubmitRocerd)
-      this.recordList = utils.arraySort(record, 'time', 15)
-      this.$nextTick(() => {
-        // 将滚动条置为底部
-        this.scrollToBottom()
+      var that = this;
+      this.$store.dispatch('getMsg').then(() => {
+        console.log('getMsg之后的回调')
+        this.recordList = utils.arraySort(this.getContentMsg, 'time', 15)
+        this.$nextTick(() => {
+          // 将滚动条置为底部
+          this.scrollToBottom()
+        })
       })
     },
     scrollToBottom () {

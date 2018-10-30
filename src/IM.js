@@ -1,5 +1,6 @@
 import MD5 from 'js-md5'
 import axios from './assets/http'
+import store from '@/store'
 
 let RL_YTX = window.RL_YTX
 console.log(RL_YTX)
@@ -72,6 +73,7 @@ IM.prototype = {
       RL_YTX.onMsgReceiveListener(function (obj) {
         // 收到push消息或者离线消息或判断输入状态//如果obj.msgType==12  判断obj.msgDomainn的值//obj.msgDomain 0 无输入状态  1 正在输入  2 正在录音
         console.log('有新的消息', obj)
+        store.dispatch('postMsg', obj)
       })
     }, function (obj) {
       console.log('登录失败')
