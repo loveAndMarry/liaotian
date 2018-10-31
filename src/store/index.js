@@ -16,15 +16,15 @@ const getters = {}
 // actions
 const actions = {
   postMsg ({ commit, state }, products) {
-    console.log('actions被触发了')
+    console.log('postMsg被触发了')
     commit('postMsg', products)
   },
   getMsg ({ commit, state }, products) {
-    console.log('actions被触发了')
+    console.log('getMsg被触发了')
     commit('getMsg', products)
   },
   getContentMsg ({ commit, state }, products) {
-    console.log('actions被触发了')
+    console.log('getContentMsg被触发了')
     commit('getContentMsg')
   }
 }
@@ -45,7 +45,7 @@ const mutations = {
     state.rocerd.push(record)
   },
   getMsg () {
-    console.log(this, 'getMsg')
+    this.getContentMsg()
   },
   getContentMsg (state) {
     var username = localStorage.getItem('username')
@@ -56,9 +56,7 @@ const mutations = {
       record = (JSON.parse(localStorage.getItem('record')))[username]
     } else {
       let a = JSON.parse(localStorage.getItem('record'))
-      console.log(a)
       a[username] = []
-      console.log(a)
       localStorage.setItem('record', JSON.stringify(a))
       record = []
     }

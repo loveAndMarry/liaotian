@@ -1,7 +1,7 @@
 <template>
     <div class="back" id="content">
       <div>
-        <div v-for="(el, index) in recordList" :key="index">
+        <div v-for="(el, index) in rocerd" :key="index">
           <left-content v-if="el.msgType === 1" :item="el"></left-content>
           <right-content v-if="el.msgType === 2" :item="el"></right-content>
         </div>
@@ -13,7 +13,6 @@
 import LeftContent from './LeftContent'
 import RightContent from './RightContent'
 import utils from '@/common/utils'
-import { mapState , mapActions} from 'vuex'
 export default {
   props: ['username'],
   data () {
@@ -26,7 +25,20 @@ export default {
     RightContent
   },
   computed: {
-    ...mapState(['rocerd'])
+    rocerd () {
+      return utils.arraySort(this.$store.state.rocerd, 'time', 15)
+    }
+  },
+  watch: {
+    'rocerd': function (arr) {
+      console.log(this, 'this')
+      console.log('1346546546565')
+      console.log(arr, '改变之后的值')
+      this.$nextTick(() => {
+        // 将滚动条置为底部
+        this.scrollToBottom()
+      })
+    }
   },
   methods: {
     // 获取当前消息列表
@@ -34,7 +46,7 @@ export default {
       this.$store.dispatch('getContentMsg').then(() => {
         console.log('getContentMsg之后的回调')
         console.log(this.rocerd)
-        this.recordList = utils.arraySort(this.rocerd, 'time', 15)
+        // this.recordList = utils.arraySort(this.rocerd, 'time', 15)
         this.$nextTick(() => {
           // 将滚动条置为底部
           this.scrollToBottom()
@@ -43,13 +55,12 @@ export default {
     },
     scrollToBottom () {
       var dome = document.getElementById('content')
-      console.log(dome.scrollTop, dome.scrollHeight, '我擦')
       dome.scrollTop = dome.scrollHeight
     }
   },
   mounted () {
     // 获取当前信息列表
-    this.getRecord(localStorage.getItem('username'))
+    this.getRecord()
   }
 }
 </script>

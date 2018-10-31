@@ -10,6 +10,7 @@
 
 <script>
 import utils from '@/common/utils'
+import store from '@/store'
 
 export default {
   props: ['username'],
@@ -34,7 +35,9 @@ export default {
         utils.pushStorage('notSubmitRocerd', that.username, record)
 
         that.content = ''
-        that.$emit('getContent', that.username)
+
+        store.dispatch('getContentMsg')
+        // that.$emit('getContent', that.username)
       })
     }
   }

@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     getContent (username) {
-      this.$refs.content.getRecord(username)
+      // this.$refs.content.getRecord(username)
     }
   },
   components: {
