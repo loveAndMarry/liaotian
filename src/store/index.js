@@ -45,7 +45,7 @@ const mutations = {
       msgType: 1
     }
     utils.pushStorage('notSubmitRocerd', localStorage.getItem('friendUserName'), record)
-    utils.setStorage('friendsList', localStorage.getItem('friendUserName'))
+    utils.setStorage('friendsList', localStorage.getItem('friendUserName'), record)
     state.friendsList = JSON.parse(localStorage.getItem('friendsList'))
     state.rocerd.push(record)
   },

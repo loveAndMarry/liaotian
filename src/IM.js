@@ -90,20 +90,37 @@ IM.prototype = {
    */
   getFriendsList () {
     return axios.GET('getFriendsList', {}).then((res) => {
+      let data = res.data
+      let record = JSON.parse(localStorage.getItem('record'))
+      let notSubmitRocerd = JSON.parse(localStorage.getItem('notSubmitRocerd'))
       if (res.code === 200) {
-        localStorage.setItem('friendsList', JSON.stringify(res.data))
-        localStorage.setItem('isFriendsList', true)
         // 判断当前是否有没有聊天记录储存容器
-        if (!localStorage.getItem('record') || !localStorage.getItem('notSubmitRocerd')) {
+        if (!record || !notSubmitRocerd) {
           // 已经提交聊天记录容器
-          if (!localStorage.getItem('record')) {
+          if (!record) {
             localStorage.setItem('record', JSON.stringify({}))
           }
           // 未提交记录容器
-          if (!localStorage.getItem('notSubmitRocerd')) {
+          if (!notSubmitRocerd) {
             localStorage.setItem('notSubmitRocerd', JSON.stringify({}))
           }
+        } else {
+          // 如果当前好友列表我空就不用循环了
+          if (data.length > 0) {
+            data.forEach((element, index) => {
+              if (record[element.username]) {
+                if (notSubmitRocerd.legnth > 0) {
+                  data[index]['msg'] = ((notSubmitRocerd[element.username])[notSubmitRocerd[element.username].length - 1]).content
+                } else if (record.length > 0) {
+                  data[index]['msg'] = ((record[element.username])[record[element.username].length - 1]).content
+                }
+              }
+            })
+          }
         }
+        // 设置当前好友列表
+        localStorage.setItem('friendsList', JSON.stringify(data))
+        localStorage.setItem('isFriendsList', true)
       }
     })
   },

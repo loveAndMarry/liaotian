@@ -3,11 +3,11 @@
         <div class="item_img" :style="{ backgroundImage: 'url(' + item.imgUrl + ')'}"></div>
         <div class="item_content">
           <div class="item_content_user">
-            <p><b>{{ item.nickName }}</b>油团团·招聘主管</p>
-            <p style="float:right">19:23</p>
+            <p><b>{{ item.nickName }}</b>{{item.sign}}</p>
+            <p style="float:right" v-text="item.time"></p>
           </div>
           <div class="item_content_info">
-            <p></p>
+            <p v-text="item.msg"></p>
             <i v-text="item.hint" v-show="item.hint !== 0"></i>
           </div>
         </div>
@@ -28,7 +28,7 @@ export default {
       console.log(this.item, '点击完成后传值')
       localStorage.setItem('friendUserName', this.item.username)
       localStorage.setItem('friendImg', this.item.imgUrl)
-      utils.setStorage('friendsList', this.item.username, 2) // 设置当前好友的未读条数为0
+      utils.setStorage('friendsList', this.item.username, this.item, 2) // 设置当前好友的未读条数为0
       this.$store.dispatch('getFriendsList') // 触发当前获取好友列表的dispatch
       this.$router.push({path: '/exchange', query: {nickName: this.item.nickName, username: this.item.username}})
     }

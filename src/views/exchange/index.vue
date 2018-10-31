@@ -1,6 +1,6 @@
 <template>
   <div class="exchange">
-    <Head :title="item.nickName"></Head>
+    <Head :item="item"></Head>
     <Content :username="item.username"></Content>
     <Send :username="item.username"></Send>
   </div>
