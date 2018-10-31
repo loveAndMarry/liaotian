@@ -21,7 +21,7 @@ export default {
   methods: {
     postMsg () {
       var that = this
-      window.YTX.postMsg(1, '测试消息', this.username, function (res) {
+      window.YTX.postMsg(1, that.content, this.username, function (res) {
         let record = {
           id: res.msgClientNo, // 服务器返回的消息ID
           content: that.content,

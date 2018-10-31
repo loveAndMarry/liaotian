@@ -89,17 +89,13 @@ IM.prototype = {
         localStorage.setItem('isFriendsList', true)
         // 判断当前是否有没有聊天记录储存容器
         if (!localStorage.getItem('record') || !localStorage.getItem('notSubmitRocerd')) {
-          var obj = {}
-          res.data.forEach(element => {
-            obj[element.username] = []
-          })
           // 已经提交聊天记录容器
-          if (localStorage.getItem('record')) {
-            localStorage.setItem('record', JSON.stringify(obj))
+          if (!localStorage.getItem('record')) {
+            localStorage.setItem('record', JSON.stringify({}))
           }
           // 未提交记录容器
-          if (localStorage.getItem('notSubmitRocerd')) {
-            localStorage.setItem('notSubmitRocerd', JSON.stringify(obj))
+          if (!localStorage.getItem('notSubmitRocerd')) {
+            localStorage.setItem('notSubmitRocerd', JSON.stringify({}))
           }
         }
       }

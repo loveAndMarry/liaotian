@@ -13,7 +13,7 @@
 import LeftContent from './LeftContent'
 import RightContent from './RightContent'
 import utils from '@/common/utils'
-import { mapGetters } from 'vuex'
+import { mapState , mapActions} from 'vuex'
 export default {
   props: ['username'],
   data () {
@@ -26,14 +26,15 @@ export default {
     RightContent
   },
   computed: {
-    ...mapGetters(['getContentMsg'])
+    ...mapState(['rocerd'])
   },
   methods: {
     // 获取当前消息列表
     getRecord (username) {
-      this.$store.dispatch('getMsg').then(() => {
-        console.log('getMsg之后的回调')
-        this.recordList = utils.arraySort(this.getContentMsg, 'time', 15)
+      this.$store.dispatch('getContentMsg').then(() => {
+        console.log('getContentMsg之后的回调')
+        console.log(this.rocerd)
+        this.recordList = utils.arraySort(this.rocerd, 'time', 15)
         this.$nextTick(() => {
           // 将滚动条置为底部
           this.scrollToBottom()

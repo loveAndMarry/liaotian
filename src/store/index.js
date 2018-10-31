@@ -12,30 +12,7 @@ const state = {
 }
 
 // getters
-const getters = {
-  getContentMsg: (state, getters, rootState) => {
-    var username = localStorage.getItem('username')
-    var record = null
-    var notSubmitRocerd = null
-    // 如果当前是第一次聊天，会先给当前聊天信息创建一个容器
-    try {
-      record = (JSON.parse(localStorage.getItem('record')))[username]
-    } finally {
-      (JSON.parse(localStorage.getItem('record')))[username] = []
-      record = []
-    }
-
-    try {
-      notSubmitRocerd = (JSON.parse(localStorage.getItem('notSubmitRocerd')))[username]
-    } finally {
-      (JSON.parse(localStorage.getItem('notSubmitRocerd')))[username] = []
-      notSubmitRocerd = []
-    }
-    record.push(...notSubmitRocerd)
-    return record
-  }
-}
-
+const getters = {}
 // actions
 const actions = {
   postMsg ({ commit, state }, products) {
@@ -45,6 +22,10 @@ const actions = {
   getMsg ({ commit, state }, products) {
     console.log('actions被触发了')
     commit('getMsg', products)
+  },
+  getContentMsg ({ commit, state }, products) {
+    console.log('actions被触发了')
+    commit('getContentMsg')
   }
 }
 
@@ -65,6 +46,33 @@ const mutations = {
   },
   getMsg () {
     console.log(this, 'getMsg')
+  },
+  getContentMsg (state) {
+    var username = localStorage.getItem('username')
+    var record = null
+    var notSubmitRocerd = null
+    // 如果当前是第一次聊天，会先给当前聊天信息创建一个容器
+    if ((JSON.parse(localStorage.getItem('record')))[username]) {
+      record = (JSON.parse(localStorage.getItem('record')))[username]
+    } else {
+      let a = JSON.parse(localStorage.getItem('record'))
+      console.log(a)
+      a[username] = []
+      console.log(a)
+      localStorage.setItem('record', JSON.stringify(a))
+      record = []
+    }
+
+    if ((JSON.parse(localStorage.getItem('notSubmitRocerd')))[username]) {
+      notSubmitRocerd = (JSON.parse(localStorage.getItem('notSubmitRocerd')))[username]
+    } else {
+      let a = JSON.parse(localStorage.getItem('notSubmitRocerd'))
+      a[username] = []
+      localStorage.setItem('notSubmitRocerd', JSON.stringify(a))
+      notSubmitRocerd = []
+    }
+    record.push(...notSubmitRocerd)
+    state.rocerd = record
   }
 }
 
