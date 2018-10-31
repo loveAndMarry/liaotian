@@ -32,6 +32,9 @@ const utils = {
    */
   pushStorage (key, name, data) {
     let notSubmitRecord = JSON.parse(localStorage.getItem(key))
+    if (!notSubmitRecord[name]) {
+      notSubmitRecord[name] = []
+    }
     notSubmitRecord[name].push(data)
     localStorage.setItem(key, JSON.stringify(notSubmitRecord))
   },

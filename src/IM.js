@@ -108,18 +108,21 @@ IM.prototype = {
           // 如果当前好友列表我空就不用循环了
           if (data.length > 0) {
             data.forEach((element, index) => {
-              if (record[element.username]) {
-                if (notSubmitRocerd.legnth > 0) {
+              if (record[element.username] || notSubmitRocerd[element.username]) {
+                if (notSubmitRocerd[element.username].length > 0) {
                   data[index]['msg'] = ((notSubmitRocerd[element.username])[notSubmitRocerd[element.username].length - 1]).content
-                } else if (record.length > 0) {
+                } else if (record[element.username].length > 0) {
                   data[index]['msg'] = ((record[element.username])[record[element.username].length - 1]).content
                 }
               }
             })
           }
         }
+        console.log(data, '#####################')
         // 设置当前好友列表
         localStorage.setItem('friendsList', JSON.stringify(data))
+        // 触发重新渲染好友列表
+        store.dispatch('getFriendsList')
         localStorage.setItem('isFriendsList', true)
       }
     })
