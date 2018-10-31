@@ -28,13 +28,35 @@ const utils = {
     return arr.reverse()
   },
   /**
-   * 设置localStorage
+   * 向localStorage内添加项
    */
   pushStorage (key, name, data) {
     let notSubmitRecord = JSON.parse(localStorage.getItem(key))
-    console.log(notSubmitRecord)
     notSubmitRecord[name].push(data)
     localStorage.setItem(key, JSON.stringify(notSubmitRecord))
+  },
+  /**
+   * 设置当前好友的未读消息个数
+   * @param value
+   *  为 2 时设置未读条数为0；
+   *  为 1 时设置未读条数为加一
+   */
+  setStorage (name, key, value) {
+    value = value || 1
+    console.log('设置当前未读消息', value)
+    let friendsList = JSON.parse(localStorage.getItem(name))
+    for (var j = 0, len = friendsList.length; j < len; j++) {
+      if (friendsList[j].username === key) {
+        if (value !== 2) {
+          friendsList[j]['hint'] = friendsList[j]['hint'] + 1
+        } else {
+          friendsList[j]['hint'] = 0
+        }
+        break
+      }
+    }
+    console.log(friendsList, 'ceshi afasdfa d')
+    localStorage.setItem(name, JSON.stringify(friendsList))
   }
 }
 

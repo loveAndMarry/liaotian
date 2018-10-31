@@ -8,13 +8,14 @@
           </div>
           <div class="item_content_info">
             <p></p>
-            <i>2</i>
+            <i v-text="item.hint" v-show="item.hint !== 0"></i>
           </div>
         </div>
     </div>
 </template>
 
 <script>
+import utils from '@/common/utils'
 export default {
   props: ['item'],
   data () {
@@ -27,6 +28,8 @@ export default {
       console.log(this.item, '点击完成后传值')
       localStorage.setItem('friendUserName', this.item.username)
       localStorage.setItem('friendImg', this.item.imgUrl)
+      utils.setStorage('friendsList', this.item.username, 2) // 设置当前好友的未读条数为0
+      this.$store.dispatch('getFriendsList') // 触发当前获取好友列表的dispatch
       this.$router.push({path: '/exchange', query: {nickName: this.item.nickName, username: this.item.username}})
     }
   }

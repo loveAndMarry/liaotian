@@ -15,29 +15,19 @@
 
 <script>
 import ListItem from './conponents/ListItem'
+import { mapState } from 'vuex'
 // import BScroll from 'better-scroll'
 
 export default {
   data () {
     return {
-      msg: '列表',
-      friendsList: []
+      msg: '列表'
     }
   },
   mounted () {
-    // 在请求好友列表之后，将存在缓存中的数据取出来
-    window.YTX.getFriendsList().then(() => {
-      this.getFriendsList()
-    })
+    this.$store.dispatch('getFriendsList')
   },
-  methods: {
-    // 在进入当前页面的时候，现将缓存中没有上传的聊天数据上传
-    postRecord () {},
-    // 获取当前好友列表信息
-    getFriendsList () {
-      this.friendsList = JSON.parse(localStorage.getItem('friendsList'))
-    }
-  },
+  computed: mapState(['friendsList']),
   components: {
     ListItem
   }

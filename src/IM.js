@@ -51,6 +51,9 @@ IM.prototype = {
     this.getUser().then(() => {
       // 登录
       this.login()
+
+      // 获取当前好友列表
+      this.getFriendsList()
     })
   },
   /**
@@ -107,8 +110,23 @@ IM.prototype = {
   /**
    * 向服务器发送没有提交的数据（消息）
    */
-  postRecord (data) {
-    return axios.POST('record', data)
+  postRecord () {
+    var notSubmitRocerd = JSON.parse(localStorage.getItem('notSubmitRocerd'))
+    if (JSON.stringify(notSubmitRocerd) === '{}') {
+      return false
+    }
+    axios.POST('record', notSubmitRocerd).then((res) => {
+      if (res.code === 200) {
+        var record = JSON.parse(localStorage.getItem('record'))
+        for (var i in notSubmitRocerd) {
+          record[i].push(...notSubmitRocerd[i])
+        }
+        console.log(record)
+        localStorage.setItem('record', JSON.stringify(record))
+        localStorage.setItem('notSubmitRocerd', '{}')
+        console.log('当前用户历史数据已经提交')
+      }
+    })
   },
   /**
    * 当前只能够发送文本信息和图片信息

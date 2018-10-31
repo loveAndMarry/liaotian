@@ -8,7 +8,8 @@ const state = {
   notSubmitRocerd: [], // 当前未提交的消息
   rocerd: [], // 当前已经提交的消息
   username: '', // 当前登录人用户名
-  checkoutStatus: null
+  checkoutStatus: null,
+  friendsList: [] // 当前的好友列表
 }
 
 // getters
@@ -19,33 +20,34 @@ const actions = {
     console.log('postMsg被触发了')
     commit('postMsg', products)
   },
-  getMsg ({ commit, state }, products) {
-    console.log('getMsg被触发了')
-    commit('getMsg', products)
-  },
   getContentMsg ({ commit, state }, products) {
     console.log('getContentMsg被触发了')
     commit('getContentMsg')
+  },
+  getFriendsList ({ commit, state }, products) {
+    console.log('getFriendsList被触发了')
+    commit('getFriendsList')
   }
 }
 
 // mutations
 const mutations = {
+  getFriendsList () {
+    state.friendsList = JSON.parse(localStorage.getItem('friendsList'))
+  },
   postMsg (state, products) {
     console.log('mutations被触发了', products)
     let record = {
       content: products.msgContent,
       type: products.msgType,
       id: products.msgId,
-      time: products.msgDateCreated,
+      time: new Date().getTime(),
       msgType: 1
     }
-
     utils.pushStorage('notSubmitRocerd', localStorage.getItem('friendUserName'), record)
+    utils.setStorage('friendsList', localStorage.getItem('friendUserName'))
+    state.friendsList = JSON.parse(localStorage.getItem('friendsList'))
     state.rocerd.push(record)
-  },
-  getMsg () {
-    this.getContentMsg()
   },
   getContentMsg (state) {
     // 获取当前好友用户名

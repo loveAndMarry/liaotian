@@ -55,24 +55,29 @@ app.get('/getFriendsList', function (req, res) {
 })
 
 app.post('/record', function (req, res) {
-  var file = path.join(__dirname, 'data/record.json')
-  //读取json文件
-  fs.readFile(file, 'utf-8', function (err, data) {
-    if (err) {
-      res.send('文件读取失败');
-    } else {
-      var item = req.body.data;
-      data = JSON.parse(data)
-      data[item.id].push(item)
-      fs.writeFile(file, JSON.stringify(data) , function () {
-        res.json({
-          msg: "添加成功",
-          code: 200,
-          data: []
-        });
-      })
-    }
-  })
+  // var file = path.join(__dirname, 'data/record.json')
+  // //读取json文件
+  // fs.readFile(file, 'utf-8', function (err, data) {
+  //   if (err) {
+  //     res.send('文件读取失败');
+  //   } else {
+  //     var item = req.body.data;
+  //     data = JSON.parse(data)
+  //     data[item.id].push(item)
+  //     fs.writeFile(file, JSON.stringify(data) , function () {
+  //       res.json({
+  //         msg: "添加成功",
+  //         code: 200,
+  //         data: []
+  //       });
+  //     })
+  //   }
+  // })
+  res.json({
+    msg: "添加成功",
+    code: 200,
+    data: []
+  });
 })
 
 var server = app.listen(4321, function () {
