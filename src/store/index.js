@@ -15,8 +15,22 @@ const state = {
 const getters = {
   getContentMsg: (state, getters, rootState) => {
     var username = localStorage.getItem('username')
-    var record = (JSON.parse(localStorage.getItem('record')))[username]
-    var notSubmitRocerd = (JSON.parse(localStorage.getItem('notSubmitRocerd')))[username]
+    var record = null
+    var notSubmitRocerd = null
+    // 如果当前是第一次聊天，会先给当前聊天信息创建一个容器
+    try {
+      record = (JSON.parse(localStorage.getItem('record')))[username]
+    } finally {
+      (JSON.parse(localStorage.getItem('record')))[username] = []
+      record = []
+    }
+
+    try {
+      notSubmitRocerd = (JSON.parse(localStorage.getItem('notSubmitRocerd')))[username]
+    } finally {
+      (JSON.parse(localStorage.getItem('notSubmitRocerd')))[username] = []
+      notSubmitRocerd = []
+    }
     record.push(...notSubmitRocerd)
     return record
   }
