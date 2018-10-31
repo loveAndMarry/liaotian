@@ -25,7 +25,8 @@ export default {
       console.log('点击')
       // 点击传值
       console.log(this.item, '点击完成后传值')
-      localStorage.setItem('username', this.item.username)
+      localStorage.setItem('friendUserName', this.item.username)
+      localStorage.setItem('friendImg', this.item.imgUrl)
       this.$router.push({path: '/exchange', query: {nickName: this.item.nickName, username: this.item.username}})
     }
   }

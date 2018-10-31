@@ -32,20 +32,9 @@ export default {
   },
   methods: {
     // 在进入当前页面的时候，现将缓存中没有上传的聊天数据上传
-    postRecord () {
-      window.YTX.postRecord({
-        id: 1,
-        content: '你猜猜我是谁啊！2',
-        type: 1,
-        time: '2018-10-30'
-      }).then(() => {
-        console.log('数据发送成功')
-      })
-    },
+    postRecord () {},
     // 获取当前好友列表信息
     getFriendsList () {
-      console.log()
-      console.log(typeof JSON.parse(localStorage.getItem('friendsList')))
       this.friendsList = JSON.parse(localStorage.getItem('friendsList'))
     }
   },

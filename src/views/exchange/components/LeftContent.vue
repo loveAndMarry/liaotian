@@ -1,7 +1,7 @@
 <template>
     <div class="left">
         <div class="left_img">
-            <img :src="item.imgUrl" alt="">
+            <img :src="imgUrl" alt="">
         </div>
         <div class="left_content">
           {{item.content}}
@@ -10,7 +10,12 @@
 </template>
 <script>
 export default {
-  props: ['item']
+  props: ['item'],
+  computed: {
+    imgUrl () {
+      return localStorage.getItem('friendImg')
+    }
+  }
 }
 </script>
 

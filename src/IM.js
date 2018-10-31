@@ -15,7 +15,7 @@ function IM () {
   // 当前登录状态
   this.loginType = 1
   // 用户名
-  this.userName = '15254323904'
+  this.userName = ''
   // 昵称
   this.nickName = ''
   // 出生年月
@@ -47,8 +47,11 @@ IM.prototype = {
     } else if (resp.code === 174001) {
       // 不支持HTML5，关闭页面//用户逻辑处理}
     } else if (resp.code === 200) {}
-    // 登录
-    this.login()
+    // 通过自己的服务器获取完登录用户信息后登录
+    this.getUser().then(() => {
+      // 登录
+      this.login()
+    })
   },
   /**
    * 登录
@@ -69,7 +72,7 @@ IM.prototype = {
     RL_YTX.login(loginBuilder, function (obj) {
       // 登录成功回调
     // 注册接收消息事件监听
-      console.log('用户登录成功')
+      console.log(obj, '用户登录成功')
       RL_YTX.onMsgReceiveListener(function (obj) {
         // 收到push消息或者离线消息或判断输入状态//如果obj.msgType==12  判断obj.msgDomainn的值//obj.msgDomain 0 无输入状态  1 正在输入  2 正在录音
         console.log('有新的消息', obj)
@@ -154,13 +157,29 @@ IM.prototype = {
    */
   getUser () {
     var that = this
-    RL_YTX.getMyInfo(function (obj) {
-      console.log(obj, '当前个人信息')
+    // RL_YTX.getMyInfo(function (obj) {
+    //   console.log(obj, '当前个人信息')
+    //   that.nickName = obj.nickName // 昵称
+    //   that.version = obj.version // 信息版本号
+    //   that.sex = obj.sex // 当前性别
+    //   that.sign = obj.sign //  个性签名
+    //   that.birth = obj.birth // 出生年月
+    // })
+    return axios.GET('/userList', {}).then((res) => {
+      var obj = res.data
       that.nickName = obj.nickName // 昵称
       that.version = obj.version // 信息版本号
       that.sex = obj.sex // 当前性别
       that.sign = obj.sign //  个性签名
       that.birth = obj.birth // 出生年月
+      that.userName = obj.userName
+      that.portrait = obj.portrait // 登录人头像
+      localStorage.setItem('username', that.userName)
+      localStorage.setItem('portrait', that.portrait)
+      console.log('个人信息获取成功')
+      // return new Promise((resolve) => {
+      //   resolve(obj)
+      // })
     })
   },
   /**

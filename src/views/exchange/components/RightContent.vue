@@ -4,13 +4,18 @@
           {{item.content}}
         </div>
          <div class="right_img">
-            <img :src="item.imgUrl" alt="">
+            <img :src="imgUrl" alt="">
         </div>
     </div>
 </template>
 <script>
 export default {
-  props: ['item']
+  props: ['item'],
+  computed: {
+    imgUrl () {
+      return localStorage.getItem('portrait')
+    }
+  }
 }
 </script>
 

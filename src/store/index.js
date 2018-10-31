@@ -41,14 +41,15 @@ const mutations = {
       msgType: 1
     }
 
-    utils.pushStorage('notSubmitRocerd', localStorage.getItem('username'), record)
+    utils.pushStorage('notSubmitRocerd', localStorage.getItem('friendUserName'), record)
     state.rocerd.push(record)
   },
   getMsg () {
     this.getContentMsg()
   },
   getContentMsg (state) {
-    var username = localStorage.getItem('username')
+    // 获取当前好友用户名
+    var username = localStorage.getItem('friendUserName')
     var record = null
     var notSubmitRocerd = null
     // 如果当前是第一次聊天，会先给当前聊天信息创建一个容器
