@@ -1,5 +1,5 @@
 import MD5 from 'js-md5'
-import axios from './assets/http'
+import axios from '@/assets/js/http'
 import store from '@/store'
 
 let RL_YTX = window.RL_YTX
@@ -163,7 +163,7 @@ IM.prototype = {
     obj.setType(msgType)
     // 设置接收者
     obj.setReceiver(id)
-    if (msgType === 1) {
+    if (msgType === 1 || msgType === 2) {
       // 设置发送的文本内容
       obj.setText(data)
       RL_YTX.sendMsg(obj, function (res) {
@@ -178,9 +178,10 @@ IM.prototype = {
       })
     } else if (msgType === 4) {
       obj.setFile(data)
-      RL_YTX.sendMsg(obj, function () {
+      RL_YTX.sendMsg(obj, function (res) {
       // 发送消息成功
       // 处理用户逻辑，通知页面
+        callback(res)
       }, function (obj) { // 失败
       // 发送消息失败
       // 处理用户逻辑，通知页面刷新，展现重发按钮

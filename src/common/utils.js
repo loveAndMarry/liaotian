@@ -45,22 +45,24 @@ const utils = {
    *  为 1 时设置未读条数为加一
    */
   setStorage (name, key, obj, value) {
+    // 设置完未读消息后，将最新的消息显示
+    this.setMsg(key)
+
     value = value || 1
     console.log('设置当前未读消息', value)
     let friendsList = JSON.parse(localStorage.getItem(name))
     for (var j = 0, len = friendsList.length; j < len; j++) {
       if (friendsList[j].username === key) {
-        friendsList[j]['msg'] = obj.content
+        // friendsList[j]['msg'] = obj.content
         if (value !== 2) {
           friendsList[j]['hint'] = friendsList[j]['hint'] + 1
         } else {
           friendsList[j]['hint'] = 0
         }
+        // 设置完未读消息后，设置最新消息
         break
       }
     }
-    // 设置完未读消息后，将最新的消息显示
-    //     this.setMsg(obj.username)
     console.log(friendsList, 'ceshi afasdfa d')
     localStorage.setItem(name, JSON.stringify(friendsList))
   },
@@ -73,16 +75,17 @@ const utils = {
     let notSubmitRocerd = JSON.parse(localStorage.getItem('notSubmitRocerd'))
 
     if (record[username] || notSubmitRocerd[username]) {
-      if (notSubmitRocerd.legnth > 0) {
+      if (notSubmitRocerd[username].length > 0) {
         for (let a = 0, len = friendsList.length; a < len; a++) {
           friendsList[a]['msg'] = ((notSubmitRocerd[username])[notSubmitRocerd[username].length - 1]).content
         }
-      } else if (record.length > 0) {
+      } else if (record.length[username] > 0) {
         for (let a = 0, len = friendsList.length; a < len; a++) {
           friendsList[a]['msg'] = ((record[username])[record[username].length - 1]).content
         }
       }
     }
+    localStorage.setItem('friendsList', JSON.stringify(friendsList))
   }
 }
 

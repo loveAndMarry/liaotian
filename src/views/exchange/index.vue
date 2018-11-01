@@ -1,8 +1,8 @@
 <template>
   <div class="exchange">
     <Head :item="item"></Head>
-    <Content :username="item.username"></Content>
-    <Send :username="item.username"></Send>
+    <Content :username="item.username" id="content" ref="content"></Content>
+    <Send :username="item.username" @editHeight="editHeight"></Send>
   </div>
 </template>
 
@@ -15,6 +15,20 @@ export default {
   data () {
     return {
       item: {}
+    }
+  },
+  methods: {
+    editHeight (isShow) {
+      var content = document.getElementById('content')
+      console.dir(content)
+      if (isShow) {
+        content.style.height = 'calc(100% - 3.6rem - 46px)'
+        content.style.bottom = '3.6rem'
+      } else {
+        content.style.height = 'calc(100% - 1.1rem - 46px)'
+        content.style.bottom = '1.1rem'
+      }
+      this.$refs.content.scrollToBottom()
     }
   },
   mounted () {

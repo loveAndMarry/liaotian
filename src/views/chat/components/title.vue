@@ -3,7 +3,7 @@
         <div class="title_header">
             <span v-for='(el, index) in tabs' :key="index" v-text="el" :class="{active:num == index}" @click="activeChild(index)"></span>
         </div>
-        <img src="../../../../static/images/xiaoxi.png" alt="消息" class="xiaoxi">
+        <img src="../../../assets/images/xiaoxi.png" alt="消息" class="xiaoxi">
     </div>
 </template>
 

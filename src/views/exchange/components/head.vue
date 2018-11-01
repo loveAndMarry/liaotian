@@ -39,9 +39,9 @@ export default {
   },
   methods: {
     onClickLeft () {
-      window.history.back()
       utils.setStorage('friendsList', localStorage.getItem('friendUserName'), this.item, 2) // 设置当前好友的未读条数为0
       this.$store.dispatch('getFriendsList') // 触发当前获取好友列表的dispatch
+      window.history.back()
     },
     onClickRight () {}
   }
