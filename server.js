@@ -28,11 +28,12 @@ app.get('/userList', function (req, res) {
     code: 200,
     data: {
       userName: '15254323904',
-        nickName: '周迅',
+      nickName: '周迅',
       id: 1,
       sign: "平凡一生",
       sex: 0,
-      birth: "1995-03-03"
+      birth: "1995-03-03",
+      portrait: "http://img.jsqq.net/uploads/allimg/150129/1-1501292112240-L.jpg"
     }
   });
 })

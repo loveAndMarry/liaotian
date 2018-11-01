@@ -15,7 +15,7 @@ export default {
     this.$nextTick(() => {
       this.$el.innerHTML = imgHTML
     })
-  },
+  }
 }
 </script>
 <style scoped>
