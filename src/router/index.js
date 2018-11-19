@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import chat from '@/views/chat/index'
-import home from '@/views/index'
+import home from '@/views/home/index'
+import view from '@/views/index'
 import tabbar from '@/views/tabber'
 import exchange from '@/views/exchange'
 
@@ -10,13 +11,21 @@ Vue.use(Router)
 export default new Router({
   routes: [{
     path: '/',
-    redirect: '/home/chat'
+    redirect: '/view/home'
   },
   {
-    path: '/home',
-    name: 'home',
-    component: home,
+    path: '/view',
+    name: 'view',
+    component: view,
     children: [{
+      path: 'home',
+      name: 'home',
+      components: {
+        default: home,
+        tabber: tabbar
+      }
+    },
+    {
       path: 'chat',
       name: 'chat',
       components: {
