@@ -5,6 +5,7 @@ import home from '@/views/home/index'
 import view from '@/views/index'
 import tabbar from '@/views/tabber'
 import exchange from '@/views/exchange'
+import userDetail from '@/views/userDetail'
 
 Vue.use(Router)
 
@@ -55,6 +56,13 @@ export default new Router({
     name: 'exchange',
     components: {
       content: exchange
+    }
+  },
+  {
+    path: '/userDetail',
+    name: 'userDetail',
+    components: {
+      content: userDetail
     }
   }
   ]
