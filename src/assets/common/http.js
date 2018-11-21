@@ -1,8 +1,9 @@
 import axios from 'axios'
+import common from '../../../static/js/common'
 const HTTP = {}
 
 axios.defaults.timeout = 5000
-axios.defaults.baseURL = 'http://localhost:4321/'
+axios.defaults.baseURL = common.baseUrl
 axios.defaults.responseType = 'json'
 
 // axios.interceptors.request.use(

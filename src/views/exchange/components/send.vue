@@ -1,31 +1,38 @@
 <template>
     <div class="bottom">
       <div style="height: 0.7rem;line-height: 0.7rem;">
+        <div class="icon yuyin" @click="voice($event)"></div>
         <div class="inputText">
-          <input type="text" placeholder="输入后点击回车发送内容" @keyup.enter="postMsg()" v-model="content">
+          <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg()" v-model="content">
+          <span v-show='!isText' @touchstart="touchstart($event)" @touchend="touchend($event)">按住 说话</span>
         </div>
         <div class="icon biaoqing" @click="emotion"></div>
-        <!-- <div class="icon tupian" @click="file"></div> -->
+        <div class="icon tianjia" @click="GiftShow"></div>
         <!-- <input type="file" id="file" style="display:none" accept="image/*" @change="fileChange($event)"> -->
       </div>
       <emotion @emotion="handleEmotion" v-show="isShow"></emotion>
+      <Gift v-show="isGiftShow"></Gift>
     </div>
 </template>
 
 <script>
-import utils from '@/common/utils'
+import utils from '@/assets/common/utils'
 import store from '@/store'
 import emotion from './Emotion'
+import Gift from './utils/gift'
 export default {
   props: ['username'],
   data () {
     return {
       content: '',
-      isShow: false
+      isShow: false, // 表情
+      isGiftShow:false, // 礼物
+      isText: true, // 默认展示输入文字
     }
   },
   components: {
-    emotion
+    emotion,
+    Gift
   },
   methods: {
     // file () {
@@ -53,13 +60,39 @@ export default {
     //     // that.$emit('getContent', that.username)
     //   })
     // },
+    // 按住说话事件
+    touchstart ($event) {
+      $event.target.innerText = '松开 结束'
+    },
+    touchend ($event) {
+      $event.target.innerText = '按住 说话'
+    },
+    voice ($event) {
+      if(!this.isText){
+        $event.target.className = 'icon yuyin'
+      } else {
+        $event.target.className = 'icon jianpan'
+      }
+      this.isText = !this.isText;
+      
+    },
     emotion () {
       if (this.isShow) {
         this.isShow = false
       } else {
+        this.isGiftShow = false
         this.isShow = true
       }
       this.$emit('editHeight', this.isShow)
+    },
+    GiftShow () {
+      if (this.isGiftShow) {
+        this.isGiftShow = false
+      } else {
+        this.isShow = false
+        this.isGiftShow = true
+      }
+      this.$emit('editHeight', this.isGiftShow)
     },
     handleEmotion (i) {
       var that = this
@@ -118,7 +151,7 @@ export default {
 }
 
 .bottom .inputText{
-  width: calc(100% - 1.92rem);
+  width: calc(100% - 2.5rem);
   display: inline-block;
   height: 100%;
   position: relative;
@@ -139,27 +172,50 @@ export default {
   height: 100%;
   width: 100%
 }
+.bottom .inputText span{
+  border:1px solid #f0f0f1;
+  border-radius: 3px;
+  background-color: #f5f5f6;
+  color:#333;
+  font-size: .27rem;
+  padding: 0 .24rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%
+}
 .bottom .inputText input::-webkit-input-placeholder{
   color: #c3c3c3
 }
 .icon{
   width: .58rem;
   height: .58rem;
-  margin-left: .18rem;
   line-height: .92rem;
   display: inline-block;
   vertical-align: .03rem;
   background-repeat: no-repeat;
   background-size: cover;
 }
+.yuyin{
+  background-image: url('../../../assets/images/yuyin.png');
+  margin-right: .1rem;
+}
+.jianpan{
+  background-image: url('../../../assets/images/jianpan.png');
+  margin-right: .1rem;
+}
 .biaoqing{
   background-image: url('../../../assets/images/biaoqing.png');
-  margin-left: .5rem
+  margin-left: .1rem
 }
-.tupian{
-  background-image: url('../../../assets/images/tupian.png');
+.tianjia{
+  background-image: url('../../../assets/images/tianjia.png');
   width: .63rem;
   height: .63rem;
   margin-bottom: -0.02rem;
+  margin-left: .1rem
 }
 </style>

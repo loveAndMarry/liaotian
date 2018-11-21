@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import utils from '@/common/utils'
+import utils from '@/assets/common/utils'
 
 Vue.use(Vuex)
 

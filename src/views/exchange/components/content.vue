@@ -1,10 +1,12 @@
 <template>
     <div class="back" id="content">
       <div>
-        <div v-for="(el, index) in rocerd" :key="index">
-          <left-content v-if="el.msgType === 1" :item="el"></left-content>
-          <right-content v-if="el.msgType === 2" :item="el"></right-content>
-        </div>
+        <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller">
+          <div v-for="(el, index) in rocerd" :key="index">
+            <left-content v-if="el.msgType === 1" :item="el"></left-content>
+            <right-content v-if="el.msgType === 2" :item="el"></right-content>
+          </div>
+        </scroller>
       </div>
     </div>
 </template>
@@ -12,7 +14,7 @@
 <script>
 import LeftContent from './LeftContent'
 import RightContent from './RightContent'
-import utils from '@/common/utils'
+import utils from '@/assets/common/utils'
 export default {
   props: ['username'],
   data () {
@@ -56,7 +58,21 @@ export default {
     scrollToBottom () {
       var dome = document.getElementById('content')
       dome.scrollTop = dome.scrollHeight
-    }
+    },
+    infinite () {
+       window.setTimeout(()=>{
+        this.$refs.scroller.finishInfinite(true)
+      },3000)
+      console.log(arguments,'infinite')
+      return false
+    },
+    refresh () {
+       window.setTimeout(()=>{
+        this.$refs.scroller.finishPullToRefresh()
+      },3000)
+      console.log(arguments,'refresh')
+      return false
+    },
   },
   mounted () {
     // 获取当前信息列表

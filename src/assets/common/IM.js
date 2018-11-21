@@ -1,9 +1,8 @@
 import MD5 from 'js-md5'
-import axios from '@/assets/js/http'
+import axios from './http'
 import store from '@/store'
-
-let RL_YTX = window.RL_YTX
-console.log(RL_YTX)
+import { getFriendsList } from './api'
+import RL_YTX from '../js/RL_YTX'
 
 function IM () {
   // 应用ID
@@ -40,6 +39,7 @@ function IM () {
 
 IM.prototype = {
   init () {
+    console.log('666')
     var resp = RL_YTX.init(this.appid)
     if (resp.code === 170002) {
       // 缺少必要参数，详情见msg参数
@@ -89,7 +89,8 @@ IM.prototype = {
    * 获取当前好友列表
    */
   getFriendsList () {
-    return axios.GET('getFriendsList', {}).then((res) => {
+    console.log(getFriendsList({}))
+    return getFriendsList({}).then((res) => {
       let data = res.data
       let record = JSON.parse(localStorage.getItem('record'))
       let notSubmitRocerd = JSON.parse(localStorage.getItem('notSubmitRocerd'))
@@ -238,4 +239,4 @@ IM.prototype = {
   }
 }
 
-window.YTX = new IM()
+export default new IM()

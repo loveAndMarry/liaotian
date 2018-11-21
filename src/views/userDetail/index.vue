@@ -1,5 +1,6 @@
 <template>
   <div class="userDetail">
+    <NavBar title='个人信息' @click-left="onClickLeft" left-arrow></NavBar>
     <div class="title">
       <div class="left">
         <div class="top">
@@ -32,6 +33,7 @@
   </div>
 </template>
 <script>
+import { NavBar } from 'vant'
 export default {
   data () {
     return {
@@ -49,6 +51,14 @@ export default {
           praise:8
         }
     }
+  },
+  methods: {
+    onClickLeft () {
+      this.$router.push({path: '/view/home'})
+    }
+  },
+  components: {
+    NavBar
   }
 }
 </script>

@@ -4,7 +4,9 @@
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search>
     <Tabs @updateVal="updateVal" @search="search"/>
-    <HomeList :columns='columns'></HomeList>
+    <div style="margin-top: .2rem;height:calc(100% - .2rem);position: relative">
+      <HomeList :columns='columns'></HomeList>
+    </div>
   </div>
 </template>
 

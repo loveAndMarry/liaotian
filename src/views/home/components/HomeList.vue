@@ -1,32 +1,34 @@
 <template>
-  <ul class="home_list">
-    <li v-for="(item, index) in columns" :key="index" @click="showDetail(item.id)">
-      <div class="title">
-        <img :src="item.portrait" alt="">
-      </div>
-      <div class="list_content">
-        <div class="top">
-          <div class="name">{{item.userName}}
-            <span>实名</span>
+  <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller">
+    <ul class="home_list">
+      <li v-for="(item, index) in columns" :key="index" @click="showDetail(item.id)">
+        <div class="title">
+          <img :src="item.portrait" alt="">
+        </div>
+        <div class="list_content">
+          <div class="top">
+            <div class="name">{{item.userName}}
+              <span>实名</span>
+            </div>
+            <div class="praise"><span></span>{{item.praise}}</div>
           </div>
-          <div class="praise"><span></span>{{item.praise}}</div>
+          <div class="message">
+            <p v-text="`${item.age}岁`"></p>
+            <i>|</i>
+            <p v-text="`${item.height}cm`"></p>
+            <i>|</i>
+            <p v-text="item.education"></p>
+            <i>|</i>
+            <p v-text="item.income"></p>
+          </div>
+          <ul class="tags">
+            <li v-for="(el, dex) in item.tag" :key="dex" v-text="el"></li>
+          </ul>
+          <div class="manifesto" v-text="`爱情宣言 :${item.manifesto}`"></div>
         </div>
-        <div class="message">
-          <p v-text="`${item.age}岁`"></p>
-          <i>|</i>
-          <p v-text="`${item.height}cm`"></p>
-          <i>|</i>
-          <p v-text="item.education"></p>
-          <i>|</i>
-          <p v-text="item.income"></p>
-        </div>
-        <ul class="tags">
-          <li v-for="(el, dex) in item.tag" :key="dex" v-text="el"></li>
-        </ul>
-        <div class="manifesto" v-text="`爱情宣言 :${item.manifesto}`"></div>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
+  </scroller>
 </template>
 <script>
 export default {
@@ -34,7 +36,21 @@ export default {
   methods: {
     showDetail (id) {
       this.$router.push({path: '/userDetail', query: {id: id}})
-    }
+    },
+    infinite () {
+       window.setTimeout(()=>{
+        this.$refs.scroller.finishInfinite(true)
+      },3000)
+      console.log(arguments,'infinite')
+      return false
+    },
+    refresh () {
+       window.setTimeout(()=>{
+        this.$refs.scroller.finishPullToRefresh()
+      },3000)
+      console.log(arguments,'refresh')
+      return false
+    },
   }
 }
 </script>
@@ -42,7 +58,6 @@ export default {
 <style scoped>
 .home_list{
   display: block;
-  margin-top: .2rem
 }
 .home_list li{
   margin-bottom: .1rem;

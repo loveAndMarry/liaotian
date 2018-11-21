@@ -196,4 +196,12 @@ body {
     transform: translate(0, 0);
   }
 } */
+._v-container>._v-content>.loading-layer{
+  font-size: .16rem !important;
+  line-height: .6rem !important;
+  height: .6rem !important
+}
+._v-container>._v-content>.loading-layer .spinner-holder .text, ._v-container>._v-content>.pull-to-refresh-layer .spinner-holder .text{
+  font-size: .16rem !important;
+}
 </style>
