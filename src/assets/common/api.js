@@ -6,3 +6,6 @@ import HTTP from './http'
 
  // 获取好友列表
  export const getFriendsList = data => HTTP.GET('getFriendsList',data)
+
+  // 获取好友列表
+  export const postMsg = data => HTTP.POST('postMsg',data)

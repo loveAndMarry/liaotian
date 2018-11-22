@@ -4,21 +4,21 @@
     <div style="height:calc(100% - .2rem);position: relative">
       <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller">
         <ul class="chat_list">
-          <li class="chat_list_item" v-for="(el, index) in 10" :key="index" @click="chatListClick(item)">
+          <li class="chat_list_item" v-for="(el, index) in friendList" :key="index" @click="chatListClick(el)">
             <div class="portrait">
-              <img :src="item.portrait" alt="">
+              <img :src="el.imgUrl" alt="">
             </div>
             <div class="content">
               <div class="title">
                 <div class="top">
-                    <h3 v-text="item.userName"></h3>
-                    <span class="theRealNameSystem">实名</span>
+                    <h3 v-text="el.userName"></h3>
+                    <span class="theRealNameSystem" v-if="el.theRealNameSystem">实名</span>
                 </div>
-                <p>你好，很高兴认识你，可以聊一聊吗？</p>
+                <p v-text="el.content"></p>
               </div>
               <div class="info">
-                <p>08:35</p>
-                <span>6</span>
+                <p>{{el.time | fromNow}}</p>
+                <span v-show="el.hint">{{el.hint}}</span>
               </div>
             </div>
           </li>
@@ -30,26 +30,26 @@
 
 <script>
 import { NavBar } from "vant";
+import { mapActions, mapState } from 'vuex'
+import Vue from 'vue'
+import Moment from 'moment'
+import 'moment/locale/zh-cn'
+
 export default {
-  data() {
-    return {
-      item: {
-        id: 1,
-        userName: "测试",
-        theRealNameSystem: true,
-        age: "25",
-        height: "165",
-        education: "本科",
-        income: "5000-10000",
-        tag: ["身材苗条", "旅游", "投资理财"],
-        manifesto: "爱情就应该是一辈子",
-        portrait:
-          "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542709648746&di=05469704ed6e2a01394165a458e93773&imgtype=0&src=http%3A%2F%2Fimg.52z.com%2Fupload%2Fnews%2Fimage%2F20180416%2F20180416051754_47848.jpg",
-        praise: 8
-      }
-    };
+  computed: {
+    ...mapState({
+      friendList: state => state.IM.friendList
+    })
+  },
+  mounted () {
+    // 获取好友列表
+    this.GETFRIEND({})
   },
   methods: {
+    ...mapActions([
+      'UPDATEUSERLIST',
+      'GETFRIEND'
+    ]),
     infinite() {
       window.setTimeout(() => {
         this.$refs.scroller.finishInfinite(true);
@@ -65,7 +65,15 @@ export default {
       return false;
     },
     chatListClick(item) {
-      this.$router.push({ path: "/exchange" }, { query: item });
+      this.UPDATEUSERLIST(item).then(() => {
+        console.log(this.$store, '当前个人信息已经获取')
+        this.$router.push({ path: "/exchange" });
+      })
+    }
+  },
+  filters: {
+    fromNow (val) {
+      return Moment(val).endOf('day').fromNow()
     }
   },
   components: {
@@ -112,7 +120,7 @@ export default {
 }
 .content .title {
   display: inline-block;
-  width: calc(100% - 0.8rem);
+  width: calc(100% - 1rem);
   float: left;
 }
 .content .title .top {
@@ -147,6 +155,8 @@ export default {
 .content .info {
   float: right;
   text-align: right;
+  width: 1rem;
+  overflow: hidden;
 }
 .content .info p {
   margin: 0;

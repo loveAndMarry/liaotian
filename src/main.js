@@ -23,5 +23,11 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  created () {
+    // 触发获取当前本地好友列表
+    this.$store.dispatch('GETFRIEND')
+    // 触发获取当前本地聊天记录
+    this.$store.dispatch('GETCHATMESSAGE')
+  }
 })

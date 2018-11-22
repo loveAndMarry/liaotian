@@ -8,12 +8,13 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   props: ['item'],
   computed: {
-    imgUrl () {
-      return localStorage.getItem('portrait')
-    }
+    ...mapState({
+      imgUrl: state => state.IM.user? state.IM.user.imgUrl: 'https://avatars1.githubusercontent.com/u/6126885?s=88&v=4'
+    }),
   },
   methods: {
     // 将匹配结果替换表情图片
@@ -32,7 +33,10 @@ export default {
   width: 100%;
   overflow: hidden;
   text-align: right;
-  margin-top: .4rem
+  margin-top: .4rem;
+  padding: 0 .3rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 .right .right_img{
   margin-left: .14rem;

@@ -1,7 +1,7 @@
 <template>
 <div>
   <nav-bar
-  :title="item.nickName"
+  :title="friend.userName"
   left-arrow
   @click-left="onClickLeft"
   @click-right="onClickRight">
@@ -14,9 +14,9 @@
 import {NavBar, Icon} from 'vant'
 import utils from '@/assets/common/utils'
 import Vue from 'vue'
+import { mapState } from 'vuex'
 
 export default {
-  props: ['item'],
   components: {
     NavBar,
     Icon
@@ -28,6 +28,11 @@ export default {
       window.history.back()
     },
     onClickRight () {}
+  },
+  computed: {
+    ...mapState({
+      friend: state => state.IM.friend
+    })
   }
 }
 </script>

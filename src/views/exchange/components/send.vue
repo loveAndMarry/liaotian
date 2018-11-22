@@ -10,18 +10,17 @@
         <div class="icon tianjia" @click="GiftShow"></div>
         <!-- <input type="file" id="file" style="display:none" accept="image/*" @change="fileChange($event)"> -->
       </div>
-      <emotion @emotion="handleEmotion" v-show="isShow"></emotion>
+      <emotion @emotion="postMsg" v-show="isShow"></emotion>
       <Gift v-show="isGiftShow"></Gift>
     </div>
 </template>
 
 <script>
 import utils from '@/assets/common/utils'
-import store from '@/store'
+import {mapState ,mapActions } from 'vuex'
 import emotion from './Emotion'
 import Gift from './utils/gift'
 export default {
-  props: ['username'],
   data () {
     return {
       content: '',
@@ -35,38 +34,18 @@ export default {
     Gift
   },
   methods: {
-    // file () {
-    //   var file = document.getElementById('file')
-    //   file.click()
-    // },
-    // fileChange (e) {
-    //   var files = e.target.files[0];
-    //   console.log(files)
-    //    var that = this
-    //   // this.emotion()
-    //   window.YTX.postMsg(4, files, this.username, function (res) {
-    //     let record = {
-    //       id: res.msgClientNo, // 服务器返回的消息ID
-    //       content: files,
-    //       type: 4,
-    //       imgUrl: localStorage.getItem('portrait'),
-    //       msgType: 2,
-    //       time: new Date().getTime()
-    //     }
-    //     console.log(res, '$$$$$$$$$$$$$$$$$$$$$$')
-    //     utils.pushStorage('notSubmitRocerd', that.username, record)
-
-    //     store.dispatch('getContentMsg')
-    //     // that.$emit('getContent', that.username)
-    //   })
-    // },
+    ...mapActions([
+      'POSTMSG'
+    ]),
     // 按住说话事件
     touchstart ($event) {
       $event.target.innerText = '松开 结束'
     },
+    // 松开事件
     touchend ($event) {
       $event.target.innerText = '按住 说话'
     },
+    // 语音文本切换
     voice ($event) {
       if(!this.isText){
         $event.target.className = 'icon yuyin'
@@ -74,7 +53,6 @@ export default {
         $event.target.className = 'icon jianpan'
       }
       this.isText = !this.isText;
-      
     },
     emotion () {
       if (this.isShow) {
@@ -94,46 +72,31 @@ export default {
       }
       this.$emit('editHeight', this.isGiftShow)
     },
-    handleEmotion (i) {
-      var that = this
-      this.emotion()
-      window.YTX.postMsg(1, i, this.username, function (res) {
-        let record = {
-          id: res.msgClientNo, // 服务器返回的消息ID
-          content: i,
-          type: 2,
-          imgUrl: localStorage.getItem('portrait'),
-          msgType: 2,
-          time: new Date().getTime()
-        }
-
-        utils.pushStorage('notSubmitRocerd', that.username, record)
-
-        store.dispatch('getContentMsg')
-        // that.$emit('getContent', that.username)
-      })
-    },
-    postMsg () {
+    postMsg (i) {
+      var content = typeof i === 'undefined'? this.content: i
       var that = this
       this.isShow = false
-      window.YTX.postMsg(1, that.content, this.username, function (res) {
-        let record = {
-          id: res.msgClientNo, // 服务器返回的消息ID
-          content: that.content,
-          type: 1,
-          imgUrl: localStorage.getItem('portrait'),
-          msgType: 2,
-          time: new Date().getTime()
-        }
-
-        utils.pushStorage('notSubmitRocerd', that.username, record)
-
+      this.$emit('editHeight', this.isShow)
+      this.POSTMSG({
+        content: content,
+        id: new Date().getTime(),
+        receiver:that.friend.accountNumber,
+        sender: that.user.accountNumber,
+        time: new Date().getTime(),
+        status: 1, // 当前信息提交状态
+        imgUrl: this.user.imgUrl,
+        msgType: 1
+      }).then((res) => {
         that.content = ''
-
-        store.dispatch('getContentMsg')
-        // that.$emit('getContent', that.username)
+        console.log('消息发送成功')
       })
     }
+  },
+  computed: {
+     ...mapState({
+       'user': state => state.IM.user,
+       'friend': state => state.IM.friend,
+     }),
   }
 }
 </script>
