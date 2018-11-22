@@ -33,7 +33,6 @@ export default {
   width: 100%;
   overflow: hidden;
   text-align: right;
-  margin-top: .4rem;
   padding: 0 .3rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;

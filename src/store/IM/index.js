@@ -20,7 +20,10 @@ const state = {
 
 const getters = {
   getFrientList: state => state.friendList,
-  getChatMessage: state => state.chatMessage
+  getChatMessage: state => {
+    console.log(state,"我擦")
+    return state.chatMessage[state.friend.accountNumber]
+  }
 }
 
 const actions = {
@@ -28,6 +31,9 @@ const actions = {
     return new Promise((resolve) => {
       // 将当前的信息存放在state内存中
       state.chatMessage[products.receiver].push(products)
+      // 为了触发getters
+      state.chatMessage = Object.assign({}, state.chatMessage)
+      console.log(state.chatMessage, 'postMsg')
       // 将信息提交到容联云
       IM.postMsg({
         data:products.content,
@@ -87,8 +93,6 @@ const mutations = {
   },
   [UPDATE_USER_LIST] (state, products) {
     state.friend = products;
-    console.log(state)
-    debugger
     if(!state.chatMessage[products.accountNumber]){
       state.chatMessage[products.accountNumber] = []
     }

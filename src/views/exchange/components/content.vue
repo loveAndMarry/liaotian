@@ -1,13 +1,11 @@
 <template>
     <div class="back" id="content">
-      <div>
-        <scroller  :on-refresh="refresh" ref="scroller">
-          <div v-for="(el, index) in chatMessage" :key="index">
-            <left-content v-if="el.sender !== user.accountNumber" :item="el"></left-content>
-            <right-content v-if="el.sender === user.accountNumber" :item="el"></right-content>
-          </div>
+        <scroller :on-refresh="refresh" ref="scroller">
+            <div v-for="(el, index) in getChatMessage" :key="index" style="padding-top:.1rem;padding-bottom:.3rem;box-sizing: border-box;">
+              <left-content v-if="el.sender !== user.accountNumber" :item="el"></left-content>
+              <right-content v-if="el.sender === user.accountNumber" :item="el"></right-content>
+            </div>
         </scroller>
-      </div>
     </div>
 </template>
 
@@ -15,13 +13,11 @@
 import LeftContent from './LeftContent'
 import RightContent from './RightContent'
 import utils from '@/assets/common/utils'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   data () {
-    return {
-      
-    }
+    return {}
   },
   components: {
     LeftContent,
@@ -29,26 +25,35 @@ export default {
   },
   computed: {
     ...mapState({
-        user: state => state.IM.user,
-        chatMessage: state => state.IM.chatMessage[state.IM.friend.accountNumber]
+        user: state => state.IM.user
     }),
+    ...mapGetters([
+      'getChatMessage'
+    ])
+  },
+  mounted () {
+    console.log(this.getChatMessage)
   },
   watch: {
-    'chatMessage': function (arr) {
-      this.$nextTick(() => {
-        // 将滚动条置为底部
-        this.scrollToBottom()
-      })
+    'getChatMessage': function (arr) {
+      // 将滚动条置为底部
+      this.scrollToBottom()
     }
+  },
+  mounted () {
+    // 将滚动条置为底部
+    this.scrollToBottom()
   },
   methods: {
     scrollToBottom () {
-      var dome = document.getElementById('content')
-      dome.scrollTop = dome.scrollHeight
+       this.$nextTick(() => {
+        this.$refs.scroller.resize()
+        this.$refs.scroller.scrollTo(0,this.$refs.scroller.content.clientHeight ,false)
+      })
     },
     refresh () {
        window.setTimeout(()=>{
-        this.$refs.scroller.finishPullToRefresh()
+        this.$refs.scroller.finishPullToRefresh(true)
       },3000)
       console.log(arguments,'refresh')
       return false
@@ -59,15 +64,14 @@ export default {
  
 <style scoped>
   .back{
-    position: absolute;
-    top: 46px;
-    bottom: 1.1rem;
+    position: relative;
+    top: .01rem;
+    left:0 ;
     height: calc(100% - 1.1rem - 46px);
     width: 100%;
     background-color: #f5f5f6;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    padding-bottom: .2rem;
-    overflow-y: scroll;
+    overflow:hidden;
   }
 </style>

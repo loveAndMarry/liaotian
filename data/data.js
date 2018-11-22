@@ -5,7 +5,6 @@ export const user = {
   imgUrl: 'http://image.biaobaiju.com/uploads/20180122/14/1516602118-AltSiLubYM.jpg',
 }
 
-
 export const friendList = [
   {
     id: 125,
@@ -23,7 +22,7 @@ export const chatMessage = {
   '00002': [{
     content: '6666',
     msgType: 1,
-    time:1542869325131,
+    time: 1542869325131,
     imgUrl: 'http://tx.haiqq.com/uploads/allimg/170508/0956355640-2.jpg',
     receiver: '00002',
     sender: '00001',
