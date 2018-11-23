@@ -20,10 +20,7 @@ const state = {
 
 const getters = {
   getFrientList: state => state.friendList,
-  getChatMessage: state => {
-    console.log(state,"我擦")
-    return state.chatMessage[state.friend.accountNumber]
-  }
+  getChatMessage: state => state.chatMessage[state.friend.accountNumber]
 }
 
 const actions = {
@@ -86,7 +83,9 @@ const mutations = {
   },
   [RECEIVE_INFORMATION] (state, products) {
     // 将当前的信息存放在state内存中
-    state.chatMessage[products.recipient].push(products)
+    state.chatMessage[products.sender].push(products)
+    // 为了触发getters
+    state.chatMessage = Object.assign({}, state.chatMessage)
   },
   [UPDATE_USER] (state, products) {
     state.user = Object.assign({},products)

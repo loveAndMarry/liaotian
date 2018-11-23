@@ -68,7 +68,15 @@ IM.prototype = {
       RL_YTX.onMsgReceiveListener(function (obj) {
         // 收到push消息或者离线消息或判断输入状态//如果obj.msgType==12  判断obj.msgDomainn的值//obj.msgDomain 0 无输入状态  1 正在输入  2 正在录音
         console.log('有新的消息', obj)
-        store.dispatch('RECEIVEINFORMATION', obj)
+        store.dispatch('RECEIVEINFORMATION', {
+          id: obj.msgId,
+          receiver: obj.msgReceiver,
+          sender: obj.msgSender,
+          content: obj.msgContent,
+          msgType: obj.msgType,
+          time: parseInt(obj.msgDateCreated),
+          status: 2
+        })
       })
     }, function (obj) {
       console.log('登录失败')

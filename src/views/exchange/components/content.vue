@@ -65,7 +65,7 @@ export default {
 <style scoped>
   .back{
     position: relative;
-    top: .01rem;
+    top: 0;
     left:0 ;
     height: calc(100% - 1.1rem - 46px);
     width: 100%;
