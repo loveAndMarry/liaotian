@@ -32,7 +32,12 @@ const utils = {
    */
   updateArray (arr, id, obj) {
     if(typeof obj === 'object'){
-      return arr.splice(arr.findIndex(el => el.id === id), 1, Object.assign(arr.find(el => el.id === id), obj))
+      if(typeof obj['hint'] === 'boolean' && obj['hint']){
+        obj.hint = arr.find(el => el.accountNumber === id).hint + 1
+      } else if(typeof obj['hint'] === 'number'){
+        obj.hint = 0
+      }
+      return arr.splice(arr.findIndex(el => el.accountNumber === id), 1, Object.assign(arr.find(el => el.accountNumber === id), obj))
     }
   }
 }

@@ -82,8 +82,18 @@ const mutations = {
     state.chatMessage[products.recipient] = utils.updateArray(state.chatMessage[products.recipient], products.id, {status: 2})
   },
   [RECEIVE_INFORMATION] (state, products) {
+    if(!state.chatMessage[products.sender]){
+      state.chatMessage[products.sender] = []
+    }
     // 将当前的信息存放在state内存中
     state.chatMessage[products.sender].push(products)
+
+    utils.updateArray(state.friendList, products.sender, {
+      content: products.content,
+      hint: true, // 更新最新消息条数
+      status: 2,
+      time: products.time
+    } )
     // 为了触发getters
     state.chatMessage = Object.assign({}, state.chatMessage)
   },

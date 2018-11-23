@@ -30,10 +30,11 @@
 
 <script>
 import { NavBar } from "vant";
-import { mapActions, mapState } from 'vuex'
-import Vue from 'vue'
-import Moment from 'moment'
-import 'moment/locale/zh-cn'
+import { mapActions, mapState } from "vuex";
+import Vue from "vue";
+import Moment from "moment";
+import utils from "@/assets/common/utils";
+import "moment/locale/zh-cn";
 
 export default {
   computed: {
@@ -41,15 +42,12 @@ export default {
       friendList: state => state.IM.friendList
     })
   },
-  mounted () {
+  mounted() {
     // 获取好友列表
-    this.GETFRIEND({})
+    this.GETFRIEND({});
   },
   methods: {
-    ...mapActions([
-      'UPDATEUSERLIST',
-      'GETFRIEND'
-    ]),
+    ...mapActions(["UPDATEUSERLIST", "GETFRIEND"]),
     infinite() {
       window.setTimeout(() => {
         this.$refs.scroller.finishInfinite(true);
@@ -66,14 +64,19 @@ export default {
     },
     chatListClick(item) {
       this.UPDATEUSERLIST(item).then(() => {
-        console.log(this.$store, '当前个人信息已经获取')
+        console.log(this.$store, "当前个人信息已经获取");
+        utils.updateArray(this.$store.state.IM.friendList, item.accountNumber, {
+          hint: 0
+        });
         this.$router.push({ path: "/exchange" });
-      })
+      });
     }
   },
   filters: {
-    fromNow (val) {
-      return Moment(val).endOf('day').fromNow()
+    fromNow(val) {
+      return Moment(val)
+        .endOf("day")
+        .fromNow();
     }
   },
   components: {
@@ -117,6 +120,7 @@ export default {
   -webkit-box-sizing: border-box;
   border-bottom: 1px solid #d8d8d8;
   background-color: #fff;
+  position: relative;
 }
 .content .title {
   display: inline-block;
@@ -160,6 +164,10 @@ export default {
 }
 .content .info p {
   margin: 0;
+  position: absolute;
+  top: 0;
+  right: 0.1rem;
+  transform: scale(0.8);
 }
 .content .info span {
   display: block;

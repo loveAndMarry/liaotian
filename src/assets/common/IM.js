@@ -1,6 +1,6 @@
 import MD5 from 'js-md5'
 import store from '@/store'
-import RL_YTX from '../js/RL_YTX'
+var RL_YTX = window.RL_YTX
 import { user } from '../../../data/data'
 
 function IM () {
