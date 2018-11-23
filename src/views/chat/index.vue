@@ -6,7 +6,7 @@
         <ul class="chat_list">
           <li class="chat_list_item" v-for="(el, index) in friendList" :key="index" @click="chatListClick(el)">
             <div class="portrait">
-              <img :src="el.imgUrl" alt="">
+              <img :src="el.userHead" alt="">
             </div>
             <div class="content">
               <div class="title">
@@ -46,6 +46,11 @@ export default {
     // 获取好友列表
     this.GETFRIEND({});
   },
+  watch: {
+    friendList (val) {
+      console.log('friendList已经改变', val)
+    }
+  },
   methods: {
     ...mapActions(["UPDATEUSERLIST", "GETFRIEND"]),
     infinite() {
@@ -74,15 +79,30 @@ export default {
   },
   filters: {
     fromNow(val) {
-      return Moment(val)
-        .endOf("day")
-        .fromNow();
+      var currentTime = Date.parse(new Date());
+      var dateTime = val;//后台传递来的时间
+      var d_day = Date.parse(new Date(dateTime));
+      var day = Math.abs(parseInt((d_day - currentTime)/1000/3600/24));//计算日期
+      var hour = Math.abs(parseInt((d_day - currentTime)/1000/3600));//计算小时
+      var minutes = Math.abs(parseInt((d_day - currentTime)/1000/60));//计算分钟
+      var seconds = Math.abs(parseInt((d_day - currentTime)/1000));//计算秒
+      if(day >= 2){
+        return parseInt(day)+"天前"
+      }else if(day > 0 && day < 2){
+        return "昨天"
+      }else if(hour > 0 && hour < 24){
+        return (new Date(dateTime).getHours()) + 1 + ':' + (new Date(dateTime).getMinutes() + 1)
+      }else if(minutes > 0 && minutes < 60){
+        return parseInt(minutes)+"分钟前"
+      }else if(seconds > 0 && seconds < 60){
+        return parseInt(seconds)+"秒前"
+      }
     }
   },
   components: {
     NavBar
   }
-};
+}
 </script>
 
 <style scoped>

@@ -40,17 +40,6 @@ export default {
       'getChatMessage' // 获取好友消息列表
     ]),
   },
-  watch: {
-    // 监听到state好友信息改变更新本地缓存
-    getFrientList (val) {
-      console.log('getFrientList', val)
-      localStorage.setItem('frientList',JSON.stringify(val))
-    },
-    getChatMessage (val) {
-      console.log('getChatMessage', val)
-      localStorage.setItem('ChatMessage',JSON.stringify(val))
-    }
-  },
   components: {
     Head,
     Send,

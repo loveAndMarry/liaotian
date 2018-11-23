@@ -84,7 +84,7 @@ export default {
         sender: that.user.accountNumber,
         time: new Date().getTime(),
         status: 1, // 当前信息提交状态
-        imgUrl: this.user.imgUrl,
+        userHead: this.user.userHead,
         msgType: 1
       }).then((res) => {
         that.content = ''

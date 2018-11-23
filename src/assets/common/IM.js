@@ -1,5 +1,6 @@
 import MD5 from 'js-md5'
 import store from '@/store'
+import utils from './utils'
 var RL_YTX = window.RL_YTX
 import { user } from '../../../data/data'
 
@@ -37,13 +38,14 @@ IM.prototype = {
 
       // 获取完登录用户信息后登录
       // var user = JSON.parse(localStorage.getItem('user'))
-
-      this.userName = user.accountNumber
-
-      // 登录
-      this.login()
       // 更改state中的个人信息
-      store.dispatch('UPDATEUSER', user)
+      store.dispatch('UPDATEUSER', {
+        userId: utils.getUrlArgObject('userId')
+      }).then((data) => {
+        this.userName = data.accountNumber
+        // 登录
+        this.login()
+      })
   },
   /**
    * 登录

@@ -1,3 +1,1 @@
-module.exports = {
-  baseUrl: 'http://localhost:4321/'
-}
+window.baseURL = 'http://192.168.1.7:8080/qike-maiyuan/'

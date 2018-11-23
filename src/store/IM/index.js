@@ -1,7 +1,6 @@
-import { postMsg } from '@/assets/common/api'
+import { postMsg, login } from '@/assets/common/api'
 import utils from '@/assets/common/utils'
 import IM from '@/assets/common/IM'
-import { friendList } from '../../../data/data'
 
 const POST_MSG = 'POSTMSG' // 提交当前发送的信息
 const UPDATE_USER = 'UPDATEUSER' // 更新个人信息
@@ -30,6 +29,7 @@ const actions = {
       state.chatMessage[products.receiver].push(products)
       // 为了触发getters
       state.chatMessage = Object.assign({}, state.chatMessage)
+
       console.log(state.chatMessage, 'postMsg')
       // 将信息提交到容联云
       IM.postMsg({
@@ -63,7 +63,14 @@ const actions = {
     state.chatMessage = JSON.parse(localStorage.getItem('chatMessage'))
   },
   [UPDATE_USER] ({ commit, state }, products) {
-    commit(UPDATE_USER,products)
+    return new Promise((resolve) => {
+      login({
+        userId: products.userId
+      }).then((res) => {
+        commit(UPDATE_USER,res.data)
+        resolve(res.data)
+      })
+    })
   },
   [RECEIVE_INFORMATION] ({ commit, state }, products) {
     commit(RECEIVE_INFORMATION, products)
@@ -80,13 +87,32 @@ const mutations = {
   [POST_MSG] (state, products) {
     // 更改当前这条信息的状态(更改为发送成功)
     state.chatMessage[products.recipient] = utils.updateArray(state.chatMessage[products.recipient], products.id, {status: 2})
+
+    // 更改本地缓存中的数据
+    utils.pushLocalData('chatMessage', products.receiver, products)
+    // 修改当前用户的最新消息
+    utils.updateArray(state.friendList, products.receiver, {
+      hint: 0,
+      content: products.content,
+      status: 2,
+      time: products.time
+    })
   },
   [RECEIVE_INFORMATION] (state, products) {
     if(!state.chatMessage[products.sender]){
       state.chatMessage[products.sender] = []
+      
+      /**
+       * 这个地方需要获取用户的详细信息
+       */
+      // 更改本地缓存中的数据
+      // utils.pushLocalData('frientList', products)
     }
     // 将当前的信息存放在state内存中
     state.chatMessage[products.sender].push(products)
+
+    // 更改本地缓存中的数据
+    utils.pushLocalData('chatMessage', products.sender, products)
 
     utils.updateArray(state.friendList, products.sender, {
       content: products.content,

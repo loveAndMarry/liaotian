@@ -39,7 +39,37 @@ const utils = {
       }
       return arr.splice(arr.findIndex(el => el.accountNumber === id), 1, Object.assign(arr.find(el => el.accountNumber === id), obj))
     }
-  }
+  },
+  /**
+   * 获取url参数
+   */
+  getUrlArgObject (name) {  
+      return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
+  },
+  /**
+   * 向本地缓存中的添加数据
+   */
+  pushLocalData (name, id, obj){
+    var data = JSON.parse(localStorage.getItem(name))
+    if(typeof id === 'object'){
+      id = obj
+      // 没有容器则创建
+      if(!data) {
+        data = []
+      }
+      data.push(obj)
+    } else {
+      // 没有容器则创建
+      if(!data) {
+        data = {}
+      }
+      if(!data[id]) {
+        data[id] = []
+      }
+      data[id].push(obj)
+    }
+    localStorage.setItem(name,JSON.stringify(data))
+  } 
 }
 
 export default utils

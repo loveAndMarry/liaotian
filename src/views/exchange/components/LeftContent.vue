@@ -1,7 +1,7 @@
 <template>
     <div class="left">
         <div class="left_img">
-            <img :src="imgUrl" alt="">
+            <img :src="userHead" alt="">
         </div>
         <div class="left_content" v-html="item.content.replace(/#[\u4E00-\u9FA5]{1,3};/gi, emotion)">
         </div>
@@ -13,7 +13,7 @@ export default {
   props: ['item'],
   computed: {
     ...mapState({
-      imgUrl: state => state.IM.friend? state.IM.friend.imgUrl: 'https://avatars1.githubusercontent.com/u/6126885?s=88&v=4'
+      userHead: state => state.IM.friend? state.IM.friend.userHead: 'https://avatars1.githubusercontent.com/u/6126885?s=88&v=4'
     }),
   },
   methods: {
