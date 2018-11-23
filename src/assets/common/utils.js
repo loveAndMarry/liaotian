@@ -31,6 +31,7 @@ const utils = {
    * 更改数组中id的其中一项
    */
   updateArray (arr, id, obj) {
+    debugger
     if(typeof obj === 'object'){
       if(typeof obj['hint'] === 'boolean' && obj['hint']){
         obj.hint = arr.find(el => el.accountNumber === id).hint + 1

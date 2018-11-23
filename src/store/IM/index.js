@@ -1,4 +1,4 @@
-import { postMsg, login } from '@/assets/common/api'
+import { postMsg, login, getFriendMessage} from '@/assets/common/api'
 import utils from '@/assets/common/utils'
 import IM from '@/assets/common/IM'
 
@@ -77,6 +77,22 @@ const actions = {
     })
   },
   [RECEIVE_INFORMATION] ({ commit, state }, products) {
+    if(!state.chatMessage[products.sender]){
+      state.chatMessage[products.sender] = []
+    }
+    if(state.friendList.length === 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1){
+      // 更改本地缓存中的数据
+      getFriendMessage({
+        accountNumber: products.sender
+      }).then((res)=>{
+        console.log(res.data, "获取到详情")
+        debugger
+        utils.pushLocalData('frientList', res.data)
+        state.friendList.push(res.data)
+        commit(RECEIVE_INFORMATION, products)
+      })
+      return false
+    }
     commit(RECEIVE_INFORMATION, products)
   },
   [UPDATE_USER_LIST] ({ commit, state }, products) {
@@ -103,21 +119,12 @@ const mutations = {
     })
   },
   [RECEIVE_INFORMATION] (state, products) {
-    if(!state.chatMessage[products.sender]){
-      state.chatMessage[products.sender] = []
-      
-      /**
-       * 这个地方需要获取用户的详细信息
-       */
-      // 更改本地缓存中的数据
-      // utils.pushLocalData('frientList', products)
-    }
     // 将当前的信息存放在state内存中
     state.chatMessage[products.sender].push(products)
 
     // 更改本地缓存中的数据
     utils.pushLocalData('chatMessage', products.sender, products)
-
+    debugger
     utils.updateArray(state.friendList, products.sender, {
       content: products.content,
       hint: true, // 更新最新消息条数

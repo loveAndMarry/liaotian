@@ -10,5 +10,8 @@ export const login = data => HTTP.GET('web/selectUser/findUserInfoBasics', data)
 // 获取好友列表
 export const getFriendsList = data => HTTP.GET('getFriendsList', data)
 
-// 获取好友列表
+// 发送聊天信息
 export const postMsg = data => HTTP.GET('web/messengerAccount/sendMessage', data)
+
+// 根据容联云账号获取详细信息
+export const getFriendMessage = data => HTTP.get('web/selectUser/queryContactsUserInfo', data)
