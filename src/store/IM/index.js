@@ -38,14 +38,18 @@ const actions = {
       }).then((res) => {
         console.log('当前信息已提交至容联云')
         // 将当前数据提交到后台
-        // postMsg({
-        //   ...products
-        // }).then((res) => {
-        //   console.log('当前数据已经提交到服务器')
-        //   // 数据提交完成
-        //   commit(POST_MSG, res.data)
-        resolve(products)
-        // })
+        postMsg({
+          context:products.content,
+          sendUserId: state.user.id,
+          receiveUserId: state.friend.id,
+          chatDate: products.time,
+          type: products.msgType
+        }).then((res) => {
+          console.log('当前数据已经提交到服务器')
+          // 数据提交完成
+          commit(POST_MSG, products)
+          resolve(products)
+        })
       })
     })
   },
@@ -86,7 +90,7 @@ const actions = {
 const mutations = {
   [POST_MSG] (state, products) {
     // 更改当前这条信息的状态(更改为发送成功)
-    state.chatMessage[products.recipient] = utils.updateArray(state.chatMessage[products.recipient], products.id, {status: 2})
+    // state.chatMessage[products.receiver] = utils.updateArray(state.chatMessage[products.receiver], products.id, {status: 2})
 
     // 更改本地缓存中的数据
     utils.pushLocalData('chatMessage', products.receiver, products)

@@ -40,7 +40,8 @@ IM.prototype = {
       // var user = JSON.parse(localStorage.getItem('user'))
       // 更改state中的个人信息
       store.dispatch('UPDATEUSER', {
-        userId: utils.getUrlArgObject('userId')
+        // userId: utils.getUrlArgObject('userId')
+        userId: 123456789 
       }).then((data) => {
         this.userName = data.accountNumber
         // 登录

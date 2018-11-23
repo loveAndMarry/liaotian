@@ -11,4 +11,4 @@ export const login = data => HTTP.GET('web/selectUser/findUserInfoBasics', data)
 export const getFriendsList = data => HTTP.GET('getFriendsList', data)
 
 // 获取好友列表
-export const postMsg = data => HTTP.POST('postMsg', data)
+export const postMsg = data => HTTP.GET('web/messengerAccount/sendMessage', data)

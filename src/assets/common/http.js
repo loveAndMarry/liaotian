@@ -1,8 +1,8 @@
 import axios from 'axios'
+import router from 'vue-router'
 const HTTP = {}
 
 axios.defaults.timeout = 10000
-console.log(window.baseURL)
 axios.defaults.baseURL = window.baseURL
 axios.defaults.responseType = 'json'
 
