@@ -3,7 +3,7 @@
         <div class="left_img">
             <img :src="userHead" alt="">
         </div>
-        <div class="left_content" v-html="item.content.replace(/#[\u4E00-\u9FA5]{1,3};/gi, emotion)">
+        <div class="left_content" v-html="item.context.replace(/#[\u4E00-\u9FA5]{1,3};/gi, emotion)">
         </div>
     </div>
 </template>

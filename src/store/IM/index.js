@@ -33,13 +33,13 @@ const actions = {
       console.log(state.chatMessage, 'postMsg')
       // 将信息提交到容联云
       IM.postMsg({
-        data:products.content,
+        data:products.context,
         id: products.receiver
       }).then((res) => {
         console.log('当前信息已提交至容联云')
         // 将当前数据提交到后台
         postMsg({
-          context:products.content,
+          context:products.context,
           sendUserId: state.user.id,
           receiveUserId: state.friend.id,
           chatDate: products.time,
@@ -80,14 +80,14 @@ const actions = {
     if(!state.chatMessage[products.sender]){
       state.chatMessage[products.sender] = []
     }
-    if(state.friendList.length === 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1){
+    if(state.friendList.length === 0 || state.friendList.length > 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1){
       // 更改本地缓存中的数据
       getFriendMessage({
-        accountNumber: products.sender
+        accountNumber: products.sender,
+        userId: state.user.id
       }).then((res)=>{
         console.log(res.data, "获取到详情")
-        debugger
-        utils.pushLocalData('frientList', res.data)
+        utils.pushLocalData('friendList', res.data)
         state.friendList.push(res.data)
         commit(RECEIVE_INFORMATION, products)
       })
@@ -113,7 +113,7 @@ const mutations = {
     // 修改当前用户的最新消息
     utils.updateArray(state.friendList, products.receiver, {
       hint: 0,
-      content: products.content,
+      context: products.context,
       status: 2,
       time: products.time
     })
@@ -124,9 +124,8 @@ const mutations = {
 
     // 更改本地缓存中的数据
     utils.pushLocalData('chatMessage', products.sender, products)
-    debugger
     utils.updateArray(state.friendList, products.sender, {
-      content: products.content,
+      context: products.context,
       hint: true, // 更新最新消息条数
       status: 2,
       time: products.time

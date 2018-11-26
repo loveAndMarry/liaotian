@@ -3,7 +3,7 @@
       <div style="height: 0.7rem;line-height: 0.7rem;">
         <div class="icon yuyin" @click="voice($event)"></div>
         <div class="inputText">
-          <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg()" v-model="content">
+          <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg()" v-model="context">
           <span v-show='!isText' @touchstart="touchstart($event)" @touchend="touchend($event)">按住 说话</span>
         </div>
         <div class="icon biaoqing" @click="emotion"></div>
@@ -23,7 +23,7 @@ import Gift from './utils/gift'
 export default {
   data () {
     return {
-      content: '',
+      context: '',
       isShow: false, // 表情
       isGiftShow:false, // 礼物
       isText: true, // 默认展示输入文字
@@ -73,12 +73,12 @@ export default {
       this.$emit('editHeight', this.isGiftShow)
     },
     postMsg (i) {
-      var content = typeof i === 'undefined'? this.content: i
+      var context = typeof i === 'undefined'? this.context: i
       var that = this
       this.isShow = false
       this.$emit('editHeight', this.isShow)
       this.POSTMSG({
-        content: content,
+        context: context,
         id: new Date().getTime(),
         receiver:that.friend.accountNumber,
         sender: that.user.accountNumber,
@@ -87,7 +87,7 @@ export default {
         userHead: this.user.userHead,
         msgType: 1
       }).then((res) => {
-        that.content = ''
+        that.context = ''
         console.log('消息发送成功')
       })
     }

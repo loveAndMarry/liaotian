@@ -14,4 +14,4 @@ export const getFriendsList = data => HTTP.GET('getFriendsList', data)
 export const postMsg = data => HTTP.GET('web/messengerAccount/sendMessage', data)
 
 // 根据容联云账号获取详细信息
-export const getFriendMessage = data => HTTP.get('web/selectUser/queryContactsUserInfo', data)
+export const getFriendMessage = data => HTTP.GET('web/selectUser/queryContactsUserInfo', data)

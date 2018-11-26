@@ -11,10 +11,10 @@
             <div class="content">
               <div class="title">
                 <div class="top">
-                    <h3 v-text="el.userName"></h3>
+                    <h3 v-text="el.nickName"></h3>
                     <span class="theRealNameSystem" v-if="el.theRealNameSystem">实名</span>
                 </div>
-                <p v-text="el.content"></p>
+                <p v-text="el.context"></p>
               </div>
               <div class="info">
                 <p>{{el.time | fromNow}}</p>

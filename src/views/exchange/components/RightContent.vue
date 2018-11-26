@@ -1,6 +1,6 @@
 <template>
     <div class="right">
-        <div class="right_content" v-html="item.content.replace(/#[\u4E00-\u9FA5]{1,3};/gi, emotion)">
+        <div class="right_content" v-html="item.context.replace(/#[\u4E00-\u9FA5]{1,3};/gi, emotion)">
         </div>
          <div class="right_img">
             <img :src="userHead" alt="">

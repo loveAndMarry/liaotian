@@ -75,7 +75,7 @@ IM.prototype = {
           id: obj.msgId,
           receiver: obj.msgReceiver,
           sender: obj.msgSender,
-          content: obj.msgContent,
+          context: obj.msgContent,
           msgType: obj.msgType,
           time: parseInt(obj.msgDateCreated),
           status: 2
