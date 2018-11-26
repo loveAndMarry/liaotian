@@ -6,6 +6,10 @@ import router from './router'
 import store from './store'
 import 'vant/lib/vant-css/index.css'
 
+import { Dialog } from 'vant';
+
+Vue.use(Dialog);
+
 //引入容联云即时通讯
 import IM from '@/assets/common/IM'
 

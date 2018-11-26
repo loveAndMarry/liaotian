@@ -1,9 +1,10 @@
 <template>
     <div class="back" id="content">
-        <scroller :on-refresh="refresh" ref="scroller">
+        <scroller :on-refresh="refresh" ref="scroller" refreshText='下拉加载'>
             <div v-for="(el, index) in getChatMessage" :key="index" style="padding-top:.1rem;padding-bottom:.3rem;box-sizing: border-box;">
-              <left-content v-if="el.sender !== user.accountNumber" :item="el"></left-content>
-              <right-content v-if="el.sender === user.accountNumber" :item="el"></right-content>
+              <div v-if='el.type === "msg" ' v-text="el.context" style="color:#918d8d"></div>
+              <left-content v-else-if="el.sendUserId !== user.id" :item="el"></left-content>
+              <right-content v-else-if="el.sendUserId === user.id" :item="el"></right-content>
             </div>
         </scroller>
     </div>
@@ -13,7 +14,7 @@
 import LeftContent from './LeftContent'
 import RightContent from './RightContent'
 import utils from '@/assets/common/utils'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -45,18 +46,17 @@ export default {
     this.scrollToBottom()
   },
   methods: {
+    ...mapActions(['GET_FRIEND_MSG_LIST']),
     scrollToBottom () {
        this.$nextTick(() => {
         this.$refs.scroller.resize()
         this.$refs.scroller.scrollTo(0,this.$refs.scroller.content.clientHeight ,false)
       })
     },
-    refresh () {
-       window.setTimeout(()=>{
-        this.$refs.scroller.finishPullToRefresh(true)
-      },3000)
-      console.log(arguments,'refresh')
-      return false
+    refresh (done) {
+       this.GET_FRIEND_MSG_LIST(done).then(() => {
+         this.$refs.scroller.scrollTo(0,0 ,false)
+       })
     },
   }
 }

@@ -1,7 +1,7 @@
 <template>
 <div>
   <nav-bar
-  :title="friend.userName"
+  :title="friend.nikeName"
   left-arrow
   @click-left="onClickLeft"
   @click-right="onClickRight">

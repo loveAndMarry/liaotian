@@ -34,17 +34,13 @@ export default {
   computed: {
     item () {
       return JSON.parse(localStorage.getItem('friend'))
-    },
-    ...mapGetters([
-      'getFrientList', // 获取好友列表
-      'getChatMessage' // 获取好友消息列表
-    ]),
+    }
   },
   components: {
     Head,
     Send,
     Content
-  }
+  },
 }
 </script>
 

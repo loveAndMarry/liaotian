@@ -30,7 +30,7 @@
 
 <script>
 import { NavBar } from "vant";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 import Vue from "vue";
 import Moment from "moment";
 import utils from "@/assets/common/utils";
@@ -52,20 +52,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["UPDATEUSERLIST", "GETFRIEND"]),
-    infinite() {
-      window.setTimeout(() => {
-        this.$refs.scroller.finishInfinite(true);
-      }, 3000);
-      console.log(arguments, "infinite");
-      return false;
+    ...mapActions(["UPDATEUSERLIST", "GETFRIEND", 'GETFRIENDLIST','UPDATE_FRIEND_LIST']),
+    infinite(done) {
+      this.GETFRIENDLIST(done)
     },
-    refresh() {
-      window.setTimeout(() => {
-        this.$refs.scroller.finishPullToRefresh();
-      }, 3000);
-      console.log(arguments, "refresh");
-      return false;
+    refresh(done) {
+     this.UPDATE_FRIEND_LIST(done)
     },
     chatListClick(item) {
       this.UPDATEUSERLIST(item).then(() => {
@@ -73,6 +65,7 @@ export default {
         utils.updateArray(this.$store.state.IM.friendList, item.accountNumber, {
           hint: 0
         });
+        this.$store.state.IM.isMsg = true // 设置当前有历史消息
         this.$router.push({ path: "/exchange" });
       });
     }

@@ -1,10 +1,15 @@
-import { postMsg, login, getFriendMessage} from '@/assets/common/api'
+import { postMsg, login, getFriendMessage, messageListing, getChatRecord} from '@/assets/common/api'
 import utils from '@/assets/common/utils'
 import IM from '@/assets/common/IM'
+import { Dialog } from 'vant';
 
 const POST_MSG = 'POSTMSG' // 提交当前发送的信息
 const UPDATE_USER = 'UPDATEUSER' // 更新个人信息
 const GET_FRIEND = 'GETFRIEND' // 获取当前好友列表
+const FRIEND_SORT = 'FRIEND_SORT' // 排序当前展示好友的显示顺序
+const GET_FRIEND_LIST = 'GETFRIENDLIST' // 获取好友
+const UPDATE_FRIEND_LIST = 'UPDATE_FRIEND_LIST' // 刷新好友列表
+const GET_FRIEND_MSG_LIST = 'GET_FRIEND_MSG_LIST' // 获取好友历史信息
 const GET_CHAT_MESSAGE = 'GETCHATMESSAGE' // 获取当前储存的历史聊天信息
 const UPDATE_USER_LIST = 'UPDATEUSERLIST' // 修改当前缓存内好友信息
 const RECEIVE_INFORMATION = 'RECEIVEINFORMATION' // 接收到最新的消息
@@ -15,10 +20,10 @@ const state = {
   user: {}, // 储存当前登录人信息
   friend: {}, // 储存当前聊天好友信息
   isLogin: false, // 是否登录成功
+  isMsg: true, // 是否还有历史记录
 }
 
 const getters = {
-  getFrientList: state => state.friendList,
   getChatMessage: state => state.chatMessage[state.friend.accountNumber]
 }
 
@@ -29,8 +34,6 @@ const actions = {
       state.chatMessage[products.receiver].push(products)
       // 为了触发getters
       state.chatMessage = Object.assign({}, state.chatMessage)
-
-      console.log(state.chatMessage, 'postMsg')
       // 将信息提交到容联云
       IM.postMsg({
         data:products.context,
@@ -48,6 +51,11 @@ const actions = {
           console.log('当前数据已经提交到服务器')
           // 数据提交完成
           commit(POST_MSG, products)
+          
+          // 置顶当前好友
+          commit(FRIEND_SORT, {
+            id: products.receiver
+          })
           resolve(products)
         })
       })
@@ -76,6 +84,7 @@ const actions = {
       })
     })
   },
+
   [RECEIVE_INFORMATION] ({ commit, state }, products) {
     if(!state.chatMessage[products.sender]){
       state.chatMessage[products.sender] = []
@@ -86,19 +95,105 @@ const actions = {
         accountNumber: products.sender,
         userId: state.user.id
       }).then((res)=>{
-        console.log(res.data, "获取到详情")
+
         utils.pushLocalData('friendList', res.data)
         state.friendList.push(res.data)
+        // 将聊天信息的发送人和接受人的账号存入聊天信息
+        products = Object.assign({},products,{
+          sendUserId: res.data.id,
+          receiveUserId: state.user.id,
+        })
+
         commit(RECEIVE_INFORMATION, products)
+        // 置顶当前好友
+        commit(FRIEND_SORT, {
+          id: products.sender
+        })
       })
       return false
     }
+
+    // 如果当前好友存在，就获取当前好友的id
+    let obj = state.friendList.find(el => el.accountNumber === products.sender)
+    products = Object.assign({},products,{
+      sendUserId: obj.id,
+      receiveUserId: state.user.id,
+    })
+
     commit(RECEIVE_INFORMATION, products)
+     // 置顶当前好友
+     commit(FRIEND_SORT, {
+      id: products.sender
+    })
   },
+
   [UPDATE_USER_LIST] ({ commit, state }, products) {
     return new Promise((resolve) => {
       commit(UPDATE_USER_LIST, products)
       resolve(products)
+    })
+  },
+  // 获取好友信息
+  [GET_FRIEND_LIST] ({ commit, state }, fn) {
+    messageListing({
+      limitStart: state.friendList.length || 0,
+      pageSize: 2,
+      userId: state.user.id
+    }).then((res) => {
+      if(res.data){
+        if(res.data.length < 2){
+          fn(true)
+        }
+        state.friendList.push(...res.data)
+        fn()
+      } else {
+        fn(true)
+      }
+    })
+  },
+  [UPDATE_FRIEND_LIST] ({ commit, state }, fn) {
+    messageListing({
+      limitStart: 0,
+      pageSize: state.friendList.length,
+      userId: state.user.id
+    }).then((res) => {
+      this.friendList = res.data
+      fn()
+    })
+  },
+  // 获取好友历史信息
+  [GET_FRIEND_MSG_LIST] ({ commit, state }, fn) {
+    return new Promise((resolve) => {
+      if(state.isMsg){
+        getChatRecord({
+          limitStart: state.chatMessage[state.friend.accountNumber].length || 0,
+          pageSize: 10,
+          sendUserId: state.user.id,
+          receiveUserId: state.friend.contactUserId
+        }).then((res) => {
+          if(res.data){
+            state.chatMessage[state.friend.accountNumber].unshift(...res.data)
+             // 为了触发getters
+            state.chatMessage = Object.assign({}, state.chatMessage)
+  
+            if(res.data.length < 10){
+              state.isMsg = false
+              state.chatMessage[state.friend.accountNumber].unshift({
+                type: 'msg',
+                context: '--没有更多的历史消息了--'
+              })
+              fn(false)
+            }
+          } else {
+            state.isMsg = false
+            fn(false)
+          }
+        })
+      } else {
+        fn(true)
+      }
+
+      resolve() // 为了获取完成数据后置顶
     })
   }
 }
@@ -117,6 +212,14 @@ const mutations = {
       status: 2,
       time: products.time
     })
+
+    // 置顶当前好友
+    commit(FRIEND_SORT, {
+      id: products.sender
+    })
+
+    // 更新缓存中的数据
+    localStorage.setItem('friendList',JSON.stringify(state.friendList))
   },
   [RECEIVE_INFORMATION] (state, products) {
     // 将当前的信息存放在state内存中
@@ -124,23 +227,38 @@ const mutations = {
 
     // 更改本地缓存中的数据
     utils.pushLocalData('chatMessage', products.sender, products)
+
     utils.updateArray(state.friendList, products.sender, {
       context: products.context,
       hint: true, // 更新最新消息条数
       status: 2,
       time: products.time
     } )
+
+    // 更新缓存中的数据
+    localStorage.setItem('friendList',JSON.stringify(state.friendList))
+
     // 为了触发getters
     state.chatMessage = Object.assign({}, state.chatMessage)
   },
+  // 设置当前登录人信息
   [UPDATE_USER] (state, products) {
     state.user = Object.assign({},products)
   },
+  // 设置当前正在联系的好友信息
   [UPDATE_USER_LIST] (state, products) {
     state.friend = products;
     if(!state.chatMessage[products.accountNumber]){
       state.chatMessage[products.accountNumber] = []
     }
+  },
+  // 对好友列表进行排序  时间排序
+  [FRIEND_SORT] (state, products) {
+    let arr = state.friendList
+    let obj = arr.find(el => el.accountNumber === products.id)
+    arr.splice(arr.findIndex(el => el.accountNumber === products.id), 1)
+    arr.unshift(obj)
+    state.friendList = arr
   }
 }
 

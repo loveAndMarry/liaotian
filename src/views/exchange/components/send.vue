@@ -82,6 +82,8 @@ export default {
         id: new Date().getTime(),
         receiver:that.friend.accountNumber,
         sender: that.user.accountNumber,
+        sendUserId: that.user.id,
+        receiveUserId: that.friend.id,
         time: new Date().getTime(),
         status: 1, // 当前信息提交状态
         userHead: this.user.userHead,

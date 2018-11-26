@@ -2,7 +2,6 @@ import MD5 from 'js-md5'
 import store from '@/store'
 import utils from './utils'
 var RL_YTX = window.RL_YTX
-import { user } from '../../../data/data'
 
 function IM () {
   // 应用ID
