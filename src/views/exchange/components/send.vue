@@ -88,7 +88,7 @@ export default {
         msgType: 1
       }).then((res) => {
         that.context = ''
-        console.log('消息发送成功')
+        console.log('消息发送成功 ')
       })
     }
   },
