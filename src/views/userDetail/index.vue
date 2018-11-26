@@ -30,10 +30,32 @@
         </ul>
       </div>
     </div>
+    <Group title="个人介绍">
+      <p style="color:#858585;font-size:.19rem;line-heigin:.23rem">赶尽杀绝反过来看时间过来看时间反馈了赶紧离开结果告诉对方公司离开对方过后就开始更健康来看时间反馈了</p>
+    </Group>
+    <Group title="认证">
+      <div class="authentication">
+        <div class="real_name">
+          <div></div>
+          <p>实名认证</p>
+        </div>
+        <div class="phone">
+          <div></div>
+          <p>手机认证</p>
+        </div>
+      </div>
+    </Group>
+    <Group title="基本资料">
+      <div></div>
+    </Group>
   </div>
 </template>
 <script>
+
 import { NavBar } from 'vant'
+import Vue from 'vue';
+import Group from '@/components/Group'
+
 export default {
   data () {
     return {
@@ -58,11 +80,41 @@ export default {
     }
   },
   components: {
-    NavBar
+    NavBar,
+    Group
   }
 }
 </script>
 <style scoped>
+.authentication{
+  display: flex;
+  display: -webkit-flex;
+  justify-content:space-around;
+  -webkit-justify-content:space-around;
+  margin-top: .2rem;
+  text-align: center
+}
+.authentication .real_name div, .authentication .phone div{
+  width:.8rem;
+  height:.8rem;
+  display: inline-block;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: 100%
+}
+.authentication .real_name div{
+  background-image: url('../../assets/images/real_name@2x.png')
+}
+.authentication .phone div{
+  background-image: url('../../assets/images/phone@2x.png')
+}
+.authentication p{
+  display: block;
+  font-size: .23rem;
+  color:#858585;
+  padding-top:.1rem;
+  padding-bottom: 0
+}
 .userDetail{
   text-align: left;
 }
