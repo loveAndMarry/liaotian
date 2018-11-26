@@ -1,7 +1,7 @@
 <template>
   <div class="group">
       <div class="group_title" v-text="title"></div>
-      <div><slot></slot></div>
+      <div style="position: relative;"><slot></slot></div>
   </div>
 </template>
 

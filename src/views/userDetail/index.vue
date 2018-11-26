@@ -1,7 +1,8 @@
 <template>
   <div class="userDetail">
     <NavBar title='个人信息' @click-left="onClickLeft" left-arrow></NavBar>
-    <div class="title">
+    <div class="userDetail_content">
+       <div class="title">
       <div class="left">
         <div class="top">
           <div class="name">{{item.userName}}
@@ -46,8 +47,37 @@
       </div>
     </Group>
     <Group title="基本资料">
-      <div></div>
+      <div class="list_item" v-for="el in 10" :key='el'>
+        <div class="label">ID:</div>
+        <div class="context">复活甲安徽省</div>
+      </div>
     </Group>
+     <Group title="兴趣爱好">
+       <div class="hint_group">
+        <span class="hint rad">热爱读书</span>
+        <span class="hint">地方的</span>
+        <span class="hint rad">发的</span>
+        <span class="hint">打发放发的</span>
+        <span class="hint">电风扇</span>
+        <span class="hint rad">说的</span>
+        <span class="hint">阿道夫</span>
+        <span class="hint">阿萨</span>
+       </div>
+    </Group>
+    <Group title="高级资料">
+      <div class="list_item" v-for="el in 10" :key='el'>
+        <div class="label">ID:</div>
+        <div class="context">复活甲安徽省</div>
+      </div>
+    </Group>
+    <Group title="礼物">
+      <a href="" class="gift">赠送礼物</a>
+      <div class="default hide">
+        <p>ta未收到礼物,</p>
+        <p>成为第一个送ta礼物的人吧！</p>
+      </div>
+    </Group>
+    </div>
   </div>
 </template>
 <script>
@@ -86,6 +116,60 @@ export default {
 }
 </script>
 <style scoped>
+.default{
+  font-size: .23rem;
+  color: #939393;
+  line-height: .29rem;
+  margin-top:.25rem
+}
+.default p{
+  margin:0
+}
+.gift{
+  position: absolute;
+  top: -.6rem;
+  right: 0;
+  font-size: .23rem;
+  color:#fe5c8d
+}
+.hint_group{
+  margin-top: .2rem;
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+}
+.hint{
+  padding: .07rem .15rem;
+  text-align: center;
+  font-size: .23rem;
+  border:1px solid #d9d9d9;
+  color:#858585;
+  border-radius: .3rem;
+  margin-right: .15rem;
+  margin-bottom: .2rem
+}
+.hint.rad{
+  color: #fd7194
+}
+.userDetail_content{
+  position: relative;
+  top: 0;
+  height: calc( 100% - 46px);
+  left: 0;
+  overflow-y: scroll;
+  overflow-x: hidden
+}
+.list_item{
+  margin-top: .3rem;
+  font-size: .23rem;
+  color: #8c8c8c;
+  overflow: hidden
+}
+.list_item .label, .list_item .context{
+  width: 50%;
+  text-align: left;
+  float: left;
+}
 .authentication{
   display: flex;
   display: -webkit-flex;
