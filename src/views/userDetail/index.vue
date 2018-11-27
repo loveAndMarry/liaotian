@@ -1,7 +1,7 @@
 <template>
   <div class="userDetail">
     <NavBar title='个人信息' @click-left="onClickLeft" left-arrow></NavBar>
-    <div class="userDetail_content">
+    <div class="userDetail_content" id="userDetail_content">
        <div class="title">
       <div class="left">
         <div class="top">
@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="message">
-          <p v-text="`${item.age}岁`"></p>
+          <p v-text="`${item.Height}岁`"></p>
           <i>|</i>
           <p v-text="`${item.height}cm`"></p>
           <i>|</i>
@@ -28,6 +28,15 @@
           <li><img :src="item.portrait" alt=""></li>
           <li><img :src="item.portrait" alt=""></li>
           <li><img :src="item.portrait" alt=""></li>
+          <li><img :src="item.portrait" alt=""></li>
+          <li><img :src="item.portrait" alt=""></li>
+          <li><img :src="item.portrait" alt=""></li>
+          <li class="photograph">
+            <div>
+              <img src="../../assets/images/user_photo_upload@2x.png" alt="">
+              <p>上传图片</p>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -77,6 +86,7 @@
         <p>成为第一个送ta礼物的人吧！</p>
       </div>
     </Group>
+    <Height title='年龄' :show='true' v-model="Height"></Height>
     </div>
   </div>
 </template>
@@ -85,10 +95,12 @@
 import { NavBar } from 'vant'
 import Vue from 'vue';
 import Group from '@/components/Group'
+import Height from '@/components/options/Height'
 
 export default {
   data () {
     return {
+      Height: ["180", "-1"],
       item: {
           id:1,
           userName: '测试',
@@ -107,15 +119,54 @@ export default {
   methods: {
     onClickLeft () {
       this.$router.push({path: '/view/home'})
+    },
+    showConnection () {
+      var scrollTop = document.getElementById('userDetail_content').scrollTop || document.getElementById('userDetail_content').scrollTop
+      console.log(scrollTop)
+    }
+  },
+  mounted () {
+    document.getElementById('userDetail_content').addEventListener('scroll', this.showConnection)
+  },
+  destroyed () {
+     document.getElementById('userDetail_content').removeEventListener('scroll', this.showConnection)
+  },
+  watch: {
+    Height (val) {
+      console.log('数据发生改变了', val)
     }
   },
   components: {
     NavBar,
-    Group
+    Group,
+    Height
   }
 }
 </script>
 <style scoped>
+.photograph{
+  border: 1px dashed;
+  text-align: center;
+  position: relative;
+}
+.photograph div{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center
+}
+.img_group .photograph div img{
+  width: .5rem;
+  height: .5rem;
+  display: inline-block
+}
+.photograph div p{
+  font-size: .19rem;
+  color: #818181;
+  margin: 0;
+  white-space: nowrap;
+}
 .default{
   font-size: .23rem;
   color: #939393;
@@ -296,6 +347,7 @@ export default {
   border-radius: .1rem;
   overflow: hidden;
   margin-right: .1rem;
+  margin-bottom: .1rem;
   float: left;
 }
 .img_group li img{

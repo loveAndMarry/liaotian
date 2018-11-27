@@ -8,11 +8,17 @@
     <transition :name="transitionName1">
       <router-view class="Router1" name="content"></router-view>
     </transition>
+    <div class="loading" :style="{
+        show: this.isLoading
+      }">
+      <Loading color="white"/>
+    </div>
   </div>
 </template>
 
 <script>
-
+import { Loading } from 'vant'
+import { mapState } from 'vuex'
 export default {
   name: 'App',
   data () {
@@ -20,6 +26,11 @@ export default {
       transitionName: 'slide-left', // 默认动态路由变化为slide-right
       transitionName1: 'slide-right' // 默认动态路由变化为slide-right
     }
+  },
+  computed: {
+    ...mapState({
+      'isLoading': state => state.common.isLoading
+    })
   },
   watch: {
     $route (to, from) {
@@ -33,6 +44,9 @@ export default {
       }
       this.$router.isBack = false
     }
+  },
+  components: {
+    Loading
   }
 }
 
@@ -40,6 +54,17 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 </script>
 
 <style>
+.loading{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  display: none
+}
+.loading.show{
+  display: block
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

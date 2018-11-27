@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="item submit">
-          <span class="btn" @click="reset">取消</span>
+          <span class="btn" @click="reset">重置</span>
           <span class="btn" @click='submitData'>确定</span>
         </div>
       </div>
@@ -43,6 +43,8 @@
 import { Actionsheet, Picker, Button} from 'vant'
 import PackerList from './PackerList'
 import Vue from 'vue'
+import { basicQueryCriteria, getProvinceAndCityList} from '@/assets/common/api'
+import { mapState, mapMutations } from 'vuex';
 
 var testData = {
   address: {
@@ -275,174 +277,19 @@ export default {
         bloodType: [], // 血型
         nation: [], // 民族
         religion: [], // 宗教
-      }, 
-      defaultData: {
-        address: {
-          title: '居住地',
-          type: 2,
-          columns: [
-            {
-              values: Object.keys(testData['address'])
-            },
-            {
-              values: testData['address'][Object.keys(testData['address'])[0]]
-            }
-          ]
-        },
-        age: {
-          title: '年龄',
-          type: 2,
-          columns: [
-            {
-              values: this.ages()
-            },
-            {
-              values: this.ages()
-            }
-          ]
-        },
-        height: {
-          title: '身高',
-          type: 2,
-          columns: [
-            {
-              values: this.heights()
-            },
-            {
-              values: this.heights()
-            }
-          ]
-        },
-        maritalStatus: {
-          title: '婚姻状况',
-          type: 1,
-          radio:false,
-          columns: testData['maritalStatus']
-        },
-        education: {
-          title: '学历',
-          type: 2,
-          columns: [
-            {
-              values: this.unshiftArr(this.maps(testData['education']))
-            },
-            {
-              values: this.unshiftArr(this.maps(testData['education']))
-            }
-          ]
-        },
-        income: {
-          title: '月收入',
-          type: 2,
-          columns: [
-            {
-              values: this.unshiftArr(this.maps(testData['income']))
-            },
-            {
-              values: this.unshiftArr(this.maps(testData['income']))
-            }
-          ]
-        },
-        loveType: {
-          title: '恋爱类型',
-          type: 1,
-          radio:false,
-          columns: this.unshiftArr(testData['loveType'])
-        },
-        housePurchase: {
-          title: '购房情况',
-          type: 1,
-          radio:true,
-          columns: this.unshiftArr(testData['housePurchase'])
-        },
-        car: {
-          title: '购车情况',
-          type: 1,
-          radio:true,
-          columns: this.unshiftArr(testData['car'])
-        },
-        registeredPermanentResidence: {
-          title: '户口',
-          type: 1,
-          radio:true,
-          columns: this.unshiftArr(testData['registeredPermanentResidence'])
-        },
-        hometown: {
-          title: '家乡',
-          type: 2,
-          columns: [
-            {
-              values: Object.keys(testData['hometown'])
-            },
-            {
-              values: testData['hometown'][Object.keys(testData['hometown'])[0]]
-            }
-          ]
-        },
-        children: {
-          title: '有无子女',
-          type: 1,
-          radio:true,
-          columns: this.unshiftArr(testData['children'])
-        },
-        constellation: {
-          title: '星座',
-          type: 1,
-          radio:false,
-          columns: this.unshiftArr(testData['constellation'])
-        },
-        theRealNameSystem: {
-          title: '是否实名',
-          type: 1,
-          radio:true,
-          columns: this.unshiftArr(testData['theRealNameSystem'])
-        },
-        picture: {
-          title: '是否有照片',
-          type: 1,
-          radio:true,
-          columns: this.unshiftArr(testData['picture'])
-        },
-        member: {
-          title: '是否会员',
-          type: 1,
-          radio:true,
-          columns: this.unshiftArr(testData['member'])
-        },
-        onLine: {
-          title: '是否在线',
-          type: 1,
-          radio:true,
-          columns: this.unshiftArr(testData['onLine'])
-        },
-        profession: {
-          title: '职业',
-          type: 1,
-          radio:true,
-          columns: this.unshiftArr(testData['profession'])
-        },
-        bloodType: {
-          title: '血型',
-          type: 1,
-          radio:false,
-          columns: this.unshiftArr(testData['bloodType'])
-        },
-        nation: {
-          title: '民族',
-          type: 1,
-          radio:false,
-          columns: this.unshiftArr(testData['nation'])
-        },
-        religion: {
-          title: '宗教',
-          type: 1,
-          radio:false,
-          columns: this.unshiftArr(testData['religion'])
-        },
-      } // 储存选项初始数据
+      },
+      basicQueryCriteria: [],
+      defaultData: {}
     }
   },
   methods: {
+    ...mapMutations([
+      'showLoading',
+      'hideLoading'
+    ]),
+    getAddress (id) {
+      
+    },
     reset () {
       this.fromData = {
         type: 1,
@@ -481,6 +328,10 @@ export default {
       }
       this.$emit('updateVal', this.fromData)
     },
+    // 获取数组内的对象
+    findObj (arr, name, value) {
+      return arr.find(el => el[name] === value)
+    },
     submitData () {
       this.$emit('search')
     },
@@ -495,14 +346,20 @@ export default {
     },
     // 年龄
     ages (num) {
-      num = num || 18
-      var arr = Array.from({length: 80 - num}, (v, k) => num ? k + num + '岁' : k + 19 + '岁');
+      let obj = this.findObj(this.basicQueryCriteria, 'criteriaName', 'age')
+      let min = parseInt(this.findObj(obj.criteriaVoList, 'value', '1').label)
+      let max = parseInt(this.findObj(obj.criteriaVoList, 'value', '2').label)
+      num = num || min
+      var arr = Array.from({length: max - num}, (v, k) => num ? k + num + '岁' : k + (min + 1) + '岁');
       return this.unshiftArr(arr)
     },
     // 身高
     heights (num) {
-       num = num || 145
-      var arr = Array.from({length: 210 - num}, (v, k) => num ? k + num + 'cm' : k + 145 + 'cm');
+      let obj = this.findObj(this.basicQueryCriteria, 'criteriaName', 'height')
+      let min = parseInt(this.findObj(obj.criteriaVoList, 'value', '1').label)
+       let max = parseInt(this.findObj(obj.criteriaVoList, 'value', '2').label)
+      num = num || min
+      var arr = Array.from({length: max - num}, (v, k) => num ? k + num + 'cm' : k + (min + 1) + 'cm');
       return this.unshiftArr(arr)
     },
     onChange (picker, values) {
@@ -599,6 +456,73 @@ export default {
       }
     }
   },
+  created () {
+    var that = this
+    // this.showLoading()
+    basicQueryCriteria({}).then((res) => {
+      // this.hideLoading()
+      console.log(res.data)
+      this.basicQueryCriteria = res.data
+      this.defaultData = Object.assign(this.defaultData,{
+        age: {
+          title: '年龄',
+          type: 2,
+          columns: [
+            {
+              values: this.ages()
+            },
+            {
+              values: this.ages()
+            }
+          ]
+        },
+        height: {
+          title: '身高',
+          type: 2,
+          columns: [
+            {
+              values: this.heights()
+            },
+            {
+              values: this.heights()
+            }
+          ]
+        },
+        maritalStatus: {
+          title: '婚姻状况',
+          type: 1,
+          radio:false,
+          columns: this.maps(this.findObj(this.basicQueryCriteria,'criteriaName', 'maritalStatus').criteriaVoList)
+        },
+        education: {
+          title: '学历',
+          type: 2,
+          columns: [
+            {
+              values: this.unshiftArr(this.maps(testData['education']))
+            },
+            {
+              values: this.unshiftArr(this.maps(testData['education']))
+            }
+          ]
+        },
+        income: {
+          title: '月收入',
+          type: 2,
+          columns: [
+            {
+              values: this.unshiftArr(this.maps(testData['income']))
+            },
+            {
+              values: this.unshiftArr(this.maps(testData['income']))
+            }
+          ]
+        }
+      }) // 储存选项初始数据
+
+      console.log(this.defaultData, ' 修改完成的数据')
+    })
+  },
   computed: {
     columns () {
       if(!this.valueName || this.valueName === 'type'){return false}
@@ -622,6 +546,172 @@ export default {
     PackerList
   }
 }
+
+getProvinceAndCityList({})
+// {
+//         address: {
+//           title: '居住地',
+//           type: 2,
+//           columns: [
+//             {
+//               values: Object.keys(testData['address'])
+//             },
+//             {
+//               values: testData['address'][Object.keys(testData['address'])[0]]
+//             }
+//           ]
+//         },
+//         age: {
+//           title: '年龄',
+//           type: 2,
+//           columns: [
+//             {
+//               values: this.ages()
+//             },
+//             {
+//               values: this.ages()
+//             }
+//           ]
+//         },
+//         height: {
+//           title: '身高',
+//           type: 2,
+//           columns: [
+//             {
+//               values: this.heights()
+//             },
+//             {
+//               values: this.heights()
+//             }
+//           ]
+//         },
+//         maritalStatus: {
+//           title: '婚姻状况',
+//           type: 1,
+//           radio:false,
+//           columns: testData['maritalStatus']
+//         },
+//         education: {
+//           title: '学历',
+//           type: 2,
+//           columns: [
+//             {
+//               values: this.unshiftArr(this.maps(testData['education']))
+//             },
+//             {
+//               values: this.unshiftArr(this.maps(testData['education']))
+//             }
+//           ]
+//         },
+//         income: {
+//           title: '月收入',
+//           type: 2,
+//           columns: [
+//             {
+//               values: this.unshiftArr(this.maps(testData['income']))
+//             },
+//             {
+//               values: this.unshiftArr(this.maps(testData['income']))
+//             }
+//           ]
+//         },
+//         loveType: {
+//           title: '恋爱类型',
+//           type: 1,
+//           radio:false,
+//           columns: this.unshiftArr(testData['loveType'])
+//         },
+//         housePurchase: {
+//           title: '购房情况',
+//           type: 1,
+//           radio:true,
+//           columns: this.unshiftArr(testData['housePurchase'])
+//         },
+//         car: {
+//           title: '购车情况',
+//           type: 1,
+//           radio:true,
+//           columns: this.unshiftArr(testData['car'])
+//         },
+//         registeredPermanentResidence: {
+//           title: '户口',
+//           type: 1,
+//           radio:true,
+//           columns: this.unshiftArr(testData['registeredPermanentResidence'])
+//         },
+//         hometown: {
+//           title: '家乡',
+//           type: 2,
+//           columns: [
+//             {
+//               values: Object.keys(testData['hometown'])
+//             },
+//             {
+//               values: testData['hometown'][Object.keys(testData['hometown'])[0]]
+//             }
+//           ]
+//         },
+//         children: {
+//           title: '有无子女',
+//           type: 1,
+//           radio:true,
+//           columns: this.unshiftArr(testData['children'])
+//         },
+//         constellation: {
+//           title: '星座',
+//           type: 1,
+//           radio:false,
+//           columns: this.unshiftArr(testData['constellation'])
+//         },
+//         theRealNameSystem: {
+//           title: '是否实名',
+//           type: 1,
+//           radio:true,
+//           columns: this.unshiftArr(testData['theRealNameSystem'])
+//         },
+//         picture: {
+//           title: '是否有照片',
+//           type: 1,
+//           radio:true,
+//           columns: this.unshiftArr(testData['picture'])
+//         },
+//         member: {
+//           title: '是否会员',
+//           type: 1,
+//           radio:true,
+//           columns: this.unshiftArr(testData['member'])
+//         },
+//         onLine: {
+//           title: '是否在线',
+//           type: 1,
+//           radio:true,
+//           columns: this.unshiftArr(testData['onLine'])
+//         },
+//         profession: {
+//           title: '职业',
+//           type: 1,
+//           radio:true,
+//           columns: this.unshiftArr(testData['profession'])
+//         },
+//         bloodType: {
+//           title: '血型',
+//           type: 1,
+//           radio:false,
+//           columns: this.unshiftArr(testData['bloodType'])
+//         },
+//         nation: {
+//           title: '民族',
+//           type: 1,
+//           radio:false,
+//           columns: this.unshiftArr(testData['nation'])
+//         },
+//         religion: {
+//           title: '宗教',
+//           type: 1,
+//           radio:false,
+//           columns: this.unshiftArr(testData['religion'])
+//         },
+//       } // 储存选项初始数据
 </script>
 <style>
 .van-actionsheet__header{

@@ -68,3 +68,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.van-tabbar-item--active{
+  color: #fe5c8d
+}
+</style>
+
