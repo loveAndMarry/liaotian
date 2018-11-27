@@ -31,11 +31,12 @@ export default {
     return {
       columns: [],
       defaultColumns: [],
-      isLoading: true
+      isLoading: true,
+      defaultValue: []
     }
   },
   mounted () {
-     if(localStorage.getItem('maritalStatus')){
+    if(localStorage.getItem('maritalStatus')){
       this.defaultColumns = JSON.parse(localStorage.getItem('maritalStatus'))
       this.showData()
     } else {
