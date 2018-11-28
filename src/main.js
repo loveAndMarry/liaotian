@@ -7,7 +7,6 @@ import store from './store'
 // import 'vant/lib/vant-css/index.css'
 
 import { Dialog } from 'vant';
-
 Vue.use(Dialog);
 
 //引入容联云即时通讯
@@ -26,7 +25,9 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: { 
+    App
+  },
   template: '<App/>',
   created () {
     // 触发获取当前本地好友列表

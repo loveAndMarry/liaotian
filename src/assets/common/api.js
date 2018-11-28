@@ -31,6 +31,9 @@ export const basicQueryCriteria = (data) => HTTP.GET('web/queryCriteria/basicQue
 // 获取高级筛选条件字典
 export const advancedQueryCriteria = data => HTTP.GET('web/queryCriteria/advancedQueryCriteria',data)
 
+// 获取用户列表  （筛选）
+export const listUser = data => HTTP.GET('web/selectUser/listUser',data)
+
 /**
  * 字典接口
  */

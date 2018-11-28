@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Actionsheet v-model="show">
     <div class="van-hairline--top-bottom van-picker__toolbar">
       <div class="van-picker__cancel" @click="cancel">取消</div>
       <div class="van-ellipsis van-picker__title" v-text="title"></div>
@@ -20,16 +20,21 @@
         </CellGroup>
       </CheckboxGroup>
     </div>
-  </div>
+  </Actionsheet>
 </template>
 <script>
-import {Cell, CellGroup, Checkbox, CheckboxGroup} from 'vant'
+import {Cell, CellGroup, Checkbox, CheckboxGroup, Actionsheet} from 'vant'
+import { dictionaryQuery } from '@/assets/common/api'
 export default {
   props: {
-    value: {
-      type: Array
+    name: {
+      type: String
     },
-    columns: {
+    value: {
+      default:false,
+      type:Boolean
+    },
+    data: {
       type: Array
     },
     title: '',
@@ -37,27 +42,51 @@ export default {
   },
   data () {
     return {
-      result: []
+      result: [],
+      isLoading: true,
+      columns:[],
+      show: false
     }
   },
   mounted () {
-    if (this.value.length > 0) {
-      this.result = this.value
+    this.show = this.value
+
+    if(localStorage.getItem(this.name)){
+      this.columns = JSON.parse(localStorage.getItem(this.name))
+      this.showData()
+    } else {
+      dictionaryQuery({type: this.name }).then((res) => {
+        if(res.data){
+           this.columns = res.data
+          localStorage.setItem(this.name, JSON.stringify(this.columns))
+          this.showData()
+        }
+      })
     }
   },
   methods: {
+    showData () {
+      console.log(this.value, '默认显示')
+    },
     toggle (index) {
       this.$refs.checkboxes[index].toggle()
     },
     confirm () {
-      this.$emit('confirm', this.result)
+      this.$emit('confirm', this.name, this.result.map(el => this.columns.find(item => item.label === el)))
+      this.$emit('input', false)
     },
     cancel () {
-      this.result = this.value
-      this.$emit('cancel')
+      this.result = this.data
+      this.show = false
     }
   },
   watch: {
+    show (val) {
+      this.$emit('input', val)
+    },
+    value (val) {
+      this.show = val
+    },
     result (val, pastVal) {
       // 多选
       if (!this.radio) {
@@ -76,13 +105,23 @@ export default {
         }
       }
       // this.$emit('input', this.result)
+    },
+    columns (value) {
+      if (this.data.length > 0) {
+        if(this.radio){
+          this.result = [this.columns.find(el => el.value === this.data[0]).label]
+        } else {
+          this.result = this.data.map(el => this.columns.find(item => item.value === el).label)
+        }
+      }
     }
   },
   components: {
     Cell,
     CellGroup,
     Checkbox,
-    CheckboxGroup
+    CheckboxGroup,
+    Actionsheet
   }
 }
 </script>

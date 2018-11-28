@@ -1,8 +1,9 @@
 <template>
   <div class="content">
-    <Search placeholder="按照条件搜索 例如 女 济南 22" v-model="value" showAction=''>
+    <!-- <Search placeholder="按照条件搜索 例如 女 济南 22" v-model="value" show-action>
+       <div slot="action" @click="search">搜索</div>
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
-    </Search>
+    </Search> -->
     <Tabs @updateVal="updateVal" @search="search"/>
     <div style="margin-top: .2rem;height:calc(100% - .2rem);position: relative">
       <HomeList :columns='columns'></HomeList>
@@ -14,6 +15,7 @@
 import { Search } from 'vant'
 import Tabs from './components/tabs'
 import HomeList from './components/HomeList'
+import { listUser } from '@/assets/common/api'
 
 export default {
   data () {
@@ -77,19 +79,19 @@ export default {
     }
   },
   methods: {
-    onSearch () {
-      console.log('dianji')
+    transitionObj (obj) {
+      var obj = Object.assign({}, this.fromData)
+      for ( var i in obj){
+        obj[i] = obj[i].length > 0 ? obj[i].join(','):'' 
+      }
+      return obj
     },
     updateVal (val) {
-      this.fromData = Object.assign({}, this.fromData, val)
+      this.fromData = this.transitionObj(Object.assign({}, this.fromData, val))
     },
     search () {
-
-    }
-  },
-  watch: {
-    fromData (val) {
-      console.log(val)
+      console.log(this.fromData)
+      listUser(obj)
     }
   },
   components: {

@@ -1,6 +1,6 @@
 <template>
-  <Actionsheet v-model="show"> 
-      <Picker :columns="columns" @change="onChange" show-toolbar  @cancel="show = false" @confirm="onConfirm" :title='title' :loading='isLoading' ref="picker"/>
+  <Actionsheet v-model="isshow"> 
+      <Picker :columns="columns" @change="onChange" show-toolbar  @cancel="isshow = false" @confirm="onConfirm" :title='title' :loading='isLoading' ref="picker"/>
   </Actionsheet>
 </template>
 <script>
@@ -9,7 +9,7 @@ import { getProvinceAndCityList } from '@/assets/common/api'
 
 export default {
   props:{
-    show: {
+    value: {
       default: false,
       type: Boolean
     },
@@ -17,27 +17,40 @@ export default {
       default: '',
       type: String
     },
-    value: {
+    data: {
       type: Array
-    }
+    },
+    name: String
   },
   data () {
     return {
       columns: [],
       defaultColumns: [],
-      isLoading: true
+      isLoading: true,
+      isshow: false
     }
   },
   mounted () {
+    this.isshow = this.value
     if(localStorage.getItem('address')){
       this.defaultColumns = JSON.parse(localStorage.getItem('address'))
       this.showData()
     } else {
     getProvinceAndCityList({}).then((res) => {
-      this.defaultColumns = res.data
-      localStorage.setItem('address', this.defaultColumns)
-      this.showData()
+      if(res.data) {
+        this.defaultColumns = res.data
+        localStorage.setItem('address', JSON.stringify(this.defaultColumns))
+        this.showData()
+      }
     })
+    }
+  },
+  watch: {
+    isshow (val) {
+      this.$emit('input', val)
+    },
+    value (val) {
+      this.isshow = val
     }
   },
   methods: {
@@ -54,12 +67,12 @@ export default {
         }
       ]
       this.$nextTick(() => {
-        if(this.value.length > 0){
-          let obj = this.defaultColumns.find(el => el.code === this.value[0])
-          let index = this.defaultColumns.findIndex(el => el.code === this.value[0])
+        if(this.data.length > 0){
+          let obj = this.defaultColumns.find(el => el.code === this.data[0])
+          let index = this.defaultColumns.findIndex(el => el.code === this.data[0])
           this.$refs.picker.setColumnIndex(0, index)
           this.$refs.picker.setColumnValues(1,obj.areaVoList.map(el => el.name))
-          this.$refs.picker.setColumnIndex(1, obj.areaVoList.findIndex(el => el.code === this.value[1]))
+          this.$refs.picker.setColumnIndex(1, obj.areaVoList.findIndex(el => el.code === this.data[1]))
         }
       })
       this.isLoading = false
@@ -69,9 +82,9 @@ export default {
     },
     onConfirm (values) {
       let obj = this.getProvince(values[0])
-      let province = obj.code
-      let city = obj.areaVoList.find(el => el.name === values[1]).code
-      this.$emit('input', [province, city])
+      let province = obj
+      let city = obj.areaVoList.find(el => el.name === values[1])
+      this.$emit('confirm', this.name ,[province, city])
     }
   },
   components: {

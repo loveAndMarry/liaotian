@@ -9,7 +9,7 @@ import { dictionaryQuery } from '@/assets/common/api'
 
 export default {
   props:{
-    show: {
+    value: {
       default: false,
       type: Boolean
     },
@@ -17,7 +17,7 @@ export default {
       default: '',
       type: String
     },
-    value: {
+    data: {
       type: Array
     }
   },
@@ -25,7 +25,8 @@ export default {
     return {
       columns: [],
       defaultColumns: [],
-      isLoading: true
+      isLoading: true,
+      show: false
     }
   },
   mounted () {
@@ -34,13 +35,23 @@ export default {
       this.showData()
     } else {
     dictionaryQuery({type: 'height' }).then((res) => {
-      let min = parseInt(res.data.find(el => el.value === '1').label)
-      let max = parseInt(res.data.find(el => el.value === '2').label) + 1
-      var arr = Array.from({length: max - min}, (v, k) => k + min + 'cm')
-      this.defaultColumns = arr
-      localStorage.setItem('height', JSON.stringify(this.defaultColumns))
-      this.showData()
+      if(res.data){
+        let min = parseInt(res.data.find(el => el.value === '1').label)
+        let max = parseInt(res.data.find(el => el.value === '2').label) + 1
+        var arr = Array.from({length: max - min}, (v, k) => k + min + 'cm')
+        this.defaultColumns = arr
+        localStorage.setItem('height', JSON.stringify(this.defaultColumns))
+        this.showData()
+      }
     })
+    }
+  },
+  watch: {
+    show (val) {
+      this.$emit('input', val)
+    },
+    value (val) {
+      this.show = val
     }
   },
   methods: {
@@ -60,23 +71,22 @@ export default {
         }
       ]
       this.$nextTick(() => {
-        if(this.value.length > 0){
-          this.$refs.picker.setColumnIndex(0,  this.value[0] === '-1' ? 0 : this.defaultColumns.findIndex(el => el === (parseInt(this.value[0]) + 1) + 'cm'))
-          var valuesTwo = this.unshiftArr(this.ages(this.value[1] === '-1'? this.value[0] === '-1' ? 0 : this.value[0]: this.value[1]))
+        if(this.data.length > 0){
+          this.$refs.picker.setColumnIndex(0,  this.data[0] === '-1' ? 0 : this.defaultColumns.findIndex(el => el === (parseInt(this.data[0]) + 1) + 'cm'))
+          var valuesTwo = this.unshiftArr(this.ages(this.data[1] === '-1'? this.data[0] === '-1' ? 0 : this.data[0]: this.data[1]))
           this.$refs.picker.setColumnValues(1, valuesTwo)
-          this.$refs.picker.setColumnIndex(1,  this.value[0] === '-1' ? 0 : valuesTwo.findIndex(el => el === this.value[1] + 'cm'))
+          this.$refs.picker.setColumnIndex(1,  this.data[0] === '-1' ? 0 : valuesTwo.findIndex(el => el === this.data[1] + 'cm'))
         }
       })
       this.isLoading = false
     },
     onChange (picker, values) {
-      picker.setColumnValues(1,this.unshiftArr(this.ages(values[0])))
+      picker.setColumnValues(1,values[0] === '不限'?  this.unshiftArr(this.defaultColumns) : this.unshiftArr(this.ages(values[0])))
     },
     onConfirm (values) {
       let min = values[0].replace('cm', '').replace('不限', '-1')
       let max = values[1].replace('cm', '').replace('不限', '-1')
-      this.$emit('input', [min, max])
-      this.$emit('confirm',[min, max])
+      this.$emit('confirm','height',[min, max])
     }
   },
   components: {

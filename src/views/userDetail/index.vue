@@ -86,7 +86,7 @@
         <p>成为第一个送ta礼物的人吧！</p>
       </div>
     </Group>
-    <Height title='年龄' :show='true' v-model="Height"></Height>
+    <MaritalStatus title='年龄' :show='true' v-model="MaritalStatus" name='maritalStatus'></MaritalStatus>
     </div>
   </div>
 </template>
@@ -95,12 +95,12 @@
 import { NavBar } from 'vant'
 import Vue from 'vue';
 import Group from '@/components/Group'
-import Height from '@/components/options/Height'
+import MaritalStatus from '@/components/options/Address'
 
 export default {
   data () {
     return {
-      Height: ["180", "-1"],
+      MaritalStatus: ["2" , '-1'],
       item: {
           id:1,
           userName: '测试',
@@ -132,14 +132,14 @@ export default {
      document.getElementById('userDetail_content').removeEventListener('scroll', this.showConnection)
   },
   watch: {
-    Height (val) {
-      console.log('数据发生改变了', val)
+    MaritalStatus (val) {
+      console.log('数据发生改变了123', val)
     }
   },
   components: {
     NavBar,
     Group,
-    Height
+    MaritalStatus
   }
 }
 </script>

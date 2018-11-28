@@ -30,205 +30,59 @@
         </div>
       </div>
     </div>
-    <Actionsheet v-model="show"> 
-      <Picker :columns="columns" @change="onChange" show-toolbar  @cancel="show = false" @confirm="onConfirm" :title='title'/>
-    </Actionsheet>
-    <Actionsheet v-model="listShow"> 
-      <PackerList :columns="columns" v-model="defaultValue" @confirm="confirm" @cancel='listShow = false' :title="title" :radio='radio'/>
-    </Actionsheet>
+    <Address title="居住地" :data='fromData.address' v-model="flag.addressShow" @confirm="confirmCallback" name='address'></Address>
+
+    <Address title="户口" :data='fromData.registeredPermanentResidence' v-model="flag.registeredPermanentResidenceShow" @confirm="confirmCallback" name='registeredPermanentResidence'></Address>
+    
+    <Address title="家乡" :data='fromData.hometown' v-model="flag.hometownShow" @confirm="confirmCallback" name='hometown'></Address>
+
+    <Age title="年龄" :data='fromData.age' v-model="flag.ageShow" @confirm="confirmCallback"></Age>
+
+    <Height title="身高" :data='fromData.height' v-model="flag.heightShow" @confirm="confirmCallback"></Height>
+
+    <Education title="学历" :data='fromData.education' v-model="flag.educationShow" @confirm="confirmCallback"></Education>
+
+    <Income title="月收入" :data='fromData.income' v-model="flag.incomeShow" @confirm="confirmCallback"></Income>
+
+    <PackerList title="婚姻状况" :data='fromData.maritalStatus' :radio='true' v-model="flag.maritalStatusShow" name="maritalStatus"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="购房情况" :data='fromData.housePurchase' :radio='true' v-model="flag.housePurchaseShow" name="housePurchase"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="购车情况" :data='fromData.car' :radio='true' v-model="flag.carShow" name="car"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="有无子女" :data='fromData.children' :radio='true' v-model="flag.childrenShow" name="children"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="星座" :data='fromData.constellation' :radio='false' v-model="flag.constellationShow" name="constellation"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="是否实名" :data='fromData.theRealNameSystem' :radio='true' v-model="flag.theRealNameSystemShow" name="theRealNameSystem"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="是否有照片" :data='fromData.picture' :radio='true' v-model="flag.pictureShow" name="picture"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="是否是会员" :data='fromData.member' :radio='true' v-model="flag.memberShow" name="member"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="是否在线" :data='fromData.onLine' :radio='true' v-model="flag.onLineShow" name="onLine"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="职业" :data='fromData.profession' :radio='false' v-model="flag.professionShow" name="profession"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="血型" :data='fromData.bloodType' :radio='true' v-model="flag.bloodTypeShow" name="bloodType"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="民族" :data='fromData.nation' :radio='false' v-model="flag.nationShow" name="nation"  @confirm="confirmCallback"></PackerList>
+
+    <PackerList title="宗教" :data='fromData.religion' :radio='true' v-model="flag.religionShow" name="religion"  @confirm="confirmCallback"></PackerList>
   </div>
 </template>
 
 <script>
-import { Actionsheet, Picker, Button} from 'vant'
-import PackerList from './PackerList'
+import { Button} from 'vant'
 import Vue from 'vue'
 import { basicQueryCriteria, getProvinceAndCityList} from '@/assets/common/api'
 import { mapState, mapMutations } from 'vuex';
-
-var testData = {
-  address: {
-  '浙江': ['杭州', '宁波', '温州', '嘉兴', '湖州'],
-  '福建': ['福州', '厦门', '莆田', '三明', '泉州']
-  },
-  maritalStatus: [{
-    label: '未婚',
-    value: 1
-  }, {
-    label: '离异',
-    value: 2
-  }],
-  education: [{
-    label: '高中',
-    value: 1
-  },{
-    label: '大专',
-    value: 2
-  },{
-    label: '本科',
-    value: 3
-  },{
-    label: '博士',
-    value: 4
-  }],
-  income: [{
-    label: '2000',
-    value: 1
-  },{
-    label: '5000',
-    value: 2
-  },{
-    label: '10000',
-    value: 3
-  },{
-    label: '20000',
-    value: 4
-  }],
-  loveType: [
-    {
-    label: '哲学家型',
-    value: 1
-  },{
-    label: '作家型',
-    value: 2
-  },{
-    label: '学者型',
-    value: 3
-  },{
-    label: '专家型',
-    value: 4
-  }
-  ],
-  housePurchase: [
-    {
-    label: '租房',
-    value: 1
-  },{
-    label: '有房',
-    value: 2
-  },{
-    label: '两套房',
-    value: 3
-  },{
-    label: '和家人同住',
-    value: 4
-  }
-  ],
-  car: [
-    {
-    label: '全款',
-    value: 1
-  },{
-    label: '分期',
-    value: 2
-  },{
-    label: '无',
-    value: 3
-  }
-  ],
-  registeredPermanentResidence: [
-    {
-    label: '城市',
-    value: 1
-  },{
-    label: '农村',
-    value: 2
-  },
-  ],
-  hometown:{
-  '浙江': ['杭州', '宁波', '温州', '嘉兴', '湖州'],
-  '福建': ['福州', '厦门', '莆田', '三明', '泉州']
-  },
-  children: [
-    {
-    label: '有',
-    value: 1
-  },{
-    label: '无',
-    value: 2
-  },
-  ],
-  constellation: [
-    {
-    label: '天秤座',
-    value: 1
-  },{
-    label: '天蝎座',
-    value: 2
-  },{
-    label: '水瓶座',
-    value: 3
-  }
-  ],
-  theRealNameSystem: [
-    {
-    label: '实名',
-    value: 1
-  },{
-    label: '未实名',
-    value: 2
-  }
-  ],
-  picture: [
-    {
-    label: '有照片',
-    value: 1
-  },{
-    label: '无照片',
-    value: 2
-  }
-  ],
-  member: [
-    {
-    label: '是会员',
-    value: 1
-  },{
-    label: '不是会员',
-    value: 2
-  }
-  ],
-  onLine: [
-    {
-    label: '在线',
-    value: 1
-  },{
-    label: '不在线',
-    value: 2
-  }
-  ],profession: [
-    {
-    label: 'IT',
-    value: 1
-  },{
-    label: '司机',
-    value: 2
-  }
-  ],bloodType: [
-    {
-    label: 'O型',
-    value: 1
-  },{
-    label: 'AB型',
-    value: 2
-  }
-  ],nation: [
-    {
-    label: '汉族',
-    value: 1
-  },{
-    label: '维吾尔族',
-    value: 2
-  }
-  ],religion: [
-    {
-    label: '佛教',
-    value: 1
-  },{
-    label: '伊斯兰教',
-    value: 2
-  }
-  ],
-}
+import Address from '@/components/options/Address.vue'
+import Age from '@/components/options/Age.vue'
+import Education from '@/components/options/Education.vue'
+import Height from '@/components/options/Height.vue'
+import Income from '@/components/options/Income.vue'
+import PackerList from '@/components/options/PackerList.vue'
 
 export default {
   props:{
@@ -238,18 +92,13 @@ export default {
     return {
       isShow: -1, // 当前要显示的tabs页
       isContentType: false, // 筛选框是否显示
-      show: false, // 选择器是否显示
-      listShow: false, // 列表选择器是否显示
-      radio: false, // 是否单选  默认多选
       valueName: '', // 储存当前选择的筛选条件标识，用来更新选择器内的内容
-      columnType: 0, // 当前选择器的类型，是列表选择还是滑动选择
-      title: '',
       event:null, // 储存当前点击的行，用来更改当前选择完成的内容返现
       tabs: ['智能排序', '基本筛选', '高级筛选'], // tabs内容
       IntelligentSorting: ['智能排序', '最新加入', '收入排序', '最新推荐'], // 智能排序
       IntelligentSortingShow: 0, // 智能排序默认显示的内容
-      BasicScreening: ['居住地', '年龄', '身高', '婚姻状况', '学历', '月收入', '恋爱类型'], // 基本筛选
-      BasicScreeningValue: ['address', 'age', 'height', 'maritalStatus', 'education', 'income', 'loveType'], // 基本筛选对应名称
+      BasicScreening: ['居住地', '年龄', '身高', '婚姻状况', '学历', '月收入'], // 基本筛选
+      BasicScreeningValue: ['address', 'age', 'height', 'maritalStatus', 'education', 'income'], // 基本筛选对应名称
       advancedFilter: ['购房情况', '购车情况', '户口', '家乡', '有无子女', '星座', '是否实名', '是否有照片', '是否是会员', '是否在线', '职业', '血型', '民族', '宗教信仰'], // 高级筛选
       advancedFilterValue: ['housePurchase', 'car', 'registeredPermanentResidence', 'hometown', 'children', 'constellation', 'theRealNameSystem', 'picture', 'member', 'onLine', 'profession', 'bloodType', 'nation', 'religion'], // 高级筛选对应名称
       fromData: {
@@ -261,7 +110,6 @@ export default {
         maritalStatus: [], // 婚姻状况
         education: [], // 学历（区间）
         income: [], // 收入（区间）
-        loveType: [], // 恋爱类型
         // 高级筛选
         housePurchase: [], // 是否购房
         car: [], // 购车情况
@@ -278,6 +126,29 @@ export default {
         nation: [], // 民族
         religion: [], // 宗教
       },
+      flag: {
+        addressShow: false, // 居住地
+        ageShow: false, // 年龄（区间）
+        heightShow: false, // 身高（区间）
+        maritalStatusShow: false, // 婚姻状况
+        educationShow: false, // 学历（区间）
+        incomeShow: false, // 收入（区间）
+        // 高级筛选
+        housePurchaseShow: false, // 是否购房
+        carShow: false, // 购车情况
+        registeredPermanentResidenceShow: false, // 户口
+        hometownShow: false, // 家乡(地址)
+        childrenShow: false, // 子女
+        constellationShow: false, // 星座
+        theRealNameSystemShow:false, // 实名
+        pictureShow: false, // 是否有照片
+        memberShow: false, // 是否会员
+        onLineShow: false, // 是否在线
+        professionShow: false, // 职业
+        bloodTypeShow: false, // 血型
+        nationShow: false, // 民族
+        religionShow: false, // 宗教
+      },
       basicQueryCriteria: [],
       defaultData: {}
     }
@@ -287,8 +158,26 @@ export default {
       'showLoading',
       'hideLoading'
     ]),
-    getAddress (id) {
-      
+    confirmCallback (name, value) {
+      value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
+      let str = ''
+      this.flag[name + 'Show'] = false
+      if(['address', 'hometown', 'age','height','education', 'income','registeredPermanentResidence'].findIndex(el => el === name) !== -1){
+        if(name === 'address' || name === 'registeredPermanentResidence' || name === 'hometown'){
+          str = value[1].name;
+        } else if(name === 'age'){
+          str = typeof value[1] === 'string'? value[0] + '岁 - ' + value[1] + '岁' :value[0].name + '岁 - ' + value[1].name + '岁'
+        } else if(name === 'height'){
+          str = typeof value[1] === 'string'? value[0] + 'cm - ' + value[1] + 'cm' :value[0].name + 'cm - ' + value[1].name + 'cm'
+        } else {
+          str = typeof value[0] === 'string'? value[0] + ' - ' + value[1] : value[0].label + ' - ' + value[1].label
+        }
+      } else {
+        str = typeof value[0] === 'string' ? value : value[0].code ? value.map(el => el.code) : value.map(el => el.label)
+      }
+      this.event.innerText = str
+      // 设置夫级的数据
+      this.setParentData(value)
     },
     reset () {
       this.fromData = {
@@ -317,102 +206,27 @@ export default {
         nation: [], // 民族
         religion: [], // 宗教
       }
+      var eles = document.querySelectorAll('.sanjiao');
+      eles.forEach(element => {
+        element.innerHTML = "不限"
+      });
       this.$emit('updateVal', this.fromData)
+    },
+    replaceArr (arr) {
+      return arr.map(item => item.replace('岁', '').replace('cm', ''))
     },
     setParentData (val) {
       // 设置夫级的数据
       if (this.valueName === 'type') {
         Vue.set(this.fromData, this.valueName, val)
       } else {
-        Vue.set(this.fromData, this.valueName, this.replaceArr(val))
+        Vue.set(this.fromData, this.valueName, typeof val[0] === 'string' ? val : val[0].code ? this.replaceArr(val.map(el => el.code)) : this.replaceArr(val.map(el => el.value)))
       }
       this.$emit('updateVal', this.fromData)
     },
-    // 获取数组内的对象
-    findObj (arr, name, value) {
-      return arr.find(el => el[name] === value)
-    },
     submitData () {
+      this.isShow = -1
       this.$emit('search')
-    },
-    replaceArr (arr) {
-      return arr.map(item => item.replace('岁', '').replace('cm', ''))
-    },
-    unshiftArr (arr){
-      return typeof arr[0] === 'object'? [{value: -1,label: '不限'}].concat(arr): ['不限'].concat(arr)
-    },
-    maps (arr) {
-      return arr.map(item => item.label)
-    },
-    // 年龄
-    ages (num) {
-      let obj = this.findObj(this.basicQueryCriteria, 'criteriaName', 'age')
-      let min = parseInt(this.findObj(obj.criteriaVoList, 'value', '1').label)
-      let max = parseInt(this.findObj(obj.criteriaVoList, 'value', '2').label)
-      num = num || min
-      var arr = Array.from({length: max - num}, (v, k) => num ? k + num + '岁' : k + (min + 1) + '岁');
-      return this.unshiftArr(arr)
-    },
-    // 身高
-    heights (num) {
-      let obj = this.findObj(this.basicQueryCriteria, 'criteriaName', 'height')
-      let min = parseInt(this.findObj(obj.criteriaVoList, 'value', '1').label)
-       let max = parseInt(this.findObj(obj.criteriaVoList, 'value', '2').label)
-      num = num || min
-      var arr = Array.from({length: max - num}, (v, k) => num ? k + num + 'cm' : k + (min + 1) + 'cm');
-      return this.unshiftArr(arr)
-    },
-    onChange (picker, values) {
-      switch (this.valueName){
-        case 'address':
-          picker.setColumnValues(1,testData[this.valueName][values[0]]);
-          break
-        case 'age':
-          picker.setColumnValues(1,this.ages(parseInt(values[0].replace('岁', ''))))
-          break
-        case 'height':
-          picker.setColumnValues(1,this.heights(parseInt(values[0].replace('cm', ''))))
-          break
-        case 'education':
-          picker.setColumnValues(1,this.unshiftArr(this.maps(testData['education'].filter((item,index,arr) => {
-            return index > arr.findIndex(el => el.label === values[0])
-          }))))
-          break
-        case 'income':
-          picker.setColumnValues(1,this.unshiftArr(this.maps(testData['income'].filter((item,index,arr) => {
-            return index > arr.findIndex(el => el.label === values[0])
-          }))))
-          break
-        case 'hometown':
-          picker.setColumnValues(1,testData[this.valueName][values[0]]);
-          break
-      } 
-    },
-    onConfirm (value) {
-      var str = ''
-      switch (this.valueName) {
-        case 'address':
-          str = value[1];
-          break;
-        case 'hometown':
-          str = value[1];
-          break
-        default :
-          str = value[0] + '-' + value[1];
-          break
-      }
-      this.event.innerText = str
-      // 设置夫级的数据
-      this.setParentData(value)
-
-      this.show = false;
-    },
-    confirm (val) {
-      this.event.innerText = val.join(',')
-      // 设置夫级的数据
-      this.setParentData(val)
-
-      this.listShow = false
     },
     // tabs选项卡点击事件 
     tabsClick (index) {
@@ -445,92 +259,9 @@ export default {
       }
       // 获取当前名称
       this.valueName = this[name][index]
-      // 获取当前类型
-      this.columnType = this.defaultData[this.valueName].type
-      
-      if (this.columnType === 2) {
-        this.show = true
-      } else {
-        this.listShow = true;
-        this.radio = this.defaultData[this.valueName].radio
-      }
-    }
-  },
-  created () {
-    var that = this
-    // this.showLoading()
-    basicQueryCriteria({}).then((res) => {
-      // this.hideLoading()
-      console.log(res.data)
-      this.basicQueryCriteria = res.data
-      this.defaultData = Object.assign(this.defaultData,{
-        age: {
-          title: '年龄',
-          type: 2,
-          columns: [
-            {
-              values: this.ages()
-            },
-            {
-              values: this.ages()
-            }
-          ]
-        },
-        height: {
-          title: '身高',
-          type: 2,
-          columns: [
-            {
-              values: this.heights()
-            },
-            {
-              values: this.heights()
-            }
-          ]
-        },
-        maritalStatus: {
-          title: '婚姻状况',
-          type: 1,
-          radio:false,
-          columns: this.maps(this.findObj(this.basicQueryCriteria,'criteriaName', 'maritalStatus').criteriaVoList)
-        },
-        education: {
-          title: '学历',
-          type: 2,
-          columns: [
-            {
-              values: this.unshiftArr(this.maps(testData['education']))
-            },
-            {
-              values: this.unshiftArr(this.maps(testData['education']))
-            }
-          ]
-        },
-        income: {
-          title: '月收入',
-          type: 2,
-          columns: [
-            {
-              values: this.unshiftArr(this.maps(testData['income']))
-            },
-            {
-              values: this.unshiftArr(this.maps(testData['income']))
-            }
-          ]
-        }
-      }) // 储存选项初始数据
 
-      console.log(this.defaultData, ' 修改完成的数据')
-    })
-  },
-  computed: {
-    columns () {
-      if(!this.valueName || this.valueName === 'type'){return false}
-      this.title = this.defaultData[this.valueName].title
-      return this.defaultData[this.valueName].columns
-    },
-    defaultValue () {
-      return this.fromData[this.valueName]
+      this.flag[this.valueName + 'Show'] = true
+      console.log('点击了')
     }
   },
   watch: {
@@ -540,178 +271,15 @@ export default {
     }
   },
   components: {
-    Actionsheet,
-    Picker,
     Button,
-    PackerList
+    Address,
+    Age,
+    Height,
+    Income,
+    Education,
+    PackerList,
   }
 }
-
-getProvinceAndCityList({})
-// {
-//         address: {
-//           title: '居住地',
-//           type: 2,
-//           columns: [
-//             {
-//               values: Object.keys(testData['address'])
-//             },
-//             {
-//               values: testData['address'][Object.keys(testData['address'])[0]]
-//             }
-//           ]
-//         },
-//         age: {
-//           title: '年龄',
-//           type: 2,
-//           columns: [
-//             {
-//               values: this.ages()
-//             },
-//             {
-//               values: this.ages()
-//             }
-//           ]
-//         },
-//         height: {
-//           title: '身高',
-//           type: 2,
-//           columns: [
-//             {
-//               values: this.heights()
-//             },
-//             {
-//               values: this.heights()
-//             }
-//           ]
-//         },
-//         maritalStatus: {
-//           title: '婚姻状况',
-//           type: 1,
-//           radio:false,
-//           columns: testData['maritalStatus']
-//         },
-//         education: {
-//           title: '学历',
-//           type: 2,
-//           columns: [
-//             {
-//               values: this.unshiftArr(this.maps(testData['education']))
-//             },
-//             {
-//               values: this.unshiftArr(this.maps(testData['education']))
-//             }
-//           ]
-//         },
-//         income: {
-//           title: '月收入',
-//           type: 2,
-//           columns: [
-//             {
-//               values: this.unshiftArr(this.maps(testData['income']))
-//             },
-//             {
-//               values: this.unshiftArr(this.maps(testData['income']))
-//             }
-//           ]
-//         },
-//         loveType: {
-//           title: '恋爱类型',
-//           type: 1,
-//           radio:false,
-//           columns: this.unshiftArr(testData['loveType'])
-//         },
-//         housePurchase: {
-//           title: '购房情况',
-//           type: 1,
-//           radio:true,
-//           columns: this.unshiftArr(testData['housePurchase'])
-//         },
-//         car: {
-//           title: '购车情况',
-//           type: 1,
-//           radio:true,
-//           columns: this.unshiftArr(testData['car'])
-//         },
-//         registeredPermanentResidence: {
-//           title: '户口',
-//           type: 1,
-//           radio:true,
-//           columns: this.unshiftArr(testData['registeredPermanentResidence'])
-//         },
-//         hometown: {
-//           title: '家乡',
-//           type: 2,
-//           columns: [
-//             {
-//               values: Object.keys(testData['hometown'])
-//             },
-//             {
-//               values: testData['hometown'][Object.keys(testData['hometown'])[0]]
-//             }
-//           ]
-//         },
-//         children: {
-//           title: '有无子女',
-//           type: 1,
-//           radio:true,
-//           columns: this.unshiftArr(testData['children'])
-//         },
-//         constellation: {
-//           title: '星座',
-//           type: 1,
-//           radio:false,
-//           columns: this.unshiftArr(testData['constellation'])
-//         },
-//         theRealNameSystem: {
-//           title: '是否实名',
-//           type: 1,
-//           radio:true,
-//           columns: this.unshiftArr(testData['theRealNameSystem'])
-//         },
-//         picture: {
-//           title: '是否有照片',
-//           type: 1,
-//           radio:true,
-//           columns: this.unshiftArr(testData['picture'])
-//         },
-//         member: {
-//           title: '是否会员',
-//           type: 1,
-//           radio:true,
-//           columns: this.unshiftArr(testData['member'])
-//         },
-//         onLine: {
-//           title: '是否在线',
-//           type: 1,
-//           radio:true,
-//           columns: this.unshiftArr(testData['onLine'])
-//         },
-//         profession: {
-//           title: '职业',
-//           type: 1,
-//           radio:true,
-//           columns: this.unshiftArr(testData['profession'])
-//         },
-//         bloodType: {
-//           title: '血型',
-//           type: 1,
-//           radio:false,
-//           columns: this.unshiftArr(testData['bloodType'])
-//         },
-//         nation: {
-//           title: '民族',
-//           type: 1,
-//           radio:false,
-//           columns: this.unshiftArr(testData['nation'])
-//         },
-//         religion: {
-//           title: '宗教',
-//           type: 1,
-//           radio:false,
-//           columns: this.unshiftArr(testData['religion'])
-//         },
-//       } // 储存选项初始数据
 </script>
 <style>
 .van-actionsheet__header{
