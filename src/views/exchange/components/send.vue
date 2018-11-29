@@ -33,9 +33,12 @@ export default {
     emotion,
     Gift
   },
+  mounted () {
+    console.log(this.$store, "点击进入聊天页面后")
+  },
   methods: {
     ...mapActions([
-      'POSTMSG'
+      'GET_FRIENT_MSG'
     ]),
     // 按住说话事件
     touchstart ($event) {
@@ -77,13 +80,14 @@ export default {
       var that = this
       this.isShow = false
       this.$emit('editHeight', this.isShow)
-      this.POSTMSG({
+      console.log(that.friend)
+      this.GET_FRIENT_MSG({
         context: context,
         id: new Date().getTime(),
         receiver:that.friend.accountNumber,
         sender: that.user.accountNumber,
         sendUserId: that.user.id,
-        receiveUserId: that.friend.id,
+        receiveUserId: that.friend.userId,
         time: new Date().getTime(),
         status: 1, // 当前信息提交状态
         userHead: this.user.userHead,

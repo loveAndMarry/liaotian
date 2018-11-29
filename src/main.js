@@ -4,15 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-// import 'vant/lib/vant-css/index.css'
+import 'vant/lib/vant-css/index.css'
 
 import { Dialog } from 'vant';
 Vue.use(Dialog);
-
-//引入容联云即时通讯
-import IM from '@/assets/common/IM'
-
-IM.init()
 
 // 下拉刷新上拉加载组件
 import VueScroller  from 'vue-scroller'

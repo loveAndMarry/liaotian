@@ -31,13 +31,15 @@ const utils = {
    * 更改数组中id的其中一项
    */
   updateArray (arr, id, obj) {
-    if(typeof obj === 'object'){
-      if(typeof obj['hint'] === 'boolean' && obj['hint']){
-        obj.hint = arr.find(el => el.accountNumber === id).hint + 1
-      } else if(typeof obj['hint'] === 'number'){
-        obj.hint = 0
+    if(arr.length > 0){
+      if(typeof obj === 'object'){
+        if(typeof obj['hint'] === 'boolean' && obj['hint']){
+          obj.hint = arr.find(el => el.accountNumber === id).hint + 1
+        } else if(typeof obj['hint'] === 'number'){
+          obj.hint = 0
+        }
+        return arr.splice(arr.findIndex(el => el.accountNumber === id), 1, Object.assign(arr.find(el => el.accountNumber === id), obj))
       }
-      return arr.splice(arr.findIndex(el => el.accountNumber === id), 1, Object.assign(arr.find(el => el.accountNumber === id), obj))
     }
   },
   /**

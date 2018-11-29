@@ -1,16 +1,16 @@
 <template>
-  <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller">
+  <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller" :noDataText="noDataText">
     <ul class="home_list">
-      <li v-for="(item, index) in columns" :key="index" @click="showDetail(item.id)">
+      <li v-for="(item, index) in columns" :key="index" @click="showDetail(item.userId)">
         <div class="title">
-          <img :src="item.portrait" alt="">
+          <img :src="item.userHead || 'http://img3.imgtn.bdimg.com/it/u=1997531878,2220927575&fm=26&gp=0.jpg'" alt="">
         </div>
         <div class="list_content">
           <div class="top">
-            <div class="name">{{item.userName}}
-              <span>实名</span>
+            <div class="name">{{item.nickName}}
+              <span v-if='item.registerState === "3"'>实名</span>
             </div>
-            <div class="praise"><span></span>{{item.praise}}</div>
+            <div class="praise"><span></span>{{item.likeCount}}</div>
           </div>
           <div class="message">
             <p v-text="`${item.age}岁`"></p>
@@ -19,38 +19,66 @@
             <i>|</i>
             <p v-text="item.education"></p>
             <i>|</i>
-            <p v-text="item.income"></p>
+            <p v-text="item.incomeMin + ' - ' + item.incomeMax"></p>
           </div>
           <ul class="tags">
             <li v-for="(el, dex) in item.tag" :key="dex" v-text="el"></li>
           </ul>
-          <div class="manifesto" v-text="`爱情宣言 :${item.manifesto}`"></div>
+          <div class="manifesto" v-text="`爱情宣言 :${item.personalIntroduction}`"></div>
         </div>
       </li>
     </ul>
   </scroller>
 </template>
 <script>
+import { listUser } from '@/assets/common/api'
 export default {
-  props: ['columns'],
+  props: ['fromData'],
+  data () {
+    return {
+      columns: [],
+      noDataText: '没有更多的数据'
+    }
+  },
+  computed: {
+    data () {
+      return  Object.assign({}, this.fromData)
+    }
+  },
   methods: {
-    showDetail (id) {
-      this.$router.push({path: '/userDetail', query: {id: id}})
+    showDetail (userId) {
+      this.$router.push({name: 'userDetail', params: { userId: userId}})
     },
-    infinite () {
-       window.setTimeout(()=>{
-        this.$refs.scroller.finishInfinite(true)
-      },3000)
-      console.log(arguments,'infinite')
-      return false
+    infinite (fn) {
+      if(this.index){
+        ++this.data.pageCurrent
+       listUser(this.data).then((res) => {
+         if(res.data.list){
+           this.noDataText = '没有更多数据'
+           res.data.list.length < this.data.pageSize ? fn(true) :fn()
+           this.columns.push(res.data.list)
+         }
+       }).catch(() => fn ? fn(true): this.$refs.scroller.finishPullToRefresh())
+      } else {
+        this.index = 1
+        fn(true)
+      }
     },
-    refresh () {
-       window.setTimeout(()=>{
-        this.$refs.scroller.finishPullToRefresh()
-      },3000)
-      console.log(arguments,'refresh')
-      return false
-    },
+    refresh (fn) {
+      var obj = Object.assign({}, this.data, {
+        pageSize: this.columns.length || 10,
+        pageCurrent: 1
+      })
+      listUser(obj).then((res) => {
+        if(res.data.list){
+          this.columns = res.data.list
+        } else {
+          this.columns = []
+          this.noDataText = '没有找到符合条件的用户'
+        }
+        fn ? fn(true): this.$refs.scroller.finishPullToRefresh()
+      }).catch(() => fn ? fn(true): this.$refs.scroller.finishPullToRefresh())
+    }
   }
 }
 </script>
@@ -74,6 +102,7 @@ export default {
 }
 .home_list li .title img{
   width: 100%;
+  height: 1.5rem;
   border-radius: 50%;
   display: block
 }

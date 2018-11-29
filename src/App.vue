@@ -1,23 +1,23 @@
 <template>
   <div id="app">
-    <transition :name="transitionName">
+    <!-- <transition :name="transitionName"> -->
       <keep-alive>
         <router-view class="Router"></router-view>
       </keep-alive>
-    </transition>
-    <transition :name="transitionName1">
-      <router-view class="Router1" name="content"></router-view>
-    </transition>
-    <div class="loading" :style="{
+    <!-- </transition> -->
+    <!-- <transition :name="transitionName1"> -->
+      <keep-alive>
+        <router-view class="Router1" name="content"></router-view>
+      </keep-alive>
+    <!-- </transition> -->
+    <!-- <div class="loading" :style="{
         show: this.isLoading
       }">
-      <Loading color="white"/>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { Loading } from 'vant'
 import { mapState } from 'vuex'
 export default {
   name: 'App',
@@ -27,27 +27,24 @@ export default {
       transitionName1: 'slide-right' // 默认动态路由变化为slide-right
     }
   },
-  computed: {
-    ...mapState({
-      'isLoading': state => state.common.isLoading
-    })
-  },
-  watch: {
-    $route (to, from) {
-      let isBack = this.$router.isBack //  监听路由变化时的状态为前进还是后退
-      if (isBack) {
-        this.transitionName = 'slide-left'
-        this.transitionName1 = 'slide-right'
-      } else {
-        this.transitionName = 'slide-left'
-        this.transitionName1 = 'slide-right'
-      }
-      this.$router.isBack = false
-    }
-  },
-  components: {
-    Loading
-  }
+  // watch: {
+  //   $route (to, from) {
+  //     let isBack = this.$router.isBack //  监听路由变化时的状态为前进还是后退
+  //     if(to.path.indexOf('/view') === -1 && from.path.indexOf('/view') === -1){
+  //        if (isBack) {
+  //         this.transitionName = 'slide-left'
+  //         this.transitionName1 = 'slide-left'
+  //       } else {
+  //         this.transitionName = 'slide-left'
+  //         this.transitionName1 = 'slide-right'
+  //       }
+  //     }
+  //     this.$router.isBack = false
+  //   }
+  // },
+  // components: {
+  //   Loading
+  // }
 }
 
 document.documentElement.style.fontSize = (document.documentElement.clientWidth / 750) * 100 + 'px'

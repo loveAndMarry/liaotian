@@ -16,7 +16,7 @@ export const postMsg = data => HTTP.GET('web/messengerAccount/sendMessage', data
 // 根据容联云账号获取详细信息
 export const getFriendMessage = data => HTTP.GET('web/selectUser/queryContactsUserInfo', data)
 
-// 获取好友列表
+// 获取消息列表
 export const messageListing = data => HTTP.GET('web/selectUser/messageListing',data)
 
 // 获取好友历史信息
@@ -33,6 +33,10 @@ export const advancedQueryCriteria = data => HTTP.GET('web/queryCriteria/advance
 
 // 获取用户列表  （筛选）
 export const listUser = data => HTTP.GET('web/selectUser/listUser',data)
+
+// 获取用户个人信息
+export const userInformationDisplay = data => HTTP.GET('web/userAccessRecord/userInformationDisplay',data)
+
 
 /**
  * 字典接口

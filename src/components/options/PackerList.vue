@@ -53,21 +53,16 @@ export default {
 
     if(localStorage.getItem(this.name)){
       this.columns = JSON.parse(localStorage.getItem(this.name))
-      this.showData()
     } else {
       dictionaryQuery({type: this.name }).then((res) => {
         if(res.data){
            this.columns = res.data
           localStorage.setItem(this.name, JSON.stringify(this.columns))
-          this.showData()
         }
       })
     }
   },
   methods: {
-    showData () {
-      console.log(this.value, '默认显示')
-    },
     toggle (index) {
       this.$refs.checkboxes[index].toggle()
     },

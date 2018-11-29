@@ -3,6 +3,7 @@ import utils from '@/assets/common/utils'
 import IM from '@/assets/common/IM'
 import { Dialog } from 'vant';
 
+const GET_FRIENT_MSG = 'GET_FRIENT_MSG' //判断当前好友是否存在于好友列表中，不存在则添加
 const POST_MSG = 'POSTMSG' // 提交当前发送的信息
 const UPDATE_USER = 'UPDATEUSER' // 更新个人信息
 const GET_FRIEND = 'GETFRIEND' // 获取当前好友列表
@@ -28,12 +29,40 @@ const getters = {
 }
 
 const actions = {
+  [GET_FRIENT_MSG] ({ commit, state }, products) {
+    return new Promise((resolve) => {
+      if(state.friendList.findIndex(el => el.accountNumber === products.receiver) === -1 || state.friendList.length === 0) {
+        getFriendMessage({
+          accountNumber: products.receiver,
+          userId: state.user.id
+        }).then((res)=>{
+          utils.pushLocalData('friendList', res.data)
+          state.friendList.push(res.data)
+          // 将聊天信息的发送人和接受人的账号存入聊天信息
+          products = Object.assign({},products,{
+            sendUserId: res.data.id,
+            receiveUserId: state.user.id,
+          })
+          this.dispatch(POST_MSG, products).then(() => {
+            resolve(products)
+          })
+        })
+      } else {
+        this.dispatch(POST_MSG, products).then(() => {
+            resolve(products)
+        })
+      }
+    })
+  },
   [POST_MSG] ({ commit, state }, products) {
     return new Promise((resolve) => {
+      // 判断当前好友是否存在，不存在将好友添加到联系人列表
+
       // 将当前的信息存放在state内存中
       state.chatMessage[products.receiver].push(products)
       // 为了触发getters
       state.chatMessage = Object.assign({}, state.chatMessage)
+
       // 将信息提交到容联云
       IM.postMsg({
         data:products.context,
@@ -49,6 +78,7 @@ const actions = {
           type: products.msgType
         }).then((res) => {
           console.log('当前数据已经提交到服务器')
+
           // 数据提交完成
           commit(POST_MSG, products)
           
@@ -214,8 +244,8 @@ const mutations = {
     })
 
     // 置顶当前好友
-    commit(FRIEND_SORT, {
-      id: products.sender
+    this.commit(FRIEND_SORT, {
+      id: products.receiver
     })
 
     // 更新缓存中的数据

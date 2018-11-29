@@ -38,14 +38,9 @@ IM.prototype = {
       // 获取完登录用户信息后登录
       // var user = JSON.parse(localStorage.getItem('user'))
       // 更改state中的个人信息
-      store.dispatch('UPDATEUSER', {
-        // userId: utils.getUrlArgObject('userId')
-        userId: 123456789 
-      }).then((data) => {
-        this.userName = data.accountNumber
-        // 登录
-        this.login()
-      })
+      this.userName = store.state.IM.user.accountNumber
+      // 登录
+      this.login()
   },
   /**
    * 登录

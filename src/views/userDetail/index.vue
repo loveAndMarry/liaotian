@@ -5,47 +5,42 @@
        <div class="title">
       <div class="left">
         <div class="top">
-          <div class="name">{{item.userName}}
-            <span>实名</span>
+          <div class="name">{{userBaseInformation.nickName}}
+            <span v-if="userBaseInformation.registerState === '3'">实名</span>
           </div>
         </div>
         <div class="message">
-          <p v-text="`${item.Height}岁`"></p>
+          <p v-text="`${userBaseInformation.age}岁`"></p>
           <i>|</i>
-          <p v-text="`${item.height}cm`"></p>
+          <p v-text="`${userBaseInformation.height}cm`"></p>
           <i>|</i>
-          <p v-text="item.education"></p>
+          <p v-text="userBaseInformation.education"></p>
           <i>|</i>
-          <p v-text="item.income"></p>
+          <p v-text="userBaseInformation.incomeMin + ' - '+ userBaseInformation.incomeMax"></p>
         </div>
-        <div class="address" v-text="item.manifesto"></div>
+        <div class="address" v-text="userBaseInformation.domicileName"></div>
       </div>
       <div class="right">
-        <img :src="item.portrait" alt="">
+        <img :src="userBaseInformation.userHead" alt="">
       </div>
       <div class="bottom">
         <ul class="img_group">
-          <li><img :src="item.portrait" alt=""></li>
-          <li><img :src="item.portrait" alt=""></li>
-          <li><img :src="item.portrait" alt=""></li>
-          <li><img :src="item.portrait" alt=""></li>
-          <li><img :src="item.portrait" alt=""></li>
-          <li><img :src="item.portrait" alt=""></li>
-          <li class="photograph">
+          <li v-for="(el, dex) in photoList" :key="dex"><img :src="el" alt=""></li>
+          <!-- <li class="photograph">
             <div>
               <img src="../../assets/images/user_photo_upload@2x.png" alt="">
               <p>上传图片</p>
             </div>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
     <Group title="个人介绍">
-      <p style="color:#858585;font-size:.19rem;line-heigin:.23rem">赶尽杀绝反过来看时间过来看时间反馈了赶紧离开结果告诉对方公司离开对方过后就开始更健康来看时间反馈了</p>
+      <p style="color:#858585;font-size:.19rem;line-heigin:.23rem">{{userBaseInformation.personalIntroduction}}</p>
     </Group>
     <Group title="认证">
       <div class="authentication">
-        <div class="real_name">
+        <div class="real_name" v-if='userBaseInformation.registerState === "3"'>
           <div></div>
           <p>实名认证</p>
         </div>
@@ -56,10 +51,55 @@
       </div>
     </Group>
     <Group title="基本资料">
-      <div class="list_item" v-for="el in 10" :key='el'>
+      <div class="list_item" v-if="userBaseInformation.userNo">
         <div class="label">ID:</div>
-        <div class="context">复活甲安徽省</div>
+        <div class="context">{{userBaseInformation.userNo}}</div>
       </div>
+      <div class="list_item" v-if="userBaseInformation.nickName">
+        <div class="label">昵称:</div>
+        <div class="context">{{userBaseInformation.nickName}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.sex">
+        <div class="label">性别:</div>
+        <div class="context">{{userBaseInformation.sex === '1'? '男' : '女'}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.age">
+        <div class="label">年龄:</div>
+        <div class="context">{{userBaseInformation.age + '岁'}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.height">
+        <div class="label">身高:</div>
+        <div class="context">{{userBaseInformation.height + 'cm'}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.education">
+        <div class="label">学历:</div>
+        <div class="context">{{userBaseInformation.education}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.incomeMin">
+        <div class="label">月收入:</div>
+        <div class="context">{{userBaseInformation.incomeMin + ' - '+ userBaseInformation.incomeMax}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.domicileName">
+        <div class="label">居住地:</div>
+        <div class="context">{{userBaseInformation.domicileName}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.maritalStatus">
+        <div class="label">婚姻状况:</div>
+        <div class="context">{{userBaseInformation.maritalStatus}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.childrenSituation">
+        <div class="label">子女情况:</div>
+        <div class="context">{{userBaseInformation.childrenSituation}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.houseSituation">
+        <div class="label">购房情况:</div>
+        <div class="context">{{userBaseInformation.houseSituation}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.carSituation">
+        <div class="label">购车情况:</div>
+        <div class="context">{{userBaseInformation.carSituation}}</div>
+      </div>
+     
     </Group>
      <Group title="兴趣爱好">
        <div class="hint_group">
@@ -74,76 +114,127 @@
        </div>
     </Group>
     <Group title="高级资料">
-      <div class="list_item" v-for="el in 10" :key='el'>
-        <div class="label">ID:</div>
-        <div class="context">复活甲安徽省</div>
+      <div class="list_item" v-if="userBaseInformation.hometownName">
+        <div class="label">家乡:</div>
+        <div class="context">{{userBaseInformation.hometownName}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.nation">
+        <div class="label">民族:</div>
+        <div class="context">{{userBaseInformation.nation}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.zodiac">
+        <div class="label">属相:</div>
+        <div class="context">{{userBaseInformation.zodiac}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.constellation">
+        <div class="label">星座:</div>
+        <div class="context">{{userBaseInformation.constellation}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.bloodType">
+        <div class="label">血型:</div>
+        <div class="context">{{userBaseInformation.bloodType}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.shape">
+        <div class="label">体型:</div>
+        <div class="context">{{userBaseInformation.shape}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.weight">
+        <div class="label">体重:</div>
+        <div class="context">{{userBaseInformation.weight}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.isSmoke">
+        <div class="label">是否吸烟:</div>
+        <div class="context">{{userBaseInformation.isSmoke}}</div>
+      </div>
+      <div class="list_item" v-if="userBaseInformation.isDrinkAlcohol">
+        <div class="label">是否喝酒:</div>
+        <div class="context">{{userBaseInformation.isDrinkAlcohol}}</div>
       </div>
     </Group>
-    <Group title="礼物">
+    <div style="height: .98rem"></div>
+    <div class="immediately" :class="{show: isShow}" @click="immediately">立即联系</div>
+    <!-- <Group title="礼物">
       <a href="" class="gift">赠送礼物</a>
       <div class="default hide">
         <p>ta未收到礼物,</p>
         <p>成为第一个送ta礼物的人吧！</p>
       </div>
-    </Group>
-    <MaritalStatus title='年龄' :show='true' v-model="MaritalStatus" name='maritalStatus'></MaritalStatus>
+    </Group> -->
     </div>
   </div>
 </template>
 <script>
 
 import { NavBar } from 'vant'
-import Vue from 'vue';
 import Group from '@/components/Group'
-import MaritalStatus from '@/components/options/Address'
+import utils from "@/assets/common/utils";
+import { userInformationDisplay } from '@/assets/common/api'
+import { mapActions } from "vuex";
 
 export default {
   data () {
     return {
-      MaritalStatus: ["2" , '-1'],
-      item: {
-          id:1,
-          userName: '测试',
-          theRealNameSystem: true,
-          age: '25',
-          height: '165',
-          education: '本科',
-          income: '5000-10000',
-          tag: ['身材苗条', '旅游', '投资理财'],
-          manifesto: '爱情就应该是一辈子',
-          portrait: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542709648746&di=05469704ed6e2a01394165a458e93773&imgtype=0&src=http%3A%2F%2Fimg.52z.com%2Fupload%2Fnews%2Fimage%2F20180416%2F20180416051754_47848.jpg',
-          praise:8
-        }
+      isShow: false,
+      photoList:[],
+      userBaseInformation: {},
     }
   },
   methods: {
+     ...mapActions(["UPDATEUSERLIST"]),
+    immediately () {
+       this.UPDATEUSERLIST(this.userBaseInformation).then(() => {
+        console.log(this, "当前个人信息已经获取")
+        this.$router.push({ path: "/exchange" });
+      });
+    },
     onClickLeft () {
       this.$router.push({path: '/view/home'})
     },
-    showConnection () {
-      var scrollTop = document.getElementById('userDetail_content').scrollTop || document.getElementById('userDetail_content').scrollTop
-      console.log(scrollTop)
-    }
+    // showConnection () {
+    //   var scrollTop = document.getElementById('userDetail_content').scrollTop || document.getElementById('userDetail_content').scrollTop
+    //   if(scrollTop < 500){
+    //     this.isShow = false
+    //   } else {
+    //     this.isShow = true
+    //   }
+    // }
   },
   mounted () {
     document.getElementById('userDetail_content').addEventListener('scroll', this.showConnection)
+    userInformationDisplay({
+      userId: this.$store.state.IM.user.id,
+      accessRecordId: this.$route.params.userId
+    }).then((res) => {
+      this.photoList = res.data.photoList.map(el => el.context)
+      this.userBaseInformation = res.data.userBaseInformation
+    })
   },
   destroyed () {
      document.getElementById('userDetail_content').removeEventListener('scroll', this.showConnection)
   },
-  watch: {
-    MaritalStatus (val) {
-      console.log('数据发生改变了123', val)
-    }
-  },
   components: {
     NavBar,
-    Group,
-    MaritalStatus
+    Group
   }
 }
 </script>
 <style scoped>
+.immediately.show{
+  display: block
+}
+.immediately{
+  height: .98rem;
+  background-color: rgba(250,108,137,.7);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  color: #fff;
+  font-size: .3rem;
+  text-align: center;
+  line-height: .98rem;
+  display: block
+}
 .photograph{
   border: 1px dashed;
   text-align: center;

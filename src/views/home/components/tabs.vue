@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative">
+  <div style="position: absolute;height:100%;width:100%">
     <ul class="tabs">
       <li :class="{isShow: index === isShow}" @click.prevent="tabsClick(index)" v-for="(item, index) in tabs" :key="index" v-text="item"></li>
     </ul>
@@ -166,7 +166,7 @@ export default {
         if(name === 'address' || name === 'registeredPermanentResidence' || name === 'hometown'){
           str = value[1].name;
         } else if(name === 'age'){
-          str = typeof value[1] === 'string'? value[0] + '岁 - ' + value[1] + '岁' :value[0].name + '岁 - ' + value[1].name + '岁'
+          str = value[0] + '岁 - ' + value[1] + '岁'
         } else if(name === 'height'){
           str = typeof value[1] === 'string'? value[0] + 'cm - ' + value[1] + 'cm' :value[0].name + 'cm - ' + value[1].name + 'cm'
         } else {
