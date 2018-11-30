@@ -182,10 +182,12 @@ export default {
   methods: {
      ...mapActions(["UPDATEUSERLIST"]),
     immediately () {
+      console.log(this)
        this.UPDATEUSERLIST(this.userBaseInformation).then(() => {
         console.log(this, "当前个人信息已经获取")
         this.$router.push({ path: "/exchange" });
         this.$store.state.IM.frient = this.userBaseInformation
+        console.log(this)
       });
     },
     onClickLeft () {
@@ -206,8 +208,12 @@ export default {
       userId: this.$store.state.IM.user.id,
       accessRecordId: this.$route.params.userId
     }).then((res) => {
-      this.photoList = res.data.photoList.map(el => el.context)
-      this.userBaseInformation = res.data.userBaseInformation
+      if(res.data.photoList){
+        this.photoList = res.data.photoList.map(el => el.context)
+      }
+      if(res.data.userBaseInformation){
+        this.userBaseInformation = res.data.userBaseInformation
+      }
     })
   },
   destroyed () {

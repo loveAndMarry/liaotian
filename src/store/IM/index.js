@@ -47,7 +47,7 @@ const actions = {
         postMsg({
           context:products.context,
           sendUserId: state.user.id,
-          receiveUserId: state.friend.id,
+          receiveUserId: state.friend.userId,
           chatDate: products.time,
           type: products.msgType
         }).then((res) => {
@@ -66,7 +66,18 @@ const actions = {
               utils.pushLocalData('friendList', res.data)
               state.friendList.push(res.data)
               // 将聊天信息的发送人和接受人的账号存入聊天信息
+              resolve()
             })
+          } else {
+            // 将当前的信息存放在state内存中
+            state.chatMessage[products.receiver].push(products)
+            // 为了触发getters
+            state.chatMessage = Object.assign({}, state.chatMessage)
+
+            utils.pushLocalData('friendList', res.data)
+            state.friendList.push(res.data)
+            // 将聊天信息的发送人和接受人的账号存入聊天信息
+            resolve()
           }
           // 数据提交完成
           commit(POST_MSG, products)
@@ -266,12 +277,15 @@ const mutations = {
   // 设置当前正在联系的好友信息
   [UPDATE_USER_LIST] (state, products) {
     state.friend = products;
-    if(!state.chatMessage[products.accountNumber]){
+    if(!state.chatMessage[products.accountNumber]){ 
       state.chatMessage[products.accountNumber] = []
     }
   },
   // 对好友列表进行排序  时间排序
   [FRIEND_SORT] (state, products) {
+    if(state.friendList.length === 0 || state.friendList.findIndex(el => el.accountNumber === products.id) === -1){
+      return 
+    }
     let arr = state.friendList
     let obj = arr.find(el => el.accountNumber === products.id)
     arr.splice(arr.findIndex(el => el.accountNumber === products.id), 1)

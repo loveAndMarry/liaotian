@@ -65,6 +65,7 @@ export default {
         utils.updateArray(this.$store.state.IM.friendList, item.accountNumber, {
           hint: 0
         });
+        this.$store.state.IM.friend = item
         this.$store.state.IM.isMsg = true // 设置当前有历史消息
         this.$router.push({ path: "/exchange" });
       });
