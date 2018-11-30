@@ -88,7 +88,7 @@ export default {
   mounted () {
     this.$store.dispatch('UPDATEUSER', {
       // userId: utils.getUrlArgObject('userId')
-      userId: 123456789 
+      userId: '2219246d18504fea864208235f056223' 
     }).then((data) => {
       this.fromData.sex = data.sex === '1'? '2': '1'
       this.fromData.userId = data.id

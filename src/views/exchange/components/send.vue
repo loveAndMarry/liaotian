@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'GET_FRIENT_MSG'
+      'POSTMSG'
     ]),
     // 按住说话事件
     touchstart ($event) {
@@ -81,7 +81,7 @@ export default {
       this.isShow = false
       this.$emit('editHeight', this.isShow)
       console.log(that.friend)
-      this.GET_FRIENT_MSG({
+      this.POSTMSG({
         context: context,
         id: new Date().getTime(),
         receiver:that.friend.accountNumber,

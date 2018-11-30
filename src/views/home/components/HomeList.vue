@@ -10,7 +10,7 @@
             <div class="name">{{item.nickName}}
               <span v-if='item.registerState === "3"'>实名</span>
             </div>
-            <div class="praise"><span></span>{{item.likeCount}}</div>
+            <div class="praise" @click.stop="link(item)" :class="{unlink:item.isLikeUser === 0}"><span></span>{{item.likeCount}}</div>
           </div>
           <div class="message">
             <p v-text="`${item.age}岁`"></p>
@@ -31,7 +31,7 @@
   </scroller>
 </template>
 <script>
-import { listUser } from '@/assets/common/api'
+import { listUser, cancellikeUser, likeUser} from '@/assets/common/api'
 export default {
   props: ['fromData'],
   data () {
@@ -46,6 +46,28 @@ export default {
     }
   },
   methods: {
+    link (item) {
+      let link = null
+      if(item.isLikeUser === 1){
+         cancellikeUser({
+          userId: this.$store.state.IM.user.id,
+          likeUserId: item.userId
+        }).then(() => {
+          link = 0
+          --item.likeCount
+          this.columns = this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
+        })
+      } else {
+        likeUser({
+          userId: this.$store.state.IM.user.id,
+          likeUserId: item.userId
+        }).then(() => {
+          link = 1
+          ++item.likeCount
+          this.columns = this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
+        })
+      }
+    },
     showDetail (userId) {
       this.$router.push({name: 'userDetail', params: { userId: userId}})
     },
@@ -145,11 +167,17 @@ export default {
   display: inline-block;
   width: .3rem;
   height:.3rem;
-  background-image: url('../../../../static/images/like_btn@2x.png');
+  background-image: url('../../../assets/images/like_btn.png');
   background-repeat: no-repeat;
   background-size: 100%;
   margin-right: .1rem;
   vertical-align: top;
+}
+.list_content .top .praise.unlink{
+    color: #8d8d8d;
+}
+.list_content .top .praise.unlink span{
+   background-image: url('../../../assets/images/unlike_btn.png');
 }
 .list_content .message{
   font-size: .26rem;

@@ -185,6 +185,7 @@ export default {
        this.UPDATEUSERLIST(this.userBaseInformation).then(() => {
         console.log(this, "当前个人信息已经获取")
         this.$router.push({ path: "/exchange" });
+        this.$store.state.IM.frient = this.userBaseInformation
       });
     },
     onClickLeft () {
@@ -391,7 +392,7 @@ export default {
   display: inline-block;
   width: .3rem;
   height:.3rem;
-  background-image: url('../../../static/images/like_btn@2x.png');
+  background-image: url('../../assets/images/like_btn.png');
   background-repeat: no-repeat;
   background-size: 100%;
   margin-right: .1rem;

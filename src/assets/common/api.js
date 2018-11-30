@@ -37,6 +37,12 @@ export const listUser = data => HTTP.GET('web/selectUser/listUser',data)
 // 获取用户个人信息
 export const userInformationDisplay = data => HTTP.GET('web/userAccessRecord/userInformationDisplay',data)
 
+//取消喜欢
+export const cancellikeUser = data => HTTP.GET('web/like/cancellikeUser',data)
+
+//喜欢
+export const likeUser = data => HTTP.GET('web/like/likeUser',data)
+
 
 /**
  * 字典接口
