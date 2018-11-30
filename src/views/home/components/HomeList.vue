@@ -22,7 +22,7 @@
             <p v-text="item.incomeMin + ' - ' + item.incomeMax"></p>
           </div>
           <ul class="tags">
-            <li v-for="(el, dex) in item.tag" :key="dex" v-text="el"></li>
+            <li v-for="(el, dex) in item.interestDictVoList.filter(a => a < 2)" :key="dex" v-text="el.label"></li>
           </ul>
           <div class="manifesto" v-text="`爱情宣言 :${item.personalIntroduction}`"></div>
         </div>

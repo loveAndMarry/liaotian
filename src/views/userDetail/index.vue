@@ -103,14 +103,7 @@
     </Group>
      <Group title="兴趣爱好">
        <div class="hint_group">
-        <span class="hint rad">热爱读书</span>
-        <span class="hint">地方的</span>
-        <span class="hint rad">发的</span>
-        <span class="hint">打发放发的</span>
-        <span class="hint">电风扇</span>
-        <span class="hint rad">说的</span>
-        <span class="hint">阿道夫</span>
-        <span class="hint">阿萨</span>
+        <span class="hint" v-for="(hint, i) in interestDictVoList" :key="i" v-text="hint.label" :class="{rad: hint.isIdentical}">热爱读书</span>
        </div>
     </Group>
     <Group title="高级资料">
@@ -177,6 +170,11 @@ export default {
       isShow: false,
       photoList:[],
       userBaseInformation: {},
+    }
+  },
+   computed: {
+    interestDictVoList () {
+      return utils.mergeArr(this.userBaseInformation.interestDictVoList, this.$store.state.IM.user.interestDictVoList)
     }
   },
   methods: {

@@ -71,7 +71,25 @@ const utils = {
       data[id].push(obj)
     }
     localStorage.setItem(name,JSON.stringify(data))
-  } 
+  },
+  /**
+   * 合并两个数组中的共同项 并且增加isIdentical字段
+   * isIdentical false 不相同/true 相同
+   */
+  mergeArr (arr, ary) {
+    if(arr && ary){
+      return arr.map(el => {
+        if(ary.findIndex(item => item.id === el.id) === -1){
+          el.isIdentical = false
+        } else {
+          el.isIdentical = true
+        }
+        return el
+      })
+    } else {
+      return []
+    }
+  }
 }
 
 export default utils

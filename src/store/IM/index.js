@@ -74,8 +74,6 @@ const actions = {
             // 为了触发getters
             state.chatMessage = Object.assign({}, state.chatMessage)
 
-            utils.pushLocalData('friendList', res.data)
-            state.friendList.push(res.data)
             // 将聊天信息的发送人和接受人的账号存入聊天信息
             resolve()
           }
