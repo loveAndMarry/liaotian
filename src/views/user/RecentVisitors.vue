@@ -1,6 +1,9 @@
 <template>
 <div>
   <NavBar left-arrow @click-left="onClickLeft" @click-right="onClickRight" title="最近访问"/>
+  <div>
+    <ul></ul>
+  </div>
 </div>
 </template>
 
