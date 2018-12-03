@@ -10,8 +10,14 @@ import view from '@/views'
 import tabbar from '@/views/tabber'
 // 聊天详情
 import exchange from '@/views/exchange'
-// 个人详细信息
-import userDetail from '@/views/userDetail'
+// 用户详细信息
+import userDetail from '@/views/home/components/userDetail'
+// 个人中心
+import user from '@/views/user'
+// 个人详细资料
+import userDetails from '@/views/user/userDetails'
+// 访问记录
+import RecentVisitors from '@/views/user/RecentVisitors'
 
 Vue.use(Router)
 
@@ -39,24 +45,22 @@ export default new Router({
         default: chat,
         tabber: tabbar
       }
+    },{
+      path: 'user',
+      name: 'user',
+      components: {
+        default: user,
+        tabber: tabbar
+      },
+      // children: [
+      //   {
+      //     path: 'userDetails',
+      //     name: 'userDetails',
+
+      //   }
+      // ]
     }]
   },
-  // {
-  //   path: '/chat',
-  //   name: 'chat',
-  //   components: {
-  //     default: chat,
-  //     tabber: tabbar
-  //   }
-    // children: [{
-    //   path: '/chat/fujinren',
-    //   name: 'chat',
-    //   components: {
-    //     default: chat,
-    //     tabber: tabbar
-    //   }
-    // }]
-  // },
   {
     path: '/exchange',
     name: 'exchange',
@@ -69,6 +73,20 @@ export default new Router({
     name: 'userDetail',
     components: {
       content: userDetail
+    }
+  },
+  {
+    path: '/userDetails',
+    name: 'userDetails',
+    components: {
+      content: userDetails
+    }
+  },
+  {
+    path: '/RecentVisitors',
+    name: 'RecentVisitors',
+    components: {
+      content: RecentVisitors
     }
   }
   ]

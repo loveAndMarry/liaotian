@@ -26,12 +26,6 @@
       <div class="bottom">
         <ul class="img_group">
           <li v-for="(el, dex) in photoList" :key="dex"><img :src="el" alt=""></li>
-          <!-- <li class="photograph">
-            <div>
-              <img src="../../assets/images/user_photo_upload@2x.png" alt="">
-              <p>上传图片</p>
-            </div>
-          </li> -->
         </ul>
       </div>
     </div>
@@ -240,29 +234,7 @@ export default {
   line-height: .98rem;
   display: block
 }
-.photograph{
-  border: 1px dashed;
-  text-align: center;
-  position: relative;
-}
-.photograph div{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center
-}
-.img_group .photograph div img{
-  width: .5rem;
-  height: .5rem;
-  display: inline-block
-}
-.photograph div p{
-  font-size: .19rem;
-  color: #818181;
-  margin: 0;
-  white-space: nowrap;
-}
+
 .default{
   font-size: .23rem;
   color: #939393;
@@ -334,10 +306,10 @@ export default {
   background-size: 100%
 }
 .authentication .real_name div{
-  background-image: url('../../assets/images/real_name@2x.png')
+  background-image: url('../../../assets/images/real_name@2x.png')
 }
 .authentication .phone div{
-  background-image: url('../../assets/images/phone@2x.png')
+  background-image: url('../../../assets/images/phone@2x.png')
 }
 .authentication p{
   display: block;
@@ -396,7 +368,7 @@ export default {
   display: inline-block;
   width: .3rem;
   height:.3rem;
-  background-image: url('../../assets/images/like_btn.png');
+  background-image: url('../../../assets/images/like_btn.png');
   background-repeat: no-repeat;
   background-size: 100%;
   margin-right: .1rem;

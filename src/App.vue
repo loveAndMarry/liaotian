@@ -226,4 +226,11 @@ body {
 ._v-container>._v-content>.loading-layer .spinner-holder .text, ._v-container>._v-content>.pull-to-refresh-layer .spinner-holder .text{
   font-size: .16rem !important;
 }
+
+/* 更改环形进度条默认样式
+*/
+.item .van-circle__text{
+  color:#fe7998;
+  font-size: .28rem
+}
 </style>

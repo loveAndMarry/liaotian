@@ -17,16 +17,16 @@
               :src="active === 1 ? msgicon.active : msgicon.normal"
             >
           </TabbarItem>
-          <TabbarItem>
+          <!-- <TabbarItem>
             <span>海选</span>
             <img
               slot="icon"
               slot-scope="props"
               :src="active === 2 ? choiceicon.active : choiceicon.normal"
             >
-          </TabbarItem>
-          <TabbarItem>
-            <span>首页</span>
+          </TabbarItem> -->
+          <TabbarItem to='/view/user'>
+            <span>个人中心</span>
             <img
               slot="icon"
               slot-scope="props"
