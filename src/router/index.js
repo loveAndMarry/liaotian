@@ -18,6 +18,18 @@ import user from '@/views/user'
 import userDetails from '@/views/user/userDetails'
 // 访问记录
 import RecentVisitors from '@/views/user/RecentVisitors'
+// 修改个人介绍
+import selfIntroduction from '@/views/user/selfIntroduction'
+// 修改兴趣爱好
+import Hobbies from '@/views/user/Hobbies'
+// 查看相册
+import Photo from '@/views/user/Photo'
+// 喜欢（谁看过我，谁喜欢我, 我喜欢谁）
+import link from '@/views/user/link'
+// 我的动态
+import MyDynamic from '@/views/user/MyDynamic'
+// 修改昵称
+import nickName from '@/views/user/nickName'
 
 Vue.use(Router)
 
@@ -88,6 +100,49 @@ export default new Router({
     components: {
       content: RecentVisitors
     }
+  },
+  {
+    path: '/selfIntroduction',
+    name: 'selfIntroduction',
+    components: {
+      content: selfIntroduction
+    }
+  },
+  {
+    path: '/Hobbies',
+    name: 'Hobbies',
+    components: {
+      content: Hobbies
+    }
+  },
+  {
+    path: '/Photo',
+    name: 'Photo',
+    components: {
+      content: Photo
+    }
+  },
+  {
+    path: '/link',
+    name: 'link',
+    components: {
+      content: link
+    }
+  },
+  {
+    path: '/MyDynamic',
+    name: 'MyDynamic',
+    components: {
+      content: MyDynamic
+    }
+  },
+  {
+    path: '/nickName',
+    name: 'nickName',
+    components: {
+      content: nickName
+    }
   }
+  
   ]
 })

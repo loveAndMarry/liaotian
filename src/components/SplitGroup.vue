@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 0 .3rem;box-sizing: border-box;position: relative;margin:.2rem 0">
+  <div style="padding: 0 .3rem;box-sizing: border-box;position: relative;padding: .2rem 0;background-color: #fff;">
       <div class="left">
         <div :style="{backgroundImage: 'url(' + imgUrl + ')'}"></div>
         <span></span>
@@ -40,6 +40,12 @@ export default {
          case '兴趣爱好':
           return require('../assets/images/data_interest@2x.png')
           break
+        case '基本资料':
+          return require('../assets/images/personal_data@2x.png')
+          break
+        case '小档案':
+          return require('../assets/images/record@2x.png')
+          break
       } 
     }
   }
@@ -63,20 +69,20 @@ export default {
 .left span{
     display: block;
     width: 0;
-    height: calc(100% - .4rem);
+    height: calc(100% - .8rem);
     border-right: 1px solid #d7d7d7;
     margin-left: .18rem;
 }
 .right{
   display: inline-block;
-    width: calc(100% - .6rem);
-    margin-left: .6rem;
-    text-align: left
+  width: calc(100% - 1.4rem);
+  margin-left: .8rem;
+  text-align: left
 }
 .right .title{
-      text-align: left;
-    color: #313131;
-    font-size: .28rem;
+  text-align: left;
+  color: #313131;
+  font-size: .28rem;
 }
 .sanjiao{
   font-size: .23rem;

@@ -276,7 +276,8 @@ export default {
   height: calc( 100% - 46px);
   left: 0;
   overflow-y: scroll;
-  overflow-x: hidden
+  overflow-x: hidden; 
+  background-color: #fff;
 }
 .list_item{
   margin-top: .3rem;

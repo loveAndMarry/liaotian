@@ -43,6 +43,32 @@ export const cancellikeUser = data => HTTP.GET('web/like/cancellikeUser',data)
 //喜欢
 export const likeUser = data => HTTP.GET('web/like/likeUser',data)
 
+/**
+ * 个人中心模块
+ */
+// 获取个人主页信息
+export const personalCenter = data => HTTP.GET('web/selectUser/personalCenter',data)
+
+// 获取个人资料信息
+export const userPersonalCenterInformation = data => HTTP.GET('web/selectUser/userPersonalCenterInformation',data)
+
+// 修改个人资料信息
+export const updateUserSpecificInfo = data => HTTP.GET('web/updateUserController/updateUserSpecificInfo',data)
+
+// 修改用户昵称
+export const updateUserNiceName = data => HTTP.GET('app/user/updateUserNiceName',data)
+
+// 修改用户个人简介
+export const updateUserPersonalIntroduction = data => HTTP.GET('web/updateUserController/updateUserPersonalIntroduction',data)
+
+// 获取用户的访客记录
+export const accessRecordUser = data => HTTP.GET('web/userAccessRecord/accessRecordUser',data)
+
+// 删除用户的访客记录
+export const deleteAccessRecord = data => HTTP.GET('web/userAccessRecord/deleteAccessRecord',data)
+
+// 查询用户的动态
+export const getUserDynamic = data => HTTP.GET('web/dynamic/getUserDynamic',data)
 
 /**
  * 字典接口
@@ -50,4 +76,8 @@ export const likeUser = data => HTTP.GET('web/like/likeUser',data)
 // 获取省市区域
 export const getProvinceAndCityList = data => HTTP.GET('app/area/getProvinceAndCityList',data)
 
+// 获取兴趣爱好
+export const interest = data => HTTP.GET('web/queryCriteria/interest',data)
+
+// 根据type值获取对应的字典值
 export const dictionaryQuery = data => HTTP.GET('web/queryCriteria/dictionaryQuery', data)

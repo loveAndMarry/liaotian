@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="group">
-      <div class="title">{{title}}<span class="shezhi"></span></div>
+      <div class="title">{{user.nickName}}<span class="shezhi"></span></div>
       <div class="datum">
-        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543818255721&di=51495d9fe940bd0af1387f8d9a5aa2b1&imgtype=0&src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20180824%2F00%2F1535043586-qUhCMARpvY.jpg" alt="">
+        <img :src="user.userHead" alt="">
         <div class="datum_content">
           <div>
-            资料完善度50%
+            资料完善度{{data.dataIntegrity}}%
             <span class="sanjiao" @click="detailsClick">资料</span>
           </div>
           <div>
@@ -21,59 +21,41 @@
               <p>上传图片</p>
             </div>
           </li>
-          <li class="photo_item">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
+          <li class="photo_item" v-for="item in 3" :key="item">
+            <img :src="data.photoList[item].context" v-if="data.photoList[item]" alt="">
           </li>
-          <li class="photo_item">
-            
-          </li>
-          <li class="photo_item">
-            
-          </li>
-          <li class="photo_more"><span class="sanjiao">相册</span></li>
+          <li class="photo_more"><span class="sanjiao" @click="photosClick">相册</span></li>
       </ul>
       <ul class="links">
-        <li>
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
+        <li @click="linkClick">
+            <img :src="data.accessRecordUserPhotoUrl" alt="">
             <p>谁看过我</p>
         </li>
-        <li>
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>谁看过我</p>
+        <li @click="linkClick">
+            <img :src="data.likeMePhotoUrl" alt="">
+            <p>谁喜欢我</p>
+        </li>
+        <li @click="linkClick">
+            <img :src="data.likeUserPhotoUrl" alt="">
+            <p>我喜欢谁</p>
         </li>
         <li>
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>谁看过我</p>
-        </li>
-        <li>
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>谁看过我</p>
+            <img src='../../assets/images/love@2x.png' alt="" style="width: inherit;">
+            <p>相互喜欢</p>
         </li>
       </ul>
     </div>
     <Group title="会员服务">
       <ul class="links" style="margin-top: 0.15rem">
-        <li>
-            <span class="link_img"></span>
-            <p>高级会员</p>
-        </li>
-        <li>
-             <span class="link_img"></span>
-            <p>水晶会员</p>
-        </li>
-        <li>
-             <span class="link_img"></span>
-            <p>金至尊牵线</p>
-        </li>
-        <li>
-             <span class="link_img"></span>
-            <p>相互喜欢</p>
+        <li @click="toastClick" v-for="(el, index) in data.levels" :key="index">
+            <img :src="el.ico" class="link_img"/>
+            <p>{{el.levelName}}</p>
         </li>
       </ul>
     </Group>
      <Group title="我的认证">
        <div class="authentication">
-          <div class="real_name">
+          <div class="real_name" v-if="user.registerState === '3'">
             <div></div>
             <p>实名认证</p>
           </div>
@@ -85,24 +67,82 @@
      </Group>
      <div class="group">
        <ul class="lists">
-         <li>我的动态<span class="sanjiao"></span></li>
+         <li @click="myDynamicClick">我的动态<span class="sanjiao"></span></li>
          <li>我的订单<span class="sanjiao"></span></li>
        </ul>
      </div>
+     <van-dialog
+      v-model="isshow"
+      show-cancel-button
+      :showConfirmButton="false"
+      :showCancelButton="false"
+      closeOnClickOverlay
+      :before-close="beforeClose">
+      <div class="dialog_content">
+        <span>谁喜欢了我</span>
+        <p>开通会员，随时查看悄悄查看你的用户，更可享有更多特权！</p>
+        <router-link to="###" class="submit">开通会员</router-link>
+      </div>
+    </van-dialog>
   </div>
 </template>
 <script>
 import Group from '@/components/Group'
+import { personalCenter } from '@/assets/common/api'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      title: '测试'
+      isshow: false,
+      data: {
+        dataIntegrity: '0',
+        accessRecordUserPhotoUrl: require('../../assets/images/no_people@2x.png'),
+        likeMePhotoUrl: require('../../assets/images/no_people@2x.png'),
+        likeUserPhotoUrl: require('../../assets/images/no_people@2x.png'),
+        levels: [],
+        photoList: []
+      }
     }
+  },
+  computed: {
+    ...mapState({
+      user: state => state.IM.user
+    })
   },
   methods: {
     detailsClick () {
       this.$router.push({name: 'userDetails'})
+    },
+    photosClick () {
+      this.$router.push({name: 'Photo'})
+    },
+    linkClick () {
+      this.isshow = true
+      window.setTimeout(() => {
+        this.$router.push({name: 'link'})
+      },3000)
+    },
+    toastClick () {
+    },
+    beforeClose(action, done) {
+      if (action === 'confirm') {
+        setTimeout(done, 1000);
+      } else {
+        done();
+      }
+    },
+    myDynamicClick () {
+      this.$router.push({name: 'MyDynamic'})
     }
+  },
+  mounted () {
+    personalCenter({userId: this.user.id}).then((res) => {
+      console.log(res.data)
+      if(res.data) {
+        this.data = Object.assign(this.data, res.data)
+      }
+    })
+    console.log(this)
   },
   components: {
     Group
@@ -111,6 +151,35 @@ export default {
 </script>
 
 <style scoped>
+.submit{
+  display: block;
+  margin: 0 auto;
+  width: 5.2rem;
+  height: .8rem;
+  background-color: #ff7994;
+  border-radius: .5rem;
+  text-align: center;
+  line-height: .8rem;
+  font-size: .31rem;
+  color:#fff;
+  margin-top: 1rem
+}
+.dialog_content{
+  width: 6.5rem;
+  padding: .79rem .65rem .6rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.dialog_content span{
+  font-size: .35rem;
+  color: #ff6c8f
+}
+.dialog_content p{
+  margin-top: .8rem;
+  padding: 0 .5rem;
+  font-size: .23rem;
+  color: #868686
+}
 .lists{
   width: 100%
 }
@@ -167,22 +236,10 @@ export default {
   background-size: 100%;
   background-repeat: no-repeat
 }
-.links li:nth-child(1) .link_img{
-  background-image: url('../../assets/images/senior_member@2x.png')
-}
-.links li:nth-child(2) .link_img{
-  background-image: url('../../assets/images/crystal_member@2x.png')
-}
-.links li:nth-child(3) .link_img{
-  background-image: url('../../assets/images/gold_member@2x.png')
-}
-.links li:nth-child(4) .link_img{
-  background-image: url('../../assets/images/diamond_member@2x.png')
-}
 
 .links li img{
-  max-width: .64rem;
-  max-height: .64rem;
+  width: .64rem;
+  height: .64rem;
   border-radius: 50%;
   display: inline-block
 }

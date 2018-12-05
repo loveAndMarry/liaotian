@@ -28,7 +28,12 @@ import { dictionaryQuery } from '@/assets/common/api'
 export default {
   props: {
     name: {
-      type: String
+      type: String,
+      default: ''
+    },
+    type: {
+      type: String,
+      default: ''
     },
     value: {
       default:false,
@@ -51,13 +56,13 @@ export default {
   mounted () {
     this.show = this.value
 
-    if(localStorage.getItem(this.name)){
+    if(localStorage.getItem(this.type ? this.type : this.name)){
       this.columns = JSON.parse(localStorage.getItem(this.name))
     } else {
-      dictionaryQuery({type: this.name }).then((res) => {
+      dictionaryQuery({type: this.type ? this.type : this.name }).then((res) => {
         if(res.data){
            this.columns = res.data
-          localStorage.setItem(this.name, JSON.stringify(this.columns))
+          localStorage.setItem(this.type ? this.type : this.name, JSON.stringify(this.columns))
         }
       })
     }

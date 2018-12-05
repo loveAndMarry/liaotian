@@ -5,6 +5,9 @@ import App from './App'
 import router from './router'
 import store from './store'
 import 'vant/lib/vant-css/index.css'
+// 时间选择器
+import Calendar from 'vue2-datepick';
+Vue.use(Calendar);
 
 import { Dialog } from 'vant';
 Vue.use(Dialog);
@@ -12,6 +15,29 @@ Vue.use(Dialog);
 // 下拉刷新上拉加载组件
 import VueScroller  from 'vue-scroller'
 Vue.use(VueScroller)
+
+Vue.filter("dateTime", function(val) {   //全局方法 Vue.filter() 注册一个自定义过滤器,必须放在Vue实例化前面
+  var currentTime = Date.parse(new Date());
+  var dateTime = val;//后台传递来的时间
+  var d_day = Date.parse(new Date(dateTime));
+  var day = Math.abs(parseInt((d_day - currentTime)/1000/3600/24));//计算日期
+  var hour = Math.abs(parseInt((d_day - currentTime)/1000/3600));//计算小时
+  var minutes = Math.abs(parseInt((d_day - currentTime)/1000/60));//计算分钟
+  var seconds = Math.abs(parseInt((d_day - currentTime)/1000));//计算秒
+  if(day >= 365){
+    return new Date(dateTime).getFullYear() + ' - ' + (new Date(dateTime).getMonth() + 1) + ' - ' + new Date(dateTime).getDate()
+  }else if(day >= 2){
+    return (new Date(dateTime).getMonth() + 1) + ' - ' + (new Date(dateTime).getDate())
+  }else if(day > 0 && day < 2){
+    return "昨天"
+  }else if(hour > 0 && hour < 24){
+    return (new Date(dateTime).getHours()) + 1 + ':' + (new Date(dateTime).getMinutes() + 1)
+  }else if(minutes > 0 && minutes < 60){
+    return parseInt(minutes)+"分钟前"
+  }else if(seconds > 0 && seconds < 60){
+    return parseInt(seconds)+"秒前"
+  }
+});
 
 Vue.config.productionTip = false
 

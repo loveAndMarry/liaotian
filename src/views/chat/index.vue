@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%">
+  <div style="height:100%;background-color: #fff;">
     <NavBar title='消息'></NavBar>
     <div style="height:calc(100% - .2rem);position: relative">
       <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller">

@@ -1,14 +1,14 @@
 <template>
   <div id="app">
     <!-- <transition :name="transitionName"> -->
-      <keep-alive>
-        <router-view class="Router"></router-view>
-      </keep-alive>
+      <!-- <keep-alive> -->
+        <router-view class="Router" v-if="isRouterAlive"></router-view>
+      <!-- </keep-alive> -->
     <!-- </transition> -->
     <!-- <transition :name="transitionName1"> -->
-      <keep-alive>
+      <!-- <keep-alive> -->
         <router-view class="Router1" name="content"></router-view>
-      </keep-alive>
+      <!-- </keep-alive> -->
     <!-- </transition> -->
     <!-- <div class="loading" :style="{
         show: this.isLoading
@@ -23,10 +23,24 @@ export default {
   name: 'App',
   data () {
     return {
+      isRouterAlive: true,
       transitionName: 'slide-left', // 默认动态路由变化为slide-right
       transitionName1: 'slide-right' // 默认动态路由变化为slide-right
     }
   },
+  provide () {
+    return {
+      reload: this.reload
+    }
+  },
+  methods: {
+    reload () {
+      this.isRouterAlive = false
+      this.$nextTick(() => {
+        this.isRouterAlive = true
+      })
+    }
+  }
   // watch: {
   //   $route (to, from) {
   //     let isBack = this.$router.isBack //  监听路由变化时的状态为前进还是后退
@@ -81,7 +95,8 @@ body {
   position: absolute;
   width: 100%;
   top:0;
-  height: 100%
+  height: 100%;
+  background-color: #f0f0f0
 }
 /* .Router{
   transition: all 0.8s ease;

@@ -30,7 +30,7 @@
             <img
               slot="icon"
               slot-scope="props"
-              :src="active === 3 ? usericon.active : usericon.normal"
+              :src="active === 2 ? usericon.active : usericon.normal"
             >
           </TabbarItem>
         </Tabbar>
