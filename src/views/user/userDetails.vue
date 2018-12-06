@@ -7,7 +7,7 @@
       <div class="group_content">
         <div class="top"></div>
       </div>
-      <div class="content">
+      <div class="content" v-if="isData">
         <NavBar left-arrow @click-left="onClickLeft"/>
         <div class="content_head">
           <div class="item">
@@ -60,43 +60,40 @@
 
 
          <SplitGroup title="基本资料" :isRight="false">
-          <div class="intention_item">ID:
-            <div class="sanjiao hide">{{data.userBaseInformation.userNo}}</div>
-          </div>
-          <div class="intention_item" @click="nickNameClick">昵称:
-            <div class="sanjiao">{{data.userBaseInformation.nickName || '未填写'}}</div>
-          </div>
-          <div class="intention_item">性别:
-            <div class="sanjiao hide">{{data.userBaseInformation.sex === '1' ? '男':'女'}}</div>
-          </div>
+
+          <!-- <ListItem title="居住地" :default='domicile' type='address'></ListItem>
+
+          <ListItem title="购房情况" dictionaries='housePurchase' :default='houseSituation' type="radioOne"></ListItem>
+
+          <ListItem title="学历" dictionaries='education' :default='education' type="packerOne"></ListItem> -->
+          <ListItem title="ID" :default='ID' :noClick="true"></ListItem>
+
+          <ListItem title="昵称" :default='nickName' :isEmitClick="true" @click="nickNameClick"></ListItem>
+
+          <ListItem title="性别" :default='sex' :noClick="true"></ListItem>
+          
           <div class="intention_item" @click="birthdayClick">生日:
             <div class="sanjiao ">{{data.userBaseInformation.birthday || '未填写'}}</div>
           </div>
-          <div class="intention_item" @click="heightClick">身高:
-            <div class="sanjiao ">{{data.userBaseInformation.height ? data.userBaseInformation.height + "cm" : '未填写'}}</div>
-          </div>
-          <div class="intention_item" @click="educationClick">学历:
-            <div class="sanjiao ">{{data.userBaseInformation.education ? data.userBaseInformation.education : '未填写'}}</div>
-          </div>
-          <div class="intention_item" @click="incomeClick">月收入:
-            <div class="sanjiao ">{{income}}</div>
-          </div>
-          <div class="intention_item" @click="domicileShow = true">居住地:
-            <div class="sanjiao ">{{data.userBaseInformation.domicileName || '未填写'}}</div>
-          </div>
-          <div class="intention_item" @click="childrenSituationShow = true">子女情况:
-            <div class="sanjiao ">{{data.userBaseInformation.childrenSituation || '未填写'}}</div>
-          </div>
-           <div class="intention_item">购房情况:
-            <div class="sanjiao ">{{data.userBaseInformation.houseSituation || '未填写'}}</div>
-          </div>
-           <div class="intention_item">购车情况:
-            <div class="sanjiao ">{{data.userBaseInformation.carSituation || '未填写'}}</div>
-          </div>
+
+          <ListItem title="身高" dictionaries='heights' :default='height' type="packerOne"></ListItem>
+
+         <ListItem title="学历" dictionaries='education' :default='education' type="packerOne"></ListItem>
+
+          <ListItem title="月收入" dictionaries='incomeRange' :default='income' type="packerOne"></ListItem>
+
+          <ListItem title="居住地" :default='domicile' type='address'></ListItem>
+
+          <ListItem title="子女情况" dictionaries='children' :default='childrenSituation' type="radioOne"></ListItem>
+
+          <ListItem title="购房情况" dictionaries='housePurchase' :default='houseSituation' type="radioOne"></ListItem>
+
+          <ListItem title="购车情况" dictionaries='car' :default='carSituation' type="radioOne"></ListItem>
+
         </SplitGroup>
 
 
-        <SplitGroup title="择偶意向" :isRight="false">
+        <!-- <SplitGroup title="择偶意向" :isRight="false">
           <div class="intention_item">年龄
             <div class="sanjiao">{{data.userBaseInformation.intentionAgeMin + ' - ' + data.userBaseInformation.intentionAgeMax}}</div>
           </div>
@@ -160,7 +157,7 @@
           <div class="intention_item">是否吸烟
             <div class="sanjiao">{{data.userBaseInformation.isSmoke || '未填写'}}</div>
           </div>
-        </SplitGroup>
+        </SplitGroup> -->
 
 
         <SplitGroup title="兴趣爱好" rightTitle="编辑" @confirm="hobbiesClick">
@@ -185,7 +182,7 @@
       </div>
     </van-dialog>
 
-    <Actionsheet v-model="heightShow"> 
+    <!-- <Actionsheet v-model="heightShow"> 
       <Picker :columns="heightColumns" show-toolbar  @cancel="heightShow = false" @confirm="heightConfirm" title="身高" ref="heightPicker"/>
     </Actionsheet>
 
@@ -199,7 +196,7 @@
 
     <Address title="居住地" :data='domicile' v-model="domicileShow" @confirm="addressCallback" name='domicile'></Address>
 
-    <PackerList title="有无子女" :data='data.userBaseInformation.childrenSituation.join(',')' :radio='true' v-model="childrenSituationShow" name="childrenSituation" type='children' @confirm="confirmCallback"></PackerList>
+    <PackerList title="有无子女" :data='data.userBaseInformation.childrenSituation.join(',')' :radio='true' v-model="childrenSituationShow" name="childrenSituation" type='children' @confirm="confirmCallback"></PackerList> -->
 
   </div>
 </template>
@@ -211,12 +208,14 @@ import SplitGroup from "@/components/SplitGroup";
 import { userPersonalCenterInformation, updateUserSpecificInfo } from '@/assets/common/api' 
 import Vue from "vue";
 import { mapState } from 'vuex'
+import ListItem from '@/components/ListItem'
 
 Vue.use(Circle);
 export default {
   inject: ['reload'],
   data() {
     return {
+      isData: false,
       isShow: false,
       currentRate: 0,
       nickNameShow: false,
@@ -249,34 +248,88 @@ export default {
       return this.currentRate.toFixed(0) + "%";
     },
     income () {
-      let min = this.data.userBaseInformation.incomeMin
-      let max = this.data.userBaseInformation.incomeMax
-      let str = ''
-      if(min !== '-1'){
-        str += min
-      }
-      if(max !== '-1'){
-        if(min !== '-1'){
-          str += ' - ' + max
-        } else {
-          str += max + '以上'
-        }
-      }
-      return str
+       return [{
+        value: this.data.userBaseInformation.income
+      }]
     },
     domicile () {
-      if(this.data.userBaseInformation.domicileProvinceId && this.data.userBaseInformation.domicileCityId){
-         return [this.data.userBaseInformation.domicileProvinceId, this.data.userBaseInformation.domicileCityId]
+      // if(this.data.userBaseInformation.domicileProvinceId && this.data.userBaseInformation.domicileCityId){
+      //    return [this.data.userBaseInformation.domicileProvinceId, this.data.userBaseInformation.domicileCityId]
+      // } else {
+      //   return []
+      // }
+      if(this.data.userBaseInformation.domicileName){
+        let arr = this.data.userBaseInformation.domicileName.split(' ')
+        return [{
+          name: arr[0],
+          code: this.data.userBaseInformation.domicileProvinceId
+        },{
+          name: arr[1],
+          code: this.data.userBaseInformation.domicileCityId
+        }]
       } else {
         return []
       }
+      
+    },
+    ID () {
+      return [{
+        label: this.data.userBaseInformation.userNo
+      }]
+    },
+    nickName () {
+      return [{
+        label: this.data.userBaseInformation.nickName
+      }]
+    },
+    sex () {
+      return [{
+        label: this.data.userBaseInformation.sex === '1' ? '男' : '女'
+      }]
+    },
+    height () {
+      return [{
+        value: this.data.userBaseInformation.height
+      }]
+    },
+    houseSituation () {
+      return [{
+        label: this.data.userBaseInformation.houseSituation,
+        value: this.data.userBaseInformation.houseSituationDictValue
+      }]
+    },
+    childrenSituation () {
+      return [{
+        label: this.data.userBaseInformation.childrenSituation,
+        value: this.data.userBaseInformation.childrenSituationDictValue
+      }]
+    },
+    income () {
+      return [{
+        label: this.data.userBaseInformation.education,
+        value: this.data.userBaseInformation.educationDictValue
+      }]
+    },
+    education () {
+      return [{
+        label: this.data.userBaseInformation.education,
+        value: this.data.userBaseInformation.educationDictValue
+      }]
+    },
+    carSituation () {
+      return [{
+        label: this.data.userBaseInformation.carSituation,
+        value: this.data.userBaseInformation.carSituationDictValue
+      }]
     }
+    
   },
   mounted () {
     userPersonalCenterInformation({ userId: this.user.id}).then((res) => {
       console.log(res, '数据');
       if(res.data){
         this.data = Object.assign(this.data, res.data)
+        this.isData = true
       }
     })
   },
@@ -427,7 +480,8 @@ export default {
     Actionsheet,
     Picker,
     Address,
-    PackerList
+    PackerList,
+    ListItem
   }
 };
 </script>
