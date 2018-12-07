@@ -1,17 +1,19 @@
 <template>
   <div>
     <div class="intention_item" @click="intantionClick">{{title}}:
-      <div class="sanjiao" :class="{hide: noClick}">{{names}}</div>
+      <div class="sanjiao" :class="{hide: noClick}">{{names | trim}}</div>
     </div>
     <Actionsheet v-model="isShow" :close-on-click-overlay='false'>
       <!-- 地址组件 -->
-      <Address  v-if="type === 'address'" :data="codes" :title="title"></Address>
+      <Address  v-if="type === 'address'" :data="codes" :title="title" :defaultSubmitData='defaultSubmitData'></Address>
       <!-- 单列选择组件 -->
-      <PackerOne  v-if="type === 'packerOne'" :data="codes" :title="title" :type="dictionaries"></PackerOne>
+      <PackerOne  v-if="type === 'packerOne'" :data="codes" :title="title" :type="dictionaries" :defaultSubmitData='defaultSubmitData'></PackerOne>
+      <!-- 双列选择并且不限组件 -->
+      <PackerTwo  v-if="type === 'packerTwo'" :data="codes" :title="title" :type="dictionaries" :defaultSubmitData='defaultSubmitData'></PackerTwo>
       <!-- 单选组件 -->
-      <PackerList  v-if="type === 'radioOne'" :data="data" :title="title" :type="dictionaries"></PackerList>
+      <PackerList  v-if="type === 'radioOne'" :data="codes" :title="title" :type="dictionaries" :defaultSubmitData='defaultSubmitData'></PackerList>
       <!-- 多选选组件 -->
-      <PackerList  v-if="type === 'radioTwo'" :data="data" :title="title" :type="dictionaries" :radio='false'></PackerList>
+      <PackerList  v-if="type === 'radioTwo'" :data="codes" :title="title" :type="dictionaries" :radio='false' :defaultSubmitData='defaultSubmitData' :suffix="suffix"></PackerList>
     </Actionsheet>
   </div>
 </template>
@@ -20,6 +22,7 @@
 import Address from '@/components/ListItem/Address'
 import PackerList from '@/components/ListItem/PackerList'
 import PackerOne from '@/components/ListItem/PackerOne'
+import PackerTwo from '@/components/ListItem/PackerTwo'
 import { Actionsheet } from 'vant'
 import{ mapState } from 'vuex'
 
@@ -51,7 +54,12 @@ export default {
     },
     // 提交字段
     defaultSubmitData: {
-      type: Object
+      type: Array,
+      default: () => []
+    },
+    suffix: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -62,6 +70,15 @@ export default {
       codes: []
     }
   },
+  filters: {
+    trim (val) {
+      if(val.replace(/,/g,'').replace(/-/g,'').replace(/\s/g,'') === ''){
+        return '未填写'
+      } else {
+        return val
+      }
+    }
+  },
   mounted () {
     this.result = this.default
   },
@@ -69,23 +86,38 @@ export default {
     ...mapState({
       user: state => state.IM.user
     }),
-    submitData () {
-      return Object.assign({}, this.defaultSubmitData, { userId: this.user.id} )
-    },
     data () {
       return this.result
     }
   },
   watch : {
     result (val) {
+      console.log(val)
       if(val.length > 0){
-        this.names = val[0].label ?  val.map(el => el.label).join(",") : val.map(el => el.name).join(" ")
-        this.codes = val[0].value ? val.map(el => el.value) : val.map(el => el.code)
+        if(this.type === 'packerTwo'){
+          if(val[0].value === '-1' && val[1].value === '-1'){
+            this.names = '不限'
+          } else if(val[0].value === '-1' && val[1].value !== '-1'){
+            this.names = val[1].label + '以下'
+          } else if(val[0].value !== '-1' && val[1].value === '-1'){
+            this.names = val[0].label + '以上'
+          } else {
+            this.names = val.map(el => el.label ? this.isSuffix(el.label) : el.label).join(" - ")
+          }
+        } else {
+          this.names = val[0].label ?  val.map(el => el.label ? this.isSuffix(el.label) : el.label).join(",") : val.map(el => el.name).join(" ")
+          this.codes = val[0].value ? val.map(el => el.value) : val.map(el => el.code)
+        }
       }
     }
   },
   methods: {
+    isSuffix(label){
+      console.log(label)
+      return (label.indexOf(this.suffix) === -1 && label.indexOf(this.suffix) !== 0) ? label + this.suffix : label
+    },
     intantionClick () {
+      console.log(this.defaultSubmitData)
       // 当前是否能够点击
       if(this.noClick){
         return false
@@ -108,7 +140,8 @@ export default {
     Actionsheet,
     Address,
     PackerList,
-    PackerOne
+    PackerOne,
+    PackerTwo
   }
 }
 </script>

@@ -4,7 +4,7 @@
 
 <script>
 import { Picker } from 'vant'
-import { dictionaryQuery } from '@/assets/common/api'
+import { dictionaryQuery , updateUserSpecificInfo} from '@/assets/common/api'
 export default {
   props: {
     type: String,
@@ -12,6 +12,10 @@ export default {
     data: {
       type: Array,
       default: []
+    },
+    defaultSubmitData: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -36,15 +40,53 @@ export default {
     }
   },
   methods: {
+    fromData (arr) {
+      var a = [], b = {}
+      // 获取当前选择获取到的值
+      arr.forEach((el, index) => {
+        a = a.concat(Object.values(el))
+      })
+      // 将需要提交的字段和名称进行匹配，顺序必须一样
+      this.defaultSubmitData.forEach((el, index) => {
+        if(el){
+          b[el] = a[index]
+        }
+      })
+      // 设置当前用户id
+      b['userId'] = this.$store.state.IM.user.id
+
+      return b
+    },
     onConfirm (value, index) {
-      this.$parent.$parent.result = [this.defaultData.find(el => el.label === value)]
-      this.$parent.$parent.isShow = false
+      let val = []
+      let result = []
+      // 单独为月收入做的判断
+      if(this.type === 'incomeRange') {
+        // 以下返回的value值没有任何作用，只是为了占位
+        if(value.indexOf('以下') !== -1){
+          val = [{value: 1, label: value.replace('以下', '')},{value: 2, label: '-1'}]
+        } else if(value.indexOf('以上') !== -1) {
+          val = [{value: 1, label: '-1'},{value: 2, label: value.replace('以上', '')}]
+        } else {
+          var arr = value.replace('元', '').split('-')
+          val = [{value: 1, label: arr[0]},{value: 2, label: arr[1]}]
+        }
+        result = [this.defaultData.find(el => el.label === value)]
+      } else {
+         val = [this.defaultData.find(el => el.label === value)]
+         result = val
+      }
+     
+      updateUserSpecificInfo(this.fromData(val)).then(() => {
+        this.$parent.$parent.result = result
+        this.$parent.$parent.isShow = false
+      })
     },
     showData () {
       this.isLoading = false
       this.$nextTick(() => {
         if(this.data.length > 0){
-         this.$refs.picker.setColumnValue(0, this.defaultData.find(el => el.value === this.data[0]).label)
+         this.$refs.picker.setColumnValue(0, this.defaultData.find(el => el.value == this.data[0]).label)
         }
       })
     }

@@ -53,7 +53,10 @@ export const personalCenter = data => HTTP.GET('web/selectUser/personalCenter',d
 export const userPersonalCenterInformation = data => HTTP.GET('web/selectUser/userPersonalCenterInformation',data)
 
 // 修改个人资料信息
-export const updateUserSpecificInfo = data => HTTP.GET('web/updateUserController/updateUserSpecificInfo',data)
+export const updateUserSpecificInfo = data => HTTP.GET('web/updateUserController/updateUserPersonalInformation',data)
+
+// 修改个人生日
+export const updateUserBirthday = data => HTTP.GET('web/updateUserController/updateUserBirthday',data)
 
 // 修改用户昵称
 export const updateUserNiceName = data => HTTP.GET('app/user/updateUserNiceName',data)

@@ -24,7 +24,7 @@
 </template>
 <script>
 import {Cell, CellGroup, Checkbox, CheckboxGroup} from 'vant'
-import { dictionaryQuery } from '@/assets/common/api'
+import { dictionaryQuery , updateUserSpecificInfo} from '@/assets/common/api'
 export default {
   props: {
     type: {
@@ -38,6 +38,10 @@ export default {
     radio: {
       type: Boolean,
       default: true
+    },
+    defaultSubmitData: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -60,16 +64,35 @@ export default {
     }
   },
   methods: {
+     fromData (arr) {
+      var a = [], b = {}
+      // 获取当前选择获取到的值
+      arr.forEach((el, index) => {
+        a = a.concat(Object.values(el))
+      })
+      // 将需要提交的字段和名称进行匹配，顺序必须一样
+      this.defaultSubmitData.forEach((el, index) => {
+        if(el){
+          b[el] = a[index]
+        }
+      })
+      // 设置当前用户id
+      b['userId'] = this.$store.state.IM.user.id
+
+      return b
+    },
     toggle (index) {
       this.$refs.checkboxes[index].toggle()
     },
     confirm () {
-      this.$parent.$parent.result = this.result.map(el => this.columns.find(item => item.label === el))
-      this.$parent.$parent.isShow = false
+      let val = this.result.map(el => this.columns.find(item => item.label === el))
+      updateUserSpecificInfo(this.fromData(val)).then(() => {
+        this.$parent.$parent.result = val
+        this.$parent.$parent.isShow = false
+      })
     },
     cancel () {
-      this.result = this.data
-      this.$emit('cancal')
+      this.$parent.$parent.isShow = false
     }
   },
   watch: {
@@ -95,7 +118,7 @@ export default {
     columns (value) {
       if (this.data.length > 0) {
         if(this.radio){
-          this.result = [this.columns.find(el => el.value === this.data[0].value).label]
+          this.result = [this.columns.find(el => el.value === this.data[0]).label]
         } else {
           this.result = this.data.map(el => this.columns.find(item => item.value === el).label)
         }

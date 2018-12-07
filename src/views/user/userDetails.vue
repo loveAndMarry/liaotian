@@ -61,103 +61,81 @@
 
          <SplitGroup title="基本资料" :isRight="false">
 
-          <!-- <ListItem title="居住地" :default='domicile' type='address'></ListItem>
+          <ListItem title="ID" :default='getData(["","userNo"])' :noClick="true"></ListItem>
 
-          <ListItem title="购房情况" dictionaries='housePurchase' :default='houseSituation' type="radioOne"></ListItem>
+          <ListItem title="昵称" :default='getData(["","nickName"])' :isEmitClick="true" @click="nickNameClick"></ListItem>
 
-          <ListItem title="学历" dictionaries='education' :default='education' type="packerOne"></ListItem> -->
-          <ListItem title="ID" :default='ID' :noClick="true"></ListItem>
-
-          <ListItem title="昵称" :default='nickName' :isEmitClick="true" @click="nickNameClick"></ListItem>
-
-          <ListItem title="性别" :default='sex' :noClick="true"></ListItem>
+          <ListItem title="性别" :default='getData(["","sexName"])' :noClick="true"></ListItem>
           
           <div class="intention_item" @click="birthdayClick">生日:
             <div class="sanjiao ">{{data.userBaseInformation.birthday || '未填写'}}</div>
           </div>
 
-          <ListItem title="身高" dictionaries='heights' :default='height' type="packerOne"></ListItem>
+          <ListItem title="身高" dictionaries='heights' :default='getData(height)' type="packerOne" :defaultSubmitData ="height" suffix="厘米"></ListItem>
 
-         <ListItem title="学历" dictionaries='education' :default='education' type="packerOne"></ListItem>
+         <ListItem title="学历" dictionaries='education' :default='getData(education)' type="packerOne" :defaultSubmitData ="education"></ListItem>
 
-          <ListItem title="月收入" dictionaries='incomeRange' :default='income' type="packerOne"></ListItem>
+          <ListItem title="月收入" dictionaries='incomeRange' :default='incomeDefault' type="packerOne" :defaultSubmitData ="income"></ListItem>
 
-          <ListItem title="居住地" :default='domicile' type='address'></ListItem>
+          <ListItem title="居住地" :default='getAddressData(domicile)' type='address' :defaultSubmitData ="domicile"></ListItem>
 
-          <ListItem title="子女情况" dictionaries='children' :default='childrenSituation' type="radioOne"></ListItem>
+          <ListItem title="婚姻状况" dictionaries='maritalStatus' :default='getData(maritalStatus)' type="radioOne" :defaultSubmitData ="maritalStatus"></ListItem>
 
-          <ListItem title="购房情况" dictionaries='housePurchase' :default='houseSituation' type="radioOne"></ListItem>
+          <ListItem title="子女情况" dictionaries='children' :default='getData(childrenSituation)' type="radioOne" :defaultSubmitData ="childrenSituation"></ListItem>
 
-          <ListItem title="购车情况" dictionaries='car' :default='carSituation' type="radioOne"></ListItem>
+          <ListItem title="购房情况" dictionaries='housePurchase' :default='getData(houseSituation)' type="radioOne" :defaultSubmitData ="houseSituation"></ListItem>
+
+          <ListItem title="购车情况" dictionaries='car' :default='getData(carSituation)' type="radioOne" :defaultSubmitData ="carSituation"></ListItem>
 
         </SplitGroup>
 
 
-        <!-- <SplitGroup title="择偶意向" :isRight="false">
-          <div class="intention_item">年龄
-            <div class="sanjiao">{{data.userBaseInformation.intentionAgeMin + ' - ' + data.userBaseInformation.intentionAgeMax}}</div>
-          </div>
-          <div class="intention_item">身高
-            <div class="sanjiao">{{data.userBaseInformation.intentionHeightMin + ' - ' + data.userBaseInformation.intentionHeightMax}}</div>
-          </div>
-          <div class="intention_item">学历
-            <div class="sanjiao">{{data.userBaseInformation.intentionEducationDictValueMin + ' - ' + data.userBaseInformation.intentionEducationDictValueMax}}</div>
-          </div>
-          <div class="intention_item">月收入
-            <div class="sanjiao">{{data.userBaseInformation.intentionIncomeMin +  (data.userBaseInformation.intentionIncomeMax? ' - ' + data.userBaseInformation.intentionIncomeMax : '以上')}}</div>
-          </div>
-          <div class="intention_item">居住地
-            <div class="sanjiao">{{data.userBaseInformation.intentionDomicileName}}</div>
-          </div>
-          <div class="intention_item">婚姻状况
-            <div class="sanjiao">{{data.userBaseInformation.intentionMaritalStatus}}</div>
-          </div>
-          <div class="intention_item">购房情况
-            <div class="sanjiao">{{data.userBaseInformation.intentionHouseSituation}}</div>
-          </div>
-          <div class="intention_item">购车情况
-            <div class="sanjiao">{{data.userBaseInformation.intentionCarSituation}}</div>
-          </div>
-          <div class="intention_item">有无子女
-            <div class="sanjiao">{{data.userBaseInformation.intentionChildrenSituation}}</div>
-          </div>
+        <SplitGroup title="择偶意向" :isRight="false">
+
+          <ListItem title="年龄" dictionaries='ages' :default='getData(ages)' type="packerTwo" :defaultSubmitData ="ages" suffix="岁"></ListItem>
+
+          <ListItem title="身高" dictionaries='heights' :default='getData(intentionHeight)' type="packerTwo" :defaultSubmitData ="intentionHeight" suffix="厘米"></ListItem>
+
+          <ListItem title="学历" dictionaries='education' :default='getData(intentionEducation)' type="packerTwo" :defaultSubmitData ="intentionEducation"></ListItem>
+
+          <ListItem title="月收入" dictionaries='income' :default='getData(intentionIncome)' type="packerTwo" :defaultSubmitData ="intentionIncome"></ListItem>
+
+          <ListItem title="居住地" :default='getAddressData(intentionDomicile)' type='address' :defaultSubmitData ="intentionDomicile"></ListItem>
+
+          <ListItem title="婚姻状况" dictionaries='maritalStatus' :default='getData(intentionMaritalStatus)' type="radioOne" :defaultSubmitData ="intentionMaritalStatus"></ListItem>
+
+          <ListItem title="购房情况" dictionaries='housePurchase' :default='getData(intentionHouseSituation)' type="radioOne" :defaultSubmitData ="intentionHouseSituation"></ListItem>
+
+          <ListItem title="购车情况" dictionaries='car' :default='getData(intentionCarSituation)' type="radioOne" :defaultSubmitData ="intentionCarSituation"></ListItem>
+
+          <ListItem title="子女情况" dictionaries='children' :default='getData(intentionChildrenSituation)' type="radioOne" :defaultSubmitData ="intentionChildrenSituation"></ListItem>
+
         </SplitGroup>
 
         <SplitGroup title="小档案" :isRight="false">
-          <div class="intention_item">家乡
-            <div class="sanjiao">{{data.userBaseInformation.hometownName || '未填写'}}</div>
-          </div>
-          <div class="intention_item">户口
-            <div class="sanjiao">{{data.userBaseInformation.registeredResidenceName || '未填写'}}</div>
-          </div>
-          <div class="intention_item">民族
-            <div class="sanjiao">{{data.userBaseInformation.nation || '未填写'}}</div>
-          </div>
-          <div class="intention_item">属相
-            <div class="sanjiao">{{data.userBaseInformation.zodiac || '未填写'}}</div>
-          </div>
-          <div class="intention_item">星座
-            <div class="sanjiao">{{data.userBaseInformation.constellation || '未填写'}}</div>
-          </div>
-          <div class="intention_item">血型
-            <div class="sanjiao">{{data.userBaseInformation.bloodType || '未填写'}}</div>
-          </div>
-          <div class="intention_item">体型
-            <div class="sanjiao">{{data.userBaseInformation.shape || '未填写'}}</div>
-          </div>
-          <div class="intention_item">体重
-            <div class="sanjiao">{{data.userBaseInformation.weight || '未填写'}}</div>
-          </div>
-          <div class="intention_item">宗教
-            <div class="sanjiao">{{data.userBaseInformation.religiousBelief || '未填写'}}</div>
-          </div>
-          <div class="intention_item">是否喝酒
-            <div class="sanjiao">{{data.userBaseInformation.isDrinkAlcohol || '未填写'}}</div>
-          </div>
-          <div class="intention_item">是否吸烟
-            <div class="sanjiao">{{data.userBaseInformation.isSmoke || '未填写'}}</div>
-          </div>
-        </SplitGroup> -->
+
+          <ListItem title="家乡" :default='getAddressData(hometown)' type='address' :defaultSubmitData ="hometown"></ListItem>
+
+          <ListItem title="户口" :default='getAddressData(registeredResidence)' type='address' :defaultSubmitData ="registeredResidence"></ListItem>
+
+          <ListItem title="民族" dictionaries='nation' :default='getData(nation)' type="radioOne" :defaultSubmitData ="nation"></ListItem>
+
+          <ListItem title="属相" :default="getData(['','zodiac'])" :noClick="true"></ListItem>
+
+          <ListItem title="星座" :default="getData(['','constellation'])" :noClick="true"></ListItem>
+
+          <ListItem title="血型" dictionaries='bloodType' :default='getData(bloodType)' type="radioOne" :defaultSubmitData ="bloodType"></ListItem>
+
+          <ListItem title="体型" dictionaries='shape' :default='getData(shape)' type="radioOne" :defaultSubmitData ="shape"></ListItem>
+
+          <ListItem title="体重" dictionaries='weights' :default='getData(weight)' type="radioOne" :defaultSubmitData ="weight"></ListItem>
+
+          <ListItem title="宗教" dictionaries='religion' :default='getData(religiousBelief)' type="radioOne" :defaultSubmitData ="religiousBelief"></ListItem>
+
+          <ListItem title="是否喝酒" dictionaries='is_drink_alcohol' :default='getData(isDrinkAlcohol)' type="radioOne" :defaultSubmitData ="isDrinkAlcohol"></ListItem>
+
+          <ListItem title="是否吸烟" dictionaries='is_smoke' :default='getData(isSmoke)' type="radioOne" :defaultSubmitData ="isSmoke"></ListItem>
+        </SplitGroup>
 
 
         <SplitGroup title="兴趣爱好" rightTitle="编辑" @confirm="hobbiesClick">
@@ -181,23 +159,6 @@
         <router-link to="###" class="submit">开通会员</router-link>
       </div>
     </van-dialog>
-
-    <!-- <Actionsheet v-model="heightShow"> 
-      <Picker :columns="heightColumns" show-toolbar  @cancel="heightShow = false" @confirm="heightConfirm" title="身高" ref="heightPicker"/>
-    </Actionsheet>
-
-     <Actionsheet v-model="educationShow"> 
-      <Picker :columns="educationColumns" show-toolbar  @cancel="educationShow = false" @confirm="educationConfirm" title="学历" ref="educationPicker"/>
-    </Actionsheet>
-
-     <Actionsheet v-model="incomeShow"> 
-      <Picker :columns="incomeColumns" show-toolbar  @cancel="incomeShow = false" @confirm="incomeConfirm" title="月收入" ref="incomePicker"/>
-    </Actionsheet>
-
-    <Address title="居住地" :data='domicile' v-model="domicileShow" @confirm="addressCallback" name='domicile'></Address>
-
-    <PackerList title="有无子女" :data='data.userBaseInformation.childrenSituation.join(',')' :radio='true' v-model="childrenSituationShow" name="childrenSituation" type='children' @confirm="confirmCallback"></PackerList> -->
-
   </div>
 </template>
 <script>
@@ -205,7 +166,7 @@ import { NavBar, Circle, Field, Toast, Picker, Actionsheet} from "vant";
 import Address from '@/components/options/Address'
 import PackerList from '@/components/options/PackerList'
 import SplitGroup from "@/components/SplitGroup";
-import { userPersonalCenterInformation, updateUserSpecificInfo } from '@/assets/common/api' 
+import { userPersonalCenterInformation, updateUserSpecificInfo,updateUserBirthday } from '@/assets/common/api' 
 import Vue from "vue";
 import { mapState } from 'vuex'
 import ListItem from '@/components/ListItem'
@@ -215,6 +176,7 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      index: 1,
       isData: false,
       isShow: false,
       currentRate: 0,
@@ -226,19 +188,58 @@ export default {
         },
         accessRecordUserList: []
       },
-      heightShow: false,
-      heightColumns: [],
-
-      educationShow: false,
-      educationColumns: [],
-
-      incomeShow: false,
-      incomeColumns: [],
-
-      domicileShow: false,
-
-      childrenSituationShow: false,
-    };
+      domicile: ['domicileProvinceId','domicileProvinceName','domicileCityId','domicileCityName'],
+      // 身高
+      height: ['height','height'],
+      // 学历
+      education: ['educationDictValue','education'],
+      // 月收入
+      income: ['','incomeMin', '', 'incomeMax'],
+      // 婚姻状况
+      maritalStatus: ['maritalStatusDictValue','maritalStatus'],
+      // 子女状况
+      childrenSituation: ['childrenSituationDictValue','childrenSituation'],
+      // 购房状况
+      houseSituation: ['houseSituationDictValue', 'houseSituation'],
+      // 购房状况
+      carSituation: ['carSituationDictValue', 'carSituation'],
+      // 择偶意向年龄
+      ages: ['intentionAgeMin','intentionAgeMin','intentionAgeMax','intentionAgeMax'],
+      // 择偶意向身高
+      intentionHeight: ['intentionHeightMin','intentionHeightMin','intentionHeightMax','intentionHeightMax'],
+      // 择偶意向居住地
+      intentionDomicile: ['intentionDomicileProvinceId','intentionDomicileProvince','intentionDomicileCityId','intentionDomicileCity'],
+      // 择偶意向学历
+      intentionEducation: ['intentionEducationDictValueMin','intentionEducationMinName','intentionEducationDictValueMax','intentionEducationMaxName'],
+      // 择偶意向月收入
+      intentionIncome: ['intentionIncomeMin','intentionIncomeMin','intentionIncomeMax','intentionIncomeMax'],
+      // 择偶意向婚姻状况
+      intentionMaritalStatus: ['intentionMaritalStatusDictValue', 'intentionMaritalStatus'],
+      // 择偶意向购房情况
+      intentionHouseSituation: ['intentionHouseSituationDictValue','intentionHouseSituation'],
+      // 择偶意向购车情况
+      intentionCarSituation: ['intentionCarSituationDictValue','intentionCarSituation'],
+      // 择偶意向子女状况
+      intentionChildrenSituation: ['intentionChildrenSituationDictValue','intentionChildrenSituation'],
+       // 家乡
+      hometown: ['hometownProvinceId','hometownProvinceName','hometownCityId','hometownCityName'],
+       // 户口
+      registeredResidence: ['registeredResidenceProvinceId','registeredResidenceProvinceName','registeredResidenceCityId','registeredResidenceCityName'],
+      // 民族
+      nation: ['nationDictValue','nation'],
+      // 血型
+      bloodType: ['bloodTypeDictValue','bloodType'],
+      // 体型
+      shape: ['shapeDictValue','shape'],
+      // 体重
+      weight: ['weight','weight'],
+      // 宗教
+      religiousBelief: ['religiousBeliefDictValue','religiousBelief'],
+      // 是否喝酒
+      isDrinkAlcohol: ['isDrinkAlcoholDictValue','isDrinkAlcohol'],
+      // 是否抽烟
+      isSmoke: ['isSmokeDictValue', 'isSmoke']
+    }
   },
   computed: {
     ...mapState({
@@ -247,82 +248,24 @@ export default {
     text() {
       return this.currentRate.toFixed(0) + "%";
     },
-    income () {
-       return [{
-        value: this.data.userBaseInformation.income
-      }]
-    },
-    domicile () {
-      // if(this.data.userBaseInformation.domicileProvinceId && this.data.userBaseInformation.domicileCityId){
-      //    return [this.data.userBaseInformation.domicileProvinceId, this.data.userBaseInformation.domicileCityId]
-      // } else {
-      //   return []
-      // }
-      if(this.data.userBaseInformation.domicileName){
-        let arr = this.data.userBaseInformation.domicileName.split(' ')
-        return [{
-          name: arr[0],
-          code: this.data.userBaseInformation.domicileProvinceId
-        },{
-          name: arr[1],
-          code: this.data.userBaseInformation.domicileCityId
-        }]
+    incomeDefault () {
+      let min = this.data.userBaseInformation.incomeMin
+      let max = this.data.userBaseInformation.incomeMax
+      let str = ''
+      if(min === '-1' && max === '-1'){
+        str = '不限'
+      } else if(min === '-1' && max !== '-1'){
+        str = max + '以上'
+      } else if(min !== '-1' && max === '-1'){
+        str = min + '以下'
       } else {
-        return []
+        str = min + " - " + max + '元'
       }
-      
-    },
-    ID () {
       return [{
-        label: this.data.userBaseInformation.userNo
-      }]
-    },
-    nickName () {
-      return [{
-        label: this.data.userBaseInformation.nickName
-      }]
-    },
-    sex () {
-      return [{
-        label: this.data.userBaseInformation.sex === '1' ? '男' : '女'
-      }]
-    },
-    height () {
-      return [{
-        value: this.data.userBaseInformation.height
-      }]
-    },
-    houseSituation () {
-      return [{
-        label: this.data.userBaseInformation.houseSituation,
-        value: this.data.userBaseInformation.houseSituationDictValue
-      }]
-    },
-    childrenSituation () {
-      return [{
-        label: this.data.userBaseInformation.childrenSituation,
-        value: this.data.userBaseInformation.childrenSituationDictValue
-      }]
-    },
-    income () {
-      return [{
-        label: this.data.userBaseInformation.education,
-        value: this.data.userBaseInformation.educationDictValue
-      }]
-    },
-    education () {
-      return [{
-        label: this.data.userBaseInformation.education,
-        value: this.data.userBaseInformation.educationDictValue
-      }]
-    },
-    carSituation () {
-      return [{
-        label: this.data.userBaseInformation.carSituation,
-        value: this.data.userBaseInformation.carSituationDictValue
+        value: this.data.userBaseInformation.incomeDictValue,
+        label: str
       }]
     }
-    
   },
   mounted () {
     userPersonalCenterInformation({ userId: this.user.id}).then((res) => {
@@ -334,6 +277,30 @@ export default {
     })
   },
   methods: {
+    getData (arr) {
+      let num = Math.round(arr.length /2)
+      let a = []
+      for( var i = 0 ; i < num ; i ++ ){
+        let b = arr.slice(i * 2, i * 2 + 2)
+        a.push({
+          value: this.data.userBaseInformation[b[0]] || '',
+          label: this.data.userBaseInformation[b[1]] || ''
+        })
+      }
+      return a
+    },
+    getAddressData (arr) {
+      let num = Math.round(arr.length /2)
+      let a = []
+      for( var i = 0 ; i < num ; i ++ ){
+        let b = arr.slice(i * 2, i * 2 + 2)
+        a.push({
+          code: this.data.userBaseInformation[b[0]] || '',
+          name: this.data.userBaseInformation[b[1]] || ''
+        })
+      }
+      return a
+    },
     addressCallback (name, arr) {
       let provinceId = arr[0].code
       let provinceName = arr[0].name
@@ -428,20 +395,24 @@ export default {
     },
 
     birthdayClick () {
-        this.$picker.show({
-          type:'datePicker',
-          date:this.data.userBaseInformation.birthday,  //初始化时间
-          endTime:new Date().getFullYear() + '-12-12',  //截至时间
-          startTime:'1950-1-1',  //开始时间
-          onOk:(e)=>{
-            updateUserSpecificInfo({
-              userId: this.user.id,
-              birthday: this.data.userBaseInformation.birthday.replace(/-/g,'/')
-            }).then(() => {
-              this.$set(this.data.userBaseInformation, 'birthday' , e)
-            })
-          },
-        })
+      // 进行实名认证之后生日不可修改
+      if(parseInt(this.data.userBaseInformation.registerState) >= 2 ){
+        return
+      }
+      this.$picker.show({
+        type:'datePicker',
+        date:this.data.userBaseInformation.birthday,  //初始化时间
+        endTime:new Date().getFullYear() + '-12-12',  //截至时间
+        startTime:'1950-1-1',  //开始时间
+        onOk:(e)=>{
+          updateUserBirthday({
+            userId: this.user.id,
+            birthday: e
+          }).then(() => {
+            this.$set(this.data.userBaseInformation, 'birthday' , e)
+          })
+        },
+      })
     },
     beforeClose () {
       console.log("what?")

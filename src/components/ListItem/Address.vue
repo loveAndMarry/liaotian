@@ -3,7 +3,7 @@
 </template>
 <script>
 import { Picker} from 'vant'
-import { getProvinceAndCityList } from '@/assets/common/api'
+import { getProvinceAndCityList, updateUserSpecificInfo } from '@/assets/common/api'
 
 export default {
   props:{
@@ -14,7 +14,11 @@ export default {
     data: {
       type: Array
     },
-    name: String
+    name: String,
+    defaultSubmitData: {
+      type: Array,
+      default: () => []
+    }
   },
   data () {
     return {
@@ -39,6 +43,25 @@ export default {
     }
   },
   methods: {
+     fromData (arr) {
+      var a = [], b = {}
+      // 获取当前选择获取到的值
+      arr.forEach((el, index) => {
+        a = a.concat(Object.values(el))
+      })
+      a = a.filter(el => typeof el !== 'object')
+      // 过滤掉子集选项
+      // 将需要提交的字段和名称进行匹配，顺序必须一样
+      this.defaultSubmitData.forEach((el, index) => {
+        if(el){
+          b[el] = a[index]
+        }
+      })
+      // 设置当前用户id
+      b['userId'] = this.$store.state.IM.user.id
+
+      return b
+    },
     getProvince (name) {
       return this.defaultColumns.find(el => el.name === name)
     },
@@ -72,8 +95,11 @@ export default {
       let obj = this.getProvince(values[0])
       let province = obj
       let city = obj.areaVoList.find(el => el.name === values[1])
-      this.$parent.$parent.result = [province, city]
-      this.$parent.$parent.isShow = false
+      let val = [province, city]
+      updateUserSpecificInfo(this.fromData(val)).then(() => {
+        this.$parent.$parent.result = val
+        this.$parent.$parent.isShow = false
+      })
     }
   },
   components: {
