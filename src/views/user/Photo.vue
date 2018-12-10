@@ -10,26 +10,50 @@
               <p>上传图片</p>
             </div>
         </li>
-        <li v-for="(el, index) in 8" :key="index" class="photo_item"><img 
+        <li v-for="(el, index) in photoList" :key="index" class="photo_item"><img 
         @touchstart.native="showDeleteButton(item.id)" @touchend.native="clearLoop(item.id)"
         src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="" v-if="index === 0" @click="imageClick"/></li>
+        <li v-for="(el, index) in (8 - photoList.length)" :key="index" class="photo_item"></li>
     </ul>
   </div>
 </template>
 <script>
 import { NavBar, ImagePreview  } from "vant"
+import { userPhoto } from '@/assets/common/api'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
       value: '',
-      Loop: null
+      Loop: null,
+      pageCurrent: 1,
+      pageSize: 15,
+      photoList: []
     }
+  },
+  computed: {
+    ...mapState({
+      user: state => state.IM.user
+    })
   },
   components: {
     NavBar
   },
+  mounted () {
+    userPhoto({
+      pageCurrent:this.pageCurrent,
+      pageSize: this.pageSize,
+      userId: this.user.id
+    }).then((res) => {
+      if(res.data.list){
+        this.photoList.push(...res.data.list)
+      }
+    })
+  },
   methods: {
-    onClickLeft () {},
+    onClickLeft () {
+      this.$router.back()
+    },
     imageClick () {
       ImagePreview({
         images: [
@@ -70,7 +94,6 @@ export default {
         //         });
         //       }
         // });
-        console.log("长按")
       }.bind(this), 1000);
     },
     clearLoop(e) {

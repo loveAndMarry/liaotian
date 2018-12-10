@@ -27,27 +27,27 @@
           <li class="photo_more"><span class="sanjiao" @click="photosClick">相册</span></li>
       </ul>
       <ul class="links">
-        <li @click="linkClick">
+        <li @click="linkClick(1)">
             <img :src="data.accessRecordUserPhotoUrl" alt="">
             <p>谁看过我</p>
         </li>
-        <li @click="linkClick">
+        <li @click="linkClick(2)">
             <img :src="data.likeMePhotoUrl" alt="">
             <p>谁喜欢我</p>
         </li>
-        <li @click="linkClick">
+        <li @click="linkClick(3)">
             <img :src="data.likeUserPhotoUrl" alt="">
             <p>我喜欢谁</p>
         </li>
-        <li>
+        <li @click="linkClick(4)">
             <img src='../../assets/images/love@2x.png' alt="" style="width: inherit;">
             <p>相互喜欢</p>
         </li>
       </ul>
     </div>
-    <Group title="会员服务">
+    <Group title="会员服务" :isRight="true" @click="memberClick">
       <ul class="links" style="margin-top: 0.15rem">
-        <li @click="toastClick" v-for="(el, index) in data.levels" :key="index">
+        <li @click="toastClick(el)" v-for="(el, index) in data.levels" :key="index">
             <img :src="el.ico" class="link_img"/>
             <p>{{el.levelName}}</p>
         </li>
@@ -68,7 +68,7 @@
      <div class="group">
        <ul class="lists">
          <li @click="myDynamicClick">我的动态<span class="sanjiao"></span></li>
-         <li>我的订单<span class="sanjiao"></span></li>
+         <li @click="orderClick">我的订单<span class="sanjiao"></span></li>
        </ul>
      </div>
      <van-dialog
@@ -110,19 +110,24 @@ export default {
     })
   },
   methods: {
+    memberClick () {
+      this.$router.push({name: 'member'})
+    },
     detailsClick () {
       this.$router.push({name: 'userDetails'})
     },
     photosClick () {
       this.$router.push({name: 'Photo'})
     },
-    linkClick () {
-      this.isshow = true
-      window.setTimeout(() => {
-        this.$router.push({name: 'link'})
-      },3000)
+    linkClick (type) {
+      // this.isshow = true
+      this.$router.push({name: 'link', query: {type: type}}) // 1为谁看过我 2 为谁喜欢我 3 我喜欢谁 4 互相喜欢
     },
-    toastClick () {
+    orderClick () {
+      this.$router.push({name: 'order'})
+    },
+    toastClick (item) {
+      this.$router.push({name: 'memberDetails',query: {item : item}})
     },
     beforeClose(action, done) {
       if (action === 'confirm') {
@@ -137,12 +142,10 @@ export default {
   },
   mounted () {
     personalCenter({userId: this.user.id}).then((res) => {
-      console.log(res.data)
       if(res.data) {
         this.data = Object.assign(this.data, res.data)
       }
     })
-    console.log(this)
   },
   components: {
     Group

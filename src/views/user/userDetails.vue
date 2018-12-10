@@ -269,7 +269,6 @@ export default {
   },
   mounted () {
     userPersonalCenterInformation({ userId: this.user.id}).then((res) => {
-      console.log(res, '数据');
       if(res.data){
         this.data = Object.assign(this.data, res.data)
         this.isData = true
@@ -418,7 +417,8 @@ export default {
       console.log("what?")
     },
     linkClick () {
-      this.isShow = true
+      // this.isShow = true
+      this.$router.push({name: 'link', query: {type: 2}})
     },
     nickNameClick () {
       this.$router.push({name: 'nickName',query:{nickName: this.data.userBaseInformation.nickName}})

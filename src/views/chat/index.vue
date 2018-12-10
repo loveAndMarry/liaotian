@@ -46,11 +46,6 @@ export default {
     // 获取好友列表
     this.GETFRIEND({});
   },
-  watch: {
-    friendList (val) {
-      console.log('friendList已经改变', val)
-    }
-  },
   methods: {
     ...mapActions(["UPDATEUSERLIST", "GETFRIEND", 'GETFRIENDLIST','UPDATE_FRIEND_LIST']),
     infinite(done) {
@@ -61,7 +56,6 @@ export default {
     },
     chatListClick(item) {
       this.UPDATEUSERLIST(item).then(() => {
-        console.log(this.$store, "当前个人信息已经获取");
         utils.updateArray(this.$store.state.IM.friendList, item.accountNumber, {
           hint: 0
         });

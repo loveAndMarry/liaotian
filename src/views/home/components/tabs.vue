@@ -261,12 +261,10 @@ export default {
       this.valueName = this[name][index]
 
       this.flag[this.valueName + 'Show'] = true
-      console.log('点击了')
     }
   },
   watch: {
     fromData (value) {
-      console.log('更新了')
       this.$emit('updateVal', value)
     }
   },

@@ -52,6 +52,9 @@ export const personalCenter = data => HTTP.GET('web/selectUser/personalCenter',d
 // 获取个人资料信息
 export const userPersonalCenterInformation = data => HTTP.GET('web/selectUser/userPersonalCenterInformation',data)
 
+// 获取个人相册
+export const userPhoto = data => HTTP.GET('web/selectUser/userPhoto',data)
+
 // 修改个人资料信息
 export const updateUserSpecificInfo = data => HTTP.GET('web/updateUserController/updateUserPersonalInformation',data)
 
@@ -66,6 +69,15 @@ export const updateUserPersonalIntroduction = data => HTTP.GET('web/updateUserCo
 
 // 获取用户的访客记录
 export const accessRecordUser = data => HTTP.GET('web/userAccessRecord/accessRecordUser',data)
+
+// 获取谁喜欢我列表
+export const likeMeList = data => HTTP.GET('web/like/likeMeList',data)
+
+// 获取我喜欢谁列表
+export const likeUserList = data => HTTP.GET('web/like/likeUserList',data)
+
+// 获取互相喜欢列表
+export const likeEachOther = data => HTTP.GET('web/like/likeEachOther',data)
 
 // 删除用户的访客记录
 export const deleteAccessRecord = data => HTTP.GET('web/userAccessRecord/deleteAccessRecord',data)
@@ -84,3 +96,6 @@ export const interest = data => HTTP.GET('web/queryCriteria/interest',data)
 
 // 根据type值获取对应的字典值
 export const dictionaryQuery = data => HTTP.GET('web/queryCriteria/dictionaryQuery', data)
+
+// 根据userId 获取当前的会员列表
+export const getMemberLevelList = data => HTTP.GET('web/userMember/getMemberLevelList', data)

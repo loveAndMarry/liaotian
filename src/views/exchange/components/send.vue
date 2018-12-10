@@ -33,9 +33,6 @@ export default {
     emotion,
     Gift
   },
-  mounted () {
-    console.log(this.$store, "点击进入聊天页面后")
-  },
   methods: {
     ...mapActions([
       'POSTMSG'
@@ -80,7 +77,6 @@ export default {
       var that = this
       this.isShow = false
       this.$emit('editHeight', this.isShow)
-      console.log(that.friend)
       this.POSTMSG({
         context: context,
         id: new Date().getTime(),
@@ -94,7 +90,6 @@ export default {
         msgType: 1
       }).then((res) => {
         that.context = ''
-        console.log('消息发送成功 ')
       })
     }
   },

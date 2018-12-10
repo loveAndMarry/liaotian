@@ -92,7 +92,6 @@ export default {
   },
   watch : {
     result (val) {
-      console.log(val)
       if(val.length > 0){
         if(this.type === 'packerTwo'){
           if(val[0].value === '-1' && val[1].value === '-1'){
@@ -113,11 +112,9 @@ export default {
   },
   methods: {
     isSuffix(label){
-      console.log(label)
       return (label.indexOf(this.suffix) === -1 && label.indexOf(this.suffix) !== 0) ? label + this.suffix : label
     },
     intantionClick () {
-      console.log(this.defaultSubmitData)
       // 当前是否能够点击
       if(this.noClick){
         return false
@@ -130,7 +127,6 @@ export default {
       this.isShow = true
     },
     onConfirm (arr) {
-      console.log(arr, '更新完成')
       this.isShow = false
       this.result = arr
       this.$emit('confirm', arr)

@@ -174,12 +174,9 @@ export default {
   methods: {
      ...mapActions(["UPDATEUSERLIST"]),
     immediately () {
-      console.log(this)
        this.UPDATEUSERLIST(this.userBaseInformation).then(() => {
-        console.log(this, "当前个人信息已经获取")
         this.$router.push({ path: "/exchange" });
         this.$store.state.IM.frient = this.userBaseInformation
-        console.log(this)
       });
     },
     onClickLeft () {

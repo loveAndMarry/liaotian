@@ -32,9 +32,6 @@ export default {
       'getChatMessage'
     ])
   },
-  mounted () {
-    console.log(this.getChatMessage)
-  },
   watch: {
     'getChatMessage': function (arr) {
       // 将滚动条置为底部

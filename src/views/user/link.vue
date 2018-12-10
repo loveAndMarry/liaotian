@@ -2,64 +2,31 @@
   <div class="group">
     <div style="overflow-y: scroll;position: relative;height: 100%;overflow-x: hidden;">
       <div class="group_back">
-        <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt>
+        <img :src="user.userHead" alt>
       </div>
       <div class="group_content">
         <div class="top"></div>
       </div>
       <div class="content">
-        <NavBar left-arrow @click-left="onClickLeft" @click-right="onClickRight"/>
+        <NavBar left-arrow @click-left="onClickLeft"/>
         <div class="content_head">
           <div class="head">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt>
-            <span>更换头像</span>
+            <img :src="user.userHead" alt>
           </div>
         </div>
         <div class="content_name">
-          <p> <strong style="font-size:.35rem">8</strong> 位会员喜欢了您</p>
+          <p> <strong style="font-size:.35rem">{{totalCount}}</strong> 位会员喜欢了您</p>
           <div style="color:#8c8c8c">
             开通会员查看访问您的人
           </div>
         </div>
         <ul class="links">
-          <li class="links_group hide">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>7小时前</p>
-          </li>
-          <li class="links_group">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>7小时前</p>
-          </li>
-          <li class="links_group">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>7小时前</p>
-          </li>
-          <li class="links_group">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>7小时前</p>
-          </li>
-          <li class="links_group">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>7小时前</p>
-          </li>
-           <li class="links_group">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>7小时前</p>
-          </li>
-           <li class="links_group">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>7小时前</p>
-          </li>
-           <li class="links_group">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>7小时前</p>
-          </li>
-           <li class="links_group">
-            <img src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="">
-            <p>7小时前</p>
+          <li class="links_group hide" v-for="(el, index) in links" :key="index">
+            <img :src="el.userHead" alt="">
+            <p>{{el.operationDate | dateTime}}</p>
           </li>
         </ul>
-        <router-link class="submit" to="###">开通会员</router-link>
+        <router-link class="submit" to="/member">开通会员</router-link>
       </div>
     </div>
   </div>
@@ -67,31 +34,85 @@
 <script>
 import { NavBar, Circle } from "vant";
 import SplitGroup from "@/components/SplitGroup";
+import { accessRecordUser,likeMeList, likeUserList,likeEachOther } from '@/assets/common/api'
+import { mapState } from 'vuex'
 import Vue from "vue";
 
 Vue.use(Circle);
 export default {
   data() {
     return {
-      currentRate: 0
+      totalCount: 0,
+      currentRate: 1,
+      pageSize: 9,
+      links: []
     };
   },
   computed: {
+    ...mapState({
+      user: state => state.IM.user
+    }),
     text() {
       return this.currentRate.toFixed(0) + "%";
+    },
+    fromData () {
+      return {
+        currentRate: this.currentRate,
+        pageSize: this.pageSize,
+        userId: this.user.id
+      }
+    },
+  },
+  mounted () {
+    if(this.$route.query.type === 1){
+      this.accessRecordUser()
+    } else if(this.$route.query.type === 2){
+      this.likeMeList()
+    } else if(this.$route.query.type === 3){
+      this.likeUserList()
+    } else {
+      this.likeEachOther()
     }
   },
   methods: {
-    onClickLeft() {},
-    onClickRight() {},
-    visitorClick () {
-      this.$router.push({name: 'RecentVisitors'})
+    onClickLeft() {
+      this.$router.back()
     },
-    selfClick () {
-      this.$router.push({name: 'selfIntroduction'})
+    // 获取谁看过我的列表
+    accessRecordUser () {
+      accessRecordUser(this.fromData).then((res) => {
+        this.totalCount = res.data.totalCount
+        if(res.data.count !== 0){
+          this.links.push(...res.data.list)
+        }
+      })
     },
-    hobbiesClick () {
-      this.$router.push({name: 'Hobbies'})
+    // 获取谁喜欢我
+    likeMeList () {
+      likeMeList(this.fromData).then((res) => {
+        this.totalCount = res.data.totalCount
+        if(res.data.count !== 0){
+          this.links.push(...res.data.list)
+        }
+      })
+    },
+    // 我喜欢谁
+    likeUserList () {
+      likeUserList(this.fromData).then((res) => {
+        this.totalCount = res.data.totalCount
+        if(res.data.count !== 0){
+          this.links.push(...res.data.list)
+        }
+      })
+    },
+    // 相互喜欢
+    likeEachOther () {
+      likeEachOther(this.fromData).then((res) => {
+        this.totalCount = res.data.totalCount
+        if(res.data.count !== 0){
+          this.links.push(...res.data.list)
+        }
+      })
     }
   },
   components: {

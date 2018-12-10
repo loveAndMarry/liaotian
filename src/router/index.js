@@ -30,6 +30,12 @@ import link from '@/views/user/link'
 import MyDynamic from '@/views/user/MyDynamic'
 // 修改昵称
 import nickName from '@/views/user/nickName'
+// 会员开通列表
+import member from '@/views/member'
+// 会员详情
+import memberDetails from '@/views/member/memberDetails'
+// 我的订单
+import order from '@/views/user/order'
 
 Vue.use(Router)
 
@@ -142,7 +148,21 @@ export default new Router({
     components: {
       content: nickName
     }
+  },
+  {
+    path: '/member',
+    name: 'member',
+    component: member
+  },
+  {
+    path: '/memberDetails',
+    name: 'memberDetails',
+    component: memberDetails
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: order
   }
-  
   ]
 })
