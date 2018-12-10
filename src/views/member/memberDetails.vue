@@ -3,31 +3,13 @@
     <NavBar left-arrow @click-left="onClickLeft" :title="title"/>
     <div class="scroll">
       <div style="padding:.2rem .3rem 0">
-      <div class="money_group">
-        <span class="day">12个月</span>
-        <span class="money">￥888</span>
-        <del class="originalPrice">￥1288</del>
-        <span class="buy">购买</span>
+        <div class="money_group" v-for="(el, index) in members" :key="index">
+          <span class="day">{{timeName(el)}}</span>
+          <span class="money">￥{{el.discountsStart === '0' ? el.priceY : el.discountsPriceY}}</span>
+          <del class="originalPrice" v-if="el.discountsStart === '1'">￥{{el.priceY}}</del>
+          <span class="buy">购买</span>
+        </div>
       </div>
-      <div class="money_group">
-        <span class="day">9个月</span>
-        <span class="money">￥888</span>
-        <del class="originalPrice">￥1288</del>
-        <span class="buy">购买</span>
-      </div>
-      <div class="money_group">
-        <span class="day">6个月</span>
-        <span class="money">￥888</span>
-        <del class="originalPrice">￥1288</del>
-        <span class="buy">购买</span>
-      </div>
-      <div class="money_group">
-        <span class="day">3个月</span>
-        <span class="money">￥888</span>
-        <del class="originalPrice">￥1288</del>
-        <span class="buy">购买</span>
-      </div>
-    </div>
     <Group title="会员特权">
        <div class="intention_item">
         <img src="../../assets/images/vip_zungui_icon@2x.png" alt="">
@@ -65,11 +47,13 @@
 </template>
 <script>
 import Group from '@/components/Group'
+import { getMemberPrice } from '@/assets/common/api'
 import { NavBar } from 'vant'
 export default {
   data () {
     return {
-      title: ''
+      title: '',
+      members: []
     }
   },
   components: {
@@ -78,10 +62,35 @@ export default {
   },
   mounted () {
     this.title = this.$route.query.item.levelName
+    getMemberPrice({
+      memberLevelId: this.$route.query.item.id
+    }).then((res) => {
+      if(res.data){
+        this.members = res.data
+      }
+    })
   },
   methods: {
     onClickLeft () {
       this.$router.back()
+    },
+    timeName (item) {
+      var str = ''
+      switch(item.timeTypeCode){
+        case '1':
+          str = '天'
+          break
+        case '2':
+          str = '个月'
+          break
+        case '3':
+          str = '年'
+          break
+        case '4':
+          str = '永久有效'
+          break
+      }
+      return item.count + str
     }
   }
 }

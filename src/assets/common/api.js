@@ -99,3 +99,6 @@ export const dictionaryQuery = data => HTTP.GET('web/queryCriteria/dictionaryQue
 
 // 根据userId 获取当前的会员列表
 export const getMemberLevelList = data => HTTP.GET('web/userMember/getMemberLevelList', data)
+
+// 获取当前会员价格信息
+export const getMemberPrice = data => HTTP.GET('web/userMember/getMemberPrice', data)

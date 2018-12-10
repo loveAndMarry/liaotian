@@ -1,7 +1,7 @@
 <template>
   <div style="height:100%;background-color: #fff;">
     <NavBar title='消息'></NavBar>
-    <div style="height:calc(100% - .2rem);position: relative">
+    <div style="height:calc(100% - 96px);position: relative">
       <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller">
         <ul class="chat_list">
           <li class="chat_list_item" v-for="(el, index) in friendList" :key="index" @click="chatListClick(el)">
