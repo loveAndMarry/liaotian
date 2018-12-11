@@ -127,12 +127,4 @@ export default {
   height: 100%;
   position: relative;
 }
-.tianjia{
-    display: block;
-    width: .4rem;
-    height: .4rem;
-    background-image: url('../../../static/images/tianjia.png');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-}
 </style>

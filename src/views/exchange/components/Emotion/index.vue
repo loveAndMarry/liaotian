@@ -54,6 +54,7 @@ export default {
   }
   .emotion-box-line {
     display: flex;
+    display: -webkit-flex
   }
   .emotion-item {
     flex: 1;

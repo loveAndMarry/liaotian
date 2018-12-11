@@ -44,11 +44,17 @@ HTTP.GET = function (url, data) {
     axios.get(url, {
       params: data
     }).then((res) => {
-      console.log('请求成功')
-      resolve(res.data)
+      if(res.data.code === 200){
+        console.log(res)
+        console.log('请求成功')
+        resolve(res.data)
+      }else{
+        console.log(res)
+        console.log('请求失败')
+        reject(res.data)
+      }
     }).catch((res) => {
       console.log('失败')
-      reject(res)
     })
   })
 }
@@ -58,8 +64,12 @@ HTTP.POST = function (url, data) {
     axios.post(url, {
       data: data
     }).then((res) => {
-      console.log('请求成功')
-      resolve(res.data)
+      if(res.data.code === 200){
+        console.log('请求成功')
+        resolve(res.data)
+      }else{
+        console.log('请求失败')
+      }
     }).catch((res) => {
       console.log('失败')
       reject(res)

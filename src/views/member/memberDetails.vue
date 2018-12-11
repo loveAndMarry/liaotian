@@ -108,7 +108,9 @@ export default {
   display: flex;
   display: -webkit-flex;
   justify-items: center;
+  -webkit-ustify-items: center;
   justify-content: space-evenly;
+   -webkit-justify-content: space-evenly;
   font-size: .24rem;
   color: #8d8d8d;
   padding: .2rem 0;

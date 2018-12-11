@@ -492,6 +492,7 @@ export default {
   display: flex;
   display: -webkit-flex;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
 }
 .hint{
   padding: .07rem .15rem;
@@ -573,7 +574,9 @@ export default {
   display: flex;
   display: -webkit-flex;
   align-items: flex-end;
+  -webkit-align-items: flex-end;
   justify-content: space-evenly;
+  -webkit-justify-content: space-evenly;
 }
 .content_head .item p {
   white-space: nowrap;

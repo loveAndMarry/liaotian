@@ -102,3 +102,10 @@ export const getMemberLevelList = data => HTTP.GET('web/userMember/getMemberLeve
 
 // 获取当前会员价格信息
 export const getMemberPrice = data => HTTP.GET('web/userMember/getMemberPrice', data)
+
+
+/**
+ * 注册时候完善个人信息
+ */
+
+export const initialInformation = data => HTTP.GET('web/updateUserController/initialInformation', data)

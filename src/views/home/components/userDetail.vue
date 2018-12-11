@@ -10,13 +10,13 @@
           </div>
         </div>
         <div class="message">
-          <p v-text="`${userBaseInformation.age}岁`"></p>
+          <p v-text="userBaseInformation.age ? `${userBaseInformation.age}岁` : '未填写'"></p>
           <i>|</i>
-          <p v-text="`${userBaseInformation.height}cm`"></p>
+          <p v-text="userBaseInformation.height ? `${userBaseInformation.height}cm` : '未填写'"></p>
           <i>|</i>
-          <p v-text="userBaseInformation.education"></p>
+          <p v-text="userBaseInformation.education ? userBaseInformation.education: '未填写'"></p>
           <i>|</i>
-          <p v-text="userBaseInformation.incomeMin + ' - '+ userBaseInformation.incomeMax"></p>
+          <p v-text="income(userBaseInformation)"></p>
         </div>
         <div class="address" v-text="userBaseInformation.domicileName"></div>
       </div>
@@ -179,6 +179,17 @@ export default {
         this.$store.state.IM.frient = this.userBaseInformation
       });
     },
+    income (item) {
+      if(item.incomeMin && item.incomeMax === undefined){
+        return item.incomeMin
+      }
+      if(item.incomeMin === undefined && item.incomeMax){
+        return item.incomeMax
+      }
+      if(item.incomeMin && item.incomeMax){
+        return item.incomeMin + ' - ' + item.incomeMax
+      }
+    },
     onClickLeft () {
       this.$router.push({path: '/view/home'})
     },
@@ -253,6 +264,7 @@ export default {
   display: flex;
   display: -webkit-flex;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
 }
 .hint{
   padding: .07rem .15rem;

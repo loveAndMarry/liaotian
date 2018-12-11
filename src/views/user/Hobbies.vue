@@ -118,6 +118,7 @@ export default {
   display: flex;
   display: -webkit-flex;
   flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
 }
 .hint {
   padding: 0.08rem 0.27rem;

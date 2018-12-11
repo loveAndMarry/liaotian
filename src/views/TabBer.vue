@@ -46,20 +46,20 @@ export default {
     return {
       active: 0,
       homeicon: {
-        active: '../../static/images/home_active@2x.png',
-        normal: '../../static/images/home@2x.png'
+        active: require('../assets/images/home_active@2x.png'),
+        normal: require('../assets/images/home@2x.png')
       },
       msgicon: {
-        active: '../../static/images/message_active@2x.png',
-        normal: '../../static/images/message_btn@2x.png'
+        active: require('../assets/images/message_active@2x.png'),
+        normal: require('../assets/images/message_btn@2x.png')
       },
       choiceicon: {
-        active: '../../static/images/choice_active@2x.png',
-        normal: '../../static/images/choice_btn@2x.png'
+        active: require('../assets/images/choice_active@2x.png'),
+        normal: require('../assets/images/choice_btn@2x.png')
       },
       usericon: {
-        active: '../../static/images/user_active@2x.png',
-        normal: '../../static/images/user_btn@2x.png'
+        active: require('../assets/images/user_active@2x.png'),
+        normal: require('../assets/images/user_btn@2x.png')
       }
     }
   },

@@ -210,6 +210,7 @@ export default {
       eles.forEach(element => {
         element.innerHTML = "不限"
       });
+      this.isShow = -1
       this.$emit('updateVal', this.fromData)
     },
     replaceArr (arr) {

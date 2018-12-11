@@ -107,7 +107,9 @@ export default {
   display: flex;
   display: -webkit-flex;
   flex-wrap: wrap;
-  justify-content:space-evenly
+  -webkit-flex-wrap: wrap;
+  justify-content:space-evenly;
+  -webkit-justify-content:space-evenly
 }
 .photos li{
   width: 2.38rem;

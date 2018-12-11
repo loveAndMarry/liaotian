@@ -36,6 +36,8 @@ import member from '@/views/member'
 import memberDetails from '@/views/member/memberDetails'
 // 我的订单
 import order from '@/views/user/order'
+// 个人资料
+import basicInformation from '@/views/user/basicInformation'
 
 Vue.use(Router)
 
@@ -163,6 +165,11 @@ export default new Router({
     path: '/order',
     name: 'order',
     component: order
+  },
+  {
+    path: '/basicInformation',
+    name: 'basicInformation',
+    component: basicInformation
   }
   ]
 })

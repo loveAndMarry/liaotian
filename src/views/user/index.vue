@@ -248,7 +248,9 @@ export default {
 }
 .links {
   display: flex;
+  display: -webkit-flex;
   justify-content: space-between;
+  -webkit-justify-content: space-between;
   text-align: center;
   padding: 0 0.2rem;
 }

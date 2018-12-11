@@ -39,6 +39,11 @@ export default {
       type: Boolean,
       default: true
     },
+    // 是否自动提交
+    isSubmit: {
+      type: Boolean,
+      default: true
+    },
     defaultSubmitData: {
       type: Array,
       default: () => []
@@ -86,10 +91,15 @@ export default {
     },
     confirm () {
       let val = this.result.map(el => this.columns.find(item => item.label === el))
-      updateUserSpecificInfo(this.fromData(val)).then(() => {
-        this.$parent.$parent.result = val
-        this.$parent.$parent.isShow = false
-      })
+      if(this.isSubmit){
+        updateUserSpecificInfo(this.fromData(val)).then(() => {
+          this.$parent.$parent.result = val
+          this.$parent.$parent.isShow = false
+        })
+      } else {
+        this.$emit('confirm', val)
+      }
+      
     },
     cancel () {
       this.$parent.$parent.isShow = false

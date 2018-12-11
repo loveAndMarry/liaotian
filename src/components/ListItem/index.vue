@@ -5,15 +5,15 @@
     </div>
     <Actionsheet v-model="isShow" :close-on-click-overlay='false'>
       <!-- 地址组件 -->
-      <Address  v-if="type === 'address'" :data="codes" :title="title" :defaultSubmitData='defaultSubmitData'></Address>
+      <Address  v-if="type === 'address'" :data="codes" :title="title" :isSubmit="isSubmit" :defaultSubmitData='defaultSubmitData' @confirm="onConfirm"></Address>
       <!-- 单列选择组件 -->
-      <PackerOne  v-if="type === 'packerOne'" :data="codes" :title="title" :type="dictionaries" :defaultSubmitData='defaultSubmitData'></PackerOne>
+      <PackerOne  v-if="type === 'packerOne'" :data="codes" :title="title" :isSubmit="isSubmit" :type="dictionaries" :defaultSubmitData='defaultSubmitData' @confirm="onConfirm"></PackerOne>
       <!-- 双列选择并且不限组件 -->
-      <PackerTwo  v-if="type === 'packerTwo'" :data="codes" :title="title" :type="dictionaries" :defaultSubmitData='defaultSubmitData'></PackerTwo>
+      <PackerTwo  v-if="type === 'packerTwo'" :data="codes" :title="title" :isSubmit="isSubmit" :type="dictionaries" :defaultSubmitData='defaultSubmitData' @confirm="onConfirm"></PackerTwo>
       <!-- 单选组件 -->
-      <PackerList  v-if="type === 'radioOne'" :data="codes" :title="title" :type="dictionaries" :defaultSubmitData='defaultSubmitData'></PackerList>
+      <PackerList  v-if="type === 'radioOne'" :data="codes" :title="title" :isSubmit="isSubmit" :type="dictionaries" :defaultSubmitData='defaultSubmitData' @confirm="onConfirm"></PackerList>
       <!-- 多选选组件 -->
-      <PackerList  v-if="type === 'radioTwo'" :data="codes" :title="title" :type="dictionaries" :radio='false' :defaultSubmitData='defaultSubmitData' :suffix="suffix"></PackerList>
+      <PackerList  v-if="type === 'radioTwo'" :data="codes" :title="title" :isSubmit="isSubmit" :type="dictionaries" :radio='false' :defaultSubmitData='defaultSubmitData' :suffix="suffix" @confirm="onConfirm"></PackerList>
     </Actionsheet>
   </div>
 </template>
@@ -46,7 +46,15 @@ export default {
     // 当前为地址、单选、多选、双向选择
     type: String,
     // 默认显示的值，以逗号分隔的编码格式
-    default: Object/Array,
+    default: {
+      type: Object/Array,
+      default: () => []
+    },
+    // 是否自动提交
+    isSubmit: {
+      type: Boolean,
+      default: true
+    },
     // 字典名称
     dictionaries: {
       type: String,

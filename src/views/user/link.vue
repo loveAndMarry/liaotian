@@ -142,7 +142,9 @@ export default {
   display: flex;
   display: -webkit-flex;
   justify-content: space-evenly;
-  flex-wrap: wrap
+  -webkit-justify-content: space-evenly;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap
 }
 .links li{
   display: inline-block;
@@ -205,7 +207,9 @@ export default {
   display: flex;
   display: -webkit-flex;
   align-items: flex-end;
+  -webkit-align-items: flex-end;
   justify-content: space-evenly;
+  -webkit-justify-content: space-evenly;
 }
 .content_head .head {
   width: 2.25rem;

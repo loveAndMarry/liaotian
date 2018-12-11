@@ -13,18 +13,18 @@
             <div class="praise" @click.stop="link(item)" :class="{unlink:item.isLikeUser === 0}"><span></span>{{item.likeCount}}</div>
           </div>
           <div class="message">
-            <p v-text="`${item.age}岁`"></p>
+            <p v-text="item.age ? `${item.age}岁` : '未填写'"></p>
             <i>|</i>
-            <p v-text="`${item.height}cm`"></p>
+            <p v-text="item.height? `${item.height}cm` : '未填写'"></p>
             <i>|</i>
-            <p v-text="item.education"></p>
+            <p v-text="item.education || '未填写'"></p>
             <i>|</i>
-            <p v-text="item.incomeMin + ' - ' + item.incomeMax"></p>
+            <p v-text="income(item)"></p>
           </div>
-          <ul class="tags">
+          <ul class="tags" v-if="item.interestDictVoList && item.interestDictVoList.length > 0">
             <li v-for="(el, dex) in item.interestDictVoList.filter(a => a < 2)" :key="dex" v-text="el.label"></li>
           </ul>
-          <div class="manifesto" v-text="`爱情宣言 :${item.personalIntroduction}`"></div>
+          <div class="manifesto" v-text="`爱情宣言 :${item.personalIntroduction? item.personalIntroduction : '未填写' }`"></div>
         </div>
       </li>
     </ul>
@@ -46,6 +46,17 @@ export default {
     }
   },
   methods: {
+    income (item) {
+      if(item.incomeMin && item.incomeMax === undefined){
+        return item.incomeMin
+      }
+      if(item.incomeMin === undefined && item.incomeMax){
+        return item.incomeMax
+      }
+      if(item.incomeMin && item.incomeMax){
+        return item.incomeMin + ' - ' + item.incomeMax
+      }
+    },
     link (item) {
       let link = null
       if(item.isLikeUser === 1){
@@ -55,7 +66,7 @@ export default {
         }).then(() => {
           link = 0
           --item.likeCount
-          this.columns = this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
+          this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
         })
       } else {
         likeUser({
@@ -64,7 +75,7 @@ export default {
         }).then(() => {
           link = 1
           ++item.likeCount
-          this.columns = this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
+          this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
         })
       }
     },
@@ -181,7 +192,6 @@ export default {
 }
 .list_content .message{
   font-size: .26rem;
-  line-height: .26rem;
   overflow: hidden;
 }
 .list_content .message i, .list_content .message p{

@@ -13,6 +13,11 @@ export default {
       type: Array,
       default: []
     },
+    // 是否自动提交
+    isSubmit: {
+      type: Boolean,
+      default: true
+    },
     defaultSubmitData: {
       type: Array,
       default: () => []
@@ -76,11 +81,15 @@ export default {
          val = [this.defaultData.find(el => el.label === value)]
          result = val
       }
-     
-      updateUserSpecificInfo(this.fromData(val)).then(() => {
-        this.$parent.$parent.result = result
-        this.$parent.$parent.isShow = false
-      })
+      if(this.isSubmit){
+        updateUserSpecificInfo(this.fromData(val)).then(() => {
+          this.$parent.$parent.result = result
+          this.$parent.$parent.isShow = false
+        })
+      } else {
+        this.$emit('confirm', result)
+      }
+      
     },
     showData () {
       this.isLoading = false

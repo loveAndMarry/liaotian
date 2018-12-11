@@ -14,6 +14,11 @@ export default {
     data: {
       type: Array
     },
+    // 是否自动提交
+    isSubmit: {
+      type: Boolean,
+      default: true
+    },
     name: String,
     defaultSubmitData: {
       type: Array,
@@ -86,7 +91,7 @@ export default {
       this.isLoading = false
     },
     onCancel () {
-      this.$emit('cancel')
+      this.$parent.$parent.isShow = false
     },
     onChange (picker, values) {
       picker.setColumnValues(1,this.getProvince(values[0]).areaVoList.map(el => el.name));
@@ -96,10 +101,14 @@ export default {
       let province = obj
       let city = obj.areaVoList.find(el => el.name === values[1])
       let val = [province, city]
-      updateUserSpecificInfo(this.fromData(val)).then(() => {
-        this.$parent.$parent.result = val
-        this.$parent.$parent.isShow = false
-      })
+      if(this.isSubmit){
+        updateUserSpecificInfo(this.fromData(val)).then(() => {
+          this.$parent.$parent.result = val
+          this.$parent.$parent.isShow = false
+        })
+      } else {
+        this.$emit('confirm', val)
+      }
     }
   },
   components: {
