@@ -11,16 +11,16 @@
         <NavBar left-arrow @click-left="onClickLeft"/>
         <div class="content_head">
           <div class="item">
-            <van-circle
+            <!-- <van-circle
               v-model="currentRate"
               :rate="parseInt(data.dataIntegrity)"
               :speed="100"
               :text="text"
               fill="#fff"
-              layer-color="#ccc"
               size="1rem"
               color="#ff7994"
-            />
+            /> -->
+            <div class="dataIntegrity">{{data.dataIntegrity + '%'}}</div>
             <p>资料完整度</p>
           </div>
           <div class="head">
@@ -457,6 +457,15 @@ export default {
 };
 </script>
 <style scoped>
+.dataIntegrity{
+  width: calc(1rem - 2px );
+  height: calc( 1rem - 2px );
+  border: 2px solid #ff7994;
+  border-radius: 50%;
+  -webkit-border-raduis: 50%;
+  line-height: 1rem;
+  color: #ff7994;
+}
 .submit{
   display: block;
   margin: 0 auto;
@@ -464,6 +473,7 @@ export default {
   height: .8rem;
   background-color: #ff7994;
   border-radius: .5rem;
+  -webkit-border-radius: .5rem;
   text-align: center;
   line-height: .8rem;
   font-size: .31rem;
@@ -501,6 +511,7 @@ export default {
   border:1px solid #d9d9d9;
   color:#858585;
   border-radius: .3rem;
+  -webkit-border-radius: .3rem;
   margin-right: .15rem;
   margin-bottom: .2rem
 }
@@ -548,6 +559,7 @@ export default {
   margin-top: 0.5rem;
   margin-right: 0.2rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
 }
 .content_name h2 {
   display: inline-block;
@@ -558,6 +570,7 @@ export default {
   height: 0.3rem;
   display: inline-block;
   border-radius: 0.02rem;
+  -webkit-border-radius: .02rem;
   background-color: #33c1ff;
   color: #fff;
   font-size: 0.18rem;
@@ -571,12 +584,18 @@ export default {
 }
 .content_head {
   margin-top: 0.6rem;
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-end;
-  -webkit-align-items: flex-end;
-  justify-content: space-evenly;
-  -webkit-justify-content: space-evenly;
+  height: 2.25rem;
+  position: relative;
+}
+.content_head .item:nth-child(1){
+  position: absolute;
+  left: .6rem;
+  top: .6rem;
+}
+.content_head .item:nth-child(3){
+  position: absolute;
+  right: .6rem;
+  top: .6rem;
 }
 .content_head .item p {
   white-space: nowrap;
@@ -595,8 +614,12 @@ export default {
   height: 2.25rem;
   border: 1px solid #fff;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
+  position: absolute;
   overflow: hidden;
-  position: relative;
+  left: 50%;
+  top: 0;
+  margin-left: -1.125rem;
 }
 .content_head .head img {
   max-width: 100%;
@@ -612,7 +635,7 @@ export default {
   color: #fefefe;
   line-height: 0.5rem;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
 }
 .van-nav-bar {
   background-color: transparent;
@@ -650,6 +673,7 @@ export default {
   left: -10%;
   top: -50px;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   background: #fff;
   position: absolute;
 }

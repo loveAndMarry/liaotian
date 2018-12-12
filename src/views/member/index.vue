@@ -57,6 +57,7 @@ export default {
   width: .66rem;
   height: .66rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   float: left;
 }
 .intention_item .item{

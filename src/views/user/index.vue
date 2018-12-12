@@ -182,6 +182,7 @@ export default {
   height: 0.8rem;
   background-color: #ff7994;
   border-radius: 0.5rem;
+  -webkit-border-radius: .5rem;
   text-align: center;
   line-height: 0.8rem;
   font-size: 0.31rem;
@@ -229,6 +230,7 @@ export default {
   height: 0.8rem;
   display: inline-block;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   background-repeat: no-repeat;
   background-size: 100%;
 }
@@ -259,6 +261,7 @@ export default {
   width: 0.66rem;
   height: 0.66rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   display: inline-block;
   background-size: 100%;
   background-repeat: no-repeat;
@@ -268,6 +271,7 @@ export default {
   width: 0.64rem;
   height: 0.64rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   display: inline-block;
 }
 .links li p {
@@ -290,8 +294,8 @@ export default {
 }
 .photos li {
   border-radius: 0.15rem;
+  -webkit-border-radius: .15rem;
   margin-right: 0.05rem;
-  overflow: hidden;
   float: left;
 }
 .photos .photo_item {
@@ -383,6 +387,7 @@ export default {
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   float: left;
 }
 .datum_content {

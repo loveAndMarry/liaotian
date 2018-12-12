@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style scoped>
-.group{
+div.group{
   padding:.2rem .3rem;
   border-bottom: .09rem solid #f0f0f0;
   box-sizing: border-box;

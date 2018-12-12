@@ -104,24 +104,28 @@ export default {
 </script>
 <style scoped>
 .photos{
-  display: flex;
-  display: -webkit-flex;
-  flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  justify-content:space-evenly;
-  -webkit-justify-content:space-evenly
+  padding: 0 .1rem;
+}
+.photos li:nth-child(1){
+  margin-left: 0
+}
+.photos .photo_item:nth-child(3n + 1){
+  margin-left: 0
 }
 .photos li{
-  width: 2.38rem;
-  height: 2.38rem;
+  width: calc(2.38rem - 2px);
+  height: calc(2.38rem - 2px);
+  border: 1px solid transparent;
   border-radius: .15rem;
+  -webkit-border-radius: .15rem;
+  margin-left: .08rem;
   margin-bottom: .1rem;
   overflow: hidden;
   float: left;
 }
 .photos .photo_item{
-  width: 2.38rem;
-  height: 2.38rem;
+  width: calc(2.38rem - 2px);
+  height: calc(2.38rem - 2px);
   background-color: #dddddd;
   background-image: url('../../assets/images/user_photo_add@2x.png');
   background-size: 40%;
@@ -133,26 +137,26 @@ export default {
   max-width: 100%;
   max-height: 100%
 }
-.photograph{
-  width: 1.44rem;
-  height: 1.44rem;
+.photos li.photograph{
   border: 1px dashed #d7d7d7;
   text-align: center;
   position: relative;
 }
-.photograph div{
+.photos li.photograph div{
+    width: 1.44rem;
+  height: 1.44rem;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   text-align: center
 }
-.photograph div img{
+.photos li.photograph div img{
   width: .8rem;
   height: .8rem;
   display: inline-block
 }
-.photograph div p{
+.photos li.photograph div p{
   font-size: .28rem;
   color: #818181;
   margin: 0;

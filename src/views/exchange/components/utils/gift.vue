@@ -43,6 +43,7 @@ export default {
     background-repeat: no-repeat;
     background-position: 50%;
     border-radius: .1rem;
+    -webkit-border-radius: .1rem;
     margin-top: .2rem;
     margin-left: .15rem;
   } 

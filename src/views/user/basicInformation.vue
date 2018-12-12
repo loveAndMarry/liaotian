@@ -216,6 +216,7 @@ export default {
   height: 1.44rem;
   border: 1px solid #fff;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   overflow: hidden;
   position: relative;
   float: left;

@@ -147,6 +147,7 @@ export default {
   width: .55rem;
   height: .55rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   margin-right: .3rem
 }
 .recent li div{

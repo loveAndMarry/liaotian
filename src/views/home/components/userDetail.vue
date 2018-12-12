@@ -273,6 +273,7 @@ export default {
   border:1px solid #d9d9d9;
   color:#858585;
   border-radius: .3rem;
+  -webkit-border-radius: .3rem;
   margin-right: .15rem;
   margin-bottom: .2rem
 }
@@ -312,6 +313,7 @@ export default {
   height:.8rem;
   display: inline-block;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   background-repeat: no-repeat;
   background-size: 100%
 }
@@ -361,6 +363,7 @@ export default {
   height: .3rem;
   display: inline-block;
   border-radius: .02rem;
+  -webkit-border-radius: .02rem;
   background-color: #33c1ff;
   color: #fff;
   font-size: .18rem;
@@ -411,7 +414,8 @@ export default {
 .right img{
   display: inline-block;
   width: 1.6rem;
-  border-radius: 50%
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
 }
 .img_group{
   display: block;
@@ -423,6 +427,7 @@ export default {
   width: 1.44rem;
   height: 1.44rem;
   border-radius: .1rem;
+  -webkit-border-radius: .1rem;
   overflow: hidden;
   margin-right: .1rem;
   margin-bottom: .1rem;

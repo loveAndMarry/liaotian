@@ -1,6 +1,7 @@
 <template>
 <div>
   <nav-bar
+  style="position: fixed;width: 100%;"
   :title="friend.nickName"
   left-arrow
   @click-left="onClickLeft"

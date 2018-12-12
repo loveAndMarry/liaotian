@@ -45,11 +45,9 @@ HTTP.GET = function (url, data) {
       params: data
     }).then((res) => {
       if(res.data.code === 200){
-        console.log(res)
         console.log('请求成功')
         resolve(res.data)
       }else{
-        console.log(res)
         console.log('请求失败')
         reject(res.data)
       }

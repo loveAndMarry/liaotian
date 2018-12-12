@@ -38,12 +38,14 @@ const actions = {
     return new Promise((resolve) => {
       // 判断当前好友是否存在，不存在将好友添加到联系人列表
       // 将信息提交到容联云
+      console.log(state, '好友数据')
       IM.postMsg({
         data:products.context,
         id: products.receiver
       }).then((res) => {
         console.log('当前信息已提交至容联云')
         // 将当前数据提交到后台
+        console.log(state.friend)
         postMsg({
           context:products.context,
           sendUserId: state.user.id,
@@ -164,11 +166,11 @@ const actions = {
   [GET_FRIEND_LIST] ({ commit, state }, fn) {
     messageListing({
       limitStart: state.friendList.length || 0,
-      pageSize: 2,
+      pageSize: 10,
       userId: state.user.id
     }).then((res) => {
       if(res.data){
-        if(res.data.length < 2){
+        if(res.data.length < 10){
           fn(true)
         }
         state.friendList.push(...res.data)
@@ -189,14 +191,14 @@ const actions = {
     })
   },
   // 获取好友历史信息
-  [GET_FRIEND_MSG_LIST] ({ commit, state }, fn) {
+  [GET_FRIEND_MSG_LIST] ({ commit, state }) {
     return new Promise((resolve) => {
       if(state.isMsg){
         getChatRecord({
           limitStart: state.chatMessage[state.friend.accountNumber].length || 0,
           pageSize: 10,
           sendUserId: state.user.id,
-          receiveUserId: state.friend.contactUserId
+          receiveUserId: state.friend.userId
         }).then((res) => {
           if(res.data){
             state.chatMessage[state.friend.accountNumber].unshift(...res.data)
@@ -209,18 +211,16 @@ const actions = {
                 type: 'msg',
                 context: '--没有更多的历史消息了--'
               })
-              fn(false)
             }
+            resolve()
           } else {
             state.isMsg = false
-            fn(false)
+            resolve()
           }
         })
       } else {
-        fn(true)
+        resolve()
       }
-
-      resolve() // 为了获取完成数据后置顶
     })
   }
 }

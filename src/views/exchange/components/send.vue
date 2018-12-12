@@ -3,11 +3,12 @@
       <div style="height: 0.7rem;line-height: 0.7rem;">
         <div class="icon yuyin" @click="voice($event)"></div>
         <div class="inputText">
-          <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg()" v-model="context">
+          <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg" @input="input" v-model="context">
           <span v-show='!isText' @touchstart="touchstart($event)" @touchend="touchend($event)">按住 说话</span>
         </div>
         <div class="icon biaoqing" @click="emotion"></div>
-        <div class="icon tianjia" @click="GiftShow"></div>
+        <div class="icon tianjia" @click="GiftShow" v-show="!isContext"></div>
+        <div class="send" @click="postMsg" v-show="isContext">发送</div>
         <!-- <input type="file" id="file" style="display:none" accept="image/*" @change="fileChange($event)"> -->
       </div>
       <emotion @emotion="postMsg" v-show="isShow"></emotion>
@@ -24,6 +25,7 @@ export default {
   data () {
     return {
       context: '',
+      isContext: false, // 文本框是否有内容
       isShow: false, // 表情
       isGiftShow:false, // 礼物
       isText: true, // 默认展示输入文字
@@ -44,6 +46,13 @@ export default {
     // 松开事件
     touchend ($event) {
       $event.target.innerText = '按住 说话'
+    },
+    input (val) {
+      if(this.context !== ''){
+        this.isContext = true
+      } else {
+        this.isContext = false
+      }
     },
     // 语音文本切换
     voice ($event) {
@@ -73,10 +82,9 @@ export default {
       this.$emit('editHeight', this.isGiftShow)
     },
     postMsg (i) {
-      var context = typeof i === 'undefined'? this.context: i
+      var context = typeof i === 'object'? this.context: i
       var that = this
       this.isShow = false
-      this.$emit('editHeight', this.isShow)
       this.POSTMSG({
         context: context,
         id: new Date().getTime(),
@@ -90,6 +98,8 @@ export default {
         msgType: 1
       }).then((res) => {
         that.context = ''
+        this.isContext = false
+        this.$emit('editHeight', this.isShow)
       })
     }
   },
@@ -124,6 +134,7 @@ export default {
 .bottom .inputText input{
   border:1px solid #f0f0f1;
   border-radius: 3px;
+  -webkit-border-radius: 3px;
   background-color: #f5f5f6;
   color:#333;
   font-size: .27rem;
@@ -139,6 +150,7 @@ export default {
 .bottom .inputText span{
   border:1px solid #f0f0f1;
   border-radius: 3px;
+  -webkit-border-radius: 3px;
   background-color: #f5f5f6;
   color:#333;
   font-size: .27rem;
@@ -181,5 +193,14 @@ export default {
   height: .63rem;
   margin-bottom: -0.02rem;
   margin-left: .1rem
+}
+.send{
+    width: .63rem;
+    line-height: .8rem;
+    height: 100%;
+    display: inline-block;
+    vertical-align: .2rem;
+    margin-left: .1rem;
+    color: #f44;
 }
 </style>

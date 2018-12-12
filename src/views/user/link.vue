@@ -129,6 +129,7 @@ export default {
   height: .8rem;
   background-color: #ff7994;
   border-radius: .5rem;
+  -webkit-border-radius: .5rem;
   text-align: center;
   line-height: .8rem;
   font-size: .31rem;
@@ -157,6 +158,7 @@ export default {
   height: 2rem;
   width: 2rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   top: 0;
   background-color: rgba(0, 0, 0, 0.7);
   background-image: url('../../assets/images/lock@2x.png');
@@ -168,7 +170,8 @@ export default {
   display: block;
   width: 2rem;
   height: 2rem;
-  border-radius: 50%
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
 }
 .links li p{
   display: block;
@@ -191,6 +194,7 @@ export default {
   height: 0.3rem;
   display: inline-block;
   border-radius: 0.02rem;
+  -webkit-border-radius: .02rem;
   background-color: #33c1ff;
   color: #fff;
   font-size: 0.18rem;
@@ -204,20 +208,20 @@ export default {
 }
 .content_head {
   margin-top: 0.6rem;
-  display: flex;
-  display: -webkit-flex;
-  align-items: flex-end;
-  -webkit-align-items: flex-end;
-  justify-content: space-evenly;
-  -webkit-justify-content: space-evenly;
+  position: relative;
+  height: 2.25rem;
 }
 .content_head .head {
   width: 2.25rem;
   height: 2.25rem;
   border: 1px solid #fff;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
+  position: absolute;
   overflow: hidden;
-  position: relative;
+  left: 50%;
+  top: 0;
+  margin-left: -1.125rem;
 }
 .content_head .head img {
   max-width: 100%;
@@ -264,6 +268,7 @@ export default {
   left: -10%;
   top: -50px;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   background: #fff;
   position: absolute;
 }

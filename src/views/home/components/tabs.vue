@@ -307,6 +307,7 @@ export default {
   font-size: .26rem;
   line-height: .6rem;
   border-radius: 20px;
+  -webkit-border-radius: 20px;
   border:1px solid #d8d8d8;
   background-color: #fff;
   text-align: center

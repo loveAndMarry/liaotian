@@ -118,6 +118,7 @@ export default {
   width: 1.2rem;
   height: 1.2rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
 }
 .content {
   display: inline-block;
@@ -148,6 +149,7 @@ export default {
 .content .title .top .theRealNameSystem {
   display: inline-block;
   border-radius: 0.02rem;
+  -webkit-border-radius: 0.02rem;
   background-color: #33c1ff;
   color: #fff;
   font-size: 0.18rem;
@@ -182,6 +184,7 @@ export default {
   width: 0.3rem;
   height: 0.3rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   text-align: center;
   line-height: 0.3rem;
   background-color: #ff0037;

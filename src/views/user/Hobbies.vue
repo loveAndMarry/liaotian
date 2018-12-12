@@ -123,6 +123,7 @@ export default {
 .hint {
   padding: 0.08rem 0.27rem;
   border-radius: 0.15rem;
+  -webkit-border-radius: .15rem;
   border: 1px solid #dedede;
   color: #171717;
   font-size: 0.22rem;

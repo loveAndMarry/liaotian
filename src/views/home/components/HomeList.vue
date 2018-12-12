@@ -137,6 +137,7 @@ export default {
   width: 100%;
   height: 1.5rem;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
   display: block
 }
 .list_content {
@@ -161,6 +162,7 @@ export default {
   height: .3rem;
   display: inline-block;
   border-radius: .02rem;
+  -webkit-border-radius: .02rem;
   background-color: #33c1ff;
   color: #fff;
   font-size: .18rem;

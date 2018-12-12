@@ -43,18 +43,21 @@ export default {
   float: left;
 }
 .left .left_img img{
-  width: .8rem;
-  height: .8rem;
+  width: 1rem;
+  height: 1rem;
   display: block;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
 }
 .left .left_content{
-  max-width:calc( 100% - .94rem);
+  max-width:calc( 100% - 1.14rem);
   padding: .3rem;
   display: inline-block;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   background-color: #fff;
-  border-radius: 5px
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  font-size: .28rem
 }
 </style>
