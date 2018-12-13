@@ -1,7 +1,7 @@
 <template>
     <div class="back" id="content">
       <PullRefresh v-model="isLoading" @refresh="onRefresh" class="scroller_content">
-        <div v-for="(el, index) in getChatMessage" :key="index" class="scroller_item">
+        <div v-for="(el, index) in getChatMessage" :key="index" class="scroller_item" v-show="loading">
           <div v-if='el.type === "msg" ' v-text="el.context" style="color:#918d8d"></div>
           <left-content v-else-if="el.sendUserId !== user.id" :item="el"></left-content>
           <right-content v-else-if="el.sendUserId === user.id" :item="el"></right-content>
@@ -20,7 +20,9 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      isLoading: false
+      isToBottom: true,
+      isLoading: false,
+      loading: true
     }
   },
   components: {
@@ -30,7 +32,8 @@ export default {
   },
   computed: {
     ...mapState({
-        user: state => state.IM.user
+        user: state => state.IM.user,
+        friend: state => state.IM.friend
     }),
     ...mapGetters([
       'getChatMessage'
@@ -38,13 +41,18 @@ export default {
   },
   watch: {
     'getChatMessage': function (arr) {
-      // 将滚动条置为底部
-      this.scrollToBottom()
+      if(this.isToBottom){
+        // 将滚动条置为底部
+        this.scrollToBottom()
+      }
     }
   },
   mounted () {
     // 将滚动条置为底部
-    this.scrollToBottom()
+    this.scrollToBottom();
+    if(this.friend.context && this.getChatMessage.length === 0){
+      this.onRefresh()
+    }
   },
   methods: {
     ...mapActions(['GET_FRIEND_MSG_LIST']),
@@ -56,10 +64,20 @@ export default {
       })
     },
     onRefresh () {
+      var container = this.$el.querySelector(".scroller_content");
+      var scrollHeight = container.scrollHeight;
+      this.isToBottom = false
+      this.loading = false
       this.GET_FRIEND_MSG_LIST().then(() => {
-        this.isLoading = false
-        var content = document.getElementById('content')
-        content.scrollTop = 0
+        window.setTimeout(() => {
+          this.loading = true
+          this.isToBottom = true
+          this.isLoading = false;
+          this.$nextTick(() => {
+            var content = document.getElementById('content')
+              content.scrollTop = container.scrollHeight - scrollHeight
+          })
+        }, 0)
       })
     },
   }
@@ -67,21 +85,24 @@ export default {
 </script>
  
 <style scoped>
-  .back{
-    position: relative;
-    top: 46px;
-    left:0 ;
-    height: calc(100% - 1.1rem - 46px);
-    width: 100%;
-    background-color: #f5f5f6;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    overflow:hidden;
-    overflow-y: scroll;
-  }
-  .scroller_item{
-    padding-top:.1rem;
-    padding-bottom:.3rem;
-    box-sizing: border-box;
-  }
+.van-pull-refresh{
+  min-height: 100%
+}
+.back{
+  position: relative;
+  top: 46px;
+  left:0 ;
+  height: calc(100% - 1.1rem - 46px);
+  width: 100%;
+  background-color: #f5f5f6;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  overflow:hidden;
+  overflow-y: scroll;
+}
+.scroller_item{
+  padding-top:.1rem;
+  padding-bottom:.3rem;
+  box-sizing: border-box;
+}
 </style>

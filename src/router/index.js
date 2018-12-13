@@ -39,6 +39,8 @@ import order from '@/views/user/order'
 // 个人资料
 import basicInformation from '@/views/user/basicInformation'
 
+import test from '@/views/test'
+
 Vue.use(Router)
 
 export default new Router({
@@ -170,6 +172,11 @@ export default new Router({
     path: '/basicInformation',
     name: 'basicInformation',
     component: basicInformation
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: test
   }
   ]
 })

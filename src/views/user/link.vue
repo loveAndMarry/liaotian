@@ -226,6 +226,8 @@ export default {
 .content_head .head img {
   max-width: 100%;
   max-height: 100%;
+      height: 100%;
+    width: 100%;
 }
 .content_head .head span {
   position: absolute;

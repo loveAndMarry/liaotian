@@ -1,7 +1,7 @@
 <template>
   <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller" :noDataText="noDataText">
     <ul class="home_list">
-      <li v-for="(item, index) in columns" :key="index" @click="showDetail(item.userId)">
+      <li v-for="(item, index) in columns" :key="index" @click="showDetail(item)">
         <div class="title">
           <img :src="item.userHead || 'http://img3.imgtn.bdimg.com/it/u=1997531878,2220927575&fm=26&gp=0.jpg'" alt="">
         </div>
@@ -79,8 +79,9 @@ export default {
         })
       }
     },
-    showDetail (userId) {
-      this.$router.push({name: 'userDetail', params: { userId: userId}})
+    showDetail (item) {
+      this.$store.state.IM.friend = item
+      this.$router.push({name: 'userDetail'})
     },
     infinite (fn) {
       if(this.index){

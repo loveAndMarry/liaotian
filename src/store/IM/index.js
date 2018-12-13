@@ -1,5 +1,6 @@
 import { postMsg, login, getFriendMessage, messageListing, getChatRecord} from '@/assets/common/api'
 import utils from '@/assets/common/utils'
+import router from '@/router'
 import IM from '@/assets/common/IM'
 import { Dialog } from 'vant';
 
@@ -22,6 +23,7 @@ const state = {
   friend: {}, // 储存当前聊天好友信息
   isLogin: false, // 是否登录成功
   isMsg: true, // 是否还有历史记录
+  friendArr: [], // 储存当前来源消息的用户ID（当一次性接受好几条消息时，好友数据好没有获取，就会向好友数组添加多次）
 }
 
 const getters = {
@@ -29,23 +31,17 @@ const getters = {
 }
 
 const actions = {
-  [GET_FRIENT_MSG] ({ commit, state }, products) {
-    return new Promise((resolve) => {
-      
-    })
-  },
   [POST_MSG] ({ commit, state }, products) {
     return new Promise((resolve) => {
       // 判断当前好友是否存在，不存在将好友添加到联系人列表
       // 将信息提交到容联云
-      console.log(state, '好友数据')
       IM.postMsg({
         data:products.context,
         id: products.receiver
       }).then((res) => {
         console.log('当前信息已提交至容联云')
         // 将当前数据提交到后台
-        console.log(state.friend)
+        console.log(products)
         postMsg({
           context:products.context,
           sendUserId: state.user.id,
@@ -109,6 +105,10 @@ const actions = {
         userId: products.userId
       }).then((res) => {
         commit(UPDATE_USER,res.data)
+        if(res.data.registerState - 0 < 2){
+          router.push({name: 'basicInformation'})
+          return false
+        }
         resolve(res.data)
       })
     })
@@ -118,6 +118,11 @@ const actions = {
     if(!state.chatMessage[products.sender]){
       state.chatMessage[products.sender] = []
     }
+    if(state.friendArr.findIndex(el => el === products.sender) === -1){
+      state.friendArr.push(products.sender)
+    }
+    console.log()
+    console.log(state.friendList.length === 0, state.friendList.length > 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1, state.friendList, '有新消息，获取好友信息')
     if(state.friendList.length === 0 || state.friendList.length > 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1){
       // 更改本地缓存中的数据
       getFriendMessage({
@@ -125,8 +130,10 @@ const actions = {
         userId: state.user.id
       }).then((res)=>{
 
-        utils.pushLocalData('friendList', res.data)
-        state.friendList.push(res.data)
+        if(state.friendArr.findIndex(el => el === products.sender) === -1){
+          utils.pushLocalData('friendList', res.data)
+          state.friendList.push(res.data)
+        }
         // 将聊天信息的发送人和接受人的账号存入聊天信息
         products = Object.assign({},products,{
           sendUserId: res.data.id,
@@ -173,7 +180,9 @@ const actions = {
         if(res.data.length < 10){
           fn(true)
         }
+        console.log(state.friendList, '获取完成好友前')
         state.friendList.push(...res.data)
+        console.log(state.friendList, '获取完成好友后')
         fn()
       } else {
         fn(true)

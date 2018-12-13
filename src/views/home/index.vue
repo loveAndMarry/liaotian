@@ -55,40 +55,13 @@ export default {
         religion: '', // 宗教,
         sex: ''
       },
-      columns:[
-        {
-          id:1,
-          userName: '测试',
-          theRealNameSystem: true,
-          age: '25',
-          height: '165',
-          education: '本科',
-          income: '5000-10000',
-          tag: ['身材苗条', '旅游', '投资理财'],
-          manifesto: '爱情就应该是一辈子',
-          portrait: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542709648746&di=05469704ed6e2a01394165a458e93773&imgtype=0&src=http%3A%2F%2Fimg.52z.com%2Fupload%2Fnews%2Fimage%2F20180416%2F20180416051754_47848.jpg',
-          praise:8
-        },
-        {
-          id:2,
-          userName: '测试',
-          theRealNameSystem: true,
-          age: '25',
-          height: '165',
-          education: '本科',
-          income: '5000-10000',
-          tag: ['身材苗条', '旅游', '投资理财'],
-          manifesto: '爱情就应该是一辈子',
-          portrait: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542709648748&di=83d4f5a48e8d1a26df15dc010013962e&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F13%2F81%2F71%2F08K58PICzNa_1024.png',
-          praise:8
-        }
-      ]
+      columns:[]
     }
   },
   mounted () {
     this.$store.dispatch('UPDATEUSER', {
-      // userId: utils.getUrlArgObject('userId')
-      userId: '2219246d18504fea864208235f056223' 
+      userId: this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
+      // userId: '2219246d18504fea864208235f056223' 
     }).then((data) => {
       this.fromData.sex = data.sex === '1'? '2': '1'
       this.fromData.userId = data.id

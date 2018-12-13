@@ -1,6 +1,6 @@
 <template>
   <div class="userDetail">
-    <NavBar title='个人信息' @click-left="onClickLeft" left-arrow></NavBar>
+      <NavBar title='个人信息' @click-left="onClickLeft" left-arrow></NavBar>
     <div class="userDetail_content" id="userDetail_content">
        <div class="title">
       <div class="left">
@@ -203,10 +203,10 @@ export default {
     // }
   },
   mounted () {
-    document.getElementById('userDetail_content').addEventListener('scroll', this.showConnection)
+    // document.getElementById('userDetail_content').addEventListener('scroll', this.showConnection)
     userInformationDisplay({
       userId: this.$store.state.IM.user.id,
-      accessRecordId: this.$route.params.userId
+      accessRecordId: this.$store.state.IM.friend.userId
     }).then((res) => {
       if(res.data.photoList){
         this.photoList = res.data.photoList.map(el => el.context)
@@ -216,9 +216,10 @@ export default {
       }
     })
   },
-  destroyed () {
-     document.getElementById('userDetail_content').removeEventListener('scroll', this.showConnection)
-  },
+  // beforeDestroy () {
+  //   console.log(document.getElementById('userDetail_content'))
+  //    document.getElementById('userDetail_content').removeEventListener('scroll', this.showConnection)
+  // },
   components: {
     NavBar,
     Group

@@ -85,6 +85,9 @@ export default {
       var context = typeof i === 'object'? this.context: i
       var that = this
       this.isShow = false
+      console.log(this.friend, "当前好友信息")
+      console.log(this.user, "当前用户信息")
+      console.log(this, "当前this")
       this.POSTMSG({
         context: context,
         id: new Date().getTime(),

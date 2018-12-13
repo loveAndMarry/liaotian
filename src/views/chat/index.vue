@@ -55,7 +55,9 @@ export default {
      this.UPDATE_FRIEND_LIST(done)
     },
     chatListClick(item) {
+      console.log(this.friendList, '当前好友列表')
       this.UPDATEUSERLIST(item).then(() => {
+        console.log(item, '点击当前好友进入聊天')
         utils.updateArray(this.$store.state.IM.friendList, item.accountNumber, {
           hint: 0
         });
@@ -68,7 +70,7 @@ export default {
   filters: {
     fromNow(val) {
       var currentTime = Date.parse(new Date());
-      var dateTime = val;//后台传递来的时间
+      var dateTime = val - 0;//后台传递来的时间
       var d_day = Date.parse(new Date(dateTime));
       var day = Math.abs(parseInt((d_day - currentTime)/1000/3600/24));//计算日期
       var hour = Math.abs(parseInt((d_day - currentTime)/1000/3600));//计算小时
@@ -127,7 +129,7 @@ export default {
   overflow: hidden;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  border-bottom: 1px solid #d8d8d8;
+  border-bottom: 1px solid #fbf6f6;
   background-color: #fff;
   position: relative;
 }
@@ -165,19 +167,20 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  font-size: .26rem;
+  margin-bottom: .1rem
 }
 .content .info {
-  float: right;
+  /* float: right;
   text-align: right;
   width: 1rem;
-  overflow: hidden;
+  overflow: hidden; */
 }
 .content .info p {
   margin: 0;
   position: absolute;
   top: 0;
   right: 0.1rem;
-  transform: scale(0.8);
 }
 .content .info span {
   display: block;

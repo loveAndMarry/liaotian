@@ -29,7 +29,9 @@ export default {
             //当软键盘弹出，在这里面操作
             console.log('软键盘弹起')
             that.editHeight(false)
-            this.$refs.content.emotion()
+            this.$refs.content.isShow = false
+            this.$refs.content.isGiftShow = false
+            content.style.height = 'calc(100% - 1.1rem - 46px)'
             // console.log(that)
             // that.$refs.content.resize()
 
