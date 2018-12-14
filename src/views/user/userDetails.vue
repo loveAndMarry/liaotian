@@ -20,10 +20,13 @@
               size="1rem"
               color="#ff7994"
             /> -->
-            <div class="dataIntegrity">{{data.dataIntegrity + '%'}}</div>
+            <div class="dataIntegrity">
+              <span class="dataIntegrity_num">{{data.dataIntegrity + '%'}}</span>
+              <div class="dataIntegrity_back" :style="{top: 75 - (data.dataIntegrity / 100 * 90) + '%'}"></div> 
+            </div>
             <p>资料完整度</p>
           </div>
-          <div class="head">
+          <div class="head" @click="updatePhoto">
             <img :src="data.userBaseInformation.userHead" alt>
             <span>更换头像</span>
           </div>
@@ -276,6 +279,13 @@ export default {
     })
   },
   methods: {
+    updatePhoto () {
+      window.updatePhoto().then(str => {
+        if(str) {
+          console.log('组件内已经接受到参数：' + str)
+        }
+      })
+    },
     getData (arr) {
       let num = Math.round(arr.length /2)
       let a = []
@@ -413,9 +423,6 @@ export default {
         },
       })
     },
-    beforeClose () {
-      console.log("what?")
-    },
     linkClick () {
       // this.isShow = true
       this.$router.push({name: 'link', query: {type: 2}})
@@ -465,6 +472,26 @@ export default {
   -webkit-border-raduis: 50%;
   line-height: 1rem;
   color: #ff7994;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.dataIntegrity .dataIntegrity_num{
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  top: 0;
+  color: #000;
+  z-index: 5
+}
+.dataIntegrity .dataIntegrity_back{
+  position: absolute;
+  width: 100%;
+  height: 150%;
+  background: url('../../assets/images/data_integrity_bg.png') no-repeat;
+  z-index: 1;
 }
 .submit{
   display: block;
@@ -615,8 +642,9 @@ export default {
   border: 1px solid #fff;
   border-radius: 50%;
   -webkit-border-radius: 50%;
-  position: absolute;
+  position: relative;
   overflow: hidden;
+  z-index: 1;
   left: 50%;
   top: 0;
   margin-left: -1.125rem;
@@ -637,7 +665,8 @@ export default {
   color: #fefefe;
   line-height: 0.5rem;
   text-align: center;
-  /* background-color: rgba(0, 0, 0, 0.5); */
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .van-nav-bar {
   background-color: transparent;

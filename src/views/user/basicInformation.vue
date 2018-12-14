@@ -220,6 +220,7 @@ export default {
   overflow: hidden;
   position: relative;
   float: left;
+  z-index: 1
 }
 .head img {
   max-width: 100%;
@@ -235,6 +236,7 @@ export default {
   color: #fefefe;
   line-height: 0.5rem;
   text-align: center;
+  z-index: 10;
   background-color: rgba(0, 0, 0, 0.5);
 }
 .head_item{

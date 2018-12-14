@@ -47,7 +47,7 @@ export default {
     touchend ($event) {
       $event.target.innerText = '按住 说话'
     },
-    input (val) {
+    input (e) {
       if(this.context !== ''){
         this.isContext = true
       } else {
@@ -82,12 +82,9 @@ export default {
       this.$emit('editHeight', this.isGiftShow)
     },
     postMsg (i) {
-      var context = typeof i === 'object'? this.context: i
+      var context = typeof i === 'object'? utils.utf16toEntities(this.context): i
       var that = this
       this.isShow = false
-      console.log(this.friend, "当前好友信息")
-      console.log(this.user, "当前用户信息")
-      console.log(this, "当前this")
       this.POSTMSG({
         context: context,
         id: new Date().getTime(),

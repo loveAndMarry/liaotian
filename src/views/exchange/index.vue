@@ -58,14 +58,7 @@ export default {
       } else {
         content.style.height = 'calc(100% - 1.1rem - 46px)'
       }
-      console.log(this,'66666')
-      console.log(this.$refs.content, '自己组建')
       this.$refs.content.scrollToBottom()
-    }
-  },
-  computed: {
-    item () {
-      return JSON.parse(localStorage.getItem('friend'))
     }
   },
   components: {

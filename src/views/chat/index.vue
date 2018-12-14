@@ -42,6 +42,11 @@ export default {
       friendList: state => state.IM.friendList
     })
   },
+  watch: {
+    friendList (val) {
+      console.log(val, '更新后的好友列表')
+    }
+  },
   mounted() {
     // 获取好友列表
     this.GETFRIEND({});
@@ -55,9 +60,7 @@ export default {
      this.UPDATE_FRIEND_LIST(done)
     },
     chatListClick(item) {
-      console.log(this.friendList, '当前好友列表')
       this.UPDATEUSERLIST(item).then(() => {
-        console.log(item, '点击当前好友进入聊天')
         utils.updateArray(this.$store.state.IM.friendList, item.accountNumber, {
           hint: 0
         });
@@ -111,7 +114,7 @@ export default {
   -webkit-box-sizing: border-box;
 }
 .chat_list .chat_list_item .portrait {
-  display: inline-block;
+  display: block;
   float: left;
   margin-left: 0.3rem;
 }
@@ -134,7 +137,7 @@ export default {
   position: relative;
 }
 .content .title {
-  display: inline-block;
+  display: block;
   width: calc(100% - 1rem);
   float: left;
 }
@@ -169,12 +172,6 @@ export default {
   white-space: nowrap;
   font-size: .26rem;
   margin-bottom: .1rem
-}
-.content .info {
-  /* float: right;
-  text-align: right;
-  width: 1rem;
-  overflow: hidden; */
 }
 .content .info p {
   margin: 0;

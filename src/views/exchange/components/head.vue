@@ -4,8 +4,7 @@
   style="position: fixed;width: 100%;"
   :title="friend.nickName"
   left-arrow
-  @click-left="onClickLeft"
-  @click-right="onClickRight">
+  @click-left="onClickLeft">
     <Icon name="more-o" slot="right"/>
     <!-- <nav-bar-title slot="title" :name='this.title'></nav-bar-title> -->
   </nav-bar>
@@ -24,12 +23,13 @@ export default {
   },
   methods: {
     onClickLeft () {
-      utils.updateArray(this.$store.state.friendList, this.friend.userId, {
-        hint: 0
+      var arr = JSON.parse(localStorage.getItem('friendList'))
+      utils.updateArray(arr, this.friend.accountNumber,{
+          hint: 0
       })
+      localStorage.setItem('friendList', JSON.stringify(arr))
       window.history.back()
-    },
-    onClickRight () {}
+    }
   },
   computed: {
     ...mapState({

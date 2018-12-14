@@ -27,7 +27,7 @@ const state = {
 }
 
 const getters = {
-  getChatMessage: state => state.chatMessage[state.friend.accountNumber]
+  getChatMessage: state => utils.arraySort(state.chatMessage[state.friend.accountNumber], 'chatDate')
 }
 
 const actions = {
@@ -41,7 +41,6 @@ const actions = {
       }).then((res) => {
         console.log('当前信息已提交至容联云')
         // 将当前数据提交到后台
-        console.log(products)
         postMsg({
           context:products.context,
           sendUserId: state.user.id,
@@ -121,8 +120,6 @@ const actions = {
     if(state.friendArr.findIndex(el => el === products.sender) === -1){
       state.friendArr.push(products.sender)
     }
-    console.log()
-    console.log(state.friendList.length === 0, state.friendList.length > 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1, state.friendList, '有新消息，获取好友信息')
     if(state.friendList.length === 0 || state.friendList.length > 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1){
       // 更改本地缓存中的数据
       getFriendMessage({
@@ -180,9 +177,7 @@ const actions = {
         if(res.data.length < 10){
           fn(true)
         }
-        console.log(state.friendList, '获取完成好友前')
         state.friendList.push(...res.data)
-        console.log(state.friendList, '获取完成好友后')
         fn()
       } else {
         fn(true)

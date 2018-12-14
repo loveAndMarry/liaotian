@@ -5,7 +5,7 @@
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search> -->
     <Tabs @updateVal="updateVal" @search="search"/>
-    <div style="height:calc(100% - .2rem);position: absolute;top:47px;width: 100%;">
+    <div style="height:calc(100% - 1.9rem);position: absolute;top:47px;width: 100%;">
       <HomeList :fromData='fromData' ref='HomeList'></HomeList>
     </div>
   </div>
