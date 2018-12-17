@@ -21,11 +21,11 @@
         <div class="address" v-text="userBaseInformation.domicileName"></div>
       </div>
       <div class="right">
-        <img :src="userBaseInformation.userHead" alt="">
+        <img :src="userBaseInformation.userHead" alt="" @click="userHeadClick">
       </div>
       <div class="bottom">
         <ul class="img_group">
-          <li v-for="(el, dex) in photoList" :key="dex"><img :src="el" alt=""></li>
+          <li v-for="(el, dex) in photoList" :key="dex"><img :src="el" alt="" @click="photoClick(dex)"></li>
         </ul>
       </div>
     </div>
@@ -97,7 +97,7 @@
     </Group>
      <Group title="兴趣爱好">
        <div class="hint_group">
-        <span class="hint" v-for="(hint, i) in interestDictVoList" :key="i" v-text="hint.label" :class="{rad: hint.isIdentical}">热爱读书</span>
+        <span class="hint" v-for="(hint, i) in interestDictVoList" :key="i" v-text="hint.label" :class="{rad: hint.isIdentical}"></span>
        </div>
     </Group>
     <Group title="高级资料">
@@ -152,7 +152,7 @@
 </template>
 <script>
 
-import { NavBar } from 'vant'
+import { NavBar, ImagePreview} from 'vant'
 import Group from '@/components/Group'
 import utils from "@/assets/common/utils";
 import { userInformationDisplay } from '@/assets/common/api'
@@ -173,6 +173,17 @@ export default {
   },
   methods: {
      ...mapActions(["UPDATEUSERLIST"]),
+    photoClick (index) {
+      window.instance = ImagePreview({
+        images: this.photoList,
+        startPosition: index,
+      })
+    },
+    userHeadClick () {
+      window.instance = ImagePreview({
+        images: this.userBaseInformation.userHead
+      })
+    },
     immediately () {
        this.UPDATEUSERLIST(this.userBaseInformation).then(() => {
         this.$router.push({ path: "/exchange" });
@@ -395,7 +406,7 @@ export default {
   overflow: hidden;
 }
 .message i, .message p{
-  display: inline-block;
+  display: block;
   float: left;
   margin:0
 }
@@ -424,7 +435,7 @@ export default {
   overflow: hidden;
 }
 .img_group li {
-  display: inline-block;
+  display: block;
   width: 1.44rem;
   height: 1.44rem;
   border-radius: .1rem;

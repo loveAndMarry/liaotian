@@ -22,7 +22,8 @@ export default {
   },
   methods: {
     intantionClick (item) {
-      this.$router.push({name: 'memberDetails', query: {item: item}})
+      this.$store.state.common.member = item
+      this.$router.push({name: 'memberDetails'})
     },
     onClickLeft () {
       this.$router.push({name: 'user'})

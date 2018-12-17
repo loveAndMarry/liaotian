@@ -4,10 +4,10 @@
     <div class="scroll">
       <div style="padding:.2rem .3rem 0">
         <div class="money_group" v-for="(el, index) in members" :key="index">
-          <span class="day">{{timeName(el)}}</span>
+          <span class="day">{{el.countName}}</span>
           <span class="money">￥{{el.discountsStart === '0' ? el.priceY : el.discountsPriceY}}</span>
           <del class="originalPrice" v-if="el.discountsStart === '1'">￥{{el.priceY}}</del>
-          <span class="buy">购买</span>
+          <span class="buy" @click="payment(el)">购买</span>
         </div>
       </div>
     <Group title="会员特权">
@@ -49,6 +49,7 @@
 import Group from '@/components/Group'
 import { getMemberPrice } from '@/assets/common/api'
 import { NavBar } from 'vant'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -60,10 +61,16 @@ export default {
     Group,
     NavBar
   },
+  computed: {
+    ...mapState({
+      member: state => state.common.member,
+      user: state => state.IM.user
+    })
+  },
   mounted () {
-    this.title = this.$route.query.item.levelName
+    this.title = this.member.levelName
     getMemberPrice({
-      memberLevelId: this.$route.query.item.id
+      memberLevelId: this.member.id
     }).then((res) => {
       if(res.data){
         this.members = res.data
@@ -71,26 +78,25 @@ export default {
     })
   },
   methods: {
+    payment (el) {
+      let obj = {
+        body: '购买会员',
+        subject: this.member.levelName + el.countName,
+        totalAmount: el.discountsStart === '0' ? el.priceY : el.discountsPriceY,
+        userId: this.user.id,
+        type: '1',
+        productId: el.id,
+        productPictures: this.member.ico,
+        productCount: '1',
+        payType: this.payType
+      }
+
+      window.paymentData = obj
+
+      this.$router.push({name: 'purchase', query: {obj : obj}})
+    },
     onClickLeft () {
       this.$router.back()
-    },
-    timeName (item) {
-      var str = ''
-      switch(item.timeTypeCode){
-        case '1':
-          str = '天'
-          break
-        case '2':
-          str = '个月'
-          break
-        case '3':
-          str = '年'
-          break
-        case '4':
-          str = '永久有效'
-          break
-      }
-      return item.count + str
     }
   }
 }
@@ -117,6 +123,10 @@ export default {
   margin-top: .2rem;
   border-top:1px solid #f0f0f0
 }
+.chart div{
+  width: 50%
+}
+
 .chart p{
   width: .23rem;
   display: inline-block;

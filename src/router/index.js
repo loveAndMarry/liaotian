@@ -38,6 +38,8 @@ import memberDetails from '@/views/member/memberDetails'
 import order from '@/views/user/order'
 // 个人资料
 import basicInformation from '@/views/user/basicInformation'
+// 支付
+import purchase from '@/views/purchase'
 
 import test from '@/views/test'
 
@@ -177,6 +179,11 @@ export default new Router({
     path: '/test',
     name: 'test',
     component: test
+  },
+  {
+    path: '/purchase',
+    name: 'purchase',
+    component: purchase
   }
   ]
 })

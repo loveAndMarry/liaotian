@@ -1,16 +1,11 @@
 const state = {
-  isLoading: false,
-  active: 0
+  active: 0, // 记录当前是哪一页
+  member: null // 储存当前选择的会员类型
 }
 const mutations = {
+  // 设置当前显示的是哪一页
   setActive (state, products) {
     state.active = products.active
-  },
-  hideLoading (state) {
-    state.isLoading = false
-  },
-  showLoading (state) {
-    state.isLoading = true
   }
 }
 

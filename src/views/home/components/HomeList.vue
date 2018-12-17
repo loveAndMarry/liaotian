@@ -22,7 +22,7 @@
             <p v-text="income(item)"></p>
           </div>
           <ul class="tags" v-if="item.interestDictVoList && item.interestDictVoList.length > 0">
-            <li v-for="(el, dex) in item.interestDictVoList.filter(a => a < 2)" :key="dex" v-text="el.label"></li>
+            <li v-for="(el, dex) in interestDictVoList(item.interestDictVoList)" :key="dex" v-text="el.label" :class="{rad: el.isIdentical}"></li>
           </ul>
           <div class="manifesto" v-text="`爱情宣言 :${item.personalIntroduction? item.personalIntroduction : '未填写' }`"></div>
         </div>
@@ -43,9 +43,52 @@ export default {
   computed: {
     data () {
       return  Object.assign({}, this.fromData)
-    }
+    },
   },
   methods: {
+    // 过滤用户和列表中的共同的爱好
+    interestDictVoList (item) {
+      if(!item){return []}
+      let arr = []
+      let loop = (a, b) => {
+        a.forEach(el => {
+          if(b.some(ele => ele.id === el.id)){
+            el.isIdentical = true
+            arr.push(el)
+          } else {
+            el.isIdentical = false
+          }
+        })
+
+        if( arr.length < 2){
+          var v = arr.length
+          for (var g = 0; g < item.length; g++){
+            let c = item[g]
+            if(v >= 3){
+              break
+            }
+            if(!arr.some(d => d.id === c.id)){
+              arr.push(c)
+              ++v
+            }
+          }
+        }
+
+        return arr
+      }
+
+      if(this.$store.state.IM.user.interestDictVoList && this.$store.state.IM.user.interestDictVoList.length > 0) {
+        let hint = this.$store.state.IM.user.interestDictVoList
+        // 判断当前那个长度短，循环哪个
+        if(hint.length > item.length){
+          loop(item, hint)
+        } else {
+          loop(hint, item)
+        }
+      }
+      
+      return item.filter((a,i) => i < 2)
+    },
     income (item) {
       if(item.incomeMin && item.incomeMax === undefined){
         return item.incomeMin
@@ -118,6 +161,9 @@ export default {
 </script>
 
 <style scoped>
+.rad{
+  color: #fd7194
+}
 .home_list{
   display: block;
 }
@@ -196,9 +242,10 @@ export default {
 .list_content .message{
   font-size: .26rem;
   overflow: hidden;
+  line-height: .34rem;
 }
 .list_content .message i, .list_content .message p{
-  display: inline-block;
+  display: block;
   float: left;
   margin:0
 }

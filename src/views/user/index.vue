@@ -7,7 +7,7 @@
     <div class="overflow">
       <div class="group">
         <div class="datum">
-          <img :src="user.userHead" alt>
+          <img :src="user.userHead" alt @click="userHead">
           <div class="datum_content">
             <div>
               资料完善度{{data.dataIntegrity}}%
@@ -20,14 +20,16 @@
           </div>
         </div>
         <ul class="photos">
-          <li class="photograph">
+          <li class="photograph" @click="submitPhoto">
             <div>
               <img src="../../assets/images/user_photo_upload@2x.png" alt>
               <p>上传图片</p>
             </div>
           </li>
-          <li class="photo_item" v-for="item in 3" :key="item">
-            <img :src="data.photoList[item].context" v-if="data.photoList[item]" alt>
+          <li class="photo_item isShow" v-for="item in photos" :key="item" @click="examinePhoto(item.id)">
+            <img :src="item" v-if="item" alt>
+          </li>
+          <li class="photo_item" v-if="3 - photos.length > 0" v-for="item in (3 - photos.length)" :key="item">
           </li>
           <li class="photo_more">
             <span class="sanjiao" @click="photosClick">相册</span>
@@ -104,7 +106,8 @@
 </template>
 <script>
 import Group from "@/components/Group";
-import { personalCenter } from "@/assets/common/api";
+import { ImagePreview } from 'vant'
+import { personalCenter, uploadPhoto} from "@/assets/common/api";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -118,14 +121,42 @@ export default {
         levels: [],
         photoList: []
       }
-    };
+    }
   },
   computed: {
     ...mapState({
       user: state => state.IM.user
-    })
+    }),
+    photos() {
+      return this.data.photoList.map(el => el.context).filter((el,index) => index < 3)
+    }
   },
   methods: {
+    userHead () {
+      window.instance = ImagePreview({
+        images: [this.user.userHead]
+      })
+    },
+    examinePhoto (id) {
+      let index = this.data.photoList.findIndex(el => el.id === id)
+      window.instance = ImagePreview({
+        images: this.data.photoList.map(el => el.context),
+        startPosition: index
+      })
+    },
+    submitPhoto() {
+      window.updatePhoto(str => {
+        if(str) {
+          uploadPhoto({
+            userId: this.user.id,
+            photoUrl: str
+          }).then(() => {
+            this.$toast('图片上传成功')
+            this.$router.push({name: 'Photo'})
+          })
+        }
+      })
+    },
     memberClick() {
       this.$router.push({ name: "member" });
     },
@@ -143,7 +174,8 @@ export default {
       this.$router.push({ name: "order" });
     },
     toastClick(item) {
-      this.$router.push({ name: "memberDetails", query: { item: item } });
+      this.$store.state.common.member = item
+      this.$router.push({ name: "memberDetails"});
     },
     beforeClose(action, done) {
       if (action === "confirm") {
@@ -301,15 +333,21 @@ export default {
 .photos .photo_item {
   width: 1.44rem;
   height: 1.44rem;
+  line-height: 1.44rem;
   background-color: #dddddd;
   background-image: url("../../assets/images/user_photo_add@2x.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: 50%;
 }
+.photos .photo_item.isShow{
+  background-color: #484040;
+  background-image: none
+}
 .photos .photo_item img {
   max-width: 100%;
   max-height: 100%;
+  width: 100%;
 }
 .photograph {
   width: 1.44rem;

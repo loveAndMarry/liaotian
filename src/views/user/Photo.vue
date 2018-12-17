@@ -10,16 +10,20 @@
               <p>上传图片</p>
             </div>
         </li>
-        <li v-for="(el, index) in photoList" :key="index" class="photo_item"><img 
-        @touchstart.native="showDeleteButton(item.id)" @touchend.native="clearLoop(item.id)"
-        src="http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg" alt="" v-if="index === 0" @click="imageClick"/></li>
-        <li v-for="(el, index) in (8 - photoList.length)" :key="index" class="photo_item"></li>
+        <li v-for="(el, index) in photoList" :key="index" class="photo_item">
+          <img 
+          @touchstart.native="showDeleteButton(item.photoId)"
+          @touchend.native="clearLoop(item.photoId)"
+          :src="el.context"
+          @click="imageClick(index)"/>
+          <span class="states" v-if="el.states !== '2'">{{el.states | statesFilter}}</span>
+        </li>
     </ul>
   </div>
 </template>
 <script>
 import { NavBar, ImagePreview  } from "vant"
-import { userPhoto } from '@/assets/common/api'
+import { userPhoto, uploadPhoto, deletePhoto} from '@/assets/common/api'
 import { mapState } from 'vuex'
 export default {
   data () {
@@ -39,14 +43,29 @@ export default {
   components: {
     NavBar
   },
+  filters: {
+    statesFilter (val) {
+      switch(val){
+        case '1':
+          return '审核中'
+          break
+        case '2':
+          return ''
+          break
+        case '3':
+          str = '审核失败'
+          break
+      }
+    }
+  },
   mounted () {
     userPhoto({
       pageCurrent:this.pageCurrent,
       pageSize: this.pageSize,
       userId: this.user.id
     }).then((res) => {
-      if(res.data.list){
-        this.photoList.push(...res.data.list)
+      if(res.data){
+        this.photoList.push(...res.data)
       }
     })
   },
@@ -54,46 +73,42 @@ export default {
     onClickLeft () {
       this.$router.back()
     },
-    imageClick () {
-      ImagePreview({
-        images: [
-          'http://image.biaobaiju.com/uploads/20180508/11/1525751142-GXLJjxcoyY.jpg'
-        ],
-        startPosition: 0,
+    imageClick (index) {
+      window.instance = ImagePreview({
+        images: this.photoList.map(el => el.context),
+        startPosition: index,
+      })
+    },
+    submitPhoto() {
+      window.Android.updatePhoto(str => {
+        if(str) {
+          uploadPhoto({
+            userId: this.user.id,
+            photoUrl: str
+          }).then(() => {
+            this.$toast('图片上传成功')
+            this.data.photoList.push({
+              context: str
+            })
+          })
+        }
       })
     },
     showDeleteButton(e) {
       clearTimeout(this.Loop); //再次清空定时器，防止重复注册定时器
       this.Loop = setTimeout(function() {
-        // this.$dialog.confirm({   //这是个弹出框，用的ydui
-        //   title: '温馨提示',
-        //   mes: '是否删除此条消息',
-        //   opts: () => {
-        //     this.$dialog.loading.open('删除中...');
-        //     this.$http.post(this.$store.state.ip + '...', {
-        //       id: e
-        //     }, {
-        //         headers: {},
-        //     }).then((response) => {
-        //       this.$dialog.loading.close();
-        //         this.$dialog.toast({
-        //           mes: response.body.info,
-        //           timeout: 1000
-        //         });
-        //         var data = this.rulist
-        //         console.log(data)
-        //         for(var i in data) {
-        //           if(data[i].id == e) {
-        //             data.splice(i, 1)
-        //           }
-        //         }
-        //         console.log(data)
-        //         this.rulist=data
-        //         }).catch(function(response) {
-    
-        //         });
-        //       }
-        // });
+        this.$dialog.confirm({   //这是个弹出框，用的ydui
+          title: '温馨提示',
+          mes: '是否删除当前图片',
+          opts: () => {
+            deletePhoto({
+              photoId: e
+            }).then((res) => {
+              this.photoList = this.photoList.filter(el => el.id !== id)
+              this.$toast('删除成功')
+            })
+          }
+        });
       }.bind(this), 1000);
     },
     clearLoop(e) {
@@ -126,16 +141,32 @@ export default {
 .photos .photo_item{
   width: calc(2.38rem - 2px);
   height: calc(2.38rem - 2px);
+  line-height: calc(2.38rem - 2px);
   background-color: #dddddd;
   background-image: url('../../assets/images/user_photo_add@2x.png');
   background-size: 40%;
   background-repeat: no-repeat;
-  background-position: 50%
-
+  background-position: 50%;
+  position: relative;
+  z-index: 10;
 }
+.photos .photo_item .states{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: .5rem;
+  text-align: center;
+  line-height: .5rem;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  z-index: 1;
+}
+
 .photos .photo_item img{
   max-width: 100%;
-  max-height: 100%
+  max-height: 100%;
+  width: 100%
 }
 .photos li.photograph{
   border: 1px dashed #d7d7d7;

@@ -2,7 +2,7 @@
   <div class='left'>
     <NavBar title="完善资料"></NavBar>
     <div style="padding: .2rem 0 .2rem .3rem;overflow: hidden;background-color: #fff;">
-      <div class="head">
+      <div class="head" @click="submitPhoto">
         <img :src="imgUrl" alt>
         <span>更换头像</span>
       </div>
@@ -120,6 +120,13 @@ export default {
     this.fromData.userId = utils.getUrlArgObject('userId')
   },
   methods: {
+    submitPhoto () {
+      window.Android.updatePhoto(str => {
+        if(str) {
+          THIS.fromData.userHead = str
+        }
+      })
+    },
     domicileConfirm (result) {
       this.fromData.domicileProvinceId = result[0].code
       this.fromData.domicileProvinceName = result[0].name

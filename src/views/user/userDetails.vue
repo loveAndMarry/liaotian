@@ -169,7 +169,7 @@ import { NavBar, Circle, Field, Toast, Picker, Actionsheet} from "vant";
 import Address from '@/components/options/Address'
 import PackerList from '@/components/options/PackerList'
 import SplitGroup from "@/components/SplitGroup";
-import { userPersonalCenterInformation, updateUserSpecificInfo,updateUserBirthday } from '@/assets/common/api' 
+import { userPersonalCenterInformation, updateUserSpecificInfo,updateUserBirthday, uploadUserHand } from '@/assets/common/api' 
 import Vue from "vue";
 import { mapState } from 'vuex'
 import ListItem from '@/components/ListItem'
@@ -280,9 +280,15 @@ export default {
   },
   methods: {
     updatePhoto () {
-      window.updatePhoto().then(str => {
+      window.Android.updatePhoto(str => {
         if(str) {
-          console.log('组件内已经接受到参数：' + str)
+          uploadUserHand({
+            userId: this.user.id,
+            photoUrl: str
+          }).then(() => {
+            this.$toast('头像修改成功')
+            this.data.userBaseInformation.userHead = str
+          })
         }
       })
     },
