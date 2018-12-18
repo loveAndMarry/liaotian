@@ -37,7 +37,8 @@ export default {
   data () {
     return {
       columns: [],
-      noDataText: '没有更多的数据'
+      noDataText: '没有更多的数据',
+      index: 0, // 默认第一次下拉加载不请求
     }
   },
   computed: {
@@ -48,6 +49,7 @@ export default {
   methods: {
     // 过滤用户和列表中的共同的爱好
     interestDictVoList (item) {
+      console.log("1")
       if(!item){return []}
       let arr = []
       let loop = (a, b) => {
@@ -55,7 +57,7 @@ export default {
           if(b.some(ele => ele.id === el.id)){
             el.isIdentical = true
             arr.push(el)
-          } else {
+          } else { 
             el.isIdentical = false
           }
         })
@@ -87,7 +89,7 @@ export default {
         }
       }
       
-      return item.filter((a,i) => i < 2)
+      return item.filter((a,i) => i <= 2)
     },
     income (item) {
       if(item.incomeMin && item.incomeMax === undefined){
@@ -127,13 +129,18 @@ export default {
       this.$router.push({name: 'userDetail'})
     },
     infinite (fn) {
+      console.log('infinite')
       if(this.index){
         ++this.data.pageCurrent
        listUser(this.data).then((res) => {
          if(res.data.list){
            this.noDataText = '没有更多数据'
            res.data.list.length < this.data.pageSize ? fn(true) :fn()
-           this.columns.push(res.data.list)
+           if(res.data.count <= this.columns.length){
+             return false
+           } else {
+             this.columns.push(res.data.list)
+           }
          }
        }).catch(() => fn ? fn(true): this.$refs.scroller.finishPullToRefresh())
       } else {
@@ -142,6 +149,7 @@ export default {
       }
     },
     refresh (fn) {
+      console.log('refresh')
       var obj = Object.assign({}, this.data, {
         pageSize: this.columns.length || 10,
         pageCurrent: 1
@@ -162,13 +170,14 @@ export default {
 
 <style scoped>
 .rad{
-  color: #fd7194
+  color: #fd7194;
+  background-color: #fff !important;
 }
 .home_list{
   display: block;
 }
 .home_list li{
-  margin-bottom: .1rem;
+  margin-top: .1rem;
   padding:.35rem 0 .35rem .3rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -261,8 +270,10 @@ export default {
 .list_content .tags li{
   background-color: #dedede;
   display: inline-block;
-  padding: .05rem .1rem;
-  margin-right: .1rem
+  padding: .04rem .1rem;
+  margin-right: .1rem;
+  border: 1px solid #dedede;
+  border-radius: .05rem;
 }
 
 </style>

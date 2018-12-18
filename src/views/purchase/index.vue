@@ -52,9 +52,17 @@ export default {
       this.$router.back()
     },
     submit () {
-      window.payment(0.01, function(str){
-        console.log('支付成功，支付金额：' + str)
-      })
+      console.log('传入字符串:     ' + JSON.stringify(this.$route.query.obj)) 
+
+      this.$route.query.obj.payType = this.payType
+      var u = navigator.userAgent;
+      if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+        console.log("安卓手机");
+        window.Android.payment(JSON.stringify(this.$route.query.obj))
+      } else if (u.indexOf('iPhone') > -1) {//苹果手机
+        console.log("苹果手机");
+        window.webkit.messageHandlers.payment.postMessage(this.$route.query.obj)
+      } 
     }
   },
   components: {

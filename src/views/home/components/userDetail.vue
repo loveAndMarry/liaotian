@@ -181,7 +181,7 @@ export default {
     },
     userHeadClick () {
       window.instance = ImagePreview({
-        images: this.userBaseInformation.userHead
+        images: [this.userBaseInformation.userHead]
       })
     },
     immediately () {

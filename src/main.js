@@ -5,6 +5,10 @@ import App from './App'
 import router from './router'
 import store from './store'
 import 'vant/lib/vant-css/index.css'
+//引入容联云即时通讯
+import IM from '@/assets/common/IM'
+
+Vue.$IM = IM
 // 时间选择器
 import Calendar from 'vue2-datepick';
 Vue.use(Calendar);
@@ -44,6 +48,9 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  data: {
+    isLogin: 0 // 当前容联云是否登陆
+  },
   router,
   store,
   components: { 
@@ -55,5 +62,14 @@ new Vue({
     this.$store.dispatch('GETFRIEND')
     // 触发获取当前本地聊天记录
     this.$store.dispatch('GETCHATMESSAGE')
+  },
+  watch: {
+    '$store.state.IM.user': function (val) {
+      console.log('当前获取到用户信息',val)
+      if(!this.isLogin){
+        Vue.$IM.init()
+        this.isLogin = 1
+      }
+    }
   }
 })

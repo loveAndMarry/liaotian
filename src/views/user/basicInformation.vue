@@ -121,9 +121,9 @@ export default {
   },
   methods: {
     submitPhoto () {
-      window.Android.updatePhoto(str => {
+      window.updatePhoto(str => {
         if(str) {
-          THIS.fromData.userHead = str
+          this.fromData.userHead = str
         }
       })
     },

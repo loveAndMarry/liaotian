@@ -280,7 +280,7 @@ export default {
   },
   methods: {
     updatePhoto () {
-      window.Android.updatePhoto(str => {
+      window.updatePhoto(str => {
         if(str) {
           uploadUserHand({
             userId: this.user.id,

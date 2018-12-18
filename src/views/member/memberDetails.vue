@@ -79,6 +79,7 @@ export default {
   },
   methods: {
     payment (el) {
+      console.log(el)
       let obj = {
         body: '购买会员',
         subject: this.member.levelName + el.countName,
@@ -90,8 +91,6 @@ export default {
         productCount: '1',
         payType: this.payType
       }
-
-      window.paymentData = obj
 
       this.$router.push({name: 'purchase', query: {obj : obj}})
     },

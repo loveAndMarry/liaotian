@@ -108,6 +108,7 @@ const actions = {
           router.push({name: 'basicInformation'})
           return false
         }
+        console.log('获取账号信息成功')
         resolve(res.data)
       })
     })
@@ -117,36 +118,34 @@ const actions = {
     if(!state.chatMessage[products.sender]){
       state.chatMessage[products.sender] = []
     }
-    if(state.friendArr.findIndex(el => el === products.sender) === -1){
-      state.friendArr.push(products.sender)
-    }
     if(state.friendList.length === 0 || state.friendList.length > 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1){
-      // 更改本地缓存中的数据
-      getFriendMessage({
-        accountNumber: products.sender,
-        userId: state.user.id
-      }).then((res)=>{
-
-        if(state.friendArr.findIndex(el => el === products.sender) === -1){
+      // 如果一次性接受多条信息时，会向好友列表中多次添加
+      if(state.friendArr.findIndex(el => el === products.sender) === -1){
+        // 更改本地缓存中的数据
+        getFriendMessage({
+          accountNumber: products.sender,
+          userId: state.user.id
+        }).then((res)=>{
+  
           utils.pushLocalData('friendList', res.data)
           state.friendList.push(res.data)
-        }
-        // 将聊天信息的发送人和接受人的账号存入聊天信息
-        products = Object.assign({},products,{
-          sendUserId: res.data.id,
-          receiveUserId: state.user.id,
+          // 将聊天信息的发送人和接受人的账号存入聊天信息
+          products = Object.assign({},products,{
+            sendUserId: res.data.id,
+            receiveUserId: state.user.id,
+          })
+  
+          commit(RECEIVE_INFORMATION, products)
+          // 置顶当前好友
+          commit(FRIEND_SORT, {
+            id: products.sender
+          })
         })
-
-        commit(RECEIVE_INFORMATION, products)
-        // 置顶当前好友
-        commit(FRIEND_SORT, {
-          id: products.sender
-        })
-      })
+        state.friendArr.push(products.sender)
+      }
       return false
-    }
-
-    // 如果当前好友存在，就获取当前好友的id
+    } else {
+       // 如果当前好友存在，就获取当前好友的id
     let obj = state.friendList.find(el => el.accountNumber === products.sender)
     products = Object.assign({},products,{
       sendUserId: obj.id,
@@ -158,6 +157,7 @@ const actions = {
      commit(FRIEND_SORT, {
       id: products.sender
     })
+    }
   },
 
   [UPDATE_USER_LIST] ({ commit, state }, products) {
@@ -265,6 +265,8 @@ const mutations = {
       status: 2,
       time: products.time
     } )
+
+    console.log('接收到最新的消息')
 
     // 更新缓存中的数据
     localStorage.setItem('friendList',JSON.stringify(state.friendList))

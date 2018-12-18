@@ -14,7 +14,7 @@
                     <h3 v-text="el.nickName"></h3>
                     <span class="theRealNameSystem" v-if="el.theRealNameSystem">实名</span>
                 </div>
-                <p v-text="el.context"></p>
+                <p v-text="uncodeUtf16(el.context)"></p>
               </div>
               <div class="info">
                 <p>{{el.time | fromNow}}</p>
@@ -53,6 +53,9 @@ export default {
   },
   methods: {
     ...mapActions(["UPDATEUSERLIST", "GETFRIEND", 'GETFRIENDLIST','UPDATE_FRIEND_LIST']),
+    uncodeUtf16 (val) {
+      return utils.uncodeUtf16(val)
+    },
     infinite(done) {
       this.GETFRIENDLIST(done)
     },

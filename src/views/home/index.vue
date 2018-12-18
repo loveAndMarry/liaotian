@@ -5,7 +5,7 @@
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search> -->
     <Tabs @updateVal="updateVal" @search="search"/>
-    <div style="height:calc(100% - 1.9rem);position: absolute;top:47px;width: 100%;">
+    <div style="height:calc(100% - 1.9rem);position: absolute;top:.8rem;width: 100%;">
       <HomeList :fromData='fromData' ref='HomeList'></HomeList>
     </div>
   </div>
@@ -16,8 +16,8 @@ import { Search } from 'vant'
 import Tabs from './components/tabs'
 import HomeList from './components/HomeList'
 import { mapState } from 'vuex'
-//引入容联云即时通讯
-import IM from '@/assets/common/IM'
+import Vue from 'vue'
+
 import utils from '@/assets/common/utils'
 
 export default {
@@ -57,18 +57,26 @@ export default {
       },
       columns:[]
     }
-  },
+  }, 
   mounted () {
-    this.$store.dispatch('UPDATEUSER', {
-      userId: this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
-      // userId: '2219246d18504fea864208235f056223' 
-    }).then((data) => {
-      this.fromData.sex = data.sex === '1'? '2': '1'
-      this.fromData.userId = data.id
+    console.dir(Vue)
+    console.log(this)
+    console.log(this.$store.state.IM.user.id)
+    if(!this.$store.state.IM.user.id){
+      this.$store.dispatch('UPDATEUSER', {
+        userId: this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
+        // userId: '2219246d18504fea864208235f056223' 
+      }).then((data) => {
+        this.fromData.sex = data.sex === '1'? '2': '1'
+        this.fromData.userId = data.id
+        this.search()
+        // 获取到个人信息后登录容联云账号
+      })
+    } else {
+      this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
+      this.fromData.userId = this.$store.state.IM.user.id
       this.search()
-      // 获取到个人信息后登录容联云账号
-      IM.init()
-    })
+    }
   },
   methods: {
     transitionObj (fromData) {

@@ -234,12 +234,12 @@ body {
   }
 } */
 ._v-container>._v-content>.loading-layer{
-  font-size: .16rem !important;
+  font-size: .28rem !important;
   line-height: .6rem !important;
   height: .6rem !important
 }
 ._v-container>._v-content>.loading-layer .spinner-holder .text, ._v-container>._v-content>.pull-to-refresh-layer .spinner-holder .text{
-  font-size: .16rem !important;
+  font-size: .28rem !important;
 }
 
 /* 更改环形进度条默认样式
