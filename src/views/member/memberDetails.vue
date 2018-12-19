@@ -83,13 +83,10 @@ export default {
       let obj = {
         body: '购买会员',
         subject: this.member.levelName + el.countName,
-        totalAmount: el.discountsStart === '0' ? el.priceY : el.discountsPriceY,
         userId: this.user.id,
         type: '1',
         productId: el.id,
-        productPictures: this.member.ico,
-        productCount: '1',
-        payType: this.payType
+        productCount: '1'
       }
 
       this.$router.push({name: 'purchase', query: {obj : obj}})

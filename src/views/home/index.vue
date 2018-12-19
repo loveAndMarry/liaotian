@@ -59,9 +59,6 @@ export default {
     }
   }, 
   mounted () {
-    console.dir(Vue)
-    console.log(this)
-    console.log(this.$store.state.IM.user.id)
     if(!this.$store.state.IM.user.id){
       this.$store.dispatch('UPDATEUSER', {
         userId: this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
