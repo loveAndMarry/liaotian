@@ -94,6 +94,9 @@ export const uploadPhoto = data => HTTP.GET('web/updateUserController/uploadPhot
 // 删除个人相册图片
 export const deletePhoto = data => HTTP.GET('web/updateUserController/deletePhoto',data)
 
+// 获取个人订单列表
+export const listUserOrder = data => HTTP.GET('web/userOrders/listUserOrder',data)
+
 /**
  * 字典接口
  */

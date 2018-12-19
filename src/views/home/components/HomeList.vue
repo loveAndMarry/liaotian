@@ -176,7 +176,7 @@ export default {
 .home_list{
   display: block;
 }
-.home_list li{
+.home_list>li{
   margin-top: .1rem;
   padding:.35rem 0 .35rem .3rem;
   box-sizing: border-box;
@@ -261,6 +261,9 @@ export default {
 .list_content .message i{
   display: inline-block;
   margin: 0 .1rem
+}
+.list_content .manifesto{
+  margin-top: .1rem;
 }
 .list_content .tags{
   font-size: .2rem;

@@ -82,6 +82,7 @@ export default {
       console.log(el)
       let obj = {
         body: '购买会员',
+        totalAmount: el.discountsStart === '0' ? el.priceY : el.discountsPriceY,
         subject: this.member.levelName + el.countName,
         userId: this.user.id,
         type: '1',

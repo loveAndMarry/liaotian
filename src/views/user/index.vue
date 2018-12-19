@@ -2,12 +2,15 @@
   <div style="height: 100%">
     <div class="title">
       {{user.nickName}}
-      <span class="shezhi"></span>
+      <span class="shezhi" @click="setting"></span>
     </div>
     <div class="overflow">
       <div class="group">
         <div class="datum">
-          <img :src="user.userHead" alt @click="userHead">
+          <div class="head">
+            <img :src="user.userHead" alt @click="userHead">
+            <span v-if="user.states === '1'">审核中</span>
+          </div>
           <div class="datum_content">
             <div>
               资料完善度{{data.dataIntegrity}}%
@@ -36,20 +39,20 @@
           </li>
         </ul>
         <ul class="links">
-          <li @click="linkClick(1)">
+          <li @click="linkClick(1)" :class="{show: data.accessRecordUserPhotoUrl !== ''}">
             <img :src="data.accessRecordUserPhotoUrl" alt>
             <p>谁看过我</p>
           </li>
-          <li @click="linkClick(2)">
+          <li @click="linkClick(2)" :class="{show: data.likeMePhotoUrl !== ''}">
             <img :src="data.likeMePhotoUrl" alt>
             <p>谁喜欢我</p>
           </li>
-          <li @click="linkClick(3)">
+          <li @click="linkClick(3)" :class="{show: data.likeUserPhotoUrl !== ''}">
             <img :src="data.likeUserPhotoUrl" alt>
             <p>我喜欢谁</p>
           </li>
           <li @click="linkClick(4)">
-            <img src="../../assets/images/love@2x.png" alt style="width: inherit;">
+            <img src="../../assets/images/love@2x.png" alt style="width: inherit;background-image: none;">
             <p>相互喜欢</p>
           </li>
         </ul>
@@ -115,9 +118,9 @@ export default {
       isshow: false,
       data: {
         dataIntegrity: "0",
-        accessRecordUserPhotoUrl: require("../../assets/images/no_people@2x.png"),
-        likeMePhotoUrl: require("../../assets/images/no_people@2x.png"),
-        likeUserPhotoUrl: require("../../assets/images/no_people@2x.png"),
+        accessRecordUserPhotoUrl: '',
+        likeMePhotoUrl: '',
+        likeUserPhotoUrl: '',
         levels: [],
         photoList: []
       }
@@ -132,6 +135,15 @@ export default {
     }
   },
   methods: {
+    setting () {
+       var u = navigator.userAgent;
+       if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+        console.log("安卓手机");
+      } else if (u.indexOf('iPhone') > -1) {//苹果手机
+        console.log("苹果手机");
+        window.webkit.messageHandlers.Setting.postMessage(null)
+      } 
+    },
     userHead () {
       window.instance = ImagePreview({
         images: [this.user.userHead]
@@ -202,6 +214,41 @@ export default {
 </script>
 
 <style scoped>
+.head {
+  border: 1px solid #fff;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  display: block;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  float: left;
+}
+.head img {
+  max-width: 100%;
+  max-height: 100%;
+      height: 100%;
+    width: 100%;
+}
+.head span {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0.5rem;
+  font-size: 0.22rem;
+  color: #fefefe;
+  line-height: 0.5rem;
+  text-align: center;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .overflow{
   height: calc( 100% - 50px - .88rem);
   overflow-x: hidden;
@@ -299,12 +346,30 @@ export default {
   background-repeat: no-repeat;
 }
 
+.links li{
+  position: relative;
+}
+
 .links li img {
   width: 0.64rem;
   height: 0.64rem;
   border-radius: 50%;
   -webkit-border-radius: 50%;
   display: inline-block;
+  background: url('../../assets/images/no_people@2x.png') no-repeat;
+  background-size: 100%
+}
+.links li.show::before{
+  content: '';
+  width: .1rem;
+  height: .1rem;
+  background: red;
+  position: absolute;
+  right: 0.25rem;
+  top: 0;
+  display: block;
+  border-radius: 50%;
+  z-index: 10;
 }
 .links li p {
   font-size: 0.23rem;

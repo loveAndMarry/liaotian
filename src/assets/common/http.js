@@ -1,5 +1,8 @@
 import axios from 'axios'
-import router from 'vue-router'
+import Vue from 'vue'
+import { Toast } from 'vant';
+
+Vue.use(Toast);
 const HTTP = {}
 
 axios.defaults.timeout = 10000
@@ -49,6 +52,7 @@ HTTP.GET = function (url, data) {
         resolve(res.data)
       }else{
         console.log('请求失败')
+        Toast(res.data.msg)
         reject(res.data)
       }
     }).catch((res) => {

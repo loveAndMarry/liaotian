@@ -1,5 +1,5 @@
-window.baseURL = 'http://192.168.1.12:8080/qike-maiyuan'
-// window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
+// window.baseURL = 'http://192.168.1.12:8080/qike-maiyuan'
+window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
 
 // 点击调用图片和拍照
 window.updatePhoto = function(callback){
@@ -11,10 +11,7 @@ window.updatePhoto = function(callback){
       alert('updatePhoto')
     } else if (u.indexOf('iPhone') > -1) {//苹果手机
       console.log("苹果手机");
-      window.webkit.messageHandlers.PhotoClick.postMessage({
-        name: '名称',
-        callback: callback
-      })
+      window.webkit.messageHandlers.PhotoClick.postMessage(null)
     } 
   } else {
     this.callback(callback)

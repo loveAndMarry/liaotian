@@ -4,7 +4,7 @@
     left-arrow
     @click-left="onClickLeft" title="我的相册"/>
     <ul class="photos">
-       <li class="photograph">
+       <li class="photograph" @click="submitPhoto">
             <div>
               <img src="../../assets/images/user_photo_upload@2x.png" alt=""> 
               <p>上传图片</p>

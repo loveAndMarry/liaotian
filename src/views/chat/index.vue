@@ -48,6 +48,7 @@ export default {
     }
   },
   mounted() {
+    localStorage.setItem('friendList','[]')
     // 获取好友列表
     this.GETFRIEND({});
   },

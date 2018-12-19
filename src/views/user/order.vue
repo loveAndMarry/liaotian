@@ -2,38 +2,82 @@
   <div>
     <NavBar left-arrow @click-left="onClickLeft" title="我的订单"/>
     <div class="scroll">
-      <div class="orderGroup">
-        <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1287764448,2855586643&fm=27&gp=0.jpg">
-        <div class="order_content">
-          <p>地方噶空间大刚好看见好看就按会计师电话费卡时代峻峰哈空间发挥</p>
-          <div>
-            <span>￥699</span>
-            <span style="float: right;">x 1</span>
+      <List
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <div class="orderGroup" v-for="(el, index) in list" :key="index">
+          <img :src="el.productPictures">
+          <div class="order_content">
+            <p>{{el.title}}</p>
+            <div>
+              <span>￥{{el.payMoneyY}}</span>
+              <span style="float: right;">x {{el.productCount}}</span>
+            </div>
           </div>
+          <div class="order_type" :class="{success: el.status === '2'}">{{el.status | status}}</div>
         </div>
-        <div class="order_type success">支付成功</div>
-      </div>
-      <div class="orderGroup">
-        <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1287764448,2855586643&fm=27&gp=0.jpg">
-        <div class="order_content">
-          <p>地方噶空间大刚好看见好看就按会计师电话费卡时代峻峰哈空间发挥</p>
-          <div>
-            <span>￥699</span>
-            <span style="float: right;">x 1</span>
-          </div>
-        </div>
-        <div class="order_type">支付失败</div>
-      </div>
+      </List>
     </div>
   </div>
 </template>
 <script>
-import { NavBar } from "vant";
+import { NavBar, List} from "vant";
+import { listUserOrder } from '@/assets/common/api'
 export default {
+  data () {
+    return {
+      list: [],
+      pageCurrent: 1,
+      pageSize: 10,
+      loading: false,
+      finished: false
+    }
+  },
+  filters: {
+    status (val) {
+      switch(val){
+        case '1':
+          return '未支付'
+          break
+        case '2':
+          return '已支付'
+          break
+        case '3':
+          return '已支付执行业务异常'
+          break
+        case '4':
+          return '支付失败'
+          break
+      }
+    }
+  },
   components: {
-    NavBar
+    NavBar,
+    List
+  },
+  mounted () {
+    //this.onLoad()
   },
   methods: {
+    onLoad() {
+      listUserOrder({
+        userId: this.$store.state.IM.user.id,
+        pageCurrent: this.pageCurrent,
+        pageSize: this.pageSize
+      }).then((res) => {
+        if(res.data.list && this.list.length < res.data.totalCount){
+          this.list.push(...res.data.list)
+          this.loading = false;
+          this.pageCurrent++
+        } else {
+          this.loading = false;
+          this.finished = true;
+        }
+      })
+    },
     onClickLeft () {
       this.$router.back()
     }
@@ -81,8 +125,9 @@ export default {
 }
 .order_type {
   float: right;
+  width: 1rem;
+  word-break: break-word;
   height: 0.95rem;
-  line-height: 0.95rem;
 }
 .success{
   color: #ff7994

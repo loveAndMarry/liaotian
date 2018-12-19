@@ -145,6 +145,16 @@ export default {
       this.fromData.education = result[0].label
     },
     incomeConfirm (result) {
+      if(result[0].label.indexof('以下')){
+        this.fromData.incomeMin = result[0].label.replace('以下', '')
+        this.fromData.incomeMax = '-1'
+        return false
+      }
+      if(result[0].label.indexof('以上')){
+        this.fromData.incomeMin = '-1'
+        this.fromData.incomeMax = result[0].label.replace('以上', '')
+        return false
+      }
       var arr = result[0].label.replace('元', '').split('-')
       this.fromData.incomeMin = arr[0]
       this.fromData.incomeMax = arr[1]

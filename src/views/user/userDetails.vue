@@ -28,7 +28,7 @@
           </div>
           <div class="head" @click="updatePhoto">
             <img :src="data.userBaseInformation.userHead" alt>
-            <span>更换头像</span>
+            <span>{{data.userBaseInformation.states === '1'? '审核中' : '更换头像'}}</span>
           </div>
           <div class="item" @click="linkClick">
             <div class="link"></div>
@@ -244,6 +244,7 @@ export default {
       isSmoke: ['isSmokeDictValue', 'isSmoke']
     }
   },
+  inject: ['reload'],
   computed: {
     ...mapState({
       user: state => state.IM.user
@@ -271,14 +272,17 @@ export default {
     }
   },
   mounted () {
-    userPersonalCenterInformation({ userId: this.user.id}).then((res) => {
-      if(res.data){
-        this.data = Object.assign(this.data, res.data)
-        this.isData = true
-      }
-    })
+    this.updateData()
   },
   methods: {
+    updateData (){
+      userPersonalCenterInformation({ userId: this.user.id}).then((res) => {
+        if(res.data){
+          this.data = Object.assign(this.data, res.data)
+          this.isData = true
+        }
+      })
+    },
     updatePhoto () {
       window.updatePhoto(str => {
         if(str) {
@@ -288,6 +292,9 @@ export default {
           }).then(() => {
             this.$toast('头像修改成功')
             this.data.userBaseInformation.userHead = str
+            this.data.userBaseInformation.states = '1'
+            this.user.userHead = str
+            this.user.states = '1'
           })
         }
       })
@@ -341,77 +348,10 @@ export default {
         this.$set(this.data.userBaseInformation, name , arr[0].label)
       })
     },
-    heightClick () {
-      let arr = JSON.parse(localStorage.getItem('height'))
-      let index = arr.findIndex(el => el.replace('cm', '') == this.data.userBaseInformation.height)
-      this.heightColumns = [{
-        values: arr,
-        defaultIndex: index
-      }]
-      this.heightShow = true
-    },
-    heightConfirm (values) {
-      updateUserSpecificInfo({
-        userId: this.user.id,
-        height: values[0].replace('cm','')
-      }).then(() => {
-        this.heightShow = false
-        this.$set(this.data.userBaseInformation, 'height' , values[0].replace('cm',''))
-      })
-    },
-
-    educationClick () {
-      let arr = JSON.parse(localStorage.getItem('education')).map(el => el.label)
-      let index = arr.findIndex(el => el == this.data.userBaseInformation.education)
-      this.educationColumns = [{
-        values: arr,
-        defaultIndex: index
-      }]
-      this.educationShow = true
-    },
-    educationConfirm (values) {
-      updateUserSpecificInfo({
-        userId: this.user.id,
-        education: values[0]
-      }).then(() => {
-        this.educationShow = false
-        this.$set(this.data.userBaseInformation, 'education' , values[0])
-      })
-    },
-
-     incomeClick () {
-      let arr = JSON.parse(localStorage.getItem('income')).map(el => el.label).map((el, index, arr) => {
-        if(index === arr.length -1){
-          return el + '以上'
-        }
-        return el + ' - ' + arr[index + 1]
-      })
-      let index = arr.findIndex(el => el.replace(/[^0-9]/g, '') == this.data.userBaseInformation.income)
-      this.incomeColumns = [{
-        values: arr,
-        defaultIndex: index
-      }]
-      this.incomeShow = true
-    },
-    incomeConfirm (values) {
-      let arr = values[0].match(/\d+/g)
-      var flag = arr.length
-      let incomeMin =  flag === 1? '-1' : arr[0] || null;
-      let incomeMax =  flag === 1? arr[0] :  arr[1] || null 
-      updateUserSpecificInfo({
-        userId: this.user.id,
-        incomeMin: incomeMin,
-        incomeMax: incomeMax
-      }).then(() => {
-        this.incomeShow = false
-        this.$set(this.data.userBaseInformation, 'incomeMin' , incomeMin || '' )
-        this.$set(this.data.userBaseInformation, 'incomeMax' , incomeMax || '' )
-      })
-    },
-
     birthdayClick () {
       // 进行实名认证之后生日不可修改
-      if(parseInt(this.data.userBaseInformation.registerState) >= 2 ){
+      if(parseInt(this.data.userBaseInformation.registerState) >= 4 ){
+        this.$toast('实名认证之后生日不可修改')
         return
       }
       this.$picker.show({
@@ -424,6 +364,7 @@ export default {
             userId: this.user.id,
             birthday: e
           }).then(() => {
+            // this.$router.go(0)
             this.$set(this.data.userBaseInformation, 'birthday' , e)
           })
         },
