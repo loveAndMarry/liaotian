@@ -426,6 +426,7 @@ export default {
 .right img{
   display: inline-block;
   width: 1.6rem;
+  height: 1.6rem;
   border-radius: 50%;
   -webkit-border-radius: 50%;
 }

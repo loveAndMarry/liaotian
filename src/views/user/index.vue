@@ -67,11 +67,11 @@
       </Group>
       <Group title="我的认证">
         <div class="authentication">
-          <div class="real_name" v-if="user.registerState === '3'">
+          <div class="real_name" @click="$router.push({name: 'authentication'})">
             <div></div>
             <p>实名认证</p>
           </div>
-          <div class="phone">
+          <div class="phone" @click="$router.push({name: 'YY'})">
             <div></div>
             <p>手机认证</p>
           </div>
@@ -139,6 +139,7 @@ export default {
        var u = navigator.userAgent;
        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
         console.log("安卓手机");
+        window.Android.Setting()
       } else if (u.indexOf('iPhone') > -1) {//苹果手机
         console.log("苹果手机");
         window.webkit.messageHandlers.Setting.postMessage(null)
@@ -357,7 +358,8 @@ export default {
   -webkit-border-radius: 50%;
   display: inline-block;
   background: url('../../assets/images/no_people@2x.png') no-repeat;
-  background-size: 100%
+  background-size: 100%;
+  overflow: hidden;
 }
 .links li.show::before{
   content: '';

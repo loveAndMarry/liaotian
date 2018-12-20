@@ -10,12 +10,11 @@
               <p>上传图片</p>
             </div>
         </li>
-        <li v-for="(el, index) in photoList" :key="index" class="photo_item">
-          <img 
-          @touchstart.native="showDeleteButton(item.photoId)"
-          @touchend.native="clearLoop(item.photoId)"
-          :src="el.context"
-          @click="imageClick(index)"/>
+        <li v-for="(el, index) in photoList" :key="index" class="photo_item" @touchstart="showDeleteButton(el.photoId)"
+          @touchend="clearLoop(el.photoId)">
+          <div
+          :style="{backgroundImage: 'url(' + el.context + '?imageMogr2/auto-orient)'}"
+          @click="imageClick(index)"></div>
           <span class="states" v-if="el.states !== '2'">{{el.states | statesFilter}}</span>
         </li>
     </ul>
@@ -53,7 +52,7 @@ export default {
           return ''
           break
         case '3':
-          str = '审核失败'
+          return '审核失败'
           break
       }
     }
@@ -80,15 +79,16 @@ export default {
       })
     },
     submitPhoto() {
-      window.Android.updatePhoto(str => {
+      window.updatePhoto(str => {
         if(str) {
           uploadPhoto({
             userId: this.user.id,
             photoUrl: str
           }).then(() => {
             this.$toast('图片上传成功')
-            this.data.photoList.push({
-              context: str
+            this.photoList.push({
+              context: str,
+              states: '1'
             })
           })
         }
@@ -98,15 +98,21 @@ export default {
       clearTimeout(this.Loop); //再次清空定时器，防止重复注册定时器
       this.Loop = setTimeout(function() {
         this.$dialog.confirm({   //这是个弹出框，用的ydui
-          title: '温馨提示',
-          mes: '是否删除当前图片',
-          opts: () => {
-            deletePhoto({
-              photoId: e
-            }).then((res) => {
-              this.photoList = this.photoList.filter(el => el.id !== id)
-              this.$toast('删除成功')
-            })
+          title: '是否删除当前图片',
+          beforeClose: (action, done) => {
+            if(action === 'confirm') {
+              deletePhoto({
+                userId:this.user.id,
+                photoId: e
+              }).then((res) => {
+                this.photoList = this.photoList.filter(el => el.photoId !== e)
+                done()
+                this.$toast('删除成功')
+              })
+            } else {
+              done()
+              this.$dialog.close()
+            }
           }
         });
       }.bind(this), 1000);
@@ -163,10 +169,12 @@ export default {
   z-index: 1;
 }
 
-.photos .photo_item img{
-  max-width: 100%;
-  max-height: 100%;
-  width: 100%
+.photos .photo_item div{
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%
 }
 .photos li.photograph{
   border: 1px dashed #d7d7d7;

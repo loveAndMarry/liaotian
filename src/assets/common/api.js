@@ -85,6 +85,9 @@ export const deleteAccessRecord = data => HTTP.GET('web/userAccessRecord/deleteA
 // 查询用户的动态
 export const getUserDynamic = data => HTTP.GET('web/dynamic/getUserDynamic',data)
 
+// 删除用户的动态
+export const deleteDynamic = data => HTTP.GET('web/updateUserController/deleteDynamic',data)
+
 // 修改个人资料头像
 export const uploadUserHand = data => HTTP.GET('web/updateUserController/uploadUserHand',data)
 

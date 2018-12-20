@@ -25,11 +25,11 @@
             <div class="dynamic_bottom">
               <span>{{el.dynamicDate | dateTime}}</span>
               <span>0赞</span>
-              <i @click="remove"></i>
+              <i @click="remove(el.id)"></i>
             </div>
           </div>
         </template>
-        <template v-show="data.length === 0"><p>当前还没有动态</p></template>
+        <p v-show="data.length === 0">当前还没有动态</p>
       </List>
     </PullRefresh>
     <Actionsheet
@@ -43,10 +43,11 @@
 </template>
 <script>
 import { NavBar, ImagePreview, Actionsheet, Toast, List, PullRefresh} from "vant"
-import { getUserDynamic } from "@/assets/common/api";
+import { getUserDynamic, deleteDynamic} from "@/assets/common/api";
 export default {
   data () {
     return {
+      id: '', //储存当前点击的id
       value: '',
       show: false,
       actions: [
@@ -91,7 +92,8 @@ export default {
       this.updateData({
         pageCurrent: this.pageCurrent,
         pageSize: this.pageSize
-      }).then(()=>{
+      }).then((res)=>{
+        this.data.push(...res)
         this.loading = false
       })
     },
@@ -100,8 +102,9 @@ export default {
       this.updateData({
         pageCurrent: 1,
         pageSize: this.pageSize * this.pageCurrent
-      }).then(()=>{
+      }).then((res)=>{
         this.isLoading = false
+        this.data = res
       })
     },
     updateData (obj) {
@@ -112,13 +115,17 @@ export default {
           pageSize: obj.pageSize
         }).then((res) => {
           if(res.data && res.data.list && res.data.list.length > 0){
-            this.data.push(...res.data.list)
             // 加载状态结束
             this.loading = false;
             // 数据全部加载完成
             this.finished = true;
-            resolve()
+            resolve(res.data.list)
           }
+        }).catch(()=> {
+          this.loading = false;
+          // 数据全部加载完成
+          this.finished = true;
+          resolve(this.data)
         })
       })
     },
@@ -126,11 +133,22 @@ export default {
       this.$router.push({name: 'user'})
     },
     onSelect(item) {
+      let id = this.id
+      if(item.name === '删除'){
+        deleteDynamic({
+          dynamicId: id,
+          userId: this.$store.state.IM.user.id
+        }).then((res) => {
+          this.$toast('删除成功')
+          this.data = this.data.filter(el => el.id !== id)
+        })
+      }
       // 点击选项时默认不会关闭菜单，可以手动关闭
       this.show = false;
     },
-    remove () {
+    remove (id) {
       this.show = true
+      this.id = id
     }
   }
 }

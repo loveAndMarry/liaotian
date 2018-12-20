@@ -85,6 +85,7 @@ export default {
       var context = typeof i === 'object'? utils.utf16toEntities(this.context): i
       var that = this
       this.isShow = false
+      this.$emit('editHeight', this.isShow)
       this.POSTMSG({
         context: context,
         id: new Date().getTime(),
@@ -99,7 +100,6 @@ export default {
       }).then((res) => {
         that.context = ''
         this.isContext = false
-        this.$emit('editHeight', this.isShow)
       })
     }
   },

@@ -38,6 +38,10 @@ import memberDetails from '@/views/member/memberDetails'
 import order from '@/views/user/order'
 // 个人资料
 import basicInformation from '@/views/user/basicInformation'
+// 手机认证
+import YY from '@/views/user/YY'
+// 实名认证
+import authentication from '@/views/user/authentication'
 // 支付
 import purchase from '@/views/purchase'
 
@@ -184,6 +188,16 @@ export default new Router({
     path: '/purchase',
     name: 'purchase',
     component: purchase
+  },
+  {
+    path: '/YY',
+    name: 'YY',
+    component: YY
+  },
+  {
+    path: '/authentication',
+    name: 'authentication',
+    component: authentication
   }
   ]
 })

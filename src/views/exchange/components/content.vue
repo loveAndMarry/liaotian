@@ -67,18 +67,19 @@ export default {
       var container = this.$el.querySelector(".scroller_content");
       var scrollHeight = container.scrollHeight;
       this.isToBottom = false
-      this.loading = false
       this.GET_FRIEND_MSG_LIST().then(() => {
-        window.setTimeout(() => {
           this.loading = true
           this.isToBottom = true
-          this.isLoading = false;
           this.$nextTick(() => {
+          this.isLoading = false;
             var content = document.getElementById('content')
               content.scrollTop = container.scrollHeight - scrollHeight
           })
-        }, 0)
       })
+      window.setTimeout(() => {
+        console.log('设置成功过')
+        this.isLoading = false
+      }, 500)
     },
   }
 }

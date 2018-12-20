@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar left-arrow @click-left="onClickLeft" :title="title"/>
-    <div class="scroll">
+    <div class="scroll" v-if="isLoading">
       <div style="padding:.2rem .3rem 0">
         <div class="money_group" v-for="(el, index) in members" :key="index">
           <span class="day">{{el.countName}}</span>
@@ -54,7 +54,8 @@ export default {
   data () {
     return {
       title: '',
-      members: []
+      members: [],
+      isLoading: false
     }
   },
   components: {
@@ -73,13 +74,13 @@ export default {
       memberLevelId: this.member.id
     }).then((res) => {
       if(res.data){
-        this.members = res.data
+        this.members = res.data;
+        this.isLoading = true
       }
     })
   },
   methods: {
     payment (el) {
-      console.log(el)
       let obj = {
         body: '购买会员',
         totalAmount: el.discountsStart === '0' ? el.priceY : el.discountsPriceY,
