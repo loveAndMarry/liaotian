@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%">
+  <div style="height: 100%" v-if="isLoading">
     <div class="title">
       {{user.nickName}}
       <span class="shezhi" @click="setting"></span>
@@ -123,7 +123,8 @@ export default {
         likeUserPhotoUrl: '',
         levels: [],
         photoList: []
-      }
+      },
+      isLoading: false
     }
   },
   computed: {
@@ -205,6 +206,7 @@ export default {
     personalCenter({ userId: this.user.id }).then(res => {
       if (res.data) {
         this.data = Object.assign(this.data, res.data);
+        this.isLoading = true
       }
     });
   },

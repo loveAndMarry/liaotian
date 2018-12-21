@@ -44,6 +44,8 @@ import YY from '@/views/user/YY'
 import authentication from '@/views/user/authentication'
 // 支付
 import purchase from '@/views/purchase'
+// 支付详情
+import PaymentDetails from '@/views/user/PaymentDetails'
 
 import test from '@/views/test'
 
@@ -198,6 +200,11 @@ export default new Router({
     path: '/authentication',
     name: 'authentication',
     component: authentication
+  },
+  {
+    path: '/PaymentDetails',
+    name: 'PaymentDetails',
+    component: PaymentDetails
   }
   ]
 })

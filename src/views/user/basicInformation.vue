@@ -123,6 +123,7 @@ export default {
     submitPhoto () {
       window.updatePhoto(str => {
         if(str) {
+          this.imgUrl = str
           this.fromData.userHead = str
         }
       })

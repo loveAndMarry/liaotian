@@ -355,7 +355,7 @@ export default {
   position: absolute;
   top: .8rem;
   left: 0;
-  height:100%;
+  height: calc(100% - .8rem);
   z-index: 99;
   background-color: rgba(0,0,0,.1);
 }

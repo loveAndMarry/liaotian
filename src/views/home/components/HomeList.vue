@@ -92,11 +92,11 @@ export default {
       return item.filter((a,i) => i <= 2)
     },
     income (item) {
-      if(item.incomeMin && item.incomeMax === undefined){
-        return item.incomeMin
+      if(item.incomeMin && item.incomeMax === '-1'){
+        return item.incomeMin + '以上'
       }
-      if(item.incomeMin === undefined && item.incomeMax){
-        return item.incomeMax
+      if(item.incomeMin === '-1' && item.incomeMax){
+        return item.incomeMax + '以下'
       }
       if(item.incomeMin && item.incomeMax){
         return item.incomeMin + ' - ' + item.incomeMax

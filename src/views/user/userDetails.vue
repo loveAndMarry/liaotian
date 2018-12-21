@@ -123,9 +123,9 @@
 
           <ListItem title="民族" dictionaries='nation' :default='getData(nation)' type="radioOne" :defaultSubmitData ="nation"></ListItem>
 
-          <ListItem title="属相" :default="getData(['','zodiac'])" :noClick="true"></ListItem>
+          <ListItem title="属相" :default="getData(['','zodiac'])" :noClick="true" ref="zodiac"></ListItem>
 
-          <ListItem title="星座" :default="getData(['','constellation'])" :noClick="true"></ListItem>
+          <ListItem title="星座" :default="getData(['','constellation'])" :noClick="true" ref="constellation"></ListItem>
 
           <ListItem title="血型" dictionaries='bloodType' :default='getData(bloodType)' type="radioOne" :defaultSubmitData ="bloodType"></ListItem>
 
@@ -196,7 +196,7 @@ export default {
       height: ['height','height'],
       // 学历
       education: ['educationDictValue','education'],
-      // 月收入
+            // 月收入
       income: ['','incomeMin', '', 'incomeMax'],
       // 婚姻状况
       maritalStatus: ['maritalStatusDictValue','maritalStatus'],
@@ -263,7 +263,7 @@ export default {
       } else if(min !== '-1' && max === '-1'){
         str = min + '以下'
       } else {
-        str = min + " - " + max + '元'
+        str = min + "-" + max + '元'
       }
       return [{
         value: this.data.userBaseInformation.incomeDictValue,
@@ -309,6 +309,7 @@ export default {
           label: this.data.userBaseInformation[b[1]] || ''
         })
       }
+      console.log(a,'123')
       return a
     },
     getAddressData (arr) {
@@ -363,9 +364,14 @@ export default {
           updateUserBirthday({
             userId: this.user.id,
             birthday: e
-          }).then(() => {
-            // this.$router.go(0)
-            this.$set(this.data.userBaseInformation, 'birthday' , e)
+          }).then((res) => {
+            this.$nextTick(() => {
+              this.data.userBaseInformation.age = res.data.age
+              this.$refs.constellation.names = res.data.constellation
+              this.$refs.zodiac.names = res.data.zodiac
+              // this.$router.go(0)
+              this.$set(this.data.userBaseInformation, 'birthday' , e)
+            })
           })
         },
       })

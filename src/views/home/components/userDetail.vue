@@ -164,11 +164,7 @@ export default {
       isShow: false,
       photoList:[],
       userBaseInformation: {},
-    }
-  },
-   computed: {
-    interestDictVoList () {
-      return utils.mergeArr(this.userBaseInformation.interestDictVoList, this.$store.state.IM.user.interestDictVoList)
+      interestDictVoList: []
     }
   },
   methods: {
@@ -224,6 +220,8 @@ export default {
       }
       if(res.data.userBaseInformation){
         this.userBaseInformation = res.data.userBaseInformation
+
+        this.interestDictVoList = utils.mergeArr(this.userBaseInformation.interestDictVoList, this.$store.state.IM.user.interestDictVoList)
       }
     })
   },

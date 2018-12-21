@@ -77,6 +77,7 @@ IM.prototype = {
       })
     }, function (obj) {
       console.log('登录失败')
+      IM.login()
     })
   },
   /**

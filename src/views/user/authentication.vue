@@ -10,17 +10,37 @@
       <li>获得更多推荐展示机会</li>
       <li>异性更放心与您交流交往</li>
     </ul>
-    <Button round type="danger" style="width: 5.2rem;background-color: #ff7994;border: 1px solid #ff7994;margin-top:1rem" @click="buttonClick">立即认证</Button>
+    <Button round type="danger" style="width: 5.2rem;background-color: #ff7994;border: 1px solid #ff7994;margin-top:1rem" @click="buttonClick">{{name}}</Button>
   </div>
 </template>
 <script>
 import { NavBar, Button } from "vant"
+import { login } from '@/assets/common/api'
 export default {
+  data () {
+    return {
+      name: '立即认证',
+      isRegisterState: false // 是否实名
+    }
+  },
+  mounted () {
+    login({
+      userId: this.$store.state.IM.user.id
+    }).then((res)=> {
+      if(res.data.registerState === '4'){
+        this.name = '您已实名注册',
+        this.isRegisterState = true
+      }
+    })
+  },
   methods: {
     onClickLeft () {
       this.$router.back()
     },
     buttonClick () {
+      // 实名认证后不需要操作了
+      if(this.isRegisterState){return false}
+
       var u = navigator.userAgent;
        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
         console.log("安卓手机");
@@ -29,7 +49,7 @@ export default {
         console.log("苹果手机");
         window.webkit.messageHandlers.authentication.postMessage(null)
       } 
-    }
+    },
   },
   components: {
     NavBar,

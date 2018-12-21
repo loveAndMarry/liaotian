@@ -48,14 +48,16 @@ export default {
     unshiftArr (arr){ 
       return ['不限'].concat(arr)
     },
-    getLabel (value) {
-      return value === '-1'? '不限' : this.defaultData.find(el => el.value === value).label
+    getLabel (obj) {
+      if(obj){
+        return obj.value === '-1'? '不限' : this.defaultData.find(el => el.value === obj.value).label
+      }
     },
     getColumnsTwo (label) {
       return this.unshiftArr(this.labels.filter((el, index, arr) => index > arr.findIndex(item => item === label)))
     },
     getObj (label) {
-      return label === '不限' ? {value: '-1', label: ''} : this.defaultData.find(el => el.label === label)
+      return label === '不限' ? {value: '-1', label: '-1'} : this.defaultData.find(el => el.label === label)
     },
     onConfirm (value, index) {
       let val = [this.getObj(value[0]),this.getObj(value[1])]

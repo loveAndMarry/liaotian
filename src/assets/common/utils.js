@@ -87,6 +87,9 @@ const utils = {
         return el
       })
     } else {
+      if(arr){
+        return arr
+      }
       return []
     }
   },

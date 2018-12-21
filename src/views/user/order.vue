@@ -8,7 +8,7 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <div class="orderGroup" v-for="(el, index) in list" :key="index">
+        <div class="orderGroup" v-for="(el, index) in list" :key="index" @click="PaymentDetails(el)">
           <img :src="el.productPictures">
           <div class="order_content">
             <p>{{el.title}}</p>
@@ -62,6 +62,9 @@ export default {
     //this.onLoad()
   },
   methods: {
+    PaymentDetails(el) {
+      this.$router.push({name: 'PaymentDetails', query: {el: el}})
+    },
     onLoad() {
       listUserOrder({
         userId: this.$store.state.IM.user.id,
