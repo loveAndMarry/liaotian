@@ -59,6 +59,7 @@ export default {
     }
   }, 
   mounted () {
+    this.$store.state.common.Loading = true
     if(!this.$store.state.IM.user.id){
       this.$store.dispatch('UPDATEUSER', {
         userId: this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
@@ -66,6 +67,7 @@ export default {
       }).then((data) => {
         this.fromData.sex = data.sex === '1'? '2': '1'
         this.fromData.userId = data.id
+        this.$store.state.common.Loading = true
         this.search()
         // 获取到个人信息后登录容联云账号
       })

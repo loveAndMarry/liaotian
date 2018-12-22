@@ -14,10 +14,12 @@
         show: this.isLoading
       }">
     </div> -->
+    <div class="loading_group"><Loading class="loading" size="2rem" v-show="Loading"/></div>
   </div>
 </template>
 
 <script>
+import { Loading } from 'vant'
 import { mapState } from 'vuex'
 export default {
   name: 'App',
@@ -33,6 +35,11 @@ export default {
       reload: this.reload
     }
   },
+  computed: {
+    ...mapState({
+      Loading: state => state.common.Loading
+    })
+  },
   methods: {
     reload () {
       this.isRouterAlive = false
@@ -40,7 +47,7 @@ export default {
         this.isRouterAlive = true
       })
     }
-  }
+  },
   // watch: {
   //   $route (to, from) {
   //     let isBack = this.$router.isBack //  监听路由变化时的状态为前进还是后退
@@ -56,22 +63,28 @@ export default {
   //     this.$router.isBack = false
   //   }
   // },
-  // components: {
-  //   Loading
-  // }
+  components: {
+    Loading
+  }
 }
 
 document.documentElement.style.fontSize = (document.documentElement.clientWidth / 750) * 100 + 'px'
 </script>
 
 <style>
+.loading_group{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    left: 0;
+    top: 0;
+    z-index: 999;
+}
 .loading{
-  width: 100%;
-  height: 100%;
-  position: relative;
-  top: 0;
-  left: 0;
-  display: none
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 .loading.show{
   display: block
