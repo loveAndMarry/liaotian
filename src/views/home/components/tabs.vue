@@ -3,13 +3,13 @@
     <ul class="tabs">
       <li :class="{isShow: index === isShow}" @click.prevent="tabsClick(index)" v-for="(item, index) in tabs" :key="index" v-text="item"></li>
     </ul>
-    <div class="tabs_content" v-show="isShow >= 0 && isContentType">
+    <div class="tabs_content" v-show="isShow >= 0 && isContentType" @click.prevent="tabsContentClick($event)">
       <div v-show="isShow === 0" class="tabs_content_group">
-        <div class="item" v-for="(item, index) in IntelligentSorting" :key="item" v-text="item" :class="{isShow: index === IntelligentSortingShow}" @click.prevent="IntelligentSortingEvent(index)"></div>
+        <div class="item" v-for="(item, index) in IntelligentSorting" :key="item" v-text="item" :class="{isShow: index === IntelligentSortingShow}" @click.stop="IntelligentSortingEvent(index)"></div>
       </div>
       <div v-show="isShow === 1" class="tabs_content_group">
         <div class="tabs_content_group_scroll">
-          <div class="item" v-for="(item, index) in BasicScreening" :key="item" @click.prevent="clickEvent($event, index, 'BasicScreeningValue')">
+          <div class="item" v-for="(item, index) in BasicScreening" :key="item" @click.stop="clickEvent($event, index, 'BasicScreeningValue')">
             {{item}}<div class="sanjiao">不限</div>
           </div>
         </div>
@@ -20,7 +20,7 @@
       </div>
       <div v-show="isShow === 2" class="tabs_content_group">
         <div class="tabs_content_group_scroll">
-          <div class="item" v-for="(item, index) in advancedFilter" :key="item" @click.prevent="clickEvent($event, index, 'advancedFilterValue')">
+          <div class="item" v-for="(item, index) in advancedFilter" :key="item" @click.stop="clickEvent($event, index, 'advancedFilterValue')">
           {{item}}<div class="sanjiao">不限</div>
           </div>
         </div>
@@ -249,6 +249,7 @@ export default {
       this.fromData['type'] = index + 1
       // 设置夫级的数据
       this.setParentData(this.fromData['type'])
+      this.$parent.search()
     },
     // 基本筛选每项点击事件
     clickEvent ($event, index, name) {
@@ -262,6 +263,10 @@ export default {
       this.valueName = this[name][index]
 
       this.flag[this.valueName + 'Show'] = true
+    },
+    tabsContentClick ($event) {
+      console.log('1')
+      this.isContentType = false
     }
   },
   watch: {
