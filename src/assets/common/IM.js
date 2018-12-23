@@ -72,6 +72,7 @@ IM.prototype = {
           context: obj.msgContent,
           msgType: obj.msgType,
           time: parseInt(obj.msgDateCreated),
+          chatDate: parseInt(obj.msgDateCreated),
           status: 2
         })
       })

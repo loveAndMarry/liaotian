@@ -1,12 +1,12 @@
 <template>
     <div class="bottom">
       <div style="height: 0.7rem;line-height: 0.7rem;">
-        <div class="icon yuyin" @click="voice($event)"></div>
+        <!-- <div class="icon yuyin" @click="voice($event)"></div> -->
         <div class="inputText">
           <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg" @input="input" v-model="context">
           <span v-show='!isText' @touchstart="touchstart($event)" @touchend="touchend($event)">按住 说话</span>
         </div>
-        <div class="icon biaoqing" @click="emotion"></div>
+        <!-- <div class="icon biaoqing" @click="emotion"></div> -->
         <div class="icon tianjia" @click="GiftShow" v-show="!isContext"></div>
         <div class="send" @click="postMsg" v-show="isContext">发送</div>
         <!-- <input type="file" id="file" style="display:none" accept="image/*" @change="fileChange($event)"> -->
@@ -73,6 +73,8 @@ export default {
       this.$emit('editHeight', this.isShow)
     },
     GiftShow () {
+      this.$toast('功能正在开发中...')
+      return false
       if (this.isGiftShow) {
         this.isGiftShow = false
       } else {
@@ -94,6 +96,7 @@ export default {
         sendUserId: that.user.id,
         receiveUserId: that.friend.userId,
         time: new Date().getTime(),
+        chatDate: new Date().getTime(),
         status: 1, // 当前信息提交状态
         userHead: this.user.userHead,
         msgType: 1
@@ -125,7 +128,7 @@ export default {
 }
 
 .bottom .inputText{
-  width: calc(100% - 2.5rem);
+  width: calc(100% - .8rem);
   display: inline-block;
   height: 100%;
   position: relative;
@@ -202,5 +205,6 @@ export default {
     vertical-align: .2rem;
     margin-left: .1rem;
     color: #f44;
+    font-size: .31rem
 }
 </style>

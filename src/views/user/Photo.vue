@@ -108,6 +108,8 @@ export default {
                 this.photoList = this.photoList.filter(el => el.photoId !== e)
                 done()
                 this.$toast('删除成功')
+              }).catch(()=> {
+                done()
               })
             } else {
               done()

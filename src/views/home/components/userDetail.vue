@@ -16,7 +16,7 @@
           <i>|</i>
           <p v-text="userBaseInformation.education ? userBaseInformation.education: '未填写'"></p>
           <i>|</i>
-          <p v-text="income(userBaseInformation)"></p>
+          <p v-text="incomes"></p>
         </div>
         <div class="address" v-text="userBaseInformation.domicileName"></div>
       </div>
@@ -71,7 +71,7 @@
       </div>
       <div class="list_item" v-if="userBaseInformation.incomeMin">
         <div class="label">月收入:</div>
-        <div class="context">{{userBaseInformation.incomeMin + ' - '+ userBaseInformation.incomeMax}}</div>
+        <div class="context">{{incomes}}</div>
       </div>
       <div class="list_item" v-if="userBaseInformation.domicileName">
         <div class="label">居住地:</div>
@@ -167,6 +167,23 @@ export default {
       interestDictVoList: []
     }
   },
+  computed: {
+    incomes () {
+      let min = this.userBaseInformation.incomeMin
+      let max = this.userBaseInformation.incomeMax
+      let str = ''
+      if(min === '-1' && max === '-1'){
+        str = '不限'
+      } else if(min === '-1' && max !== '-1'){
+        str = max + '以上'
+      } else if(min !== '-1' && max === '-1'){
+        str = min + '以下'
+      } else {
+        str = min + "-" + max + '元'
+      }
+      return str
+    }
+  },
   methods: {
      ...mapActions(["UPDATEUSERLIST"]),
     photoClick (index) {
@@ -186,19 +203,8 @@ export default {
         this.$store.state.IM.frient = this.userBaseInformation
       });
     },
-    income (item) {
-      if(item.incomeMin && item.incomeMax === undefined){
-        return item.incomeMin
-      }
-      if(item.incomeMin === undefined && item.incomeMax){
-        return item.incomeMax
-      }
-      if(item.incomeMin && item.incomeMax){
-        return item.incomeMin + ' - ' + item.incomeMax
-      }
-    },
     onClickLeft () {
-      this.$router.push({path: '/view/home'})
+      this.$router.back()
     },
     // showConnection () {
     //   var scrollTop = document.getElementById('userDetail_content').scrollTop || document.getElementById('userDetail_content').scrollTop

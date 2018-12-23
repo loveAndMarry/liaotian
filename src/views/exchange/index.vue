@@ -31,7 +31,7 @@ export default {
             that.editHeight(false)
             this.$refs.content.isShow = false
             this.$refs.content.isGiftShow = false
-            content.style.height = 'calc(100% - 1.1rem - 46px)'
+            content.style.height = 'calc(100% - 1.1rem - 45px)'
             // console.log(that)
             // that.$refs.content.resize()
 
@@ -54,9 +54,9 @@ export default {
     editHeight (isShow) {
       var content = document.getElementById('content')
       if (isShow) {
-        content.style.height = 'calc(100% - 3.6rem - 46px)'
+        content.style.height = 'calc(100% - 3.6rem - 45px)'
       } else {
-        content.style.height = 'calc(100% - 1.1rem - 46px)'
+        content.style.height = 'calc(100% - 1.1rem - 45px)'
       }
       this.$refs.content.scrollToBottom()
     }

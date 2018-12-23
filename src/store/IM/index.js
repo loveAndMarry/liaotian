@@ -60,7 +60,7 @@ const actions = {
               // 为了触发getters
               state.chatMessage = Object.assign({}, state.chatMessage)
 
-              utils.pushLocalData('friendList', res.data)
+              // utils.pushLocalData('friendList', res.data)
               state.friendList.push(res.data)
               // 将聊天信息的发送人和接受人的账号存入聊天信息
               resolve()
@@ -85,19 +85,19 @@ const actions = {
       })
     })
   },
-  [GET_FRIEND] ({ commit, state }, products) {
-    // 如果当前没有好友信息
-    if(!JSON.parse(localStorage.getItem('friendList'))){
-      localStorage.setItem('friendList', JSON.stringify([]))
-    }
-    state.friendList = JSON.parse(localStorage.getItem('friendList'))
-  },
-  [GET_CHAT_MESSAGE] ({ commit, state }, products) {
-    if(!JSON.parse(localStorage.getItem('chatMessage'))){
-      localStorage.setItem('chatMessage', JSON.stringify({}))
-    }
-    state.chatMessage = JSON.parse(localStorage.getItem('chatMessage'))
-  },
+  // [GET_FRIEND] ({ commit, state }, products) {
+  //   // 如果当前没有好友信息
+  //   if(!JSON.parse(localStorage.getItem('friendList'))){
+  //     localStorage.setItem('friendList', JSON.stringify([]))
+  //   }
+  //   state.friendList = JSON.parse(localStorage.getItem('friendList'))
+  // },
+  // [GET_CHAT_MESSAGE] ({ commit, state }, products) {
+  //   if(!JSON.parse(localStorage.getItem('chatMessage'))){
+  //     localStorage.setItem('chatMessage', JSON.stringify({}))
+  //   }
+  //   state.chatMessage = JSON.parse(localStorage.getItem('chatMessage'))
+  // },
   [UPDATE_USER] ({ commit, state }, products) {
     return new Promise((resolve) => {
       login({
@@ -127,7 +127,7 @@ const actions = {
           userId: state.user.id
         }).then((res)=>{
   
-          utils.pushLocalData('friendList', res.data)
+          // utils.pushLocalData('friendList', res.data)
           state.friendList.push(res.data)
           // 将聊天信息的发送人和接受人的账号存入聊天信息
           products = Object.assign({},products,{
@@ -235,7 +235,7 @@ const mutations = {
     // state.chatMessage[products.receiver] = utils.updateArray(state.chatMessage[products.receiver], products.id, {status: 2})
 
     // 更改本地缓存中的数据
-    utils.pushLocalData('chatMessage', products.receiver, products)
+    // utils.pushLocalData('chatMessage', products.receiver, products)
     // 修改当前用户的最新消息
     utils.updateArray(state.friendList, products.receiver, {
       hint: 0,
@@ -250,14 +250,14 @@ const mutations = {
     })
 
     // 更新缓存中的数据
-    localStorage.setItem('friendList',JSON.stringify(state.friendList))
+    // localStorage.setItem('friendList',JSON.stringify(state.friendList))
   },
   [RECEIVE_INFORMATION] (state, products) {
     // 将当前的信息存放在state内存中
     state.chatMessage[products.sender].push(products)
 
     // 更改本地缓存中的数据
-    utils.pushLocalData('chatMessage', products.sender, products)
+    // utils.pushLocalData('chatMessage', products.sender, products)
 
     utils.updateArray(state.friendList, products.sender, {
       context: products.context,
@@ -269,7 +269,7 @@ const mutations = {
     console.log('接收到最新的消息')
 
     // 更新缓存中的数据
-    localStorage.setItem('friendList',JSON.stringify(state.friendList))
+    // localStorage.setItem('friendList',JSON.stringify(state.friendList))
 
     // 为了触发getters
     state.chatMessage = Object.assign({}, state.chatMessage)

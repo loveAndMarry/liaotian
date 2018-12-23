@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="intention_item" @click="intantionClick">{{title}}:
+    <div class="intention_item" @click.stop="intantionClick">{{title}}:
       <div class="sanjiao" :class="{hide: noClick}">{{names | trim}}</div>
     </div>
     <Actionsheet v-model="isShow" :close-on-click-overlay='false'>
@@ -120,6 +120,8 @@ export default {
          
           this.codes = val[0].value ? val.map(el => el.value) : val.map(el => el.code)
         }
+      } else {
+        this.names = '未填写'
       }
     }
   },

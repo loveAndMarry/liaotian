@@ -159,23 +159,27 @@ export default {
       'hideLoading'
     ]),
     confirmCallback (name, value) {
-      value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
-      let str = ''
-      this.flag[name + 'Show'] = false
-      if(['address', 'hometown', 'age','height','education', 'income','registeredPermanentResidence'].findIndex(el => el === name) !== -1){
-        if(name === 'address' || name === 'registeredPermanentResidence' || name === 'hometown'){
-          str = value[1].name;
-        } else if(name === 'age'){
-          str = value[0] + '岁 - ' + value[1] + '岁'
-        } else if(name === 'height'){
-          str = typeof value[1] === 'string'? value[0] + 'cm - ' + value[1] + 'cm' :value[0].name + 'cm - ' + value[1].name + 'cm'
+      if(value && value.length > 0){
+              value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
+        let str = ''
+        this.flag[name + 'Show'] = false
+        if(['address', 'hometown', 'age','height','education', 'income','registeredPermanentResidence'].findIndex(el => el === name) !== -1){
+          if(name === 'address' || name === 'registeredPermanentResidence' || name === 'hometown'){
+            str = value[1].name;
+          } else if(name === 'age'){
+            str = value[0] + '岁 - ' + value[1] + '岁'
+          } else if(name === 'height'){
+            str = typeof value[1] === 'string'? value[0] + 'cm - ' + value[1] + 'cm' :value[0].name + 'cm - ' + value[1].name + 'cm'
+          } else {
+            str = typeof value[0] === 'string'? value[0] + ' - ' + value[1] : value[0].label + ' - ' + value[1].label
+          }
         } else {
-          str = typeof value[0] === 'string'? value[0] + ' - ' + value[1] : value[0].label + ' - ' + value[1].label
+          str = typeof value[0] === 'string' ? value : value[0].code ? value.map(el => el.code) : value.map(el => el.label)
         }
+        this.event.innerText = str
       } else {
-        str = typeof value[0] === 'string' ? value : value[0].code ? value.map(el => el.code) : value.map(el => el.label)
+        this.event.innerText = '不限'
       }
-      this.event.innerText = str
       // 设置夫级的数据
       this.setParentData(value)
     },
@@ -211,17 +215,23 @@ export default {
         element.innerHTML = "不限"
       });
       this.isShow = -1
-      this.$emit('updateVal', this.fromData)
+      this.$parent.fromData =  this.fromData
+      this.$parent.search()
     },
     replaceArr (arr) {
       return arr.map(item => item.replace('岁', '').replace('cm', ''))
     },
     setParentData (val) {
+      console.log(val, '我看看')
       // 设置夫级的数据
       if (this.valueName === 'type') {
         Vue.set(this.fromData, this.valueName, val)
       } else {
-        Vue.set(this.fromData, this.valueName, typeof val[0] === 'string' ? val : val[0].code ? this.replaceArr(val.map(el => el.code)) : this.replaceArr(val.map(el => el.value)))
+        if(!val && val.length === 0){
+          Vue.set(this.fromData, this.valueName, val)
+        } else {
+          Vue.set(this.fromData, this.valueName, typeof val[0] === 'string' ? val : val[0].code ? this.replaceArr(val.map(el => el.code)) : this.replaceArr(val.map(el => el.value)))
+        }
       }
       this.$emit('updateVal', this.fromData)
     },
@@ -265,8 +275,8 @@ export default {
       this.flag[this.valueName + 'Show'] = true
     },
     tabsContentClick ($event) {
-      console.log('1')
-      this.isContentType = false
+      this.isContentType = false;
+      this.isShow  = -1
     }
   },
   watch: {

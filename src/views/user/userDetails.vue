@@ -51,7 +51,7 @@
           <img
             class="visitor_img"
             :src="item.userHead"
-            v-for="(item, index) in data.accessRecordUserList" :key="index">
+            v-for="(item, index) in data.accessRecordUserList" :key="index" @click="accessRecord(item)">
         </SplitGroup>
 
 
@@ -275,6 +275,11 @@ export default {
     this.updateData()
   },
   methods: {
+    // 点击最近访客进入个人信息页面
+    accessRecord (item) {
+      this.$store.state.IM.friend = item
+      this.$router.push({name: 'userDetail'})
+    },
     updateData (){
       userPersonalCenterInformation({ userId: this.user.id}).then((res) => {
         if(res.data){
@@ -309,7 +314,6 @@ export default {
           label: this.data.userBaseInformation[b[1]] || ''
         })
       }
-      console.log(a,'123')
       return a
     },
     getAddressData (arr) {

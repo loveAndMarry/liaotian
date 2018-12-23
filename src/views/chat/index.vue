@@ -48,12 +48,12 @@ export default {
     }
   },
   mounted() {
-    localStorage.setItem('friendList','[]')
+    // localStorage.setItem('friendList','[]')
     // 获取好友列表
-    this.GETFRIEND({});
+    // this.GETFRIEND({});
   },
   methods: {
-    ...mapActions(["UPDATEUSERLIST", "GETFRIEND", 'GETFRIENDLIST','UPDATE_FRIEND_LIST']),
+    ...mapActions(["UPDATEUSERLIST", 'GETFRIENDLIST','UPDATE_FRIEND_LIST']),
     uncodeUtf16 (val) {
       return utils.uncodeUtf16(val)
     },

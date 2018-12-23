@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="van-hairline--top-bottom van-picker__toolbar">
-      <div class="van-picker__cancel" @click="cancel">取消</div>
+      <div class="van-picker__cancel" @click.stop="cancel">取消</div>
       <div class="van-ellipsis van-picker__title" v-text="title"></div>
-      <div class="van-picker__confirm" @click="confirm">确认</div>
+      <div class="van-picker__confirm" @click.stop="confirm">确认</div>
     </div>
     <div class="picker_content">
       <CheckboxGroup v-model="result">
@@ -90,16 +90,19 @@ export default {
       this.$refs.checkboxes[index].toggle()
     },
     confirm () {
-      let val = this.result.map(el => this.columns.find(item => item.label === el))
-      if(this.isSubmit){
-        updateUserSpecificInfo(this.fromData(val)).then(() => {
-          this.$parent.$parent.result = val
-          this.$parent.$parent.isShow = false
-        })
+      if(this.result &&this.result.length > 0){
+        let val = this.result.map(el => this.columns.find(item => item.label === el))
+        if(this.isSubmit){
+          updateUserSpecificInfo(this.fromData(val)).then(() => {
+            this.$parent.$parent.result = val
+            this.$parent.$parent.isShow = false
+          })
+        } else {
+          this.$emit('confirm', val)
+        }
       } else {
-        this.$emit('confirm', val)
+        this.$emit('confirm', [])
       }
-      
     },
     cancel () {
       this.$parent.$parent.isShow = false

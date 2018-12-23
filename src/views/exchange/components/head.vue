@@ -5,7 +5,7 @@
   :title="friend.nickName"
   left-arrow
   @click-left="onClickLeft">
-    <Icon name="more-o" slot="right"/>
+    <!-- <Icon name="more-o" slot="right"/> -->
     <!-- <nav-bar-title slot="title" :name='this.title'></nav-bar-title> -->
   </nav-bar>
 </div>

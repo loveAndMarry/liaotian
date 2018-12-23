@@ -57,6 +57,7 @@ HTTP.GET = function (url, data) {
       }
     }).catch((res) => {
       console.log('失败')
+      reject()
     })
   })
 }

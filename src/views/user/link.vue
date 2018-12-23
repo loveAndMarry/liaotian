@@ -21,12 +21,12 @@
           </div>
         </div>
         <ul class="links">
-          <li class="links_group hide" v-for="(el, index) in links" :key="index">
+          <li class="links_group" v-for="(el, index) in links" :key="index" @click="linkClick(el)">
             <img :src="el.userHead" alt="">
             <p>{{el.operationDate | dateTime}}</p>
           </li>
         </ul>
-        <router-link class="submit" to="/member">开通会员</router-link>
+        <!-- <router-link class="submit" to="/member">开通会员</router-link> -->
       </div>
     </div>
   </div>
@@ -64,17 +64,22 @@ export default {
     },
   },
   mounted () {
-    if(this.$route.query.type === 1){
+    console.log(this.$route.query,'this.$route.query')
+    if(this.$route.query.type - 0 === 1){
       this.accessRecordUser()
-    } else if(this.$route.query.type === 2){
+    } else if(this.$route.query.type - 0 === 2){
       this.likeMeList()
-    } else if(this.$route.query.type === 3){
+    } else if(this.$route.query.type - 0 === 3){
       this.likeUserList()
     } else {
       this.likeEachOther()
     }
   },
   methods: {
+    linkClick (item) {
+      this.$store.state.IM.friend = item
+      this.$router.push({name: 'userDetail'})
+    },
     onClickLeft() {
       this.$router.back()
     },

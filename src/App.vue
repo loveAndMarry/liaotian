@@ -2,7 +2,9 @@
   <div id="app">
     <!-- <transition :name="transitionName"> -->
       <!-- <keep-alive> -->
+      <keep-alive include="home">
         <router-view class="Router" v-if="isRouterAlive"></router-view>
+      </keep-alive>
       <!-- </keep-alive> -->
     <!-- </transition> -->
     <!-- <transition :name="transitionName1"> -->
@@ -14,7 +16,7 @@
         show: this.isLoading
       }">
     </div> -->
-    <div class="loading_group"><Loading class="loading" size="2rem" v-show="Loading"/></div>
+    <div class="loading_group" v-show="Loading"><Loading class="loading" size="2rem"/></div>
   </div>
 </template>
 
@@ -72,6 +74,9 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 </script>
 
 <style>
+.van-button--large{
+  height: 1rem
+}
 .loading_group{
     height: 100%;
     width: 100%;

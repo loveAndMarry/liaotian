@@ -72,8 +72,13 @@ export default {
       this.$refs.checkboxes[index].toggle()
     },
     confirm () {
-      this.$emit('confirm', this.name, this.result.map(el => this.columns.find(item => item.label === el)))
-      this.$emit('input', false)
+      if(this.result && this.result.lenght > 0){
+        this.$emit('confirm', this.name, this.result.map(el => this.columns.find(item => item.label === el)))
+        this.$emit('input', false)
+      } else {
+        this.$emit('confirm', this.name, [])
+        this.$emit('input', false)
+      }
     },
     cancel () {
       this.result = this.data

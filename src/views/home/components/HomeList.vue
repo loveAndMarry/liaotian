@@ -49,7 +49,6 @@ export default {
   methods: {
     // 过滤用户和列表中的共同的爱好
     interestDictVoList (item) {
-      console.log("1")
       if(!item){return []}
       let arr = []
       let loop = (a, b) => {
@@ -75,7 +74,7 @@ export default {
             }
           }
         }
-
+        console.log(arr)
         return arr
       }
 
@@ -133,14 +132,16 @@ export default {
       if(this.index){
         ++this.data.pageCurrent
        listUser(this.data).then((res) => {
+         this.noDataText = '没有更多数据'
          if(res.data.list){
-           this.noDataText = '没有更多数据'
            res.data.list.length < this.data.pageSize ? fn(true) :fn()
            if(res.data.count <= this.columns.length){
              return false
            } else {
              this.columns.push(res.data.list)
            }
+         } else {
+           fn ? fn(true): this.$refs.scroller.finishPullToRefresh()
          }
        }).catch(() => fn ? fn(true): this.$refs.scroller.finishPullToRefresh())
       } else {

@@ -120,6 +120,8 @@ export default {
             // 数据全部加载完成
             this.finished = true;
             resolve(res.data.list)
+          } else {
+            this.loading = false;
           }
         }).catch(()=> {
           this.loading = false;

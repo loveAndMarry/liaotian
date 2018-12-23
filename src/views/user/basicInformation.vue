@@ -76,6 +76,7 @@ import { NavBar, Actionsheet, Cell, CellGroup, Field, RadioGroup, Radio, Button}
 import ListItem from '@/components/ListItem' 
 import { initialInformation } from '@/assets/common/api'
 import utils from '@/assets/common/utils'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -118,8 +119,12 @@ export default {
   },
   mounted () {
     this.fromData.userId = utils.getUrlArgObject('userId')
+    this.setLoading(false)
   },
   methods: {
+    ...mapMutations([
+      'setLoading'
+    ]),
     submitPhoto () {
       window.updatePhoto(str => {
         if(str) {
@@ -127,7 +132,7 @@ export default {
           this.fromData.userHead = str
         }
       })
-    },
+    }, 
     domicileConfirm (result) {
       this.fromData.domicileProvinceId = result[0].code
       this.fromData.domicileProvinceName = result[0].name

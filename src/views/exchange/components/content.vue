@@ -41,6 +41,7 @@ export default {
   },
   watch: {
     'getChatMessage': function (arr) {
+      console.log(arr)
       if(this.isToBottom){
         // 将滚动条置为底部
         this.scrollToBottom()
@@ -77,7 +78,6 @@ export default {
           })
       })
       window.setTimeout(() => {
-        console.log('设置成功过')
         this.isLoading = false
       }, 500)
     },
@@ -93,7 +93,7 @@ export default {
   position: relative;
   top: 46px;
   left:0 ;
-  height: calc(100% - 1.1rem - 46px);
+  height: calc(100% - 1.1rem - 45px);
   width: 100%;
   background-color: #f5f5f6;
   box-sizing: border-box;

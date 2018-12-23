@@ -4,10 +4,10 @@
        <div slot="action" @click="search">搜索</div>
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search> -->
-    <Tabs @updateVal="updateVal" @search="search"/>
-    <div style="height:calc(100% - 1.9rem);position: absolute;top:.8rem;width: 100%;">
-      <HomeList :fromData='fromData' ref='HomeList'></HomeList>
-    </div>
+      <Tabs @updateVal="updateVal" @search="search"/>
+      <div style="height:calc(100% - 1.9rem);position: absolute;top:.8rem;width: 100%;">
+        <HomeList :fromData='fromData' ref='HomeList'></HomeList>
+      </div>
   </div>
 </template>
 
@@ -15,7 +15,7 @@
 import { Search } from 'vant'
 import Tabs from './components/tabs'
 import HomeList from './components/HomeList'
-import { mapState } from 'vuex'
+import { mapState, mapMutations} from 'vuex'
 import Vue from 'vue'
 
 import utils from '@/assets/common/utils'
@@ -59,7 +59,7 @@ export default {
     }
   }, 
   mounted () {
-    this.$store.state.common.Loading = true
+    this.setLoading(true)
     if(!this.$store.state.IM.user.id){
       this.$store.dispatch('UPDATEUSER', {
         userId: this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
@@ -67,17 +67,21 @@ export default {
       }).then((data) => {
         this.fromData.sex = data.sex === '1'? '2': '1'
         this.fromData.userId = data.id
-        this.$store.state.common.Loading = true
+        this.setLoading(false)
         this.search()
         // 获取到个人信息后登录容联云账号
       })
     } else {
+      this.setLoading(false)
       this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
       this.fromData.userId = this.$store.state.IM.user.id
       this.search()
     }
   },
   methods: {
+    ...mapMutations([
+      'setLoading'
+    ]),
     transitionObj (fromData) {
       var obj = {}
       for ( var i in fromData){

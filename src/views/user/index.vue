@@ -14,6 +14,7 @@
           <div class="datum_content">
             <div>
               资料完善度{{data.dataIntegrity}}%
+              <i class=""></i>
               <span class="sanjiao" @click="detailsClick">资料</span>
             </div>
             <div>信用度
