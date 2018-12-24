@@ -51,6 +51,15 @@ export default {
     },
     value (val) {
       this.isshow = val
+    },
+    data (val) {
+      if(val.length === 0) {
+        if(this.$refs.picker){
+          this.$refs.picker.setColumnIndex(0, 0)
+          this.$refs.picker.setColumnValues(1,this.defaultColumns[0].areaVoList.map(el => el.name))
+          this.$refs.picker.setColumnIndex(1, 0)
+        }
+      }
     }
   },
   methods: {

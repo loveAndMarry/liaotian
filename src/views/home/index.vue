@@ -4,7 +4,7 @@
        <div slot="action" @click="search">搜索</div>
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search> -->
-      <Tabs @updateVal="updateVal" @search="search"/>
+      <Tabs @updateVal="updateVal" @search="search" :data='fromData'/>
       <div style="height:calc(100% - 1.9rem);position: absolute;top:.8rem;width: 100%;">
         <HomeList :fromData='fromData' ref='HomeList'></HomeList>
       </div>
@@ -25,35 +25,35 @@ export default {
     return {
       // value: '',
       fromData:{
-        userId: 0,
+        userId: this.$store.state.IM.user.id,
         pageCurrent: 1,
         pageSize: 10,
         // 智能筛选
         type: 1,
         // 基本筛选条件
-        address: '', // 居住地
-        age: '', // 年龄（区间）
-        height: '', // 身高（区间）
-        maritalStatus: '', // 婚姻状况
-        education: '', // 学历（区间）
-        income: '', // 收入（区间）
-        loveType: '', // 恋爱类型
+        address: [], // 居住地
+        age: [], // 年龄（区间）
+        height: [], // 身高（区间）
+        maritalStatus: [], // 婚姻状况
+        education: [], // 学历（区间）
+        income: [], // 收入（区间）
+        loveType: [], // 恋爱类型
         // 高级筛选
-        housePurchase: '', // 是否购房
-        car: '', // 购车情况
-        registeredPermanentResidence: '', // 户口
-        hometown: '', // 家乡(地址)
-        children: '', // 子女
-        constellation: '', // 星座
-        theRealNameSystem:'', // 实名
-        picture: '', // 是否有照片
-        member: '', // 是否会员
-        onLine: '', // 是否在线
-        profession: '', // 职业
-        bloodType: '', // 血型
-        nation: '', // 民族
-        religion: '', // 宗教,
-        sex: ''
+        housePurchase: [], // 是否购房
+        car: [], // 购车情况
+        registeredPermanentResidence: [], // 户口
+        hometown:[], // 家乡(地址)
+        children:[], // 子女
+        constellation: [], // 星座
+        theRealNameSystem:[], // 实名
+        picture: [], // 是否有照片
+        member: [], // 是否会员
+        onLine: [], // 是否在线
+        profession: [], // 职业
+        bloodType: [], // 血型
+        nation: [], // 民族
+        religion: [], // 宗教,
+        sex: '2'
       },
       columns:[]
     }
@@ -68,33 +68,27 @@ export default {
         this.fromData.sex = data.sex === '1'? '2': '1'
         this.fromData.userId = data.id
         this.setLoading(false)
-        this.search()
+        this.search(this.fromData)
         // 获取到个人信息后登录容联云账号
       })
     } else {
       this.setLoading(false)
       this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
       this.fromData.userId = this.$store.state.IM.user.id
-      this.search()
+      this.search(this.fromData)
     }
   },
   methods: {
     ...mapMutations([
       'setLoading'
     ]),
-    transitionObj (fromData) {
-      var obj = {}
-      for ( var i in fromData){
-        obj[i] = typeof fromData[i] === 'object' ? fromData[i].length > 0 ? fromData[i].map(el => el.replace('不限','-1')).join(','):'' : fromData[i]  
-      }
-      return obj
-    },
     updateVal (val) {
-      this.fromData = this.transitionObj(Object.assign({}, this.fromData, val))
+      this.fromData = Object.assign({}, val)
     },
-    search () {
-      this.fromData = Object.assign({}, this.transitionObj(this.fromData))
-      this.$refs.HomeList.refresh()
+    search (fromData, pageSize) {
+      console.log(fromData, '触发了')
+      this.fromData = Object.assign({}, fromData)
+      this.$refs.HomeList.refresh(null,this.fromData, pageSize)
     }
   },
   components: {

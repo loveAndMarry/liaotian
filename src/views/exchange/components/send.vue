@@ -124,11 +124,11 @@ export default {
   left: 0;
   padding: .2rem;
   box-sizing: border-box;
-  -webkit-box-sizing: border-box;
+  -webkit-box-sizing: border-box; 
 }
 
 .bottom .inputText{
-  width: calc(100% - .8rem);
+  width: calc(100% - 1rem);
   display: inline-block;
   height: 100%;
   position: relative;

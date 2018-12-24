@@ -9,9 +9,17 @@
       </div>
       <div v-show="isShow === 1" class="tabs_content_group">
         <div class="tabs_content_group_scroll">
-          <div class="item" v-for="(item, index) in BasicScreening" :key="item" @click.stop="clickEvent($event, index, 'BasicScreeningValue')">
-            {{item}}<div class="sanjiao">不限</div>
-          </div>
+          <ListItem title="居住地"  :isSubmit="false" type='address' @confirm="a => fromData.address = a" hint="不限"></ListItem>
+
+          <ListItem title="身高" dictionaries='heights' :default='fromData.height' type="packerTwo" suffix="厘米" :isSubmit="false" @confirm="a => fromData.height = a" hint="不限"></ListItem>
+
+         <ListItem title="学历" dictionaries='education' :default='fromData.education' type="packerTwo" :isSubmit="false" @confirm="a => fromData.education = a" hint="不限"></ListItem>
+
+          <ListItem title="月收入" dictionaries='income' :default='fromData.incomeDefault' type="packerTwo" :isSubmit="false" @confirm="a => fromData.incomeDefault = a" hint="不限"></ListItem>
+
+          <ListItem title="年龄" dictionaries='ages' type='packerTwo'  :default='fromData.age' :isSubmit="false" @confirm="a => fromData.age = a" hint="不限"></ListItem>
+
+          <ListItem title="婚姻状况" dictionaries='maritalStatus' :default='fromData.maritalStatus' type="radioOne" :isSubmit="false" @confirm="a => fromData.maritalStatus = a" hint="不限"></ListItem>
         </div>
         <div class="item submit">
           <span class="btn" @click="reset">重置</span>
@@ -20,6 +28,11 @@
       </div>
       <div v-show="isShow === 2" class="tabs_content_group">
         <div class="tabs_content_group_scroll">
+          
+          <ListItem title="户口"  :isSubmit="false" type='address' @confirm="a => fromData.registeredPermanentResidence = a" hint="不限"></ListItem>
+
+          <ListItem title="家乡"  :isSubmit="false" type='address' @confirm="a => fromData.hometown = a" hint="不限"></ListItem>
+
           <div class="item" v-for="(item, index) in advancedFilter" :key="item" @click.stop="clickEvent($event, index, 'advancedFilterValue')">
           {{item}}<div class="sanjiao">不限</div>
           </div>
@@ -30,19 +43,6 @@
         </div>
       </div>
     </div>
-    <Address title="居住地" :data='fromData.address' v-model="flag.addressShow" @confirm="confirmCallback" name='address'></Address>
-
-    <Address title="户口" :data='fromData.registeredPermanentResidence' v-model="flag.registeredPermanentResidenceShow" @confirm="confirmCallback" name='registeredPermanentResidence'></Address>
-    
-    <Address title="家乡" :data='fromData.hometown' v-model="flag.hometownShow" @confirm="confirmCallback" name='hometown'></Address>
-
-    <Age title="年龄" :data='fromData.age' v-model="flag.ageShow" @confirm="confirmCallback"></Age>
-
-    <Height title="身高" :data='fromData.height' v-model="flag.heightShow" @confirm="confirmCallback"></Height>
-
-    <Education title="学历" :data='fromData.education' v-model="flag.educationShow" @confirm="confirmCallback"></Education>
-
-    <Income title="月收入" :data='fromData.income' v-model="flag.incomeShow" @confirm="confirmCallback"></Income>
 
     <PackerList title="婚姻状况" :data='fromData.maritalStatus' :radio='true' v-model="flag.maritalStatusShow" name="maritalStatus"  @confirm="confirmCallback"></PackerList>
 
@@ -77,16 +77,13 @@ import { Button} from 'vant'
 import Vue from 'vue'
 import { basicQueryCriteria, getProvinceAndCityList} from '@/assets/common/api'
 import { mapState, mapMutations } from 'vuex';
-import Address from '@/components/options/Address.vue'
-import Age from '@/components/options/Age.vue'
-import Education from '@/components/options/Education.vue'
-import Height from '@/components/options/Height.vue'
-import Income from '@/components/options/Income.vue'
+import ListItem from '@/components/ListItem'
 import PackerList from '@/components/options/PackerList.vue'
 
 export default {
   props:{
-    value: Object
+    value: Object,
+    data: Object
   },
   data () {
     return {
@@ -97,42 +94,9 @@ export default {
       tabs: ['智能排序', '基本筛选', '高级筛选'], // tabs内容
       IntelligentSorting: ['智能排序', '最新加入', '收入排序', '最新推荐'], // 智能排序
       IntelligentSortingShow: 0, // 智能排序默认显示的内容
-      BasicScreening: ['居住地', '年龄', '身高', '婚姻状况', '学历', '月收入'], // 基本筛选
-      BasicScreeningValue: ['address', 'age', 'height', 'maritalStatus', 'education', 'income'], // 基本筛选对应名称
-      advancedFilter: ['购房情况', '购车情况', '户口', '家乡', '有无子女', '星座', '是否实名', '是否有照片', '是否是会员', '是否在线', '职业', '血型', '民族', '宗教信仰'], // 高级筛选
-      advancedFilterValue: ['housePurchase', 'car', 'registeredPermanentResidence', 'hometown', 'children', 'constellation', 'theRealNameSystem', 'picture', 'member', 'onLine', 'profession', 'bloodType', 'nation', 'religion'], // 高级筛选对应名称
-      fromData: {
-        type: '1',
-        // 基本筛选条件
-        address: [], // 居住地
-        age: [], // 年龄（区间）
-        height: [], // 身高（区间）
-        maritalStatus: [], // 婚姻状况
-        education: [], // 学历（区间）
-        income: [], // 收入（区间）
-        // 高级筛选
-        housePurchase: [], // 是否购房
-        car: [], // 购车情况
-        registeredPermanentResidence: [], // 户口
-        hometown: [], // 家乡(地址)
-        children: [], // 子女
-        constellation: [], // 星座
-        theRealNameSystem:[], // 实名
-        picture: [], // 是否有照片
-        member: [], // 是否会员
-        onLine: [], // 是否在线
-        profession: [], // 职业
-        bloodType: [], // 血型
-        nation: [], // 民族
-        religion: [], // 宗教
-      },
+      advancedFilter: ['购房情况', '购车情况', '有无子女', '星座', '是否实名', '是否有照片', '是否是会员', '是否在线', '职业', '血型', '民族', '宗教信仰'], // 高级筛选
+      advancedFilterValue: ['housePurchase', 'car', 'children', 'constellation', 'theRealNameSystem', 'picture', 'member', 'onLine', 'profession', 'bloodType', 'nation', 'religion'], // 高级筛选对应名称,
       flag: {
-        addressShow: false, // 居住地
-        ageShow: false, // 年龄（区间）
-        heightShow: false, // 身高（区间）
-        maritalStatusShow: false, // 婚姻状况
-        educationShow: false, // 学历（区间）
-        incomeShow: false, // 收入（区间）
         // 高级筛选
         housePurchaseShow: false, // 是否购房
         carShow: false, // 购车情况
@@ -150,42 +114,57 @@ export default {
         religionShow: false, // 宗教
       },
       basicQueryCriteria: [],
-      defaultData: {}
+      defaultData: {},
+      fromData: {
+        type: 1,
+        pageCurrent: 1,
+        pageSize: 10,
+        // 基本筛选条件
+        address: [], // 居住地
+        age: [], // 年龄（区间）
+        height: [], // 身高（区间）
+        maritalStatus: [], // 婚姻状况
+        education: [], // 学历（区间）
+        income: [], // 收入（区间）
+        loveType: [], // 恋爱类型
+        // 高级筛选
+        housePurchase: [], // 是否购房
+        car: [], // 购车情况
+        registeredPermanentResidence: [], // 户口
+        hometown: [], // 家乡(地址)
+        children: [], // 子女
+        constellation: [], // 星座
+        theRealNameSystem:[], // 实名
+        picture: [], // 是否有照片
+        member: [], // 是否会员
+        onLine: [], // 是否在线
+        profession: [], // 职业
+        bloodType: [], // 血型
+        nation: [], // 民族
+        religion: [], // 宗教
+        userId: '',
+        sex: '1'
+      }
     }
   },
   methods: {
-    ...mapMutations([
-      'showLoading',
-      'hideLoading'
-    ]),
     confirmCallback (name, value) {
       if(value && value.length > 0){
-              value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
+        value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
         let str = ''
         this.flag[name + 'Show'] = false
-        if(['address', 'hometown', 'age','height','education', 'income','registeredPermanentResidence'].findIndex(el => el === name) !== -1){
-          if(name === 'address' || name === 'registeredPermanentResidence' || name === 'hometown'){
-            str = value[1].name;
-          } else if(name === 'age'){
-            str = value[0] + '岁 - ' + value[1] + '岁'
-          } else if(name === 'height'){
-            str = typeof value[1] === 'string'? value[0] + 'cm - ' + value[1] + 'cm' :value[0].name + 'cm - ' + value[1].name + 'cm'
-          } else {
-            str = typeof value[0] === 'string'? value[0] + ' - ' + value[1] : value[0].label + ' - ' + value[1].label
-          }
-        } else {
-          str = typeof value[0] === 'string' ? value : value[0].code ? value.map(el => el.code) : value.map(el => el.label)
-        }
+        str = typeof value[0] === 'string' ? value : value[0].code ? value.map(el => el.code) : value.map(el => el.label)
         this.event.innerText = str
       } else {
         this.event.innerText = '不限'
       }
-      // 设置夫级的数据
-      this.setParentData(value)
+      this.fromData[name] = value
     },
     reset () {
       this.fromData = {
         type: 1,
+        pageCurrent: 1,
+        pageSize: 10,
         // 基本筛选条件
         address: [], // 居住地
         age: [], // 年龄（区间）
@@ -210,34 +189,30 @@ export default {
         nation: [], // 民族
         religion: [], // 宗教
       }
+
+      this.fromData.userId = this.$store.state.IM.user.id
+      this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
+      this.fromData.type = 1
+
       var eles = document.querySelectorAll('.sanjiao');
       eles.forEach(element => {
         element.innerHTML = "不限"
       });
       this.isShow = -1
-      this.$parent.fromData =  this.fromData
-      this.$parent.search()
+      this.IntelligentSortingShow = 0
+      console.log(this.fromData, '点击检索后的事件')
+      this.$emit('search', this.fromData, 10)
     },
     replaceArr (arr) {
       return arr.map(item => item.replace('岁', '').replace('cm', ''))
     },
-    setParentData (val) {
-      console.log(val, '我看看')
-      // 设置夫级的数据
-      if (this.valueName === 'type') {
-        Vue.set(this.fromData, this.valueName, val)
-      } else {
-        if(!val && val.length === 0){
-          Vue.set(this.fromData, this.valueName, val)
-        } else {
-          Vue.set(this.fromData, this.valueName, typeof val[0] === 'string' ? val : val[0].code ? this.replaceArr(val.map(el => el.code)) : this.replaceArr(val.map(el => el.value)))
-        }
-      }
-      this.$emit('updateVal', this.fromData)
-    },
     submitData () {
+      console.dir(this)
+      console.log(this.fromData, '确定后的参数')
+      this.fromData.userId = this.$store.state.IM.user.id
+      this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
       this.isShow = -1
-      this.$emit('search')
+      this.$emit('search', this.fromData, 10)
     },
     // tabs选项卡点击事件 
     tabsClick (index) {
@@ -251,6 +226,8 @@ export default {
     },
     // 智能排序选项点击事件
     IntelligentSortingEvent (index) {
+      this.fromData.userId = this.$store.state.IM.user.id
+      this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
       // 设置当前点击的为智能检索
       this.valueName = 'type'
       this.IntelligentSortingShow = index
@@ -258,8 +235,8 @@ export default {
 
       this.fromData['type'] = index + 1
       // 设置夫级的数据
-      this.setParentData(this.fromData['type'])
-      this.$parent.search()
+      // this.setParentData(this.fromData['type'])
+     this.$emit('search', this.fromData, 10)
     },
     // 基本筛选每项点击事件
     clickEvent ($event, index, name) {
@@ -275,8 +252,10 @@ export default {
       this.flag[this.valueName + 'Show'] = true
     },
     tabsContentClick ($event) {
-      this.isContentType = false;
-      this.isShow  = -1
+      if($event.target.className === 'tabs_content'){
+         this.isContentType = false;
+        this.isShow  = -1
+      }
     }
   },
   watch: {
@@ -286,16 +265,15 @@ export default {
   },
   components: {
     Button,
-    Address,
-    Age,
-    Height,
-    Income,
-    Education,
+    ListItem,
     PackerList,
   }
 }
 </script>
 <style>
+.intention_item{
+  border-top: .01rem solid #f0f0f0;
+}
 .van-actionsheet__header{
   text-align: left;
   padding-left: .5rem;

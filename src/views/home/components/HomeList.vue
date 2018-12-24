@@ -3,7 +3,7 @@
     <ul class="home_list">
       <li v-for="(item, index) in columns" :key="index" @click="showDetail(item)">
         <div class="title">
-          <img :src="item.userHead || 'http://img3.imgtn.bdimg.com/it/u=1997531878,2220927575&fm=26&gp=0.jpg'" alt="">
+          <img :src="item.userHead" alt="">
         </div>
         <div class="list_content">
           <div class="top">
@@ -33,7 +33,6 @@
 <script>
 import { listUser, cancellikeUser, likeUser} from '@/assets/common/api'
 export default {
-  props: ['fromData'],
   data () {
     return {
       columns: [],
@@ -41,12 +40,14 @@ export default {
       index: 0, // 默认第一次下拉加载不请求
     }
   },
-  computed: {
-    data () {
-      return  Object.assign({}, this.fromData)
-    },
-  },
   methods: {
+    transitionObj (fromData) {
+      var obj = {}
+      for ( var i in fromData){
+        obj[i] = typeof fromData[i] === 'object' ? fromData[i].length > 0 ? fromData[i].map(el => el.code ? el.code : el.value.replace('不限','-1')).join(','):'' : fromData[i]  
+      }
+      return obj
+    },
     // 过滤用户和列表中的共同的爱好
     interestDictVoList (item) {
       if(!item){return []}
@@ -103,23 +104,22 @@ export default {
     },
     link (item) {
       let link = null
+     
       if(item.isLikeUser === 1){
-         cancellikeUser({
+        link = 0
+        --item.likeCount
+        this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
+        cancellikeUser({
           userId: this.$store.state.IM.user.id,
           likeUserId: item.userId
-        }).then(() => {
-          link = 0
-          --item.likeCount
-          this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
         })
       } else {
+         link = 1
+          ++item.likeCount
+          this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
         likeUser({
           userId: this.$store.state.IM.user.id,
           likeUserId: item.userId
-        }).then(() => {
-          link = 1
-          ++item.likeCount
-          this.columns.splice(this.columns.findIndex(el => el.userId === item.userId), 1, Object.assign(this.columns.find(el => el.userId === item.userId), {isLikeUser: link,likeCount: item.likeCount}))
         })
       }
     },
@@ -128,17 +128,20 @@ export default {
       this.$router.push({name: 'userDetail'})
     },
     infinite (fn) {
-      console.log('infinite')
+      let fromData  = this.$parent.fromData
+      console.log(fromData,'哦买嘎')
       if(this.index){
-        ++this.data.pageCurrent
-       listUser(this.data).then((res) => {
+        debugger
+        fromData.pageCurrent = Number(fromData.pageCurrent) + 1
+        console.log('上拉加载', fromData)
+       listUser(this.transitionObj(fromData)).then((res) => {
          this.noDataText = '没有更多数据'
          if(res.data.list){
-           res.data.list.length < this.data.pageSize ? fn(true) :fn()
+           res.data.list.length < fromData.pageSize ? fn(true) :fn()
            if(res.data.count <= this.columns.length){
              return false
            } else {
-             this.columns.push(res.data.list)
+             this.columns.push(...res.data.list)
            }
          } else {
            fn ? fn(true): this.$refs.scroller.finishPullToRefresh()
@@ -149,13 +152,14 @@ export default {
         fn(true)
       }
     },
-    refresh (fn) {
-      console.log('refresh')
-      var obj = Object.assign({}, this.data, {
-        pageSize: this.columns.length || 10,
+    refresh (fn, fromData, pageSize) {
+      console.log(fn, fromData, pageSize,'啥玩意？')
+      var obj = Object.assign({}, fromData ? fromData : this.$parent.fromData, {
+        pageSize: pageSize ? pageSize : this.columns.length || 10,
         pageCurrent: 1
       })
-      listUser(obj).then((res) => {
+      console.log(obj,'请求之前的数据')
+      listUser(this.transitionObj(obj)).then((res) => {
         if(res.data.list){
           this.columns = res.data.list
         } else {

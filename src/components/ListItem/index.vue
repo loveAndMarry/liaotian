@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="intention_item" @click.stop="intantionClick">{{title}}:
-      <div class="sanjiao" :class="{hide: noClick}">{{names | trim}}</div>
+      <div class="sanjiao" :class="{hide: noClick}">{{name}}</div>
     </div>
     <Actionsheet v-model="isShow" :close-on-click-overlay='false'>
       <!-- 地址组件 -->
@@ -68,6 +68,10 @@ export default {
     suffix: {
       type: String,
       default: ''
+    },
+    hint: {
+      type: String,
+      default: '未填写'
     }
   },
   data () {
@@ -76,15 +80,6 @@ export default {
       result: [],
       names: '',
       codes: []
-    }
-  },
-  filters: {
-    trim (val) {
-      if(val.replace(/,/g,'').replace(/-/g,'').replace(/\s/g,'') === ''){
-        return '未填写'
-      } else {
-        return val
-      }
     }
   },
   mounted () {
@@ -96,6 +91,14 @@ export default {
     }),
     data () {
       return this.result
+    },
+    name () {
+      let val = this.names;
+      if(val.replace(/,/g,'').replace(/-/g,'').replace(/\s/g,'') === ''){
+        return this.hint
+      } else {
+        return val
+      }
     }
   },
   watch : {
@@ -121,7 +124,7 @@ export default {
           this.codes = val[0].value ? val.map(el => el.value) : val.map(el => el.code)
         }
       } else {
-        this.names = '未填写'
+        this.names = this.hint
       }
     }
   },

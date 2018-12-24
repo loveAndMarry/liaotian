@@ -72,7 +72,7 @@ export default {
       this.$refs.checkboxes[index].toggle()
     },
     confirm () {
-      if(this.result && this.result.lenght > 0){
+      if(this.result && this.result.length > 0){
         this.$emit('confirm', this.name, this.result.map(el => this.columns.find(item => item.label === el)))
         this.$emit('input', false)
       } else {
@@ -104,6 +104,7 @@ export default {
           }
         }
       } else {
+        console.log(val, '选择时的值')
         // 单选
         if (val.length > 1) {
           this.result = val.filter(item => item !== pastVal[0])
