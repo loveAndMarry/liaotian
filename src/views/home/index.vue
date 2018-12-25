@@ -4,8 +4,8 @@
        <div slot="action" @click="search">搜索</div>
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search> -->
-      <Tabs @updateVal="updateVal" @search="search" :data='fromData'/>
-      <div style="height:calc(100% - 1.9rem);position: absolute;top:.8rem;width: 100%;">
+      <Tabs @search="search" :data='fromData'/>
+      <div style="height:calc(100% - 1.6rem);position: absolute;top:.8rem;width: 100%;">
         <HomeList :fromData='fromData' ref='HomeList'></HomeList>
       </div>
   </div>
@@ -82,11 +82,7 @@ export default {
     ...mapMutations([
       'setLoading'
     ]),
-    updateVal (val) {
-      this.fromData = Object.assign({}, val)
-    },
     search (fromData, pageSize) {
-      console.log(fromData, '触发了')
       this.fromData = Object.assign({}, fromData)
       this.$refs.HomeList.refresh(null,this.fromData, pageSize)
     }

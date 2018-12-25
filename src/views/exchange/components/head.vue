@@ -23,11 +23,6 @@ export default {
   },
   methods: {
     onClickLeft () {
-      var arr = JSON.parse(localStorage.getItem('friendList'))
-      utils.updateArray(arr, this.friend.accountNumber,{
-          hint: 0
-      })
-      localStorage.setItem('friendList', JSON.stringify(arr))
       window.history.back()
     }
   },

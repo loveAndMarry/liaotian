@@ -47,8 +47,27 @@ export default {
     })
     }
   },
+  watch: {
+    data (val){
+      this.$nextTick(() => {
+        if(val.length > 0){
+          let obj = this.defaultColumns.find(el => el.code === val[0])
+          let index = this.defaultColumns.findIndex(el => el.code === val[0])
+          this.$refs.picker.setColumnIndex(0, index)
+          this.$refs.picker.setColumnValues(1,obj.areaVoList.map(el => el.name))
+          this.$refs.picker.setColumnIndex(1, obj.areaVoList.findIndex(el => el.code === val[1]))
+        }
+      })
+    }
+  },
   methods: {
-     fromData (arr) {
+    reset () {
+      let obj = this.defaultColumns[0]
+      this.$refs.picker.setColumnIndex(0, 0)
+      this.$refs.picker.setColumnValues(1,obj.areaVoList.map(el => el.name))
+      this.$refs.picker.setColumnIndex(1, 0)
+    },
+    fromData (arr) {
       var a = [], b = {}
       // 获取当前选择获取到的值
       arr.forEach((el, index) => {
@@ -79,15 +98,6 @@ export default {
           values: this.defaultColumns[0].areaVoList.map(el => el.name)
         }
       ]
-      this.$nextTick(() => {
-        if(this.data.length > 0){
-          let obj = this.defaultColumns.find(el => el.code === this.data[0])
-          let index = this.defaultColumns.findIndex(el => el.code === this.data[0])
-          this.$refs.picker.setColumnIndex(0, index)
-          this.$refs.picker.setColumnValues(1,obj.areaVoList.map(el => el.name))
-          this.$refs.picker.setColumnIndex(1, obj.areaVoList.findIndex(el => el.code === this.data[1]))
-        }
-      })
       this.isLoading = false
     },
     onCancel () {
@@ -103,11 +113,18 @@ export default {
       let val = [province, city]
       if(this.isSubmit){
         updateUserSpecificInfo(this.fromData(val)).then(() => {
-          this.$parent.$parent.result = val
-          this.$parent.$parent.isShow = false
         })
       } else {
         this.$emit('confirm', val)
+      }
+      this.$parent.$parent.result = val
+      this.$parent.$parent.isShow = false
+    }
+  },
+  watch: {
+    data (val) {
+      if(val.length === 0) {
+        this.reset()
       }
     }
   },

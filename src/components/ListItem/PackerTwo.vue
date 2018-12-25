@@ -63,12 +63,13 @@ export default {
       let val = [this.getObj(value[0]),this.getObj(value[1])]
       if(this.isSubmit){
         updateUserSpecificInfo(this.fromData(val)).then(() => {
-          this.$parent.$parent.result = val
-          this.$parent.$parent.isShow = false
         })
       } else {
+        
         this.$emit('confirm', val)
       }
+      this.$parent.$parent.result = val
+      this.$parent.$parent.isShow = false
     },
     fromData (arr) {
       var a = [], b = {}
@@ -101,6 +102,19 @@ export default {
           this.$refs.picker.setColumnValue(1, label2)
         }
       })
+    },
+    reset () {
+      this.$refs.picker.setColumnIndex(0, 0)
+      this.$refs.picker.setColumnValues(1,this.unshiftArr(this.labels))
+      this.$refs.picker.setColumnIndex(1, 0)
+    },
+
+  },
+  watch: {
+    data (val) {
+      if(val.length === 0) {
+        this.reset()
+      }
     }
   },
   computed: {

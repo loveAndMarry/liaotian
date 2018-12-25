@@ -41,7 +41,6 @@ export default {
   },
   watch: {
     'getChatMessage': function (arr) {
-      console.log(arr)
       if(this.isToBottom){
         // 将滚动条置为底部
         this.scrollToBottom()

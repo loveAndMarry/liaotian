@@ -83,12 +83,13 @@ export default {
       }
       if(this.isSubmit){
         updateUserSpecificInfo(this.fromData(val)).then(() => {
-          this.$parent.$parent.result = result
-          this.$parent.$parent.isShow = false
+         
         })
       } else {
         this.$emit('confirm', result)
       }
+      this.$parent.$parent.result = result
+      this.$parent.$parent.isShow = false
       
     },
     showData () {
@@ -98,6 +99,16 @@ export default {
          this.$refs.picker.setColumnValue(0, this.defaultData.find(el => el.value == this.data[0]).label)
         }
       })
+    },
+    reset () {
+      this.$refs.picker.setColumnValue(0, 0)
+    }
+  },
+  watch: {
+    data (val) {
+      if(val.length === 0) {
+        this.reset()
+      }
     }
   },
   computed: {

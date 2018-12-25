@@ -9,17 +9,17 @@
       </div>
       <div v-show="isShow === 1" class="tabs_content_group">
         <div class="tabs_content_group_scroll">
-          <ListItem title="居住地"  :isSubmit="false" type='address' @confirm="a => fromData.address = a" hint="不限"></ListItem>
+          <ListItem title="居住地"  :isSubmit="false" :default='fromData.address' type='address' @confirm="a => fromData.address = a" hint="不限" ref="address"></ListItem>
 
-          <ListItem title="身高" dictionaries='heights' :default='fromData.height' type="packerTwo" suffix="厘米" :isSubmit="false" @confirm="a => fromData.height = a" hint="不限"></ListItem>
+          <ListItem title="身高" dictionaries='heights' :default='fromData.height' type="packerTwo" suffix="厘米" :isSubmit="false" @confirm="a => fromData.height = a" hint="不限" ref="height"></ListItem>
 
-         <ListItem title="学历" dictionaries='education' :default='fromData.education' type="packerTwo" :isSubmit="false" @confirm="a => fromData.education = a" hint="不限"></ListItem>
+         <ListItem title="学历" dictionaries='education' :default='fromData.education' type="packerTwo" :isSubmit="false" @confirm="a => fromData.education = a" hint="不限" ref="education"></ListItem>
 
-          <ListItem title="月收入" dictionaries='income' :default='fromData.incomeDefault' type="packerTwo" :isSubmit="false" @confirm="a => fromData.incomeDefault = a" hint="不限"></ListItem>
+          <ListItem title="月收入" dictionaries='income' :default='fromData.incomeDefault' type="packerTwo" :isSubmit="false" @confirm="a => fromData.incomeDefault = a" hint="不限" ref="incomeDefault"></ListItem>
 
-          <ListItem title="年龄" dictionaries='ages' type='packerTwo'  :default='fromData.age' :isSubmit="false" @confirm="a => fromData.age = a" hint="不限"></ListItem>
+          <ListItem title="年龄" dictionaries='ages' type='packerTwo'  :default='fromData.age' :isSubmit="false" @confirm="a => fromData.age = a" hint="不限" ref="age"></ListItem>
 
-          <ListItem title="婚姻状况" dictionaries='maritalStatus' :default='fromData.maritalStatus' type="radioOne" :isSubmit="false" @confirm="a => fromData.maritalStatus = a" hint="不限"></ListItem>
+          <ListItem title="婚姻状况" dictionaries='maritalStatus' :default='fromData.maritalStatus' type="radioOne" :isSubmit="false" @confirm="a => fromData.maritalStatus = a" hint="不限" ref="maritalStatus"></ListItem>
         </div>
         <div class="item submit">
           <span class="btn" @click="reset">重置</span>
@@ -29,9 +29,9 @@
       <div v-show="isShow === 2" class="tabs_content_group">
         <div class="tabs_content_group_scroll">
           
-          <ListItem title="户口"  :isSubmit="false" type='address' @confirm="a => fromData.registeredPermanentResidence = a" hint="不限"></ListItem>
+          <ListItem title="户口"  :isSubmit="false" type='address' :default='fromData.registeredPermanentResidence' @confirm="a => fromData.registeredPermanentResidence = a" hint="不限" ref="registeredPermanentResidence"></ListItem>
 
-          <ListItem title="家乡"  :isSubmit="false" type='address' @confirm="a => fromData.hometown = a" hint="不限"></ListItem>
+          <ListItem title="家乡"  :isSubmit="false" type='address'  :default='fromData.hometown' @confirm="a => fromData.hometown = a" hint="不限" ref="hometown"></ListItem>
 
           <div class="item" v-for="(item, index) in advancedFilter" :key="item" @click.stop="clickEvent($event, index, 'advancedFilterValue')">
           {{item}}<div class="sanjiao">不限</div>
@@ -44,31 +44,31 @@
       </div>
     </div>
 
-    <PackerList title="婚姻状况" :data='fromData.maritalStatus' :radio='true' v-model="flag.maritalStatusShow" name="maritalStatus"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="婚姻状况" :data='fromData.maritalStatus' :radio='true' v-model="flag.maritalStatusShow" name="maritalStatus"  @confirm="confirmCallback" ref="maritalStatus"></PackerList>
 
-    <PackerList title="购房情况" :data='fromData.housePurchase' :radio='true' v-model="flag.housePurchaseShow" name="housePurchase"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="购房情况" :data='fromData.housePurchase' :radio='true' v-model="flag.housePurchaseShow" name="housePurchase"  @confirm="confirmCallback" ref="housePurchase"></PackerList>
 
-    <PackerList title="购车情况" :data='fromData.car' :radio='true' v-model="flag.carShow" name="car"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="购车情况" :data='fromData.car' :radio='true' v-model="flag.carShow" name="car"  @confirm="confirmCallback" ref="car"></PackerList>
 
-    <PackerList title="有无子女" :data='fromData.children' :radio='true' v-model="flag.childrenShow" name="children"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="有无子女" :data='fromData.children' :radio='true' v-model="flag.childrenShow" name="children"  @confirm="confirmCallback" ref="children"></PackerList>
 
-    <PackerList title="星座" :data='fromData.constellation' :radio='false' v-model="flag.constellationShow" name="constellation"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="星座" :data='fromData.constellation' :radio='false' v-model="flag.constellationShow" name="constellation"  @confirm="confirmCallback" ref="constellation"></PackerList>
 
-    <PackerList title="是否实名" :data='fromData.theRealNameSystem' :radio='true' v-model="flag.theRealNameSystemShow" name="theRealNameSystem"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="是否实名" :data='fromData.theRealNameSystem' :radio='true' v-model="flag.theRealNameSystemShow" name="theRealNameSystem"  @confirm="confirmCallback" ref="theRealNameSystem"></PackerList>
 
-    <PackerList title="是否有照片" :data='fromData.picture' :radio='true' v-model="flag.pictureShow" name="picture"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="是否有照片" :data='fromData.picture' :radio='true' v-model="flag.pictureShow" name="picture"  @confirm="confirmCallback" ref="picture"></PackerList>
 
-    <PackerList title="是否是会员" :data='fromData.member' :radio='true' v-model="flag.memberShow" name="member"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="是否是会员" :data='fromData.member' :radio='true' v-model="flag.memberShow" name="member"  @confirm="confirmCallback" ref="member"></PackerList>
 
-    <PackerList title="是否在线" :data='fromData.onLine' :radio='true' v-model="flag.onLineShow" name="onLine"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="是否在线" :data='fromData.onLine' :radio='true' v-model="flag.onLineShow" name="onLine"  @confirm="confirmCallback" ref="onLine"></PackerList>
 
-    <PackerList title="职业" :data='fromData.profession' :radio='false' v-model="flag.professionShow" name="profession"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="职业" :data='fromData.profession' :radio='false' v-model="flag.professionShow" name="profession"  @confirm="confirmCallback" ref="profession"></PackerList>
 
-    <PackerList title="血型" :data='fromData.bloodType' :radio='true' v-model="flag.bloodTypeShow" name="bloodType"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="血型" :data='fromData.bloodType' :radio='true' v-model="flag.bloodTypeShow" name="bloodType"  @confirm="confirmCallback" ref="bloodType"></PackerList>
 
-    <PackerList title="民族" :data='fromData.nation' :radio='false' v-model="flag.nationShow" name="nation"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="民族" :data='fromData.nation' :radio='false' v-model="flag.nationShow" name="nation"  @confirm="confirmCallback" ref="nation"></PackerList>
 
-    <PackerList title="宗教" :data='fromData.religion' :radio='true' v-model="flag.religionShow" name="religion"  @confirm="confirmCallback"></PackerList>
+    <PackerList title="宗教" :data='fromData.religion' :radio='true' v-model="flag.religionShow" name="religion"  @confirm="confirmCallback" ref="religion"></PackerList>
   </div>
 </template>
 
@@ -149,6 +149,7 @@ export default {
   },
   methods: {
     confirmCallback (name, value) {
+      console.log('666')
       if(value && value.length > 0){
         value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
         let str = ''
@@ -161,7 +162,8 @@ export default {
       this.fromData[name] = value
     },
     reset () {
-      this.fromData = {
+      var _this = this
+      let fromData = {
         type: 1,
         pageCurrent: 1,
         pageSize: 10,
@@ -190,25 +192,24 @@ export default {
         religion: [], // 宗教
       }
 
-      this.fromData.userId = this.$store.state.IM.user.id
-      this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
-      this.fromData.type = 1
+      fromData.userId = this.$store.state.IM.user.id
+      fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
+      fromData.type = 1
+      
+      // var eles = document.querySelectorAll('.sanjiao');
+      // eles.forEach(element => {
+      //   element.innerHTML = "不限"
+      // });
+      _this.fromData = fromData
 
-      var eles = document.querySelectorAll('.sanjiao');
-      eles.forEach(element => {
-        element.innerHTML = "不限"
-      });
       this.isShow = -1
       this.IntelligentSortingShow = 0
-      console.log(this.fromData, '点击检索后的事件')
-      this.$emit('search', this.fromData, 10)
+      this.$emit('search', fromData, 10)
     },
     replaceArr (arr) {
       return arr.map(item => item.replace('岁', '').replace('cm', ''))
     },
     submitData () {
-      console.dir(this)
-      console.log(this.fromData, '确定后的参数')
       this.fromData.userId = this.$store.state.IM.user.id
       this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
       this.isShow = -1
@@ -256,11 +257,6 @@ export default {
          this.isContentType = false;
         this.isShow  = -1
       }
-    }
-  },
-  watch: {
-    fromData (value) {
-      this.$emit('updateVal', value)
     }
   },
   components: {

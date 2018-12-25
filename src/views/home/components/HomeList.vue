@@ -75,7 +75,6 @@ export default {
             }
           }
         }
-        console.log(arr)
         return arr
       }
 
@@ -129,11 +128,8 @@ export default {
     },
     infinite (fn) {
       let fromData  = this.$parent.fromData
-      console.log(fromData,'哦买嘎')
       if(this.index){
-        debugger
         fromData.pageCurrent = Number(fromData.pageCurrent) + 1
-        console.log('上拉加载', fromData)
        listUser(this.transitionObj(fromData)).then((res) => {
          this.noDataText = '没有更多数据'
          if(res.data.list){
@@ -153,12 +149,10 @@ export default {
       }
     },
     refresh (fn, fromData, pageSize) {
-      console.log(fn, fromData, pageSize,'啥玩意？')
       var obj = Object.assign({}, fromData ? fromData : this.$parent.fromData, {
         pageSize: pageSize ? pageSize : this.columns.length || 10,
         pageCurrent: 1
       })
-      console.log(obj,'请求之前的数据')
       listUser(this.transitionObj(obj)).then((res) => {
         if(res.data.list){
           this.columns = res.data.list

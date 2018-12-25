@@ -84,26 +84,29 @@ export default {
       this.$emit('editHeight', this.isGiftShow)
     },
     postMsg (i) {
-      var context = typeof i === 'object'? utils.utf16toEntities(this.context): i
-      var that = this
-      this.isShow = false
-      this.$emit('editHeight', this.isShow)
-      this.POSTMSG({
-        context: context,
-        id: new Date().getTime(),
-        receiver:that.friend.accountNumber,
-        sender: that.user.accountNumber,
-        sendUserId: that.user.id,
-        receiveUserId: that.friend.userId,
-        time: new Date().getTime(),
-        chatDate: new Date().getTime(),
-        status: 1, // 当前信息提交状态
-        userHead: this.user.userHead,
-        msgType: 1
-      }).then((res) => {
-        that.context = ''
-        this.isContext = false
-      })
+      if(this.context !== ''){
+         var context = typeof i === 'object'? utils.utf16toEntities(this.context): i
+        var that = this
+        this.isShow = false
+        this.$emit('editHeight', this.isShow)
+        this.context = ''
+        this.POSTMSG({
+          context: context,
+          id: new Date().getTime(),
+          receiver:that.friend.accountNumber,
+          sender: that.user.accountNumber,
+          sendUserId: that.user.id,
+          receiveUserId: that.friend.userId,
+          time: new Date().getTime(),
+          chatDate: new Date().getTime(),
+          status: 1, // 当前信息提交状态
+          userHead: this.user.userHead,
+          msgType: 1
+        }).then((res) => {
+          that.context = ''
+          this.isContext = false
+        })
+      }
     }
   },
   computed: {
@@ -128,7 +131,7 @@ export default {
 }
 
 .bottom .inputText{
-  width: calc(100% - 1rem);
+  width: calc(100% - 1.2rem);
   display: inline-block;
   height: 100%;
   position: relative;
@@ -205,6 +208,6 @@ export default {
     vertical-align: .2rem;
     margin-left: .1rem;
     color: #f44;
-    font-size: .31rem
+    font-size: .30rem
 }
 </style>

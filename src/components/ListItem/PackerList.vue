@@ -68,6 +68,13 @@ export default {
       })
     }
   },
+  watch: {
+    data (val) {
+      if(val.length === 0) {
+        this.reset()
+      }
+    }
+  },
   methods: {
      fromData (arr) {
       var a = [], b = {}
@@ -99,6 +106,8 @@ export default {
           })
         } else {
           this.$emit('confirm', val)
+          this.$parent.$parent.result = val
+          this.$parent.$parent.isShow = false
         }
       } else {
         this.$emit('confirm', [])
@@ -106,6 +115,9 @@ export default {
     },
     cancel () {
       this.$parent.$parent.isShow = false
+    },
+    reset () {
+      this.result = []
     }
   },
   watch: {
