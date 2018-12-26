@@ -41,6 +41,7 @@ export default {
         interest: this.interestDictVoList.map(el => el.id).join(',')
       }).then(res => {
          var toast = this.$toast('修改成功')
+         this.$store.state.IM.user.interestDictVoList = this.interestDictVoList
          window.setTimeout(() => {
            toast.clear()
            this.$router.push({name: 'userDetails'})

@@ -8,13 +8,15 @@
       <div class="group">
         <div class="datum">
           <div class="head">
-            <img :src="user.userHead" alt @click="userHead">
-            <span v-if="user.states === '1'">审核中</span>
+            <div class="head_img">
+                <img :src="data.userMemberAndUserHeadDTO.userHead" alt @click="userHead">
+                <span v-if="data.userMemberAndUserHeadDTO.states === '1'">审核中</span>
+            </div>
+            <i class="member"><img :src="data.userMemberAndUserHeadDTO.ico" alt=""></i>
           </div>
           <div class="datum_content">
             <div>
               资料完善度{{data.dataIntegrity}}%
-              <i class=""></i>
               <span class="sanjiao" @click="detailsClick">资料</span>
             </div>
             <div>信用度
@@ -69,7 +71,7 @@
       <Group title="我的认证">
         <div class="authentication">
           <div class="real_name" @click="$router.push({name: 'authentication'})">
-            <div></div>
+            <div :class="{no: user.registerState !== '4'}"></div>
             <p>实名认证</p>
           </div>
           <div class="phone" @click="$router.push({name: 'YY'})">
@@ -123,7 +125,8 @@ export default {
         likeMePhotoUrl: '',
         likeUserPhotoUrl: '',
         levels: [],
-        photoList: []
+        photoList: [],
+        userMemberAndUserHeadDTO: {}
       },
       isLoading: false
     }
@@ -218,12 +221,36 @@ export default {
 </script>
 
 <style scoped>
+.head_img {
+  position: absolute;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  -webkit-border-radius: 50%;
+}
+.head .member{
+    position: absolute;
+    display: inline-block;
+    height: .5rem;
+    width: .5rem;
+    vertical-align: middle;
+    bottom: 0px;
+    right: 0;
+    z-index: 1000;
+}
+.head .member img{
+  width: 100%;
+  height: 100%
+}
 .head {
   border: 1px solid #fff;
   border-radius: 50%;
   -webkit-border-radius: 50%;
   position: relative;
-  overflow: hidden;
   z-index: 1;
   left: 0;
   top: 0;
@@ -319,6 +346,9 @@ export default {
 }
 .authentication .real_name div {
   background-image: url("../../assets/images/real_name@2x.png");
+}
+.authentication .real_name div.no{
+  background-image: url("../../assets/images/unauthorized@2x.png");
 }
 .authentication .phone div {
   background-image: url("../../assets/images/phone@2x.png");

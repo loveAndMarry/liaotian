@@ -19,7 +19,9 @@
 
           <ListItem title="年龄" dictionaries='ages' type='packerTwo'  :default='fromData.age' :isSubmit="false" @confirm="a => fromData.age = a" hint="不限" ref="age"></ListItem>
 
-          <ListItem title="婚姻状况" dictionaries='maritalStatus' :default='fromData.maritalStatus' type="radioOne" :isSubmit="false" @confirm="a => fromData.maritalStatus = a" hint="不限" ref="maritalStatus"></ListItem>
+          <div class="item"  @click.stop="clickEvent($event, 0, 'maritalStatus')">
+            婚姻状况<div class="sanjiao">不限</div>
+          </div>
         </div>
         <div class="item submit">
           <span class="btn" @click="reset">重置</span>
@@ -62,7 +64,7 @@
 
     <PackerList title="是否在线" :data='fromData.onLine' :radio='true' v-model="flag.onLineShow" name="onLine"  @confirm="confirmCallback" ref="onLine"></PackerList>
 
-    <PackerList title="职业" :data='fromData.profession' :radio='false' v-model="flag.professionShow" name="profession"  @confirm="confirmCallback" ref="profession"></PackerList>
+    <!-- <PackerList title="职业" :data='fromData.profession' :radio='false' v-model="flag.professionShow" name="profession"  @confirm="confirmCallback" ref="profession"></PackerList> -->
 
     <PackerList title="血型" :data='fromData.bloodType' :radio='true' v-model="flag.bloodTypeShow" name="bloodType"  @confirm="confirmCallback" ref="bloodType"></PackerList>
 
@@ -78,7 +80,7 @@ import Vue from 'vue'
 import { basicQueryCriteria, getProvinceAndCityList} from '@/assets/common/api'
 import { mapState, mapMutations } from 'vuex';
 import ListItem from '@/components/ListItem'
-import PackerList from '@/components/options/PackerList.vue'
+import PackerList from '@/components/options/PackerList'
 
 export default {
   props:{
@@ -94,9 +96,11 @@ export default {
       tabs: ['智能排序', '基本筛选', '高级筛选'], // tabs内容
       IntelligentSorting: ['智能排序', '最新加入', '收入排序', '最新推荐'], // 智能排序
       IntelligentSortingShow: 0, // 智能排序默认显示的内容
-      advancedFilter: ['购房情况', '购车情况', '有无子女', '星座', '是否实名', '是否有照片', '是否是会员', '是否在线', '职业', '血型', '民族', '宗教信仰'], // 高级筛选
-      advancedFilterValue: ['housePurchase', 'car', 'children', 'constellation', 'theRealNameSystem', 'picture', 'member', 'onLine', 'profession', 'bloodType', 'nation', 'religion'], // 高级筛选对应名称,
+      maritalStatus: ['maritalStatus'],
+      advancedFilter: ['购房情况', '购车情况', '有无子女', '星座', '是否实名', '是否有照片', '是否是会员', '是否在线', '血型', '民族', '宗教信仰'], // 高级筛选
+      advancedFilterValue: ['housePurchase', 'car', 'children', 'constellation', 'theRealNameSystem', 'picture', 'member', 'onLine', 'bloodType', 'nation', 'religion'], // 高级筛选对应名称,
       flag: {
+        maritalStatusShow: false,
         // 高级筛选
         housePurchaseShow: false, // 是否购房
         carShow: false, // 购车情况
@@ -108,7 +112,7 @@ export default {
         pictureShow: false, // 是否有照片
         memberShow: false, // 是否会员
         onLineShow: false, // 是否在线
-        professionShow: false, // 职业
+        // professionShow: false, // 职业
         bloodTypeShow: false, // 血型
         nationShow: false, // 民族
         religionShow: false, // 宗教
@@ -138,7 +142,7 @@ export default {
         picture: [], // 是否有照片
         member: [], // 是否会员
         onLine: [], // 是否在线
-        profession: [], // 职业
+        // profession: [], // 职业
         bloodType: [], // 血型
         nation: [], // 民族
         religion: [], // 宗教
@@ -149,7 +153,6 @@ export default {
   },
   methods: {
     confirmCallback (name, value) {
-      console.log('666')
       if(value && value.length > 0){
         value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
         let str = ''
@@ -186,7 +189,7 @@ export default {
         picture: [], // 是否有照片
         member: [], // 是否会员
         onLine: [], // 是否在线
-        profession: [], // 职业
+        // profession: [], // 职业
         bloodType: [], // 血型
         nation: [], // 民族
         religion: [], // 宗教
@@ -196,10 +199,10 @@ export default {
       fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
       fromData.type = 1
       
-      // var eles = document.querySelectorAll('.sanjiao');
-      // eles.forEach(element => {
-      //   element.innerHTML = "不限"
-      // });
+      var eles = document.querySelectorAll('.sanjiao');
+      eles.forEach(element => {
+        element.innerHTML = "不限"
+      });
       _this.fromData = fromData
 
       this.isShow = -1
@@ -267,8 +270,10 @@ export default {
 }
 </script>
 <style>
-.intention_item{
-  border-top: .01rem solid #f0f0f0;
+
+.content  .tabs_content_group_scroll .intention_item{
+  border-top: .01rem solid #f0f0f0 !important;
+  padding: 0 .3rem 
 }
 .van-actionsheet__header{
   text-align: left;

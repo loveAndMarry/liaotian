@@ -1,5 +1,7 @@
 import Vue from 'vue'
+import store from '@/store'
 import Router from 'vue-router'
+import utils from '@/assets/common/utils'
 // 聊天列表
 import chat from '@/views/chat'
 // 首页
@@ -51,11 +53,8 @@ import test from '@/views/test'
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [{
-    path: '/',
-    redirect: '/view/home'
-  },
+const router = new Router({
+  routes: [
   {
     path: '/view',
     name: 'view',
@@ -208,3 +207,21 @@ export default new Router({
   }
   ]
 })
+
+// 判断是否需要登录权限 以及是否登录
+router.beforeEach((to, from, next) => {
+  if(to.path === '/'){
+    console.log('进入路由拦截')
+    store.dispatch('UPDATEUSER', {userId: utils.getUrlArgObject('userId')}).then((res)=>{
+      if(res.registerState - 0 < 2){
+        next({name: 'basicInformation' })
+      }else {
+        next({name: 'home'})
+      }
+    })
+  } else {
+    next()
+  }
+})
+ 
+ export default router

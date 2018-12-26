@@ -27,8 +27,11 @@
             <p>资料完整度</p>
           </div>
           <div class="head" @click="updatePhoto">
-            <img :src="data.userBaseInformation.userHead" alt>
-            <span>{{data.userBaseInformation.states === '1'? '审核中' : '更换头像'}}</span>
+            <div class="head_img">
+              <img :src="data.userBaseInformation.userHead" alt>
+              <span>{{data.userBaseInformation.states === '1'? '审核中' : '更换头像'}}</span>
+            </div>
+            <i class="member"><img :src="data.userBaseInformation.ico" alt=""></i>
           </div>
           <div class="item" @click="linkClick">
             <div class="link"></div>
@@ -37,7 +40,7 @@
         </div>
         <div class="content_name">
           <h2>{{data.userBaseInformation.nikeName}}
-            <span v-if="user.registerState === '3'">实名</span>
+            <span v-if="user.registerState === '4'">实名</span>
           </h2>
           <div>
             <span>{{data.userBaseInformation.age}}岁</span>
@@ -166,8 +169,6 @@
 </template>
 <script>
 import { NavBar, Circle, Field, Toast, Picker, Actionsheet} from "vant";
-import Address from '@/components/options/Address'
-import PackerList from '@/components/options/PackerList'
 import SplitGroup from "@/components/SplitGroup";
 import { userPersonalCenterInformation, updateUserSpecificInfo,updateUserBirthday, uploadUserHand } from '@/assets/common/api' 
 import Vue from "vue";
@@ -211,7 +212,7 @@ export default {
       // 择偶意向身高
       intentionHeight: ['intentionHeightMin','intentionHeightMin','intentionHeightMax','intentionHeightMax'],
       // 择偶意向居住地
-      intentionDomicile: ['intentionDomicileProvinceId','intentionDomicileProvince','intentionDomicileCityId','intentionDomicileCity'],
+      intentionDomicile: ['intentionDomicileProvinceId','intentionDomicileProvinceName','intentionDomicileCityId','intentionDomicileCityName'],
       // 择偶意向学历
       intentionEducation: ['intentionEducationDictValueMin','intentionEducationMinName','intentionEducationDictValueMax','intentionEducationMaxName'],
       // 择偶意向月收入
@@ -256,7 +257,9 @@ export default {
       let min = this.data.userBaseInformation.incomeMin
       let max = this.data.userBaseInformation.incomeMax
       let str = ''
-      if(min === '-1' && max === '-1'){
+      if(min === '' && max === ''){
+        str = '不限'
+      } else if(min === '-1' && max === '-1'){
         str = '不限'
       } else if(min === '-1' && max !== '-1'){
         str = max + '以上'
@@ -284,6 +287,7 @@ export default {
       userPersonalCenterInformation({ userId: this.user.id}).then((res) => {
         if(res.data){
           this.data = Object.assign(this.data, res.data)
+          this.$store.state.IM.user.userHead = this.data.userBaseInformation.userHead
           this.isData = true
         }
       })
@@ -414,13 +418,36 @@ export default {
     Field,
     Actionsheet,
     Picker,
-    Address,
-    PackerList,
     ListItem
   }
 };
 </script>
 <style scoped>
+.head_img {
+  position: absolute;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  -webkit-border-radius: 50%;
+}
+.head .member{
+    position: absolute;
+    display: inline-block;
+    height: .5rem;
+    width: .5rem;
+    vertical-align: middle;
+    bottom: 0px;
+    right: 0;
+    z-index: 1000;
+}
+.head .member img{
+  width: 100%;
+  height: 100%
+}
 .dataIntegrity{
   width: calc(1rem - 2px );
   height: calc( 1rem - 2px );
@@ -499,36 +526,7 @@ export default {
   margin-right: .15rem;
   margin-bottom: .2rem
 }
-.intention_item {
-  width: 100%;
-  display: block;
-  background-color: #fff;
-  height: 0.89rem;
-  text-align: left;
-  font-size: 0.31rem;
-  padding: 0 0.3rem;
-  line-height: 0.89rem;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-}
-.intention_item .sanjiao {
-  font-size: 0.28rem;
-  color: #8d8d8d;
-  float: right;
-}
-.intention_item .sanjiao.hide::after{
-  display:none !important;
-}
-.intention_item .sanjiao::after {
-  content: "";
-  display: inline-block;
-  height: 0.15rem;
-  width: 0.15rem;
-  border: 1px solid #8e8e8e;
-  border-left: transparent;
-  border-top: transparent;
-  transform: rotate(-45deg);
-}
+
 .self-introduction {
   font-size: 0.23rem;
   line-height: 0.29rem;
@@ -596,11 +594,7 @@ export default {
 .content_head .head {
   width: 2.25rem;
   height: 2.25rem;
-  border: 1px solid #fff;
-  border-radius: 50%;
-  -webkit-border-radius: 50%;
   position: relative;
-  overflow: hidden;
   z-index: 1;
   left: 50%;
   top: 0;
@@ -669,5 +663,38 @@ export default {
   width: 100%;
   background-color: transparent;
   position: relative;
+}
+</style>
+
+<style>
+.content .intention_item {
+  width: 100%;
+  display: block;
+  background-color: #fff;
+  height: 0.89rem;
+  text-align: left;
+  font-size: 0.31rem;
+  line-height: 0.89rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-top: none !important
+}
+.content .intention_item .sanjiao {
+  font-size: 0.28rem;
+  color: #8d8d8d;
+  float: right;
+}
+.content .intention_item .sanjiao.hide::after{
+  display:none !important;
+}
+.content .intention_item .sanjiao::after {
+  content: "";
+  display: inline-block;
+  height: 0.15rem;
+  width: 0.15rem;
+  border: 1px solid #8e8e8e;
+  border-left: transparent;
+  border-top: transparent;
+  transform: rotate(-45deg);
 }
 </style>

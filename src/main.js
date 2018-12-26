@@ -21,6 +21,7 @@ import VueScroller  from 'vue-scroller'
 Vue.use(VueScroller)
 
 Vue.filter("dateTime", function(val) {   //全局方法 Vue.filter() 注册一个自定义过滤器,必须放在Vue实例化前面
+  var time = new Date(new Date().setHours(0, 0, 0, 0)).getTime() // 获取当日凌晨的时间
   var currentTime = Date.parse(new Date());
   var dateTime = val;//后台传递来的时间
   var d_day = Date.parse(new Date(dateTime));
@@ -29,9 +30,9 @@ Vue.filter("dateTime", function(val) {   //全局方法 Vue.filter() 注册一�
   var minutes = Math.abs(parseInt((d_day - currentTime)/1000/60));//计算分钟
   var seconds = Math.abs(parseInt((d_day - currentTime)/1000));//计算秒
   if(day >= 365){
-    return new Date(dateTime).getFullYear() + ' - ' + (new Date(dateTime).getMonth() + 1) + ' - ' + new Date(dateTime).getDate()
+    return new Date(dateTime).getFullYear() + '年' + (new Date(dateTime).getMonth() + 1) + '月' + new Date(dateTime).getDate() + '日'
   }else if(day >= 2){
-    return (new Date(dateTime).getMonth() + 1) + ' - ' + (new Date(dateTime).getDate())
+    return (new Date(dateTime).getMonth() + 1) + '月' + (new Date(dateTime).getDate()) + '日'
   }else if(day > 0 && day < 2){
     return "昨天"
   }else if(hour > 0 && hour < 24){

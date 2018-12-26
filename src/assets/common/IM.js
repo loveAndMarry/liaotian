@@ -46,7 +46,7 @@ IM.prototype = {
    * 登录
    */
   login () {
-    // var that = this
+    var that = this
     // 账号登录参数设置
     var loginBuilder = new RL_YTX.LoginBuilder()
     // 登录类型 1账号登录，3voip账号密码登录
@@ -76,9 +76,16 @@ IM.prototype = {
           status: 2
         })
       })
+
+      RL_YTX. onConnectStateChangeLisenter((res) => {
+        if(res.code === 5){
+          that.login()
+        }
+        console.log(res, '状态改变')
+      })
     }, function (obj) {
       console.log('登录失败')
-      IM.login()
+      that.login()
     })
   },
   /**

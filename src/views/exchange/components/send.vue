@@ -7,8 +7,9 @@
           <span v-show='!isText' @touchstart="touchstart($event)" @touchend="touchend($event)">按住 说话</span>
         </div>
         <!-- <div class="icon biaoqing" @click="emotion"></div> -->
-        <div class="icon tianjia" @click="GiftShow" v-show="!isContext"></div>
-        <div class="send" @click="postMsg" v-show="isContext">发送</div>
+        <!-- <div class="icon tianjia" @click="GiftShow" v-show="!isContext"></div> -->
+        <!-- <div class="send" @click="postMsg" v-show="isContext">发送</div> -->
+        <div class="send" @click="postMsg">发送</div>
         <!-- <input type="file" id="file" style="display:none" accept="image/*" @change="fileChange($event)"> -->
       </div>
       <emotion @emotion="postMsg" v-show="isShow"></emotion>

@@ -49,7 +49,7 @@ export default {
         picture: [], // 是否有照片
         member: [], // 是否会员
         onLine: [], // 是否在线
-        profession: [], // 职业
+        // profession: [], // 职业
         bloodType: [], // 血型
         nation: [], // 民族
         religion: [], // 宗教,
@@ -59,24 +59,11 @@ export default {
     }
   }, 
   mounted () {
+    console.log('进来了', this.$store.state.IM)
     this.setLoading(true)
-    if(!this.$store.state.IM.user.id){
-      this.$store.dispatch('UPDATEUSER', {
-        userId: this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
-        // userId: '2219246d18504fea864208235f056223' 
-      }).then((data) => {
-        this.fromData.sex = data.sex === '1'? '2': '1'
-        this.fromData.userId = data.id
-        this.setLoading(false)
-        this.search(this.fromData)
-        // 获取到个人信息后登录容联云账号
-      })
-    } else {
-      this.setLoading(false)
-      this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
-      this.fromData.userId = this.$store.state.IM.user.id
-      this.search(this.fromData)
-    }
+    this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
+    this.fromData.userId = this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
+    this.search(this.fromData)
   },
   methods: {
     ...mapMutations([

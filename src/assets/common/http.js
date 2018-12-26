@@ -56,7 +56,7 @@ HTTP.GET = function (url, data) {
         reject(res.data)
       }
     }).catch((res) => {
-      console.log('失败')
+      console.log('失败',res)
       reject()
     })
   })

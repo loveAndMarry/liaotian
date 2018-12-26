@@ -172,14 +172,16 @@ export default {
       let min = this.userBaseInformation.incomeMin
       let max = this.userBaseInformation.incomeMax
       let str = ''
-      if(min === '-1' && max === '-1'){
-        str = '不限'
-      } else if(min === '-1' && max !== '-1'){
-        str = max + '以上'
-      } else if(min !== '-1' && max === '-1'){
-        str = min + '以下'
-      } else {
-        str = min + "-" + max + '元'
+      if(min || max){
+        if(min === '-1' && max === '-1'){
+          str = '不限'
+        } else if(min === '-1' && max !== '-1'){
+          str = max + '以上'
+        } else if(min !== '-1' && max === '-1'){
+          str = min + '以下'
+        } else {
+          str = min + "-" + max + '元'
+        }
       }
       return str
     }

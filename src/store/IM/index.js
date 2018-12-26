@@ -99,15 +99,12 @@ const actions = {
   //   state.chatMessage = JSON.parse(localStorage.getItem('chatMessage'))
   // },
   [UPDATE_USER] ({ commit, state }, products) {
+    console.log(products,'没有获取到吗？')
     return new Promise((resolve) => {
       login({
         userId: products.userId
       }).then((res) => {
         commit(UPDATE_USER,res.data)
-        if(res.data.registerState - 0 < 2){
-          router.push({name: 'basicInformation'})
-          return false
-        }
         console.log('获取账号信息成功')
         resolve(res.data)
       })

@@ -183,18 +183,18 @@ export default {
       this.fromData.sex = this.radio
     },
     submitClick () {
-      if(this.fromData.nickName.replace(' ', '') === ''){
-        this.$toast('请输入昵称');
-        return false
-      }
-      if(this.fromData.birthday.replace(' ', '') === ''){
-        this.$toast('请选择生日');
-        return false
-      }
-      initialInformation(this.fromData).then((res) => {
-        this.$router.push({name: 'home', params: {userId: this.fromData.userId}})
-        window.userId = this.fromData.userId
-      })
+      // if(this.fromData.nickName.replace(' ', '') === ''){
+      //   this.$toast('请输入昵称');
+      //   return false
+      // }
+      // if(this.fromData.birthday.replace(' ', '') === ''){
+      //   this.$toast('请选择生日');
+      //   return false
+      // }
+      // initialInformation(this.fromData).then((res) => {
+        this.$router.push({name: 'home'})
+      //   window.userId = this.fromData.userId
+      // })
     },
     birthdayClick () {
       this.$picker.show({

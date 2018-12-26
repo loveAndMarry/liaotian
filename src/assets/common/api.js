@@ -73,6 +73,9 @@ export const accessRecordUser = data => HTTP.GET('web/userAccessRecord/accessRec
 // 获取谁喜欢我列表
 export const likeMeList = data => HTTP.GET('web/like/likeMeList',data)
 
+// 获取谁看过我列表
+export const personalCenterAccessRecordUser = data => HTTP.GET('web/userAccessRecord/personalCenterAccessRecordUser',data)
+
 // 获取我喜欢谁列表
 export const likeUserList = data => HTTP.GET('web/like/likeUserList',data)
 

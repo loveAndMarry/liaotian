@@ -30,6 +30,7 @@ export default {
       if(res.data.registerState === '4'){
         this.name = '您已实名注册',
         this.isRegisterState = true
+        this.$store.state.IM.user.registerState = '4'
       }
     })
   },

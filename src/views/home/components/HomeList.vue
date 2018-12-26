@@ -22,7 +22,7 @@
             <p v-text="income(item)"></p>
           </div>
           <ul class="tags" v-if="item.interestDictVoList && item.interestDictVoList.length > 0">
-            <li v-for="(el, dex) in interestDictVoList(item.interestDictVoList)" :key="dex" v-text="el.label" :class="{rad: el.isIdentical}"></li>
+            <li v-for="(el, dex) in interestDictVoList(item.interestDictVoList)" :key="dex" v-text="el.label"></li>
           </ul>
           <div class="manifesto" v-text="`爱情宣言 :${item.personalIntroduction? item.personalIntroduction : '未填写' }`"></div>
         </div>
@@ -32,6 +32,7 @@
 </template>
 <script>
 import { listUser, cancellikeUser, likeUser} from '@/assets/common/api'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -41,6 +42,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'setLoading'
+    ]),
     transitionObj (fromData) {
       var obj = {}
       for ( var i in fromData){
@@ -50,44 +54,8 @@ export default {
     },
     // 过滤用户和列表中的共同的爱好
     interestDictVoList (item) {
+      // 该方法需要重写，返回的三个爱好必须与当前登陆者相同
       if(!item){return []}
-      let arr = []
-      let loop = (a, b) => {
-        a.forEach(el => {
-          if(b.some(ele => ele.id === el.id)){
-            el.isIdentical = true
-            arr.push(el)
-          } else { 
-            el.isIdentical = false
-          }
-        })
-
-        if( arr.length < 2){
-          var v = arr.length
-          for (var g = 0; g < item.length; g++){
-            let c = item[g]
-            if(v >= 3){
-              break
-            }
-            if(!arr.some(d => d.id === c.id)){
-              arr.push(c)
-              ++v
-            }
-          }
-        }
-        return arr
-      }
-
-      if(this.$store.state.IM.user.interestDictVoList && this.$store.state.IM.user.interestDictVoList.length > 0) {
-        let hint = this.$store.state.IM.user.interestDictVoList
-        // 判断当前那个长度短，循环哪个
-        if(hint.length > item.length){
-          loop(item, hint)
-        } else {
-          loop(hint, item)
-        }
-      }
-      
       return item.filter((a,i) => i <= 2)
     },
     income (item) {
@@ -154,6 +122,7 @@ export default {
         pageCurrent: 1
       })
       listUser(this.transitionObj(obj)).then((res) => {
+        this.setLoading(false)
         if(res.data.list){
           this.columns = res.data.list
         } else {
@@ -168,6 +137,7 @@ export default {
 </script>
 
 <style scoped>
+
 .rad{
   color: #fd7194;
   background-color: #fff !important;

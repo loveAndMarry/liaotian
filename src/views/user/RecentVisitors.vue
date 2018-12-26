@@ -14,7 +14,7 @@
           <img :src="item.userHead" alt="">
           <div>
             <span>{{item.nickName}}</span>
-            <span>{{item.visitDateDay}} 访问了你的空间</span>
+            <span>{{item.visitDateHour}} 访问了你的空间</span>
           </div>
           <i @click="removeEvent(item)"></i>
         </li>

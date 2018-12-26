@@ -17,7 +17,7 @@
         <div class="content_name">
           <p> <strong style="font-size:.35rem">{{totalCount}}</strong> 位会员喜欢了您</p>
           <div style="color:#8c8c8c">
-            开通会员查看访问您的人
+            开通会员查看{{title}}
           </div>
         </div>
         <ul class="links">
@@ -34,7 +34,7 @@
 <script>
 import { NavBar, Circle } from "vant";
 import SplitGroup from "@/components/SplitGroup";
-import { accessRecordUser,likeMeList, likeUserList,likeEachOther } from '@/assets/common/api'
+import { personalCenterAccessRecordUser,likeMeList, likeUserList,likeEachOther } from '@/assets/common/api'
 import { mapState } from 'vuex'
 import Vue from "vue";
 
@@ -45,7 +45,8 @@ export default {
       totalCount: 0,
       currentRate: 1,
       pageSize: 9,
-      links: []
+      links: [],
+      title: ''
     };
   },
   computed: {
@@ -66,12 +67,16 @@ export default {
   mounted () {
     console.log(this.$route.query,'this.$route.query')
     if(this.$route.query.type - 0 === 1){
-      this.accessRecordUser()
+      this.title = '看过您的人'
+      this.personalCenterAccessRecordUser()
     } else if(this.$route.query.type - 0 === 2){
+      this.title = '喜欢过您的人'
       this.likeMeList()
     } else if(this.$route.query.type - 0 === 3){
+      this.title = '您喜欢的人'
       this.likeUserList()
     } else {
+      this.title = '相互喜欢的人'
       this.likeEachOther()
     }
   },
@@ -84,8 +89,8 @@ export default {
       this.$router.back()
     },
     // 获取谁看过我的列表
-    accessRecordUser () {
-      accessRecordUser(this.fromData).then((res) => {
+    personalCenterAccessRecordUser () {
+      personalCenterAccessRecordUser(this.fromData).then((res) => {
         this.totalCount = res.data.totalCount
         if(res.data.count !== 0){
           this.links.push(...res.data.list)

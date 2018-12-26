@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="intention_item" @click.stop="intantionClick">{{title}}:
-      <div class="sanjiao" :class="{hide: noClick}">{{names | replaceName(names,hint)}}</div>
+      <div class="sanjiao" :class="{hide: noClick}">{{names | replaceName(hint)}}</div>
     </div>
     <Actionsheet v-model="isShow" :close-on-click-overlay='false' ref="content">
       <!-- 地址组件 -->
@@ -107,7 +107,13 @@ export default {
     result (val) {
       this.$nextTick(() => {
         if(val.length > 0){
+          
           if(this.type === 'packerTwo'){
+            if(!val[0].value && !val[1].value){
+              this.names = this.hint
+              this.codes = []
+              return false
+            }
             if(val[0].value === '-1' && val[1].value === '-1'){
               this.names = '不限'
             } else if(val[0].value === '-1' && val[1].value !== '-1'){
@@ -170,7 +176,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .intention_item {
   width: 100%;
   display: block;
@@ -178,7 +184,6 @@ export default {
   height: 0.89rem;
   text-align: left;
   font-size: 0.31rem;
-  padding: 0 0.3rem;
   line-height: 0.89rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;

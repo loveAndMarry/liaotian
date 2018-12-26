@@ -84,11 +84,12 @@ export default {
           uploadPhoto({
             userId: this.user.id,
             photoUrl: str
-          }).then(() => {
+          }).then((res) => {
             this.$toast('图片上传成功')
             this.photoList.push({
               context: str,
-              states: '1'
+              states: '1',
+              photoId: res.data
             })
           })
         }

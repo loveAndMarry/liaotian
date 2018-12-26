@@ -8,8 +8,8 @@
     <h1 class="h1">-{{item.payMoneyY}}</h1>
     <p class="p">交易成功</p>
     <CellGroup style="text-align: left;">
-      <Cell title="付款方式" is-link :value="item.payType | pay"/>
-      <Cell title="创建时间" is-link :value="item.payTime" />  
+      <Cell title="付款方式" :value="item.payType | pay"/>
+      <Cell title="创建时间" :value="item.payTime" />  
       <Cell title="订单号" :value="item.orderNum" />  
     </CellGroup>
   </div>

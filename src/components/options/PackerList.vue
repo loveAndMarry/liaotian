@@ -6,7 +6,7 @@
       <div class="van-picker__confirm" @click="confirm">确认</div>
     </div>
     <div class="picker_content">
-      <CheckboxGroup v-model="result" @change="dataChange">
+      <CheckboxGroup v-model="result">
         <CellGroup>
           <Cell
             v-for="(item, index) in columns"
@@ -68,12 +68,8 @@ export default {
     }
   },
   methods: {
-    dataChange () {
-      console.log(arguments)
-    },
     toggle (index) {
-      console.log(this.result,"点击每行")
-      this.$refs.c0heckboxes[index].toggle()
+      this.$refs.checkboxes[index].toggle()
     },
     confirm () {
       if(this.result && this.result.length > 0){
@@ -83,15 +79,11 @@ export default {
         this.$emit('confirm', this.name, [])
         this.$emit('input', false)
       }
-      console.log(this.result, '点击确认时')
     },
     cancel () {
       this.result = this.data
       this.show = false
     },
-    reset () {
-      this.result = []
-    }
   },
   watch: {
     show (val) {
@@ -101,7 +93,6 @@ export default {
       this.show = val
     },
     result (val, pastVal) {
-      console.log(val,'默认值')
       // 多选
       if (!this.radio) {
         if (this.columns.some(item => item.label === '不限')) {
@@ -116,11 +107,8 @@ export default {
         // 单选
         if (val.length > 1) {
           this.result = val.filter(item => item !== pastVal[0])
-        } else {
-          this.result = []
         }
       }
-      // this.$emit('input', this.result)
     },
     columns (value) {
       if (this.data.length > 0) {
@@ -130,11 +118,11 @@ export default {
           this.result = this.data.map(el => this.columns.find(item => item.value === el).label)
         }
       }
-    }
-  },
-  watch: {
+    },
     data (val) {
-      this.result = this.$set(this,'result',val)
+      if(val.length === 0){
+        this.result = this.data
+      }
     }
   },
   components: {
