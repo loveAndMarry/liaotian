@@ -62,7 +62,7 @@ export const updateUserSpecificInfo = data => HTTP.GET('web/updateUserController
 export const updateUserBirthday = data => HTTP.GET('web/updateUserController/updateUserBirthday',data)
 
 // 修改用户昵称
-export const updateUserNiceName = data => HTTP.GET('app/user/updateUserNiceName',data)
+export const updateUserNiceName = data => HTTP.GET('web/user/updateUserNiceName',data)
 
 // 修改用户个人简介
 export const updateUserPersonalIntroduction = data => HTTP.GET('web/updateUserController/updateUserPersonalIntroduction',data)
@@ -107,7 +107,7 @@ export const listUserOrder = data => HTTP.GET('web/userOrders/listUserOrder',dat
  * 字典接口
  */
 // 获取省市区域
-export const getProvinceAndCityList = data => HTTP.GET('app/area/getProvinceAndCityList',data)
+export const getProvinceAndCityList = data => HTTP.GET('web/area/getProvinceAndCityList',data)
 
 // 获取兴趣爱好
 export const interest = data => HTTP.GET('web/queryCriteria/interest',data)

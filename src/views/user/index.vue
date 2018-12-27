@@ -88,9 +88,9 @@
           <li @click="orderClick">我的订单
             <span class="sanjiao"></span>
           </li>
-          <li>邀请好友
+          <!-- <li>邀请好友
             <span class="sanjiao"></span>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -391,8 +391,10 @@ export default {
   -webkit-border-radius: 50%;
   display: inline-block;
   background: url('../../assets/images/no_people@2x.png') no-repeat;
-  background-size: 100%;
+  background-size: calc(.64rem + 2px) calc(.64rem + 2px);
+  background-position: -1px -1px;
   overflow: hidden;
+  border: none
 }
 .links li.show::before{
   content: '';

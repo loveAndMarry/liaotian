@@ -177,7 +177,6 @@ import ListItem from '@/components/ListItem'
 
 Vue.use(Circle);
 export default {
-  inject: ['reload'],
   data() {
     return {
       index: 1,
@@ -245,7 +244,6 @@ export default {
       isSmoke: ['isSmokeDictValue', 'isSmoke']
     }
   },
-  inject: ['reload'],
   computed: {
     ...mapState({
       user: state => state.IM.user
@@ -425,6 +423,7 @@ export default {
 <style scoped>
 .head_img {
   position: absolute;
+  width: 100%;
   height: 100%;
   border-radius: 50%;
   border: 1px solid #fff;

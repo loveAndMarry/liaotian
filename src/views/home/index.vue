@@ -21,8 +21,10 @@ import Vue from 'vue'
 import utils from '@/assets/common/utils'
 
 export default {
+  name: 'home',
   data () {
     return {
+      index: 0,
       // value: '',
       fromData:{
         userId: this.$store.state.IM.user.id,
@@ -58,12 +60,14 @@ export default {
       columns:[]
     }
   }, 
+  activated () {
+    console.log('缓存已经激活了')
+  },
   mounted () {
-    console.log('进来了', this.$store.state.IM)
-    this.setLoading(true)
-    this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
-    this.fromData.userId = this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
-    this.search(this.fromData)
+    // this.setLoading(true)
+    // this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
+    // this.fromData.userId = this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
+    // this.search(this.fromData)
   },
   methods: {
     ...mapMutations([

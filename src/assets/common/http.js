@@ -57,6 +57,7 @@ HTTP.GET = function (url, data) {
       }
     }).catch((res) => {
       console.log('失败',res)
+      Toast('网络错误')
       reject()
     })
   })

@@ -15,7 +15,7 @@
 
          <ListItem title="学历" dictionaries='education' :default='fromData.education' type="packerTwo" :isSubmit="false" @confirm="a => fromData.education = a" hint="不限" ref="education"></ListItem>
 
-          <ListItem title="月收入" dictionaries='income' :default='fromData.incomeDefault' type="packerTwo" :isSubmit="false" @confirm="a => fromData.incomeDefault = a" hint="不限" ref="incomeDefault"></ListItem>
+          <ListItem title="月收入" dictionaries='income' :default='fromData.income' type="packerTwo" :isSubmit="false" @confirm="a => fromData.income = a" hint="不限" ref="incomeDefault"></ListItem>
 
           <ListItem title="年龄" dictionaries='ages' type='packerTwo'  :default='fromData.age' :isSubmit="false" @confirm="a => fromData.age = a" hint="不限" ref="age"></ListItem>
 
@@ -83,6 +83,7 @@ import ListItem from '@/components/ListItem'
 import PackerList from '@/components/options/PackerList'
 
 export default {
+  name: 'tabs',
   props:{
     value: Object,
     data: Object

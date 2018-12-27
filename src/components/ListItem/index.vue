@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="intention_item" @click.stop="intantionClick">{{title}}:
-      <div class="sanjiao" :class="{hide: noClick}">{{names | replaceName(hint)}}</div>
+      <div class="sanjiao" :class="{hide: noClick}" v-text="replaceName(names, hint)"></div>
     </div>
     <Actionsheet v-model="isShow" :close-on-click-overlay='false' ref="content">
       <!-- 地址组件 -->
@@ -83,15 +83,6 @@ export default {
       event: null
     }
   },
-  filters: {
-    replaceName (val,hint) {
-       if(val.replace(/,/g,'').replace(/-/g,'').replace(/\s/g,'') === ''){
-        return hint
-      } else {
-        return val
-      }
-    }
-  },
   mounted () {
     this.result = this.default
   },
@@ -105,7 +96,7 @@ export default {
   },
   watch : {
     result (val) {
-      this.$nextTick(() => {
+      // this.$nextTick(() => {
         if(val.length > 0){
           
           if(this.type === 'packerTwo'){
@@ -123,20 +114,20 @@ export default {
             } else {
               this.names = val.map(el => el.label ? this.isSuffix(el.label) : el.label).join(" - ")
             }
+             
           } else {
             if(this.dictionaries === 'incomeRange'){
               this.names = val[0].label
             } else {
               this.names = val[0].label ?  val.map(el => el.label ? this.isSuffix(el.label) : el.label).join(",") : val.map(el => el.name).join(" ")
             }
-          
-            this.codes = val[0].value ? val.map(el => el.value) : val.map(el => el.code)
           }
+          this.codes = val[0].value ? val.map(el => el.value) : val.map(el => el.code)
         } else {
           this.names = this.hint
           this.codes = []
         }
-      })
+      // })
     },
     default (val) {
       if(val.length === 0){
@@ -145,6 +136,13 @@ export default {
     }
   },
   methods: {
+    replaceName (val,hint) {
+      if(val.replace(/,/g,'').replace(/-/g,'').replace(/\s/g,'') === ''){
+        return hint
+      } else {
+        return val
+      }
+    },
     isSuffix(label){
       return (label.indexOf(this.suffix) === -1 && label.indexOf(this.suffix) !== 0) ? label + this.suffix : label
     },

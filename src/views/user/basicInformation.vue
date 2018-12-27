@@ -1,5 +1,5 @@
 <template>
-  <div class='left'>
+  <div class='left basicInformation'>
     <NavBar title="完善资料"></NavBar>
     <div style="padding: .2rem 0 .2rem .3rem;overflow: hidden;background-color: #fff;">
       <div class="head" @click="submitPhoto">
@@ -183,18 +183,18 @@ export default {
       this.fromData.sex = this.radio
     },
     submitClick () {
-      // if(this.fromData.nickName.replace(' ', '') === ''){
-      //   this.$toast('请输入昵称');
-      //   return false
-      // }
-      // if(this.fromData.birthday.replace(' ', '') === ''){
-      //   this.$toast('请选择生日');
-      //   return false
-      // }
-      // initialInformation(this.fromData).then((res) => {
+      if(this.fromData.nickName.replace(' ', '') === ''){
+        this.$toast('请输入昵称');
+        return false
+      }
+      if(this.fromData.birthday.replace(' ', '') === ''){
+        this.$toast('请选择生日');
+        return false
+      }
+      initialInformation(this.fromData).then((res) => {
         this.$router.push({name: 'home'})
-      //   window.userId = this.fromData.userId
-      // })
+        window.userId = this.fromData.userId
+      })
     },
     birthdayClick () {
       this.$picker.show({
@@ -266,8 +266,12 @@ export default {
   width: calc(100% - 1.44rem - 2px);
   float: left;
 }
-
-.intention_item {
+.List_Group{
+  border-top: 1px solid #f0f0f0
+}
+</style>
+<style>
+.basicInformation  .intention_item {
   width: 100%;
   display: block;
   background-color: #fff;
@@ -279,15 +283,15 @@ export default {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
-.intention_item .sanjiao {
+.basicInformation  .intention_item .sanjiao {
   font-size: 0.28rem;
   color: #8d8d8d;
   float: right;
 }
-.intention_item .sanjiao.hide::after{
+.basicInformation .intention_item .sanjiao.hide::after{
   display:none !important;
 }
-.intention_item .sanjiao::after {
+.basicInformation  .intention_item .sanjiao::after {
   content: "";
   display: inline-block;
   height: 0.15rem;
@@ -296,8 +300,5 @@ export default {
   border-left: transparent;
   border-top: transparent;
   transform: rotate(-45deg);
-}
-.List_Group{
-  border-top: 1px solid #f0f0f0
 }
 </style>

@@ -65,6 +65,9 @@ const router = new Router({
       components: {
         default: home,
         tabber: tabbar
+      },
+      meta: {
+        keepAlive: true
       }
     },
     {
@@ -102,6 +105,9 @@ const router = new Router({
     name: 'userDetail',
     components: {
       content: userDetail
+    },
+    meta: {
+      keepAlive: true
     }
   },
   {

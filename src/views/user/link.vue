@@ -44,7 +44,7 @@ export default {
     return {
       totalCount: 0,
       currentRate: 1,
-      pageSize: 9,
+      pageSize: 1000,
       links: [],
       title: ''
     };
@@ -150,6 +150,8 @@ export default {
   padding: .6rem .3rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  display: box;
+  display: -webkit-box;
   display: flex;
   display: -webkit-flex;
   justify-content: space-evenly;
@@ -158,8 +160,12 @@ export default {
   -webkit-flex-wrap: wrap
 }
 .links li{
-  display: inline-block;
+  display: block;
   position: relative;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;          /* Chrome */
+  -ms-flex: 1;              /* IE 10 */
+  flex: 1;   
 }
 .links li.hide::after{
   content: '';
@@ -182,6 +188,7 @@ export default {
   height: 2rem;
   border-radius: 50%;
   -webkit-border-radius: 50%;
+  margin: 0 auto
 }
 .links li p{
   display: block;

@@ -2,9 +2,10 @@
   <div id="app">
     <!-- <transition :name="transitionName"> -->
       <!-- <keep-alive> -->
-      <keep-alive include="home">
-        <router-view class="Router" v-if="isRouterAlive"></router-view>
+      <keep-alive exclude="tabs">
+        <router-view class="Router" v-if="$route.meta.keepAlive"></router-view>
       </keep-alive>
+      <router-view class="Router" v-if="!$route.meta.keepAlive"></router-view>
       <!-- </keep-alive> -->
     <!-- </transition> -->
     <!-- <transition :name="transitionName1"> -->
@@ -27,28 +28,14 @@ export default {
   name: 'App',
   data () {
     return {
-      isRouterAlive: true,
       transitionName: 'slide-left', // 默认动态路由变化为slide-right
       transitionName1: 'slide-right' // 默认动态路由变化为slide-right
-    }
-  },
-  provide () {
-    return {
-      reload: this.reload
     }
   },
   computed: {
     ...mapState({
       Loading: state => state.common.Loading
     })
-  },
-  methods: {
-    reload () {
-      this.isRouterAlive = false
-      this.$nextTick(() => {
-        this.isRouterAlive = true
-      })
-    }
   },
   // watch: {
   //   $route (to, from) {

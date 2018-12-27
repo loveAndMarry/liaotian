@@ -33,12 +33,14 @@
 <script>
 import { listUser, cancellikeUser, likeUser} from '@/assets/common/api'
 import { mapMutations } from 'vuex'
+
 export default {
+  name: 'homeList',
   data () {
     return {
       columns: [],
       noDataText: '没有更多的数据',
-      index: 0, // 默认第一次下拉加载不请求
+      // index: 0, // 默认第一次下拉加载不请求
     }
   },
   methods: {
@@ -59,6 +61,9 @@ export default {
       return item.filter((a,i) => i <= 2)
     },
     income (item) {
+      if(item.incomeMin === '' && item.incomeMax === ''){
+        return '未填写'
+      }
       if(item.incomeMin && item.incomeMax === '-1'){
         return item.incomeMin + '以上'
       }
@@ -96,9 +101,9 @@ export default {
     },
     infinite (fn) {
       let fromData  = this.$parent.fromData
-      if(this.index){
-        fromData.pageCurrent = Number(fromData.pageCurrent) + 1
+      //if(this.index){
        listUser(this.transitionObj(fromData)).then((res) => {
+         this.setLoading(false)
          this.noDataText = '没有更多数据'
          if(res.data.list){
            res.data.list.length < fromData.pageSize ? fn(true) :fn()
@@ -111,10 +116,11 @@ export default {
            fn ? fn(true): this.$refs.scroller.finishPullToRefresh()
          }
        }).catch(() => fn ? fn(true): this.$refs.scroller.finishPullToRefresh())
-      } else {
-        this.index = 1
-        fn(true)
-      }
+        fromData.pageCurrent = Number(fromData.pageCurrent) + 1
+      // } else {
+      //   this.index = 1
+      //   fn(true)
+      // }
     },
     refresh (fn, fromData, pageSize) {
       var obj = Object.assign({}, fromData ? fromData : this.$parent.fromData, {

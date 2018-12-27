@@ -89,7 +89,7 @@ export default {
             this.photoList.push({
               context: str,
               states: '1',
-              photoId: res.data
+              photoId: res.data 
             })
           })
         }
