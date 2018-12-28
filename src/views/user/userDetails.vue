@@ -2,7 +2,7 @@
   <div class="group">
     <div style="overflow-y: scroll;position: relative;height: 100%;overflow-x: hidden;">
       <div class="group_back">
-        <img :src="data.userBaseInformation.userHead" alt>
+        <img :src="data.userBaseInformation.userHead + '?imageMogr2/auto-orient'" alt>
       </div>
       <div class="group_content">
         <div class="top"></div>
@@ -28,7 +28,7 @@
           </div>
           <div class="head" @click="updatePhoto">
             <div class="head_img">
-              <img :src="data.userBaseInformation.userHead" alt>
+              <img :src="data.userBaseInformation.userHead + '?imageMogr2/auto-orient'" alt>
               <span>{{data.userBaseInformation.states === '1'? '审核中' : '更换头像'}}</span>
             </div>
             <i class="member"><img :src="data.userBaseInformation.ico" alt=""></i>

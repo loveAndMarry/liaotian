@@ -34,7 +34,7 @@
     </Group>
     <Group title="认证">
       <div class="authentication">
-        <div class="real_name" v-if='userBaseInformation.registerState === "3"'>
+        <div class="real_name" v-if='userBaseInformation.registerState - 0 === 5'>
           <div></div>
           <p>实名认证</p>
         </div>

@@ -15,8 +15,8 @@
 import { Search } from 'vant'
 import Tabs from './components/tabs'
 import HomeList from './components/HomeList'
-import { mapState, mapMutations} from 'vuex'
 import Vue from 'vue'
+import { mapMutations } from 'vuex'
 
 import utils from '@/assets/common/utils'
 
@@ -60,15 +60,14 @@ export default {
       columns:[]
     }
   }, 
-  activated () {
-    console.log('缓存已经激活了')
-  },
-  mounted () {
-    // this.setLoading(true)
-    // this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
-    // this.fromData.userId = this.$store.state.IM.user.id || utils.getUrlArgObject('userId')
-    // this.search(this.fromData)
-  },
+  // mounted () {
+  //   // 第一次进入页面时，让引导页停留3秒
+  //   if(this.$store.state.common.Loading){
+  //       window.setTimeout(() => {
+  //       this.setLoading(false)
+  //       }, 5000)
+  //   }
+  // },
   methods: {
     ...mapMutations([
       'setLoading'

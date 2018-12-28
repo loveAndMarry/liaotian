@@ -9,7 +9,7 @@
         <div class="datum">
           <div class="head">
             <div class="head_img">
-                <img :src="data.userMemberAndUserHeadDTO.userHead" alt @click="userHead">
+                <img :src="data.userMemberAndUserHeadDTO.userHead + '?imageMogr2/auto-orient'" alt @click="userHead">
                 <span v-if="data.userMemberAndUserHeadDTO.states === '1'">审核中</span>
             </div>
             <i class="member"><img :src="data.userMemberAndUserHeadDTO.ico" alt=""></i>
@@ -33,7 +33,7 @@
             </div>
           </li>
           <li class="photo_item isShow" v-for="item in photos" :key="item" @click="examinePhoto(item.id)">
-            <img :src="item" v-if="item" alt>
+            <img :src="item + '?imageMogr2/auto-orient'" v-if="item" alt>
           </li>
           <li class="photo_item" v-if="3 - photos.length > 0" v-for="item in (3 - photos.length)" :key="item">
           </li>
@@ -43,15 +43,21 @@
         </ul>
         <ul class="links">
           <li @click="linkClick(1)" :class="{show: data.accessRecordUserPhotoUrl !== ''}">
-            <img :src="data.accessRecordUserPhotoUrl" alt>
+            <div class="back_Img">
+              <img :src="data.accessRecordUserPhotoUrl" alt>
+            </div>
             <p>谁看过我</p>
           </li>
           <li @click="linkClick(2)" :class="{show: data.likeMePhotoUrl !== ''}">
-            <img :src="data.likeMePhotoUrl" alt>
+            <div class="back_Img">
+              <img :src="data.likeMePhotoUrl" alt>
+            </div>
             <p>谁喜欢我</p>
           </li>
           <li @click="linkClick(3)" :class="{show: data.likeUserPhotoUrl !== ''}">
-            <img :src="data.likeUserPhotoUrl" alt>
+            <div class="back_Img">
+              <img :src="data.likeUserPhotoUrl" alt>
+            </div>
             <p>我喜欢谁</p>
           </li>
           <li @click="linkClick(4)">
@@ -71,7 +77,7 @@
       <Group title="我的认证">
         <div class="authentication">
           <div class="real_name" @click="$router.push({name: 'authentication'})">
-            <div :class="{no: user.registerState !== '4'}"></div>
+            <div :class="{no: user.registerState !== '5'}"></div>
             <p>实名认证</p>
           </div>
           <div class="phone" @click="$router.push({name: 'YY'})">
@@ -384,7 +390,7 @@ export default {
   position: relative;
 }
 
-.links li img {
+.links li .back_Img {
   width: 0.64rem;
   height: 0.64rem;
   border-radius: 50%;
@@ -395,6 +401,10 @@ export default {
   background-position: -1px -1px;
   overflow: hidden;
   border: none
+}
+.links li .back_Img img{
+  width: 100%;
+  height: 100%
 }
 .links li.show::before{
   content: '';

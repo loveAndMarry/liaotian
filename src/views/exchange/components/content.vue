@@ -85,7 +85,7 @@ export default {
 </script>
  
 <style scoped>
-.van-pull-refresh{
+.van-pull-refresh, .van-pull-refresh__track{
   min-height: 100%
 }
 .back{
@@ -99,6 +99,7 @@ export default {
   -webkit-box-sizing: border-box;
   overflow:hidden;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .scroller_item{
   padding-top:.1rem;

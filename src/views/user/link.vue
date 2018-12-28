@@ -15,10 +15,10 @@
           </div>
         </div>
         <div class="content_name">
-          <p> <strong style="font-size:.35rem">{{totalCount}}</strong> 位会员喜欢了您</p>
-          <div style="color:#8c8c8c">
+          <p> <strong style="font-size:.35rem">{{totalCount}}</strong> 位{{title}}</p>
+          <!-- <div style="color:#8c8c8c">
             开通会员查看{{title}}
-          </div>
+          </div> -->
         </div>
         <ul class="links">
           <li class="links_group" v-for="(el, index) in links" :key="index" @click="linkClick(el)">

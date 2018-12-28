@@ -1,7 +1,11 @@
 <template>
   <div>
-    <router-view></router-view>
-    <router-view name='tabber'></router-view>
+    <keep-alive exclude="tabs,tabbar">
+      <router-view  v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view  v-if="!$route.meta.keepAlive"></router-view>
+    
+    <router-view name='tabbar'></router-view>
   </div>
 </template>
 

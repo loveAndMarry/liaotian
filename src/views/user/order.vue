@@ -5,7 +5,7 @@
       <List
         v-model="loading"
         :finished="finished"
-        finished-text="没有更多了"
+        finished-text='没有更多了'
         @load="onLoad"
       >
         <div class="orderGroup" v-for="(el, index) in list" :key="index" @click="PaymentDetails(el)">
@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import { NavBar, List} from "vant";
+import { NavBar, List ,Cell} from "vant";
 import { listUserOrder } from '@/assets/common/api'
 export default {
   data () {
@@ -56,7 +56,8 @@ export default {
   },
   components: {
     NavBar,
-    List
+    List,
+    Cell
   },
   mounted () {
     //this.onLoad()
@@ -71,14 +72,17 @@ export default {
         pageCurrent: this.pageCurrent,
         pageSize: this.pageSize
       }).then((res) => {
-        if(res.data.list && this.list.length < res.data.totalCount){
-          this.list.push(...res.data.list)
-          this.loading = false;
-          this.pageCurrent++
-        } else {
-          this.loading = false;
-          this.finished = true;
-        }
+        window.setTimeout(() => {
+          if(res.data.list && this.list.length < res.data.totalCount){
+            this.loading = false;
+            this.list.push(...res.data.list)
+            this.pageCurrent++
+          } else {
+            this.loading = false;
+            this.finished = true;
+            console.log(this.finished,'设置为true')
+          }
+        }, 500)
       })
     },
     onClickLeft () {

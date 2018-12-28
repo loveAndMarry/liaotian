@@ -27,29 +27,38 @@ export default {
     login({
       userId: this.$store.state.IM.user.id
     }).then((res)=> {
-      if(res.data.registerState === '4'){
-        this.name = '您已实名注册',
-        this.isRegisterState = true
-        this.$store.state.IM.user.registerState = '4'
-      }
+      this.state(res.data.registerState)
     })
   },
   methods: {
+    state (val) {
+      if(val === '4'){
+        this.name = '实名认证审核中...',
+        this.isRegisterState = true
+        this.$store.state.IM.user.registerState = '4'
+      }
+      if(val === '5'){
+        this.name = '您已实名注册',
+        this.isRegisterState = true
+        this.$store.state.IM.user.registerState = '5'
+      }
+      if(val === '6'){
+        this.name = '实名认证失败，请重新认证',
+        this.isRegisterState = false
+        this.$store.state.IM.user.registerState = '6'
+      }
+    },
     onClickLeft () {
       this.$router.back()
     },
     buttonClick () {
+      var that = this
       // 实名认证后不需要操作了
       if(this.isRegisterState){return false}
 
-      var u = navigator.userAgent;
-       if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
-        console.log("安卓手机");
-        window.Android.authentication()
-      } else if (u.indexOf('iPhone') > -1) {//苹果手机
-        console.log("苹果手机");
-        window.webkit.messageHandlers.authentication.postMessage(null)
-      } 
+      window.authentication(function() {
+        that.state('4')
+      })
     },
   },
   components: {

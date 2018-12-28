@@ -1,8 +1,6 @@
 import { postMsg, login, getFriendMessage, messageListing, getChatRecord} from '@/assets/common/api'
 import utils from '@/assets/common/utils'
-import router from '@/router'
 import IM from '@/assets/common/IM'
-import { Dialog } from 'vant';
 
 const GET_FRIENT_MSG = 'GET_FRIENT_MSG' //判断当前好友是否存在于好友列表中，不存在则添加
 const POST_MSG = 'POSTMSG' // 提交当前发送的信息

@@ -77,6 +77,7 @@ import ListItem from '@/components/ListItem'
 import { initialInformation } from '@/assets/common/api'
 import utils from '@/assets/common/utils'
 import { mapMutations } from 'vuex'
+import { setTimeout } from 'timers';
 export default {
   data () {
     return {
@@ -129,7 +130,7 @@ export default {
       window.updatePhoto(str => {
         if(str) {
           this.imgUrl = str
-          this.fromData.userHead = str
+          this.fromData.userHead = str + '?imageMogr2/auto-orient'
         }
       })
     }, 
@@ -192,8 +193,13 @@ export default {
         return false
       }
       initialInformation(this.fromData).then((res) => {
-        this.$router.push({name: 'home'})
-        window.userId = this.fromData.userId
+        this.$toast('信息完善成功')
+        setTimeout(() => {
+          this.dispatch('UPDATEUSER').then(() => {
+            this.$router.push({name: 'home'})
+            window.userId = this.fromData.userId
+          })
+        },1000)
       })
     },
     birthdayClick () {

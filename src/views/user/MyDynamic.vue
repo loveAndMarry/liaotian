@@ -3,8 +3,8 @@
     <NavBar
     left-arrow
     @click-left="onClickLeft" title="我的动态"/>
-
-    <PullRefresh v-model="isLoading" @refresh="onRefresh">
+    <div style="height:calc(100% - 46px);overflow-y: scroll;">
+      <PullRefresh v-model="isLoading" @refresh="onRefresh">
       <List 
       v-model="loading"
       :finished="finished"
@@ -19,7 +19,7 @@
                 <p>{{el.context}}</p>
               </template>
               <template v-if="el.type !== '1'">
-                <img :src="el.context" alt="">
+                <img :src="el.context + '?imageMogr2/auto-orient'" alt="" @click="imgClick(el.context)">
               </template>
             </div>
             <div class="dynamic_bottom">
@@ -29,9 +29,10 @@
             </div>
           </div>
         </template>
-        <p v-show="data.length === 0">当前还没有动态</p>
+        <p v-show="data.length === 0" style="height:100%"></p>
       </List>
     </PullRefresh>
+    </div>
     <Actionsheet
       v-model="show"
       :actions="actions"
@@ -87,6 +88,11 @@ export default {
     }
   },
   methods: {
+    imgClick (context) {
+       window.instance = ImagePreview({
+        images: [context + '?imageMogr2/auto-orient'],
+      })
+    },
      onLoad () {
       ++this.pageCurrent
       this.updateData({
@@ -117,14 +123,17 @@ export default {
           if(res.data && res.data.list && res.data.list.length > 0){
             // 加载状态结束
             this.loading = false;
+            this.isLoading = false
             // 数据全部加载完成
             this.finished = true;
             resolve(res.data.list)
           } else {
             this.loading = false;
+            this.isLoading = false
           }
         }).catch(()=> {
           this.loading = false;
+          this.isLoading = false
           // 数据全部加载完成
           this.finished = true;
           resolve(this.data)
@@ -157,9 +166,10 @@ export default {
 </script>
 <style scoped>
 .dynamic{
-  height: calc( 100% - 46px);
+  height: 100%;
   overflow-x: hidden;
-  overflow-y: scroll
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .dynamic .dynamic_group{
   border-bottom: .2rem solid #f0f0f0;

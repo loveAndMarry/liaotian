@@ -1,6 +1,6 @@
 <template>
     <div class="bottom">
-      <div style="height: 0.7rem;line-height: 0.7rem;">
+      <div style="height: 0.7rem;line-height: 0.7rem;text-align:left">
         <!-- <div class="icon yuyin" @click="voice($event)"></div> -->
         <div class="inputText">
           <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg" @input="input" v-model="context">
@@ -9,7 +9,8 @@
         <!-- <div class="icon biaoqing" @click="emotion"></div> -->
         <!-- <div class="icon tianjia" @click="GiftShow" v-show="!isContext"></div> -->
         <!-- <div class="send" @click="postMsg" v-show="isContext">发送</div> -->
-        <div class="send" @click="postMsg">发送</div>
+        <Button  size="small" class="submitMsg" @click="postMsg">发送</Button>
+        <!-- <div class="send" @click="postMsg">发送</div> -->
         <!-- <input type="file" id="file" style="display:none" accept="image/*" @change="fileChange($event)"> -->
       </div>
       <emotion @emotion="postMsg" v-show="isShow"></emotion>
@@ -18,6 +19,7 @@
 </template>
 
 <script>
+import { Button } from 'vant'
 import utils from '@/assets/common/utils'
 import {mapState ,mapActions } from 'vuex'
 import emotion from './Emotion'
@@ -34,7 +36,8 @@ export default {
   },
   components: {
     emotion,
-    Gift
+    Gift,
+    Button
   },
   methods: {
     ...mapActions([
@@ -120,6 +123,15 @@ export default {
 </script>
 
 <style scoped>
+.submitMsg{
+  width: .63rem;
+  background-color: #fe5c8d;
+  color: #fff;
+  vertical-align: 0.27rem;
+    border-radius: .05rem;
+    margin-top: 0;
+    margin-left: .1rem
+}
 .bottom{
   width: 100%;
   background-color: #fff;
@@ -132,7 +144,7 @@ export default {
 }
 
 .bottom .inputText{
-  width: calc(100% - 1.2rem);
+  width: calc(100% - 1.4rem);
   display: inline-block;
   height: 100%;
   position: relative;

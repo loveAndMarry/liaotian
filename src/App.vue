@@ -2,10 +2,8 @@
   <div id="app">
     <!-- <transition :name="transitionName"> -->
       <!-- <keep-alive> -->
-      <keep-alive exclude="tabs">
-        <router-view class="Router" v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
-      <router-view class="Router" v-if="!$route.meta.keepAlive"></router-view>
+      <router-view class="Router"></router-view>
+
       <!-- </keep-alive> -->
     <!-- </transition> -->
     <!-- <transition :name="transitionName1"> -->
@@ -17,7 +15,8 @@
         show: this.isLoading
       }">
     </div> -->
-    <div class="loading_group" v-show="Loading"><Loading class="loading" size="2rem"/></div>
+    <!-- <div class="loading_group" v-show="Loading"><Loading class="loading" size="2rem"/></div> -->
+    <div class="loading_back" v-show="Loading"></div>
   </div>
 </template>
 
@@ -61,8 +60,24 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 </script>
 
 <style>
+#app .van-nav-bar .van-icon{
+  color: #858585 !important
+}
+img[src=""],img:not([src]){opacity:0;}
 .van-button--large{
   height: 1rem
+}
+.loading_back{
+  width: 100%;
+  height:100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  background: url('./assets/images/启动页3.jpg') no-repeat;
+  background-size: 100%;
+  overflow: hidden;
+      z-index: 99;
+
 }
 .loading_group{
     height: 100%;

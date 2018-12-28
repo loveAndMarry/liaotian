@@ -24,8 +24,8 @@
           </div>
         </div>
         <div class="item submit">
-          <span class="btn" @click="reset">重置</span>
-          <span class="btn" @click='submitData'>确定</span>
+          <span class="btn" style="color:#8c8c8c" @click="reset">重置</span>
+          <span class="btn" style="color:#fff" @click='submitData'>确定</span>
         </div>
       </div>
       <div v-show="isShow === 2" class="tabs_content_group">
@@ -40,8 +40,8 @@
           </div>
         </div>
         <div class="item submit">
-          <span class="btn" @click="reset">重置</span>
-          <span class="btn" @click='submitData'>确定</span>
+          <span class="btn" style="color:#8c8c8c" @click="reset">重置</span>
+          <span class="btn" style="color:#fff" @click='submitData'>确定</span>
         </div>
       </div>
     </div>

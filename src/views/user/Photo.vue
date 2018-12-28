@@ -74,7 +74,7 @@ export default {
     },
     imageClick (index) {
       window.instance = ImagePreview({
-        images: this.photoList.map(el => el.context),
+        images: this.photoList.map(el => el.context + '?imageMogr2/auto-orient'),
         startPosition: index,
       })
     },

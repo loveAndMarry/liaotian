@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import 'vant/lib/vant-css/index.css'
+import 'vant/lib/index.css'
 //引入容联云即时通讯
 import IM from '@/assets/common/IM'
 

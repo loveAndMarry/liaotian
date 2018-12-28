@@ -103,7 +103,6 @@ export default {
       let fromData  = this.$parent.fromData
       //if(this.index){
        listUser(this.transitionObj(fromData)).then((res) => {
-         this.setLoading(false)
          this.noDataText = '没有更多数据'
          if(res.data.list){
            res.data.list.length < fromData.pageSize ? fn(true) :fn()
@@ -115,6 +114,9 @@ export default {
          } else {
            fn ? fn(true): this.$refs.scroller.finishPullToRefresh()
          }
+        if(this.$store.state.common.Loading){
+          this.setLoading(false)
+        }
        }).catch(() => fn ? fn(true): this.$refs.scroller.finishPullToRefresh())
         fromData.pageCurrent = Number(fromData.pageCurrent) + 1
       // } else {
@@ -128,7 +130,7 @@ export default {
         pageCurrent: 1
       })
       listUser(this.transitionObj(obj)).then((res) => {
-        this.setLoading(false)
+
         if(res.data.list){
           this.columns = res.data.list
         } else {

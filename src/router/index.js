@@ -64,7 +64,7 @@ const router = new Router({
       name: 'home',
       components: {
         default: home,
-        tabber: tabbar
+        tabbar: tabbar
       },
       meta: {
         keepAlive: true
@@ -75,14 +75,14 @@ const router = new Router({
       name: 'chat',
       components: {
         default: chat,
-        tabber: tabbar
+        tabbar: tabbar
       }
     },{
       path: 'user',
       name: 'user',
       components: {
         default: user,
-        tabber: tabbar
+        tabbar: tabbar
       },
       // children: [
       //   {
@@ -216,6 +216,14 @@ const router = new Router({
 
 // 判断是否需要登录权限 以及是否登录
 router.beforeEach((to, from, next) => {
+  // 判断当前是否为主页
+  if(to.path.indexOf('view') !== -1){
+    window.ishome = true
+  } else {
+    window.ishome = false
+  }
+
+
   if(to.path === '/'){
     console.log('进入路由拦截')
     store.dispatch('UPDATEUSER', {userId: utils.getUrlArgObject('userId')}).then((res)=>{

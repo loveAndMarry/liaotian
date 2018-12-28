@@ -45,6 +45,7 @@ export default {
 <style>
 .member .intention_item {
     width: 100%;
+    height: 1.12rem;
     background-color: #fff;
     text-align: left;
     font-size: 0.31rem;
