@@ -1,9 +1,9 @@
 <template>
   <div class='left basicInformation'>
     <NavBar title="完善资料"></NavBar>
-    <div style="padding: .2rem 0 .2rem .3rem;overflow: hidden;background-color: #fff;">
+       <div style="padding: .2rem 0 .2rem .3rem;overflow: hidden;background-color: #fff;">
       <div class="head" @click="submitPhoto">
-        <img :src="imgUrl" alt>
+        <div class="headImg"><img v-if="imgUrl !== ''" :src="imgUrl + '?imageMogr2/auto-orient'" alt></div>
         <span>更换头像</span>
       </div>
       <div class="head_item">
@@ -35,7 +35,6 @@
       <ListItem  class="List_Group" title="月收入" dictionaries='incomeRange' type="packerOne" :isSubmit='false' @confirm="incomeConfirm"></ListItem>
 
     </div>
-
     <div class="submit">
       <Button size="large" type="danger" round @click="submitClick">提交信息</Button>
     </div>
@@ -81,7 +80,7 @@ import { setTimeout } from 'timers';
 export default {
   data () {
     return {
-      imgUrl: require('../../assets/images/perfect_photo_bg@2x.png'),
+      imgUrl: '',
       radio: '1',
       username: '',
       isShow: false,
@@ -130,7 +129,7 @@ export default {
       window.updatePhoto(str => {
         if(str) {
           this.imgUrl = str
-          this.fromData.userHead = str + '?imageMogr2/auto-orient'
+          this.fromData.userHead = str
         }
       })
     }, 
@@ -195,10 +194,10 @@ export default {
       initialInformation(this.fromData).then((res) => {
         this.$toast('信息完善成功')
         setTimeout(() => {
-          this.dispatch('UPDATEUSER').then(() => {
-            this.$router.push({name: 'home'})
-            window.userId = this.fromData.userId
-          })
+          this.$store.state.IM.user.userHead = this.fromData.userHead
+          this.$store.state.IM.user.state = '1'
+          this.$router.push({name: 'home'})
+          window.userId = this.fromData.userId
         },1000)
       })
     },
@@ -206,7 +205,7 @@ export default {
       this.$picker.show({
         type:'datePicker',
         date:this.fromData.birthday,  //初始化时间
-        endTime:new Date().getFullYear() + '-12-12',  //截至时间
+        endTime:new Date().getFullYear() + '-' + (new Date().getMonth() + 1) +'-' + new Date().getDate(),  //截至时间
         startTime:'1950-1-1',  //开始时间
         onOk:(e)=>{
           this.fromData.birthday = e
@@ -251,7 +250,13 @@ export default {
   float: left;
   z-index: 1
 }
-.head img {
+.head .headImg {
+  display: block;
+  height: 100%;
+  background: url('../../assets/images/perfect_photo_bg@2x.png') no-repeat;
+  background-size: cover
+}
+.head .headImg img{
   max-width: 100%;
   max-height: 100%;
 }

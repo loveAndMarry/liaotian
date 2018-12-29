@@ -39,9 +39,9 @@
           </div>
         </div>
         <div class="content_name">
-          <h2>{{data.userBaseInformation.nikeName}}
-            <span v-if="user.registerState === '4'">实名</span>
-          </h2>
+          <!-- <h2>{{data.userBaseInformation.nickName}}
+            <span v-if="user.registerState === '5'">实名</span>
+          </h2> -->
           <div>
             <span>{{data.userBaseInformation.age}}岁</span>
             <span>{{data.userBaseInformation.height}}厘米</span>
@@ -364,7 +364,7 @@ export default {
       this.$picker.show({
         type:'datePicker',
         date:this.data.userBaseInformation.birthday,  //初始化时间
-        endTime:new Date().getFullYear() + '-12-12',  //截至时间
+        endTime:new Date().getFullYear() + '-' + (new Date().getMonth() + 1) +'-' + new Date().getDate(),  //截至时间
         startTime:'1950-1-1',  //开始时间
         onOk:(e)=>{
           updateUserBirthday({
@@ -541,6 +541,9 @@ export default {
   margin-right: 0.2rem;
   border-radius: 50%;
   -webkit-border-radius: 50%;
+}
+.content_name{
+  padding-top: .3rem
 }
 .content_name h2 {
   display: inline-block;

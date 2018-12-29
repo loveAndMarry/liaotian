@@ -15,8 +15,8 @@
         show: this.isLoading
       }">
     </div> -->
-    <!-- <div class="loading_group" v-show="Loading"><Loading class="loading" size="2rem"/></div> -->
-    <div class="loading_back" v-show="Loading"></div>
+    <div class="loading_group" v-show="Loading"><Loading class="loading" type="spinner" size="1.5rem"/></div>
+    <!-- <div class="loading_back " v-show="Loading"></div> -->
   </div>
 </template>
 
@@ -76,8 +76,19 @@ img[src=""],img:not([src]){opacity:0;}
   background: url('./assets/images/启动页3.jpg') no-repeat;
   background-size: 100%;
   overflow: hidden;
-      z-index: 99;
+  z-index: 99;
+  animation: opacitys 2s linear
 
+}
+@keyframes opacitys {
+  from {
+    opacity: 1;
+    filter: opacity(100)
+  }
+  to {
+    opacity: 0;
+    filter: opacity(0)
+  }
 }
 .loading_group{
     height: 100%;

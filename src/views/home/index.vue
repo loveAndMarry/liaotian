@@ -6,7 +6,7 @@
     </Search> -->
       <Tabs @search="search" :data='fromData'/>
       <div style="height:calc(100% - 1.6rem);position: absolute;top:.8rem;width: 100%;">
-        <HomeList :fromData='fromData' ref='HomeList'></HomeList>
+        <HomeList :fromData='fromData' ref='HomeList' ></HomeList>
       </div>
   </div>
 </template>
@@ -60,14 +60,14 @@ export default {
       columns:[]
     }
   }, 
-  // mounted () {
-  //   // 第一次进入页面时，让引导页停留3秒
-  //   if(this.$store.state.common.Loading){
-  //       window.setTimeout(() => {
-  //       this.setLoading(false)
-  //       }, 5000)
-  //   }
-  // },
+  //mounted () {
+    // 第一次进入页面时，让引导页停留3秒
+    // if(this.$store.state.common.Loading){
+    //     window.setTimeout(() => {
+    //     this.setLoading(false)
+    //     }, 5000)
+    // }
+  //},
   methods: {
     ...mapMutations([
       'setLoading'

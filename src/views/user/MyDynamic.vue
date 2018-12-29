@@ -1,18 +1,18 @@
 <template>
-  <div>
+  <div id="dynamic">
     <NavBar
     left-arrow
     @click-left="onClickLeft" title="我的动态"/>
-    <div style="height:calc(100% - 46px);overflow-y: scroll;">
-      <PullRefresh v-model="isLoading" @refresh="onRefresh">
+    <div style="height:calc(100% - 46px);overflow-y: scroll;" ref='contentView'>
+      <!-- <PullRefresh v-model="isLoading" @refresh="onRefresh"> -->
       <List 
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
       @load="onLoad"
-      class="dynamic">
+      class="dynamic" ref='dynamic'>
         <template v-show="data.length !== 0" v-for="(el, index) in data">
-          <div class="dynamic_group">
+          <div class="dynamic_group" :key="index">
             <div class="title">上传了{{el.type | type}}</div>
             <div class="dynamic_content">
               <template v-if="el.type === '1'">
@@ -29,10 +29,10 @@
             </div>
           </div>
         </template>
-        <p v-show="data.length === 0" style="height:100%"></p>
+        <template v-show="data.length === 0"><p></p></template>
       </List>
-    </PullRefresh>
-    </div>
+    <!-- </PullRefresh> -->
+  </div>
     <Actionsheet
       v-model="show"
       :actions="actions"
@@ -61,7 +61,7 @@ export default {
       isLoading: false,
       finished: false,
       pageSize: 10,
-      pageCurrent: 0
+      pageCurrent: 1
     }
   },
   components: {
@@ -94,24 +94,33 @@ export default {
       })
     },
      onLoad () {
-      ++this.pageCurrent
+     
       this.updateData({
         pageCurrent: this.pageCurrent,
         pageSize: this.pageSize
       }).then((res)=>{
-        this.data.push(...res)
-        this.loading = false
+        if(res && res.list && res.list.length > 0 && this.data.length < res.totalCount){
+          this.data.push(...res.list)
+          ++this.pageCurrent
+          this.loading = false
+        } else {
+          this.loading = false
+           // 数据全部加载完成
+          this.finished = true;
+        }
       })
     },
     onRefresh () {
-      this.data = {}
-      this.updateData({
-        pageCurrent: 1,
-        pageSize: this.pageSize * this.pageCurrent
-      }).then((res)=>{
-        this.isLoading = false
-        this.data = res
-      })
+      if(this.$refs.dynamic.$el.scrollTop === 0){
+        this.data = {}
+        this.updateData({
+          pageCurrent: 1,
+          pageSize: this.pageSize * this.pageCurrent
+        }).then((res)=>{
+          this.isLoading = false
+          this.data = res.list
+        })
+      }
     },
     updateData (obj) {
       return new Promise((resolve) => {
@@ -120,17 +129,7 @@ export default {
           pageCurrent: obj.pageCurrent,
           pageSize: obj.pageSize
         }).then((res) => {
-          if(res.data && res.data.list && res.data.list.length > 0){
-            // 加载状态结束
-            this.loading = false;
-            this.isLoading = false
-            // 数据全部加载完成
-            this.finished = true;
-            resolve(res.data.list)
-          } else {
-            this.loading = false;
-            this.isLoading = false
-          }
+          resolve(res.data)
         }).catch(()=> {
           this.loading = false;
           this.isLoading = false
@@ -164,11 +163,13 @@ export default {
   }
 }
 </script>
+
+
 <style scoped>
 .dynamic{
-  height: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
+  
   -webkit-overflow-scrolling: touch;
 }
 .dynamic .dynamic_group{

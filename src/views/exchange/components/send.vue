@@ -9,7 +9,7 @@
         <!-- <div class="icon biaoqing" @click="emotion"></div> -->
         <!-- <div class="icon tianjia" @click="GiftShow" v-show="!isContext"></div> -->
         <!-- <div class="send" @click="postMsg" v-show="isContext">发送</div> -->
-        <Button  size="small" class="submitMsg" @click="postMsg">发送</Button>
+        <div  class="submitMsg" @click="postMsg">发送</div>
         <!-- <div class="send" @click="postMsg">发送</div> -->
         <!-- <input type="file" id="file" style="display:none" accept="image/*" @change="fileChange($event)"> -->
       </div>
@@ -125,12 +125,18 @@ export default {
 <style scoped>
 .submitMsg{
   width: .63rem;
+  text-align: center;
   background-color: #fe5c8d;
   color: #fff;
   vertical-align: 0.27rem;
-    border-radius: .05rem;
-    margin-top: 0;
-    margin-left: .1rem
+  border-radius: .05rem;
+  margin-top: 0;
+  margin-left: .2rem;
+  height: 30px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 30px;
+  display: inline-block;
 }
 .bottom{
   width: 100%;

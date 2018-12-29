@@ -1,5 +1,9 @@
 <template>
   <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller" :noDataText="noDataText">
+    <NoticeBar
+      text="当前处于无网络状态，请检查网络"
+      v-show="State"
+    />
     <ul class="home_list">
       <li v-for="(item, index) in columns" :key="index" @click="showDetail(item)">
         <div class="title">
@@ -33,17 +37,30 @@
 <script>
 import { listUser, cancellikeUser, likeUser} from '@/assets/common/api'
 import { mapMutations } from 'vuex'
+import { NoticeBar } from 'vant'
 
 export default {
   name: 'homeList',
   data () {
     return {
       columns: [],
+      State: false,
       noDataText: '没有更多的数据',
       // index: 0, // 默认第一次下拉加载不请求
     }
   },
+  mounted () {
+    window['setState'] = (val) => {
+      this.setState(val)
+    }
+  },
+  components: {
+    NoticeBar
+  },
   methods: {
+    setState (val) {
+      this.State = val
+    },
     ...mapMutations([
       'setLoading'
     ]),
