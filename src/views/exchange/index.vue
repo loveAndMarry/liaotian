@@ -22,7 +22,7 @@ export default {
     var that = this
     var winHeight = document.documentElement.clientHeight || document.body.clientHeight;   //获取当前页面高度
     var content = document.getElementById('content')
-    $(window).resize(function(){
+    window.onresize = function(){
       var thisHeight = document.documentElement.clientHeight || document.body.clientHeight
       var num = (winHeight - 0) - (thisHeight - 0)
         if(num > 50){
@@ -32,23 +32,11 @@ export default {
             this.$refs.content.isShow = false
             this.$refs.content.isGiftShow = false
             content.style.height = 'calc(100% - 1.1rem - 45px)'
-            // console.log(that)
-            // that.$refs.content.resize()
-
-            // // that.$refs.content.scrollToBottom()
-            // console.log('-' + (num - 46) + 'px')
-            // content.style.top =  '-46px'
-            // content.style.bottom = '0'
         }else{
             //当软键盘收起，在此处操作
             console.log('软键盘收起')
-            // content.style.top = 46 + 'px'
-            // that.$refs.content.resize()
-            // that.$refs.content.scrollToBottom()
-            // content.style.height = 'calc(100% - 1.1rem - 46px)'
-            // content.style.bottom = '0'
         }
-    })
+    }
   },
   methods: {
     editHeight (isShow) {

@@ -91,13 +91,24 @@ export default {
     },
     showData () {
       this.columns = [
-        {
-          values: this.defaultColumns.map(el => el.name)
-        },
-        {
-          values: this.defaultColumns[0].areaVoList.map(el => el.name)
-        }
-      ]
+            {
+              values: this.defaultColumns.map(el => el.name)
+            },
+            {
+              values: this.defaultColumns[0].areaVoList.map(el => el.name)
+            }
+          ]
+
+      let val = this.data
+      if(val.length > 0){
+          this.$nextTick(() => {
+            let obj = this.defaultColumns.find(el => el.code === val[0])
+            let index = this.defaultColumns.findIndex(el => el.code === val[0])
+            this.$refs.picker.setColumnIndex(0, index)
+            this.$refs.picker.setColumnValues(1,obj.areaVoList.map(el => el.name))
+            this.$refs.picker.setColumnIndex(1, obj.areaVoList.findIndex(el => el.code === val[1]))
+          })
+      }
       this.isLoading = false
     },
     onCancel () {

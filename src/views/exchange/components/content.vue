@@ -6,6 +6,7 @@
           <left-content v-else-if="el.sendUserId !== user.id" :item="el"></left-content>
           <right-content v-else-if="el.sendUserId === user.id" :item="el"></right-content>
         </div>
+        <div v-if="getChatMessage.length === 0" style="height:10rem"></div>
       </PullRefresh>
     </div>
 </template>
@@ -85,8 +86,8 @@ export default {
 </script>
  
 <style scoped>
-.van-pull-refresh, .van-pull-refresh__track{
-  min-height: 100%
+.van-pull-refresh{
+  overflow: initial;
 }
 .back{
   position: relative;

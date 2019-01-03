@@ -22,6 +22,9 @@ export const messageListing = data => HTTP.GET('web/selectUser/messageListing',d
 // 获取好友历史信息
 export const getChatRecord = data => HTTP.GET('web/messengerAccount/getChatRecord',data)
 
+// 删除好友列表
+export const deleteMessageRecords = data => HTTP.GET('web/messengerAccount/deleteMessageRecords',data)
+
 /**
  * 主页模块
  */
@@ -42,6 +45,9 @@ export const cancellikeUser = data => HTTP.GET('web/like/cancellikeUser',data)
 
 //喜欢
 export const likeUser = data => HTTP.GET('web/like/likeUser',data)
+
+//获取当前用户默认的筛选条件
+export const getUserSpouseIntention = data => HTTP.GET('web/selectUser/getUserSpouseIntention',data)
 
 /**
  * 个人中心模块

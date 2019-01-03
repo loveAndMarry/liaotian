@@ -3,34 +3,40 @@
     <NavBar title='消息'></NavBar>
     <div style="height:calc(100% - 96px);position: relative">
       <scroller :on-infinite="infinite"  :on-refresh="refresh" ref="scroller">
-        <ul class="chat_list">
-          <li class="chat_list_item" v-for="(el, index) in friendList" :key="index" @click="chatListClick(el)">
-            <div class="portrait">
-              <img :src="el.userHead" alt="">
-            </div>
-            <div class="content">
-              <div class="title">
-                <div class="top">
-                    <h3 v-text="el.nickName"></h3>
-                    <span class="theRealNameSystem" v-if="el.theRealNameSystem">实名</span>
+        <div class="chat_list">
+          <div class="chat_list_item" v-for="(el, index) in friendList" :key="index" @click="chatListClick(el)">
+              <SwipeCell :right-width="65" :on-close="onClose" :el="el">
+                <div>
+                  <div class="portrait">
+                    <img :src="el.userHead" alt="">
+                  </div>
+                  <div class="content">
+                    <div class="title">
+                      <div class="top">
+                          <h3 v-text="el.nickName"></h3>
+                          <span class="theRealNameSystem" v-if="el.theRealNameSystem">实名</span>
+                      </div>
+                      <p v-text="uncodeUtf16(el.context)"></p>
+                    </div>
+                    <div class="info">
+                      <p>{{el.time | fromNow}}</p>
+                      <span v-show="el.hint">{{el.hint}}</span>
+                    </div>
+                  </div>
                 </div>
-                <p v-text="uncodeUtf16(el.context)"></p>
-              </div>
-              <div class="info">
-                <p>{{el.time | fromNow}}</p>
-                <span v-show="el.hint">{{el.hint}}</span>
-              </div>
-            </div>
-          </li>
-        </ul>
+              <span slot="right" class="remove">删除</span>
+            </SwipeCell>
+          </div>
+        </div>
       </scroller>
     </div>
   </div>
 </template>
 
 <script>
-import { NavBar } from "vant";
+import { NavBar, SwipeCell, Dialog, Toast} from "vant";
 import { mapActions, mapState, mapMutations } from "vuex";
+import { deleteMessageRecords } from '@/assets/common/api'
 import Vue from "vue";
 import Moment from "moment";
 import utils from "@/assets/common/utils";
@@ -47,13 +53,32 @@ export default {
       console.log(val, '更新后的好友列表')
     }
   },
-  mounted() {
-    // localStorage.setItem('friendList','[]')
-    // 获取好友列表
-    // this.GETFRIEND({});
-  },
   methods: {
     ...mapActions(["UPDATEUSERLIST", 'GETFRIENDLIST','UPDATE_FRIEND_LIST']),
+    ...mapMutations(['FRIEND_SORT']),
+    onClose(clickPosition, instance) {
+      var that = this
+      console.log(arguments)
+      switch (clickPosition) {
+        case 'outside':
+          instance.close();
+          break;
+        case 'right':
+          Dialog.confirm({
+            message: '确定删除吗？'
+          }).then(() => {
+            deleteMessageRecords({
+              userId: this.$store.state.IM.user.id,
+              contactUserId: instance.$attrs.el.userId
+            }).then(() => {
+              instance.close();
+              that.$store.state.IM.friendList = that.$store.state.IM.friendList.filter(el => el.userId !== instance.$attrs.el.userId)
+            })
+            
+          });
+          break;
+      }
+    },
     uncodeUtf16 (val) {
       return utils.uncodeUtf16(val)
     },
@@ -68,6 +93,9 @@ export default {
         utils.updateArray(this.$store.state.IM.friendList, item.accountNumber, {
           hint: 0
         });
+        this.FRIEND_SORT({
+            id: item.accountNumber
+        })
         this.$store.state.IM.friend = item
         this.$store.state.IM.isMsg = true // 设置当前有历史消息
         this.$router.push({ path: "/exchange" });
@@ -97,12 +125,24 @@ export default {
     }
   },
   components: {
-    NavBar
+    NavBar,
+    SwipeCell,
+    Dialog
   }
 }
 </script>
 
 <style scoped>
+.remove{
+color: #fff;
+    font-size: 15px;
+    width: 65px;
+    height: 1.38rem;
+    line-height: 1.38rem;
+    display: inline-block;
+    text-align: center;
+    background-color: #f44;
+}
 .chat_list {
   display: block;
   color: #8d8d8d;
@@ -113,7 +153,6 @@ export default {
 .chat_list .chat_list_item {
   display: block;
   overflow: hidden;
-  padding-top: 0.2rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
@@ -175,7 +214,8 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   font-size: .26rem;
-  margin-bottom: .1rem
+  margin-bottom: .1rem;
+  min-height: 0.345rem;
 }
 .content .info p {
   margin: 0;

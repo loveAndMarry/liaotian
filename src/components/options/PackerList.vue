@@ -113,15 +113,15 @@ export default {
     columns (value) {
       if (this.data.length > 0) {
         if(this.radio){
-          this.result = [this.columns.find(el => el.value === this.data[0]).label]
+          this.result = [this.data[0].label]
         } else {
-          this.result = this.data.map(el => this.columns.find(item => item.value === el).label)
+          this.result = this.data.map(el => this.columns.find(item => item.value === el.value).label)
         }
       }
     },
     data (val) {
       if(val.length === 0){
-        this.result = this.data
+        this.result = []
       }
     }
   },

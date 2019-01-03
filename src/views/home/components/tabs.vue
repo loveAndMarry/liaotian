@@ -9,18 +9,18 @@
       </div>
       <div v-show="isShow === 1" class="tabs_content_group">
         <div class="tabs_content_group_scroll">
-          <ListItem title="居住地"  :isSubmit="false" :default='fromData.address' type='address' @confirm="a => fromData.address = a" hint="不限" ref="address"></ListItem>
+          <ListItem title="居住地"  :isSubmit="false" :default='fromData.address' type='address' @confirm="a => setFromData({address : a})" hint="不限" ref="address"></ListItem>
 
-          <ListItem title="身高" dictionaries='heights' :default='fromData.height' type="packerTwo" suffix="厘米" :isSubmit="false" @confirm="a => fromData.height = a" hint="不限" ref="height"></ListItem>
+          <ListItem title="身高" dictionaries='heights' :default='fromData.height' type="packerTwo" suffix="厘米" :isSubmit="false" @confirm="a => setFromData({height : a})" hint="不限" ref="height"></ListItem>
 
-         <ListItem title="学历" dictionaries='education' :default='fromData.education' type="packerTwo" :isSubmit="false" @confirm="a => fromData.education = a" hint="不限" ref="education"></ListItem>
+         <ListItem title="学历" dictionaries='education' :default='fromData.education' type="packerTwo" :isSubmit="false" @confirm="a => setFromData({education : a})" hint="不限" ref="education"></ListItem>
 
-          <ListItem title="月收入" dictionaries='income' :default='fromData.income' type="packerTwo" :isSubmit="false" @confirm="a => fromData.income = a" hint="不限" ref="incomeDefault"></ListItem>
+          <ListItem title="月收入" dictionaries='income' :default='fromData.income' type="packerTwo" :isSubmit="false" @confirm="a => setFromData({income : a})" hint="不限" ref="incomeDefault"></ListItem>
 
-          <ListItem title="年龄" dictionaries='ages' type='packerTwo'  :default='fromData.age' :isSubmit="false" @confirm="a => fromData.age = a" hint="不限" ref="age"></ListItem>
+          <ListItem title="年龄" dictionaries='ages' type='packerTwo'  :default='fromData.age' :isSubmit="false" @confirm="a => setFromData({age : a})" hint="不限" ref="age"></ListItem>
 
           <div class="item"  @click.stop="clickEvent($event, 0, 'maritalStatus')">
-            婚姻状况<div class="sanjiao">不限</div>
+            婚姻状况<div class="sanjiao">{{fromData['maritalStatus'][0] ? fromData['maritalStatus'][0].label : '不限'}}</div>
           </div>
         </div>
         <div class="item submit">
@@ -31,12 +31,12 @@
       <div v-show="isShow === 2" class="tabs_content_group">
         <div class="tabs_content_group_scroll">
           
-          <ListItem title="户口"  :isSubmit="false" type='address' :default='fromData.registeredPermanentResidence' @confirm="a => fromData.registeredPermanentResidence = a" hint="不限" ref="registeredPermanentResidence"></ListItem>
+          <ListItem title="户口"  :isSubmit="false" type='address' :default='fromData.registeredPermanentResidence' @confirm="a => setFromData({registeredPermanentResidence : a})" hint="不限" ref="registeredPermanentResidence"></ListItem>
 
-          <ListItem title="家乡"  :isSubmit="false" type='address'  :default='fromData.hometown' @confirm="a => fromData.hometown = a" hint="不限" ref="hometown"></ListItem>
+          <ListItem title="家乡"  :isSubmit="false" type='address'  :default='fromData.hometown' @confirm="a => setFromData({hometown : a})" hint="不限" ref="hometown"></ListItem>
 
           <div class="item" v-for="(item, index) in advancedFilter" :key="item" @click.stop="clickEvent($event, index, 'advancedFilterValue')">
-          {{item}}<div class="sanjiao">不限</div>
+          {{item}}<div class="sanjiao">{{fromData[advancedFilterValue[index]][0] ? fromData[advancedFilterValue[index]][0].label : '不限'}}</div>
           </div>
         </div>
         <div class="item submit">
@@ -86,7 +86,6 @@ export default {
   name: 'tabs',
   props:{
     value: Object,
-    data: Object
   },
   data () {
     return {
@@ -120,39 +119,18 @@ export default {
       },
       basicQueryCriteria: [],
       defaultData: {},
-      fromData: {
-        type: 1,
-        pageCurrent: 1,
-        pageSize: 10,
-        // 基本筛选条件
-        address: [], // 居住地
-        age: [], // 年龄（区间）
-        height: [], // 身高（区间）
-        maritalStatus: [], // 婚姻状况
-        education: [], // 学历（区间）
-        income: [], // 收入（区间）
-        loveType: [], // 恋爱类型
-        // 高级筛选
-        housePurchase: [], // 是否购房
-        car: [], // 购车情况
-        registeredPermanentResidence: [], // 户口
-        hometown: [], // 家乡(地址)
-        children: [], // 子女
-        constellation: [], // 星座
-        theRealNameSystem:[], // 实名
-        picture: [], // 是否有照片
-        member: [], // 是否会员
-        onLine: [], // 是否在线
-        // profession: [], // 职业
-        bloodType: [], // 血型
-        nation: [], // 民族
-        religion: [], // 宗教
-        userId: '',
-        sex: '1'
-      }
+      type: 1,
+      pageCurrent: 1,
+      pageSize: 10,
     }
   },
+  computed: {
+    ...mapState({
+      fromData: state => state.common.fromData
+    })
+  },
   methods: {
+    ...mapMutations(['setFromData','resetFromData']),
     confirmCallback (name, value) {
       if(value && value.length > 0){
         value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
@@ -163,48 +141,28 @@ export default {
       } else {
         this.event.innerText = '不限'
       }
-      this.fromData[name] = value
+      this.setFromData({
+        [name] : value
+      })
     },
     reset () {
-      var _this = this
-      let fromData = {
-        type: 1,
-        pageCurrent: 1,
-        pageSize: 10,
-        // 基本筛选条件
-        address: [], // 居住地
-        age: [], // 年龄（区间）
-        height: [], // 身高（区间）
-        maritalStatus: [], // 婚姻状况
-        education: [], // 学历（区间）
-        income: [], // 收入（区间）
-        loveType: [], // 恋爱类型
-        // 高级筛选
-        housePurchase: [], // 是否购房
-        car: [], // 购车情况
-        registeredPermanentResidence: [], // 户口
-        hometown: [], // 家乡(地址)
-        children: [], // 子女
-        constellation: [], // 星座
-        theRealNameSystem:[], // 实名
-        picture: [], // 是否有照片
-        member: [], // 是否会员
-        onLine: [], // 是否在线
-        // profession: [], // 职业
-        bloodType: [], // 血型
-        nation: [], // 民族
-        religion: [], // 宗教
-      }
+      this.resetFromData()
 
-      fromData.userId = this.$store.state.IM.user.id
-      fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
-      fromData.type = 1
+      this.pageCurrent = 1
+      this.pageSize = 10
+
+      let fromData = Object.assign({}, this.fromData, {
+        userId: this.$store.state.IM.user.id,
+        sex: this.$store.state.IM.user.sex === '1'? '2': '1',
+        type: 1,
+        pageCurrent: this.pageCurrent,
+        pageSize: this.pageSize
+      })
       
       var eles = document.querySelectorAll('.sanjiao');
       eles.forEach(element => {
         element.innerHTML = "不限"
       });
-      _this.fromData = fromData
 
       this.isShow = -1
       this.IntelligentSortingShow = 0
@@ -214,10 +172,16 @@ export default {
       return arr.map(item => item.replace('岁', '').replace('cm', ''))
     },
     submitData () {
-      this.fromData.userId = this.$store.state.IM.user.id
-      this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
+      let fromData = Object.assign({}, this.fromData, {
+        userId: this.$store.state.IM.user.id,
+        sex: this.$store.state.IM.user.sex === '1'? '2': '1',
+        type: this.type,
+        pageCurrent: this.pageCurrent,
+        pageSize: this.pageSize
+      })
+
       this.isShow = -1
-      this.$emit('search', this.fromData, 10)
+      this.$emit('search', fromData, 10)
     },
     // tabs选项卡点击事件 
     tabsClick (index) {
@@ -231,17 +195,22 @@ export default {
     },
     // 智能排序选项点击事件
     IntelligentSortingEvent (index) {
-      this.fromData.userId = this.$store.state.IM.user.id
-      this.fromData.sex = this.$store.state.IM.user.sex === '1'? '2': '1'
+     let fromData = Object.assign({}, this.fromData, {
+        userId: this.$store.state.IM.user.id,
+        sex: this.$store.state.IM.user.sex === '1'? '2': '1',
+        type: index + 1,
+        pageCurrent: this.pageCurrent,
+        pageSize: this.pageSize
+      })
+
       // 设置当前点击的为智能检索
       this.valueName = 'type'
       this.IntelligentSortingShow = index
       this.isShow = -1 // 关闭当前下拉框
 
-      this.fromData['type'] = index + 1
       // 设置夫级的数据
       // this.setParentData(this.fromData['type'])
-     this.$emit('search', this.fromData, 10)
+     this.$emit('search', fromData, 10)
     },
     // 基本筛选每项点击事件
     clickEvent ($event, index, name) {

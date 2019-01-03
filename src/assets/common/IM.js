@@ -5,9 +5,9 @@ var RL_YTX = window.RL_YTX
 
 function IM () {
   // 应用ID
-  this.appid = '8aaf0708669b101e01669ea18b6d01ed'
+  this.appid = '8aaf070867e8660f01680caabb0e10b0'
   // 应用token
-  this.appToken = 'c72930dbb2830afaa7cff043bb209a1a'
+  this.appToken = '592513d0b392b32fdbb2398e21d9cc1c'
   // 是否第三方获取sig
   this.flag = false
   // 当前登录状态

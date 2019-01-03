@@ -36,7 +36,7 @@
 </template>
 <script>
 import { listUser, cancellikeUser, likeUser} from '@/assets/common/api'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState} from 'vuex'
 import { NoticeBar } from 'vant'
 
 export default {
@@ -46,6 +46,8 @@ export default {
       columns: [],
       State: false,
       noDataText: '没有更多的数据',
+      pageCurrent: 1,
+      pageSize: 10
       // index: 0, // 默认第一次下拉加载不请求
     }
   },
@@ -53,6 +55,11 @@ export default {
     window['setState'] = (val) => {
       this.setState(val)
     }
+  },
+  computed: {
+    ...mapState({
+      fromData: state => state.common.fromData
+    })
   },
   components: {
     NoticeBar
@@ -117,7 +124,10 @@ export default {
       this.$router.push({name: 'userDetail'})
     },
     infinite (fn) {
-      let fromData  = this.$parent.fromData
+      let fromData  = this.fromData
+      fromData.userId = this.$store.state.IM.user.id
+      fromData.pageCurrent = this.pageCurrent
+      fromData.pageSize = this.pageSize
       //if(this.index){
        listUser(this.transitionObj(fromData)).then((res) => {
          this.noDataText = '没有更多数据'
@@ -135,16 +145,18 @@ export default {
           this.setLoading(false)
         }
        }).catch(() => fn ? fn(true): this.$refs.scroller.finishPullToRefresh())
-        fromData.pageCurrent = Number(fromData.pageCurrent) + 1
+        this.pageCurrent = Number(this.pageCurrent) + 1
+
       // } else {
       //   this.index = 1
       //   fn(true)
       // }
     },
     refresh (fn, fromData, pageSize) {
-      var obj = Object.assign({}, fromData ? fromData : this.$parent.fromData, {
+      var obj = Object.assign({}, fromData ? fromData : this.fromData, {
         pageSize: pageSize ? pageSize : this.columns.length || 10,
-        pageCurrent: 1
+        pageCurrent: 1,
+        userId: this.$store.state.IM.user.id
       })
       listUser(this.transitionObj(obj)).then((res) => {
 

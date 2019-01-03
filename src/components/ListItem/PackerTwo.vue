@@ -50,7 +50,7 @@ export default {
     },
     getLabel (obj) {
       if(obj){
-        return obj.value === '-1'? '不限' : this.defaultData.find(el => el.value === obj.value).label
+        return obj === '-1'? '不限' : this.defaultData.find(el => el.value === obj).label
       }
     },
     getColumnsTwo (label) {
@@ -94,9 +94,10 @@ export default {
     showData () {
       this.isLoading = false
       this.$nextTick(() => {
+        console.log(this.data, '默认数据')
         if(this.data.length > 0){
-          let label1 = this.getLabel(this.data[0])
-          let label2 = this.getLabel(this.data[1])
+          let label1 = this.getLabel(this.data[0].replace('岁', ''))
+          let label2 = this.getLabel(this.data[1].replace('岁', ''))
           this.$refs.picker.setColumnValue(0, label1)
           this.$refs.picker.setColumnValues(1, this.getColumnsTwo(label1))
           this.$refs.picker.setColumnValue(1, label2)

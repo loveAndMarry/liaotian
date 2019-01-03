@@ -113,7 +113,7 @@ const actions = {
     if(!state.chatMessage[products.sender]){
       state.chatMessage[products.sender] = []
     }
-    if(state.friendList.length === 0 || state.friendList.length > 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1){
+    if(state.friendList.length === 0 || (state.friendList.length > 0 && state.friendList.findIndex(item => item.accountNumber === products.sender) === -1)){
       // 如果一次性接受多条信息时，会向好友列表中多次添加
       if(state.friendArr.findIndex(el => el === products.sender) === -1){
         // 更改本地缓存中的数据
@@ -271,6 +271,7 @@ const mutations = {
   },
   // 设置当前登录人信息
   [UPDATE_USER] (state, products) {
+    console.log(products, '设置个人用户信息')
     state.user = Object.assign({},products)
   },
   // 设置当前正在联系的好友信息

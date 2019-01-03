@@ -4,9 +4,9 @@
        <div slot="action" @click="search">搜索</div>
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search> -->
-      <Tabs @search="search" :data='fromData'/>
+      <Tabs @search="search"/>
       <div style="height:calc(100% - 1.6rem);position: absolute;top:.8rem;width: 100%;">
-        <HomeList :fromData='fromData' ref='HomeList' ></HomeList>
+        <HomeList ref='HomeList' ></HomeList>
       </div>
   </div>
 </template>
@@ -26,40 +26,9 @@ export default {
     return {
       index: 0,
       // value: '',
-      fromData:{
-        userId: this.$store.state.IM.user.id,
-        pageCurrent: 1,
-        pageSize: 10,
-        // 智能筛选
-        type: 1,
-        // 基本筛选条件
-        address: [], // 居住地
-        age: [], // 年龄（区间）
-        height: [], // 身高（区间）
-        maritalStatus: [], // 婚姻状况
-        education: [], // 学历（区间）
-        income: [], // 收入（区间）
-        loveType: [], // 恋爱类型
-        // 高级筛选
-        housePurchase: [], // 是否购房
-        car: [], // 购车情况
-        registeredPermanentResidence: [], // 户口
-        hometown:[], // 家乡(地址)
-        children:[], // 子女
-        constellation: [], // 星座
-        theRealNameSystem:[], // 实名
-        picture: [], // 是否有照片
-        member: [], // 是否会员
-        onLine: [], // 是否在线
-        // profession: [], // 职业
-        bloodType: [], // 血型
-        nation: [], // 民族
-        religion: [], // 宗教,
-        sex: '2'
-      },
       columns:[]
     }
-  }, 
+  },
   //mounted () {
     // 第一次进入页面时，让引导页停留3秒
     // if(this.$store.state.common.Loading){
@@ -72,9 +41,8 @@ export default {
     ...mapMutations([
       'setLoading'
     ]),
-    search (fromData, pageSize) {
-      this.fromData = Object.assign({}, fromData)
-      this.$refs.HomeList.refresh(null,this.fromData, pageSize)
+    search (fromData,pageSize) {
+      this.$refs.HomeList.refresh(null,fromData, pageSize)
     }
   },
   components: {

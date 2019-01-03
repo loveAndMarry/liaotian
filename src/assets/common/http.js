@@ -48,8 +48,10 @@ HTTP.GET = function (url, data) {
       params: data
     }).then((res) => {
       if(res.data.code === 200){
-        console.log('请求成功')
         resolve(res.data)
+      } else if(res.data.code === 201) {
+        resolve(res.data)
+        Toast(res.data.msg)
       }else{
         console.log('请求失败')
         Toast(res.data.msg)
@@ -69,7 +71,6 @@ HTTP.POST = function (url, data) {
       data: data
     }).then((res) => {
       if(res.data.code === 200){
-        console.log('请求成功')
         resolve(res.data)
       }else{
         console.log('请求失败')

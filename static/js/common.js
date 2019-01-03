@@ -1,5 +1,5 @@
-// window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
-window.baseURL = 'http://yuan.minmai1688.com/'
+window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
+//window.baseURL = 'http://yuan.minmai1688.com/'
 
 // 点击调用图片和拍照
 window.updatePhoto = function(callback){

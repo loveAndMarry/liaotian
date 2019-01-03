@@ -230,7 +230,9 @@ router.beforeEach((to, from, next) => {
       if(res.registerState - 0 < 2){
         next({name: 'basicInformation' })
       }else {
-        next({name: 'home'})
+        store.dispatch('getFromData',utils.getUrlArgObject('userId')).then(() => {
+          next({name: 'home'})
+        })
       }
     })
   } else {
