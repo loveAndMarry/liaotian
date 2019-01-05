@@ -7,7 +7,7 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-      <div class="chat_list_item" v-for="(el, index) in friendList" :key="index" @click="chatListClick(el)">
+      <div class="chat_list_item" v-for="(el, index) in List" :key="index" @click="chatListClick(el)">
             <SwipeCell :right-width="65" :on-close="onClose" :el="el" :ref='"swipeCell" + index'>
               <div class="chat_list_item_group"  @touchstart='touchstart($event, index)' @touchend="touchend($event, index)">
                 <div class="portrait">
@@ -57,7 +57,19 @@ export default {
   },
   computed: {
     ...mapState({
-      friendList: state => state.IM.friendList
+      List(state) {
+        switch(this.type) {
+          case '1':
+            return state.IM.friendList
+            break
+          case '2':
+            return state.IM.intentionList
+            break
+          case '3':
+            return state.IM.autonymList
+            break
+        }
+      }
     })
   },
   methods: {
@@ -159,7 +171,7 @@ export default {
       }else if(minutes > 0 && minutes < 60){
         return parseInt(minutes)+"分钟前"
       }else if(seconds > 0 && seconds < 60){
-        return parseInt(seconds)+"秒前"
+        return "1分钟内"
       }
     }
   },

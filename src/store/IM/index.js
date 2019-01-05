@@ -2,20 +2,19 @@ import { postMsg, login, getFriendMessage, messageListing, getChatRecord} from '
 import utils from '@/assets/common/utils'
 import IM from '@/assets/common/IM'
 
-const GET_FRIENT_MSG = 'GET_FRIENT_MSG' //判断当前好友是否存在于好友列表中，不存在则添加
 const POST_MSG = 'POSTMSG' // 提交当前发送的信息
 const UPDATE_USER = 'UPDATEUSER' // 更新个人信息
-const GET_FRIEND = 'GETFRIEND' // 获取当前好友列表
 const FRIEND_SORT = 'FRIEND_SORT' // 排序当前展示好友的显示顺序
 const GET_FRIEND_LIST = 'GETFRIENDLIST' // 获取好友
 const UPDATE_FRIEND_LIST = 'UPDATE_FRIEND_LIST' // 刷新好友列表
 const GET_FRIEND_MSG_LIST = 'GET_FRIEND_MSG_LIST' // 获取好友历史信息
-const GET_CHAT_MESSAGE = 'GETCHATMESSAGE' // 获取当前储存的历史聊天信息
 const UPDATE_USER_LIST = 'UPDATEUSERLIST' // 修改当前缓存内好友信息
 const RECEIVE_INFORMATION = 'RECEIVEINFORMATION' // 接收到最新的消息
 
 const state = {
   friendList: [], // 储存当前好友列表信息
+  intentionList: [], // 储存符合择偶意向的好友
+  autonymList: [], // 储存符合实名的好友
   chatMessage: {}, // 储存当前好友历史信息
   user: {}, // 储存当前登录人信息
   friend: {}, // 储存当前聊天好友信息
@@ -164,8 +163,20 @@ const actions = {
   // 获取好友信息
   [GET_FRIEND_LIST] ({ commit, state }, obj) {
     return new Promise((resolve,reject) => {
+      var len = 0
+      switch(obj.type) {
+        case '1':
+          len = state.friendList.length
+          break
+        case '2':
+          len = state.intentionList.length
+          break
+        case '3':
+          len = state.autonymList.length
+          break
+      }
       messageListing({
-        limitStart: state.friendList.length || 0,
+        limitStart: len || 0,
         pageSize: 10,
         userId: state.user.id,
         type: obj.type
@@ -174,7 +185,17 @@ const actions = {
           if(res.data.length < 10){
             reject()
           }
-          state.friendList.push(...res.data)
+          switch(obj.type) {
+            case '1':
+              state.friendList.push(...res.data)
+              break
+            case '2':
+              state.intentionList.push(...res.data)
+              break
+            case '3':
+              state.autonymList.push(...res.data)
+              break
+          }
           resolve()
         } else {
           reject()
@@ -184,9 +205,21 @@ const actions = {
   },
   [UPDATE_FRIEND_LIST] ({ commit, state }, obj) {
     return new Promise((resolve,reject) => {
+      var len = 0
+      switch(obj.type) {
+        case '1':
+          len = state.friendList.length
+          break
+        case '2':
+          len = state.intentionList.length
+          break
+        case '3':
+          len = state.autonymList.length
+          break
+      }
       messageListing({
         limitStart: 0,
-        pageSize: state.friendList.length,
+        pageSize: len,
         userId: state.user.id,
         type: obj.type
       }).then((res) => {
@@ -194,7 +227,17 @@ const actions = {
           if(res.data.length < 10){
             resolve()
           }
-          state.friendList = res.data
+          switch(obj.type) {
+            case '1':
+              state.friendList = res.data
+              break
+            case '2':
+              state.intentionList = res.data
+              break
+            case '3':
+              state.autonymList = res.data
+              break
+          }
           resolve()
         } else { 
           resolve()
@@ -252,6 +295,20 @@ const mutations = {
       time: products.time
     })
 
+    utils.updateArray(state.intentionList, products.receiver, {
+      hint: 0,
+      context: products.context,
+      status: 2,
+      time: products.time
+    })
+
+    utils.updateArray(state.autonymList, products.receiver, {
+      hint: 0,
+      context: products.context,
+      status: 2,
+      time: products.time
+    })
+
     // 置顶当前好友
     this.commit(FRIEND_SORT, {
       id: products.receiver
@@ -268,6 +325,20 @@ const mutations = {
     // utils.pushLocalData('chatMessage', products.sender, products)
 
     utils.updateArray(state.friendList, products.sender, {
+      context: products.context,
+      hint: true, // 更新最新消息条数
+      status: 2,
+      time: products.time
+    } )
+
+    utils.updateArray(state.intentionList, products.sender, {
+      context: products.context,
+      hint: true, // 更新最新消息条数
+      status: 2,
+      time: products.time
+    } )
+
+    utils.updateArray(state.autonymList, products.sender, {
       context: products.context,
       hint: true, // 更新最新消息条数
       status: 2,
@@ -296,6 +367,7 @@ const mutations = {
   },
   // 对好友列表进行排序  时间排序
   [FRIEND_SORT] (state, products) {
+    // 设置全部好友列表
     if(state.friendList.length === 0 || state.friendList.findIndex(el => el.accountNumber === products.id) === -1){
       return 
     }
@@ -304,6 +376,26 @@ const mutations = {
     arr.splice(arr.findIndex(el => el.accountNumber === products.id), 1)
     arr.unshift(obj)
     state.friendList = arr
+
+    // 设置择偶意向好友列表
+    if(state.intentionList.length === 0 || state.intentionList.findIndex(el => el.accountNumber === products.id) === -1){
+      return 
+    }
+    let arr1 = state.intentionList
+    let obj1 = arr1.find(el => el.accountNumber === products.id)
+    arr1.splice(arr1.findIndex(el => el.accountNumber === products.id), 1)
+    arr1.unshift(obj1)
+    state.intentionList = arr1
+
+    // 设置实名好友列表
+    if(state.autonymList.length === 0 || state.autonymList.findIndex(el => el.accountNumber === products.id) === -1){
+      return 
+    }
+    let arr2 = state.autonymList
+    let obj2 = arr2.find(el => el.accountNumber === products.id)
+    arr2.splice(arr2.findIndex(el => el.accountNumber === products.id), 1)
+    arr2.unshift(obj2)
+    state.autonymList = arr2
   }
 }
 
