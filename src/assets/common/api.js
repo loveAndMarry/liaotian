@@ -55,6 +55,9 @@ export const accessUserDynamics = data => HTTP.GET('web/dynamic/accessUserDynami
 //点赞好友动态
 export const dynamicLike = data => HTTP.GET('web/dynamic/dynamicLike',data)
 
+//获取所有动态
+export const listGlobalDynamics = data => HTTP.GET('web/dynamic/listGlobalDynamics',data)
+
 /**
  * 个人中心模块
  */

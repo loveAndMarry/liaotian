@@ -182,9 +182,6 @@ const actions = {
         type: obj.type
       }).then((res) => {
         if(res.data){
-          if(res.data.length < 10){
-            reject()
-          }
           switch(obj.type) {
             case '1':
               state.friendList.push(...res.data)
@@ -195,6 +192,11 @@ const actions = {
             case '3':
               state.autonymList.push(...res.data)
               break
+          }
+
+          if(res.data.length < 10){
+            reject()
+            return 
           }
           resolve()
         } else {

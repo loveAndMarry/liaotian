@@ -53,6 +53,7 @@ export default {
       finished: false, // 自动拉取是否全部完成
       offsetStart: 0, // 记录滑动的开始距离
       offsetEnd: 0, // 记录滑动的结束距离
+      isOne: 0, // 第一次不执行
     }
   },
   computed: {
@@ -89,6 +90,10 @@ export default {
     },
     // 下拉刷新
     onRefresh () {
+      if( this.isOne === 0){
+        this.isOne = this.isOne + 1
+        return false
+      }
       this.UPDATE_FRIEND_LIST({
         type: this.type
       }).then(() => {
@@ -96,14 +101,14 @@ export default {
       })
     },
     onLoad () {
-      this.GETFRIENDLIST({
-        type: this.type
-      }).then(() => {
-        this.loading = false
-      }).catch(() => {
-        this.loading = false
-        this.finished = true
-      })
+        this.GETFRIENDLIST({
+          type: this.type
+        }).then(() => {
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+          this.finished = true
+        })
     },
     ...mapActions(["UPDATEUSERLIST", 'GETFRIENDLIST','UPDATE_FRIEND_LIST']),
     ...mapMutations(['FRIEND_SORT']),

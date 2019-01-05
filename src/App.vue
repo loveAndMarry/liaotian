@@ -60,6 +60,12 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 </script>
 
 <style>
+
+.dynamic .van-pull-refresh,
+.dynamic .van-pull-refresh__track{
+  height: 100%;
+  overflow-y: scroll
+}
 .chat_list .van-pull-refresh,
 .chat_list .van-pull-refresh__track{
   height: 100%

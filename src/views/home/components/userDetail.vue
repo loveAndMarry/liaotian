@@ -102,7 +102,7 @@
               <span class="hint" v-for="(hint, i) in interestDictVoList" :key="i" v-text="hint.label" :class="{rad: hint.isIdentical}"></span>
             </div>
           </Group>
-          <Group title="高级资料">
+          <Group title="高级资料" v-if='userBaseInformation.isHideAdvancedInformation === "0"'>
             <div class="list_item" v-if="userBaseInformation.hometownName">
               <div class="label">家乡:</div>
               <div class="context">{{userBaseInformation.hometownName}}</div>
