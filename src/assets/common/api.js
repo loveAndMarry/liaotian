@@ -17,7 +17,7 @@ export const postMsg = data => HTTP.GET('web/messengerAccount/sendMessage', data
 export const getFriendMessage = data => HTTP.GET('web/selectUser/queryContactsUserInfo', data)
 
 // 获取消息列表
-export const messageListing = data => HTTP.GET('web/selectUser/messageListing',data)
+export const messageListing = data => HTTP.GET('web/messageFiletering/messageListing',data)
 
 // 获取好友历史信息
 export const getChatRecord = data => HTTP.GET('web/messengerAccount/getChatRecord',data)
@@ -48,6 +48,12 @@ export const likeUser = data => HTTP.GET('web/like/likeUser',data)
 
 //获取当前用户默认的筛选条件
 export const getUserSpouseIntention = data => HTTP.GET('web/selectUser/getUserSpouseIntention',data)
+
+//获取当前用户个人动态
+export const accessUserDynamics = data => HTTP.GET('web/dynamic/accessUserDynamics',data)
+
+//点赞好友动态
+export const dynamicLike = data => HTTP.GET('web/dynamic/dynamicLike',data)
 
 /**
  * 个人中心模块
@@ -126,6 +132,9 @@ export const getMemberLevelList = data => HTTP.GET('web/userMember/getMemberLeve
 
 // 获取当前会员价格信息
 export const getMemberPrice = data => HTTP.GET('web/userMember/getMemberPrice', data)
+
+// 获取轮播图内容
+export const listBanner = data => HTTP.GET('web/banner/listBanner', data)
 
 
 /**

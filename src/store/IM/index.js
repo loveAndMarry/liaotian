@@ -162,31 +162,44 @@ const actions = {
     })
   },
   // 获取好友信息
-  [GET_FRIEND_LIST] ({ commit, state }, fn) {
-    messageListing({
-      limitStart: state.friendList.length || 0,
-      pageSize: 10,
-      userId: state.user.id
-    }).then((res) => {
-      if(res.data){
-        if(res.data.length < 10){
-          fn(true)
+  [GET_FRIEND_LIST] ({ commit, state }, obj) {
+    return new Promise((resolve,reject) => {
+      messageListing({
+        limitStart: state.friendList.length || 0,
+        pageSize: 10,
+        userId: state.user.id,
+        type: obj.type
+      }).then((res) => {
+        if(res.data){
+          if(res.data.length < 10){
+            reject()
+          }
+          state.friendList.push(...res.data)
+          resolve()
+        } else {
+          reject()
         }
-        state.friendList.push(...res.data)
-        fn()
-      } else {
-        fn(true)
-      }
+      })
     })
   },
-  [UPDATE_FRIEND_LIST] ({ commit, state }, fn) {
-    messageListing({
-      limitStart: 0,
-      pageSize: state.friendList.length,
-      userId: state.user.id
-    }).then((res) => {
-      this.friendList = res.data
-      fn()
+  [UPDATE_FRIEND_LIST] ({ commit, state }, obj) {
+    return new Promise((resolve,reject) => {
+      messageListing({
+        limitStart: 0,
+        pageSize: state.friendList.length,
+        userId: state.user.id,
+        type: obj.type
+      }).then((res) => {
+        if(res.data){
+          if(res.data.length < 10){
+            resolve()
+          }
+          state.friendList = res.data
+          resolve()
+        } else { 
+          resolve()
+        }
+      })
     })
   },
   // 获取好友历史信息

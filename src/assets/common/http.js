@@ -51,7 +51,6 @@ HTTP.GET = function (url, data) {
         resolve(res.data)
       } else if(res.data.code === 201) {
         resolve(res.data)
-        Toast(res.data.msg)
       }else{
         console.log('请求失败')
         Toast(res.data.msg)

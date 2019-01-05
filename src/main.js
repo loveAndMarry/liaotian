@@ -13,8 +13,9 @@ Vue.$IM = IM
 import Calendar from 'vue2-datepick';
 Vue.use(Calendar);
 
-import { Dialog } from 'vant';
+import { Dialog, Lazyload } from 'vant';
 Vue.use(Dialog);
+Vue.use(Lazyload);
 
 // 下拉刷新上拉加载组件
 import VueScroller  from 'vue-scroller'

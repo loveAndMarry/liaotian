@@ -60,6 +60,10 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 </script>
 
 <style>
+.chat_list .van-pull-refresh,
+.chat_list .van-pull-refresh__track{
+  height: 100%
+}
 #app .van-nav-bar .van-icon{
   color: #858585 !important
 }

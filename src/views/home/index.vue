@@ -4,10 +4,11 @@
        <div slot="action" @click="search">搜索</div>
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search> -->
-      <Tabs @search="search"/>
-      <div style="height:calc(100% - 1.6rem);position: absolute;top:.8rem;width: 100%;">
-        <HomeList ref='HomeList' ></HomeList>
-      </div>
+    <Banner page="1"></Banner>
+    <Tabs @search="search"/>
+    <div style="height:calc(100% - 1.6rem - 100px);position: absolute;top:calc(.8rem + 100px);width: 100%;">
+      <HomeList ref='HomeList' ></HomeList>
+    </div>
   </div>
 </template>
 
@@ -15,6 +16,7 @@
 import { Search } from 'vant'
 import Tabs from './components/tabs'
 import HomeList from './components/HomeList'
+import Banner from '@/components/Banner'
 import Vue from 'vue'
 import { mapMutations } from 'vuex'
 
@@ -48,7 +50,8 @@ export default {
   components: {
     Search,
     Tabs,
-    HomeList
+    HomeList,
+    Banner
   }
 }
 </script>

@@ -93,8 +93,7 @@ export default {
         images: [context + '?imageMogr2/auto-orient'],
       })
     },
-     onLoad () {
-     
+    onLoad () {
       this.updateData({
         pageCurrent: this.pageCurrent,
         pageSize: this.pageSize

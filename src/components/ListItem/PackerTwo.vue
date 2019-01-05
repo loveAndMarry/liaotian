@@ -80,7 +80,7 @@ export default {
       // 将需要提交的字段和名称进行匹配，顺序必须一样
       this.defaultSubmitData.forEach((el, index) => {
         if(el){
-          b[el] = a[index].replace('厘米','')
+          b[el] = a[index].replace('厘米','').replace('岁','')
         }
       })
       // 设置当前用户id

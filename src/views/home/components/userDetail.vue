@@ -1,161 +1,192 @@
 <template>
   <div class="userDetail">
-      <NavBar title='个人信息' @click-left="onClickLeft" left-arrow></NavBar>
+    <NavBar title='个人信息' @click-left="onClickLeft" left-arrow></NavBar>
     <div class="userDetail_content" id="userDetail_content">
-       <div class="title">
-      <div class="left">
-        <div class="top">
-          <div class="name">{{userBaseInformation.nickName}}
-            <span v-if="userBaseInformation.registerState === '3'">实名</span>
+      <div class="title">
+        <div class="left">
+          <div class="top">
+            <div class="name">{{userBaseInformation.nickName}}
+              <span v-if="userBaseInformation.registerState === '3'">实名</span>
+            </div>
           </div>
+          <div class="message">
+            <p v-text="userBaseInformation.age ? `${userBaseInformation.age}岁` : '未填写'"></p>
+            <i>|</i>
+            <p v-text="userBaseInformation.height ? `${userBaseInformation.height}cm` : '未填写'"></p>
+            <i>|</i>
+            <p v-text="userBaseInformation.education ? userBaseInformation.education: '未填写'"></p>
+            <i>|</i>
+            <p v-text="incomes"></p>
+          </div>
+          <div class="address" v-text="userBaseInformation.domicileName"></div>
         </div>
-        <div class="message">
-          <p v-text="userBaseInformation.age ? `${userBaseInformation.age}岁` : '未填写'"></p>
-          <i>|</i>
-          <p v-text="userBaseInformation.height ? `${userBaseInformation.height}cm` : '未填写'"></p>
-          <i>|</i>
-          <p v-text="userBaseInformation.education ? userBaseInformation.education: '未填写'"></p>
-          <i>|</i>
-          <p v-text="incomes"></p>
+        <div class="right">
+          <img :src="userBaseInformation.userHead" alt="" @click="userHeadClick">
         </div>
-        <div class="address" v-text="userBaseInformation.domicileName"></div>
-      </div>
-      <div class="right">
-        <img :src="userBaseInformation.userHead" alt="" @click="userHeadClick">
-      </div>
-      <div class="bottom">
-        <ul class="img_group">
-          <li v-for="(el, dex) in photoList" :key="dex"><img :src="el" alt="" @click="photoClick(dex)"></li>
-        </ul>
-      </div>
-    </div>
-    <Group title="个人介绍">
-      <p style="color:#858585;font-size:.19rem;line-heigin:.23rem">{{userBaseInformation.personalIntroduction}}</p>
-    </Group>
-    <Group title="认证">
-      <div class="authentication">
-        <div class="real_name" v-if='userBaseInformation.registerState - 0 === 5'>
-          <div></div>
-          <p>实名认证</p>
-        </div>
-        <div class="phone">
-          <div></div>
-          <p>手机认证</p>
+        <div class="bottom">
+          <ul class="img_group">
+            <li v-for="(el, dex) in photoList" :key="dex"><img :src="el" alt="" @click="photoClick(dex)"></li>
+          </ul>
         </div>
       </div>
-    </Group>
-    <Group title="基本资料">
-      <div class="list_item" v-if="userBaseInformation.userNo">
-        <div class="label">ID:</div>
-        <div class="context">{{userBaseInformation.userNo}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.nickName">
-        <div class="label">昵称:</div>
-        <div class="context">{{userBaseInformation.nickName}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.sex">
-        <div class="label">性别:</div>
-        <div class="context">{{userBaseInformation.sex === '1'? '男' : '女'}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.age">
-        <div class="label">年龄:</div>
-        <div class="context">{{userBaseInformation.age + '岁'}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.height">
-        <div class="label">身高:</div>
-        <div class="context">{{userBaseInformation.height + 'cm'}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.education">
-        <div class="label">学历:</div>
-        <div class="context">{{userBaseInformation.education}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.incomeMin">
-        <div class="label">月收入:</div>
-        <div class="context">{{incomes}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.domicileName">
-        <div class="label">居住地:</div>
-        <div class="context">{{userBaseInformation.domicileName}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.maritalStatus">
-        <div class="label">婚姻状况:</div>
-        <div class="context">{{userBaseInformation.maritalStatus}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.childrenSituation">
-        <div class="label">子女情况:</div>
-        <div class="context">{{userBaseInformation.childrenSituation}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.houseSituation">
-        <div class="label">购房情况:</div>
-        <div class="context">{{userBaseInformation.houseSituation}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.carSituation">
-        <div class="label">购车情况:</div>
-        <div class="context">{{userBaseInformation.carSituation}}</div>
-      </div>
-     
-    </Group>
-     <Group title="兴趣爱好">
-       <div class="hint_group">
-        <span class="hint" v-for="(hint, i) in interestDictVoList" :key="i" v-text="hint.label" :class="{rad: hint.isIdentical}"></span>
-       </div>
-    </Group>
-    <Group title="高级资料">
-      <div class="list_item" v-if="userBaseInformation.hometownName">
-        <div class="label">家乡:</div>
-        <div class="context">{{userBaseInformation.hometownName}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.nation">
-        <div class="label">民族:</div>
-        <div class="context">{{userBaseInformation.nation}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.zodiac">
-        <div class="label">属相:</div>
-        <div class="context">{{userBaseInformation.zodiac}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.constellation">
-        <div class="label">星座:</div>
-        <div class="context">{{userBaseInformation.constellation}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.bloodType">
-        <div class="label">血型:</div>
-        <div class="context">{{userBaseInformation.bloodType}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.shape">
-        <div class="label">体型:</div>
-        <div class="context">{{userBaseInformation.shape}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.weight">
-        <div class="label">体重:</div>
-        <div class="context">{{userBaseInformation.weight}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.isSmoke">
-        <div class="label">是否吸烟:</div>
-        <div class="context">{{userBaseInformation.isSmoke}}</div>
-      </div>
-      <div class="list_item" v-if="userBaseInformation.isDrinkAlcohol">
-        <div class="label">是否喝酒:</div>
-        <div class="context">{{userBaseInformation.isDrinkAlcohol}}</div>
-      </div>
-    </Group>
-    <div style="height: .98rem"></div>
-    <div class="immediately" :class="{show: isShow}" @click="immediately">立即联系</div>
-    <!-- <Group title="礼物">
-      <a href="" class="gift">赠送礼物</a>
-      <div class="default hide">
-        <p>ta未收到礼物,</p>
-        <p>成为第一个送ta礼物的人吧！</p>
-      </div>
-    </Group> -->
+      <Tabs v-model="active" animated :sticky="true" :offset-top="46">
+        <Tab title='资料'>
+          <Group title="个人介绍">
+            <p style="color:#858585;font-size:.19rem;line-heigin:.23rem">{{userBaseInformation.personalIntroduction}}</p>
+          </Group>
+          <Group title="认证">
+            <div class="authentication">
+              <div class="real_name" v-if='userBaseInformation.registerState - 0 === 5'>
+                <div></div>
+                <p>实名认证</p>
+              </div>
+              <div class="phone">
+                <div></div>
+                <p>手机认证</p>
+              </div>
+            </div>
+          </Group>
+          <Group title="基本资料">
+            <div class="list_item" v-if="userBaseInformation.userNo">
+              <div class="label">ID:</div>
+              <div class="context">{{userBaseInformation.userNo}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.nickName">
+              <div class="label">昵称:</div>
+              <div class="context">{{userBaseInformation.nickName}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.sex">
+              <div class="label">性别:</div>
+              <div class="context">{{userBaseInformation.sex === '1'? '男' : '女'}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.age">
+              <div class="label">年龄:</div>
+              <div class="context">{{userBaseInformation.age + '岁'}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.height">
+              <div class="label">身高:</div>
+              <div class="context">{{userBaseInformation.height + 'cm'}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.education">
+              <div class="label">学历:</div>
+              <div class="context">{{userBaseInformation.education}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.incomeMin">
+              <div class="label">月收入:</div>
+              <div class="context">{{incomes}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.domicileName">
+              <div class="label">居住地:</div>
+              <div class="context">{{userBaseInformation.domicileName}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.maritalStatus">
+              <div class="label">婚姻状况:</div>
+              <div class="context">{{userBaseInformation.maritalStatus}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.childrenSituation">
+              <div class="label">子女情况:</div>
+              <div class="context">{{userBaseInformation.childrenSituation}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.houseSituation">
+              <div class="label">购房情况:</div>
+              <div class="context">{{userBaseInformation.houseSituation}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.carSituation">
+              <div class="label">购车情况:</div>
+              <div class="context">{{userBaseInformation.carSituation}}</div>
+            </div>
+          
+          </Group>
+          <Group title="兴趣爱好">
+            <div class="hint_group">
+              <span class="hint" v-for="(hint, i) in interestDictVoList" :key="i" v-text="hint.label" :class="{rad: hint.isIdentical}"></span>
+            </div>
+          </Group>
+          <Group title="高级资料">
+            <div class="list_item" v-if="userBaseInformation.hometownName">
+              <div class="label">家乡:</div>
+              <div class="context">{{userBaseInformation.hometownName}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.nation">
+              <div class="label">民族:</div>
+              <div class="context">{{userBaseInformation.nation}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.zodiac">
+              <div class="label">属相:</div>
+              <div class="context">{{userBaseInformation.zodiac}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.constellation">
+              <div class="label">星座:</div>
+              <div class="context">{{userBaseInformation.constellation}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.bloodType">
+              <div class="label">血型:</div>
+              <div class="context">{{userBaseInformation.bloodType}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.shape">
+              <div class="label">体型:</div>
+              <div class="context">{{userBaseInformation.shape}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.weight">
+              <div class="label">体重:</div>
+              <div class="context">{{userBaseInformation.weight}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.isSmoke">
+              <div class="label">是否吸烟:</div>
+              <div class="context">{{userBaseInformation.isSmoke}}</div>
+            </div>
+            <div class="list_item" v-if="userBaseInformation.isDrinkAlcohol">
+              <div class="label">是否喝酒:</div>
+              <div class="context">{{userBaseInformation.isDrinkAlcohol}}</div>
+            </div>
+          </Group>
+        </Tab>
+        <Tab title='动态'>
+          <List 
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+          class="dynamic" ref='dynamic'>
+            <template v-show="data.length !== 0" v-for="(el, index) in data">
+              <div class="dynamic_group" :key="index">
+                <div class="dynamic_title">上传了{{el.type | type}}</div>
+                <div class="dynamic_content">
+                  <template v-if="el.type === '1'">
+                    <p>{{el.context}}</p>
+                  </template>
+                  <template v-if="el.type !== '1'">
+                    <img :src="el.context + '?imageMogr2/auto-orient'" alt="" @click="imgClick(el.context)">
+                  </template>
+                </div>
+                <div class="dynamic_bottom">
+                  <span>{{el.dynamicDate | dateTime}}</span>
+                  <span class="praise" :class="{give:el.isLike === '1'}" @click.stop.prevent="praise($event,el)"><i></i><strong> {{el.likeCount}} 赞</strong></span>
+                </div>
+              </div>
+            </template>
+            <template v-show="data.length === 0"><p></p></template>
+          </List>
+        </Tab>
+      </Tabs>
+      <div style="height: .98rem"></div>
+      <div class="immediately" :class="{show: isShow}" @click="immediately">立即联系</div>
+      <!-- <Group title="礼物">
+        <a href="" class="gift">赠送礼物</a>
+        <div class="default hide">
+          <p>ta未收到礼物,</p>
+          <p>成为第一个送ta礼物的人吧！</p>
+        </div>
+      </Group> -->
     </div>
   </div>
 </template>
 <script>
 
-import { NavBar, ImagePreview} from 'vant'
+import { NavBar, ImagePreview, Tabs, Tab, List} from 'vant'
 import Group from '@/components/Group'
 import utils from "@/assets/common/utils";
-import { userInformationDisplay } from '@/assets/common/api'
+import { userInformationDisplay, accessUserDynamics, dynamicLike} from '@/assets/common/api'
 import { mapActions } from "vuex";
 
 export default {
@@ -164,7 +195,13 @@ export default {
       isShow: false,
       photoList:[],
       userBaseInformation: {},
-      interestDictVoList: []
+      interestDictVoList: [],
+      active: 0,
+      data: [],
+      loading: false,
+      finished: false,
+      pageSize: 10,
+      pageCurrent: 1
     }
   },
   computed: {
@@ -186,8 +223,28 @@ export default {
       return str
     }
   },
+  filters: {
+    type (val) {
+      switch(val){
+        case '1':
+          return '个人简介'
+          break
+        case '2':
+          return '相册'
+          break
+        case '3':
+          return '头像'
+          break
+      }
+    }
+  },
   methods: {
      ...mapActions(["UPDATEUSERLIST"]),
+    imgClick (context) {
+       window.instance = ImagePreview({
+        images: [context + '?imageMogr2/auto-orient'],
+      })
+    },
     photoClick (index) {
       window.instance = ImagePreview({
         images: this.photoList,
@@ -208,6 +265,55 @@ export default {
     onClickLeft () {
       this.$router.back()
     },
+    onLoad () {
+      this.updateData({
+        pageCurrent: this.pageCurrent,
+        pageSize: this.pageSize
+      }).then((res)=>{
+        if(res && res.list && res.list.length > 0 && this.data.length < res.totalCount){
+          this.data.push(...res.list)
+          ++this.pageCurrent
+          this.loading = false
+        } else {
+          this.loading = false
+           // 数据全部加载完成
+          this.finished = true;
+        }
+      })
+    },
+    updateData (obj) {
+      return new Promise((resolve) => {
+        accessUserDynamics({
+          userId: this.$store.state.IM.user.id,
+          accessRecordId: this.$store.state.IM.friend.userId,
+          pageCurrent: obj.pageCurrent,
+          pageSize: obj.pageSize
+        }).then((res) => {
+          resolve(res.data)
+        }).catch(()=> {
+          this.loading = false;
+          // 数据全部加载完成
+          this.finished = true;
+          resolve(this.data)
+        })
+      })
+    },
+    praise ($event, ele) {
+      let _this = this
+      if(ele.isLike === '0'){
+         dynamicLike({
+          userId: _this.$store.state.IM.user.id,
+          accessRecordId: _this.$store.state.IM.friend.userId,
+          dynamicId: ele.id,
+          type: 1
+        }).then(() => {
+          _this.data.splice(_this.data.findIndex(el => el.id === ele.id), 1, Object.assign(_this.data.find(el => el.id === ele.id), {
+            likeCount: ele.likeCount - 0 + 1,
+            isLike: '1'
+          }))
+        })
+      }
+    }
     // showConnection () {
     //   var scrollTop = document.getElementById('userDetail_content').scrollTop || document.getElementById('userDetail_content').scrollTop
     //   if(scrollTop < 500){
@@ -239,11 +345,77 @@ export default {
   // },
   components: {
     NavBar,
-    Group
+    Group,
+    Tabs,
+    Tab,
+    List
   }
 }
 </script>
 <style scoped>
+.praise{
+  float: right;
+}
+.praise i{
+  float: left;
+  display: block;
+  width: .3rem;
+  height: .3rem;
+  background-image: url('../../../assets/images/give_like.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin-top: .1rem;
+  margin-right: .1rem;
+}
+.praise.give{
+  color: #fb97ac;
+}
+.praise.give i{
+  background-image: url('../../../assets/images/no_like.png');
+}
+.dynamic{
+  overflow-x: hidden;
+  overflow-y: scroll;
+  
+  -webkit-overflow-scrolling: touch;
+}
+.dynamic .dynamic_group{
+  border-bottom: .2rem solid #f0f0f0;
+  background-color: #fff;
+  text-align: left;
+  padding: 0 .3rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.dynamic_group .dynamic_content p{
+  margin: 0;
+  padding: .3rem .15rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  font-size: .24rem;
+  color: #949494;
+  background-color: #f0f0f0
+}
+.dynamic_group .dynamic_content img{
+  max-width: 100%;
+  max-height: 3.5rem;
+}
+.dynamic_group .dynamic_title{
+  line-height: .64rem;
+  height: .64rem;
+  font-size: .23rem;
+  color: #949494;
+}
+.dynamic_group .dynamic_bottom{
+  font-size: .2rem;
+  color: #8f8f8f;
+  line-height: .6rem;
+  height: .6rem;
+}
+.dynamic_group .dynamic_bottom span{
+  margin-right: .3rem
+}
+
 .immediately.show{
   display: block
 }
@@ -306,6 +478,7 @@ export default {
   overflow-y: scroll;
   overflow-x: hidden; 
   background-color: #fff;
+  z-index: 999;
 }
 .list_item{
   margin-top: .3rem;
