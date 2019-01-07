@@ -1,6 +1,6 @@
 <template>
   <div class="group">
-    <div style="overflow-y: scroll;position: relative;height: 100%;overflow-x: hidden;">
+    <div style="overflow-y: scroll;position: relative;height: 100%;overflow-x: hidden;-webkit-overflow-scrolling: touch;">
       <div class="group_back">
         <img :src="user.userHead" alt>
       </div>
@@ -20,19 +20,26 @@
             开通会员查看{{title}}
           </div> -->
         </div>
-        <ul class="links">
-          <li class="links_group" v-for="(el, index) in links" :key="index" @click="linkClick(el)">
-            <img :src="el.userHead" alt="">
-            <p>{{el.operationDate | dateTime}}</p>
-          </li>
-        </ul>
+          <List
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+            class="links"
+          >
+          <!-- isJurisdiction('visit') -->
+            <div class="links_group" v-for="(el, index) in links" :key="index" @click="linkClick(el)"> 
+              <img :src="el.userHead" alt="">
+              <p>{{el.operationDate | dateTime}}</p>
+            </div>
+          </List>
+        </div>
         <!-- <router-link class="submit" to="/member">开通会员</router-link> -->
-      </div>
     </div>
   </div>
 </template>
 <script>
-import { NavBar, Circle } from "vant";
+import { NavBar, Circle, List } from "vant";
 import SplitGroup from "@/components/SplitGroup";
 import { personalCenterAccessRecordUser,likeMeList, likeUserList,likeEachOther } from '@/assets/common/api'
 import { mapState } from 'vuex'
@@ -42,9 +49,11 @@ Vue.use(Circle);
 export default {
   data() {
     return {
+      loading: false,
+      finished: false,
+      currentRate: 0,
       totalCount: 0,
-      currentRate: 1,
-      pageSize: 1000,
+      pageSize: 9,
       links: [],
       title: ''
     };
@@ -53,9 +62,6 @@ export default {
     ...mapState({
       user: state => state.IM.user
     }),
-    text() {
-      return this.currentRate.toFixed(0) + "%";
-    },
     fromData () {
       return {
         currentRate: this.currentRate,
@@ -64,23 +70,42 @@ export default {
       }
     },
   },
-  mounted () {
-    console.log(this.$route.query,'this.$route.query')
-    if(this.$route.query.type - 0 === 1){
-      this.title = '看过您的人'
-      this.personalCenterAccessRecordUser()
-    } else if(this.$route.query.type - 0 === 2){
-      this.title = '喜欢过您的人'
-      this.likeMeList()
-    } else if(this.$route.query.type - 0 === 3){
-      this.title = '您喜欢的人'
-      this.likeUserList()
-    } else {
-      this.title = '相互喜欢的人'
-      this.likeEachOther()
-    }
-  },
+  // mounted () {
+  //  this.updateData()
+  // },
   methods: {
+    updateData () {
+      if(this.$route.query.type - 0 === 1){
+        this.title = '看过您的人'
+        this.personalCenterAccessRecordUser()
+      } else if(this.$route.query.type - 0 === 2){
+        this.title = '喜欢过您的人'
+        this.likeMeList()
+      } else if(this.$route.query.type - 0 === 3){
+        this.title = '您喜欢的人'
+        this.likeUserList()
+      } else {
+        this.title = '相互喜欢的人'
+        this.likeEachOther()
+      }
+    },
+    callback (res) {
+      this.totalCount = res.data.totalCount
+      if(res.data.count !== 0){
+        if(res.data.count < this.pageSize){
+          this.finished = true
+        } else {
+          ++this.currentRate
+        }
+        this.links.push(...res.data.list)
+      } else {
+        this.finished = true
+      }
+      this.loading = false
+    },
+    onLoad() {
+      this.updateData()
+    },
     linkClick (item) {
       this.$store.state.IM.friend = item
       this.$router.push({name: 'userDetail'})
@@ -90,44 +115,25 @@ export default {
     },
     // 获取谁看过我的列表
     personalCenterAccessRecordUser () {
-      personalCenterAccessRecordUser(this.fromData).then((res) => {
-        this.totalCount = res.data.totalCount
-        if(res.data.count !== 0){
-          this.links.push(...res.data.list)
-        }
-      })
+      personalCenterAccessRecordUser(this.fromData).then(this.callback)
     },
     // 获取谁喜欢我
     likeMeList () {
-      likeMeList(this.fromData).then((res) => {
-        this.totalCount = res.data.totalCount
-        if(res.data.count !== 0){
-          this.links.push(...res.data.list)
-        }
-      })
+      likeMeList(this.fromData).then(this.callback)
     },
     // 我喜欢谁
     likeUserList () {
-      likeUserList(this.fromData).then((res) => {
-        this.totalCount = res.data.totalCount
-        if(res.data.count !== 0){
-          this.links.push(...res.data.list)
-        }
-      })
+      likeUserList(this.fromData).then(this.callback)
     },
     // 相互喜欢
     likeEachOther () {
-      likeEachOther(this.fromData).then((res) => {
-        this.totalCount = res.data.totalCount
-        if(res.data.count !== 0){
-          this.links.push(...res.data.list)
-        }
-      })
+      likeEachOther(this.fromData).then(this.callback)
     }
   },
   components: {
     NavBar,
-    SplitGroup
+    SplitGroup,
+    List
   }
 };
 </script>
@@ -159,7 +165,7 @@ export default {
   flex-wrap: wrap;
   -webkit-flex-wrap: wrap
 }
-.links li{
+.links .links_group{
   display: block;
   position: relative;
   -webkit-box-flex: 1;
@@ -167,7 +173,7 @@ export default {
   -ms-flex: 1;              /* IE 10 */
   flex: 1;   
 }
-.links li.hide::after{
+.links .links_group.hide::after{
   content: '';
   display: block;
   position: absolute;
@@ -176,13 +182,18 @@ export default {
   border-radius: 50%;
   -webkit-border-radius: 50%;
   top: 0;
+  left: 50%;
+  transform: translate(-50%);
   background-color: rgba(0, 0, 0, 0.7);
   background-image: url('../../assets/images/lock@2x.png');
   background-repeat: no-repeat;
   background-size: 20%;
   background-position: 50%
 }
-.links li img{
+.links .links_group.hide:last-child(9)::after{
+  background-image: url('../../assets/images/more.png');
+}
+.links .links_group img{
   display: block;
   width: 2rem;
   height: 2rem;
@@ -190,7 +201,7 @@ export default {
   -webkit-border-radius: 50%;
   margin: 0 auto
 }
-.links li p{
+.links .links_group p{
   display: block;
   white-space: nowrap;
   color: #707070

@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute;height:100%;width:100%">
+  <div style="position: absolute;height: calc(100% - 56px);;width:100%">
     <ul class="tabs">
       <li :class="{isShow: index === isShow}" @click.prevent="tabsClick(index)" v-for="(item, index) in tabs" :key="index" v-text="item"></li>
     </ul>
@@ -28,15 +28,18 @@
           <span class="btn" style="color:#fff" @click='submitData'>确定</span>
         </div>
       </div>
-      <div v-show="isShow === 2" class="tabs_content_group">
+      <div v-show="isShow === 2" class="tabs_content_group" style="position: relative;">
         <div class="tabs_content_group_scroll">
-          
-          <ListItem title="户口"  :isSubmit="false" type='address' :default='fromData.registeredPermanentResidence' @confirm="a => setFromData({registeredPermanentResidence : a})" hint="不限" ref="registeredPermanentResidence"></ListItem>
+          <ListItem title="户口"  isLock="registeredPermanentResidence" :isSubmit="false" type='address' :default='fromData.registeredPermanentResidence' @confirm="a => setFromData({registeredPermanentResidence : a})" hint="不限" ref="registeredPermanentResidence"></ListItem>
 
-          <ListItem title="家乡"  :isSubmit="false" type='address'  :default='fromData.hometown' @confirm="a => setFromData({hometown : a})" hint="不限" ref="hometown"></ListItem>
+          <ListItem title="家乡"  isLock="hometown" :isSubmit="false" type='address'  :default='fromData.hometown' @confirm="a => setFromData({hometown : a})" hint="不限" ref="hometown"></ListItem>
 
           <div class="item" v-for="(item, index) in advancedFilter" :key="item" @click.stop="clickEvent($event, index, 'advancedFilterValue')">
-          {{item}}<div class="sanjiao">{{fromData[advancedFilterValue[index]][0] ? fromData[advancedFilterValue[index]][0].label : '不限'}}</div>
+            {{item}}
+            <div class="sanjiao">
+              <i class="lock" v-if="!isJurisdiction(advancedFilterValue[index])"></i>
+              <span v-if="isJurisdiction(advancedFilterValue[index])">{{fromData[advancedFilterValue[index]][0] ? fromData[advancedFilterValue[index]][0].label : '不限'}}</span>
+            </div>
           </div>
         </div>
         <div class="item submit">
@@ -71,6 +74,7 @@
     <PackerList title="民族" :data='fromData.nation' :radio='false' v-model="flag.nationShow" name="nation"  @confirm="confirmCallback" ref="nation"></PackerList>
 
     <PackerList title="宗教" :data='fromData.religion' :radio='true' v-model="flag.religionShow" name="religion"  @confirm="confirmCallback" ref="religion"></PackerList>
+
   </div>
 </template>
 
@@ -130,7 +134,7 @@ export default {
     })
   },
   methods: {
-    ...mapMutations(['setFromData','resetFromData']),
+    ...mapMutations(['setFromData','resetFromData','isJurisdiction']),
     confirmCallback (name, value) {
       if(value && value.length > 0){
         value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
@@ -212,8 +216,15 @@ export default {
       // this.setParentData(this.fromData['type'])
      this.$emit('search', fromData, 10)
     },
-    // 基本筛选每项点击事件
+    // 点击事件
     clickEvent ($event, index, name) {
+      console.log('进来了')
+      if(name === 'advancedFilterValue'){
+        if(!this.isJurisdiction(this.advancedFilterValue[index])){
+          this.$router.push({name: 'member'})
+          return false
+        }
+      }
       // 获取当前元素
       if ($event.target.className === 'item') {
         this.event = $event.target.children[0]
@@ -240,6 +251,16 @@ export default {
 }
 </script>
 <style>
+.lock{
+  display: block;
+  background-image: url('../../../assets/images/lock.png');
+  width: .5rem;
+  height: .5rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: .2rem;
+  float: left;
+}
 
 .content  .tabs_content_group_scroll .intention_item{
   border-top: .01rem solid #f0f0f0 !important;

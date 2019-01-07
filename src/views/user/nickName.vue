@@ -35,6 +35,7 @@ export default {
          var toast = this.$toast('修改成功')
          window.setTimeout(() => {
            toast.clear()
+           this.$store.state.IM.user.nickName = this.value
            this.$router.push({name: 'userDetails'})
          }, 1000)
       })

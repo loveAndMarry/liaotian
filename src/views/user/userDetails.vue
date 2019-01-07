@@ -1,6 +1,6 @@
 <template>
   <div class="group">
-    <div style="overflow-y: scroll;position: relative;height: 100%;overflow-x: hidden;">
+    <div style="overflow-y: scroll;position: relative;height: 100%;overflow-x: hidden;-webkit-overflow-scrolling: touch;">
       <div class="group_back">
         <img :src="data.userBaseInformation.userHead + '?imageMogr2/auto-orient'" alt>
       </div>
@@ -114,7 +114,7 @@
 
           <ListItem title="购车情况" dictionaries='car' :default='getData(intentionCarSituation)' type="radioOne" :defaultSubmitData ="intentionCarSituation"></ListItem>
 
-          <ListItem title="子女情况" dictionaries='children' :default='getData(intentionChildrenSituation)' type="radioOne" :defaultSubmitData ="intentionChildrenSituation"></ListItem>
+          <!-- <ListItem title="子女情况" dictionaries='children' :default='getData(intentionChildrenSituation)' type="radioOne" :defaultSubmitData ="intentionChildrenSituation"></ListItem> -->
 
         </SplitGroup>
 
@@ -223,7 +223,7 @@ export default {
       // 择偶意向购车情况
       intentionCarSituation: ['intentionCarSituationDictValue','intentionCarSituation'],
       // 择偶意向子女状况
-      intentionChildrenSituation: ['intentionChildrenSituationDictValue','intentionChildrenSituation'],
+      // intentionChildrenSituationintentionChildrenSituation: ['intentionChildrenSituationDictValue','intentionChildrenSituation'],
        // 家乡
       hometown: ['hometownProvinceId','hometownProvinceName','hometownCityId','hometownCityName'],
        // 户口

@@ -8,7 +8,7 @@
       <Tab title="搜索">
         <Banner page="1"></Banner>
         <TabList @search="search"/>
-        <div style="position: relative;top:.8rem;width: 100%;" :style="{height: 'calc('+height+'px - 1.6rem - 100px)'}"ref="content">
+        <div style="position: relative;top:.8rem;width: 100%;" :style="{height: 'calc('+height+'px - 1.6rem - 100px)'}" ref="content">
           <HomeList ref='HomeList' ></HomeList>
         </div>
       </Tab>
@@ -23,7 +23,7 @@
           >
             <div class="dynamic_group" v-for="(el, index) in dynamicList" :key="index">
               <div class="dynamic_title">
-                <img :src="el.userHead" alt="">
+                <img :src="el.userHead" alt="" @click="linkClick(el)">
                 <div class="dynamic_title_content">
                   <h3>{{el.nickName}}</h3>
                   <div><span>{{el.age + '岁 |'}}</span><span>{{el.height + "厘米 |"}}</span><span>{{el.education + ' |'}}</span><span>{{el.income}}</span></div>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { Search , Tabs, Tab, List, PullRefresh} from 'vant'
+import { Search , Tabs, Tab, List, PullRefresh, ImagePreview} from 'vant'
 import TabList from './components/tabs'
 import HomeList from './components/HomeList'
 import Banner from '@/components/Banner'
@@ -77,7 +77,7 @@ export default {
       loading: false, // 列表刷新
       finished: false, // 列表刷新加载完毕
       dynamicList: [],
-      pageCurrent: 0,
+      pageCurrent: 1,
       pageSize:10
     }
   },
@@ -108,6 +108,15 @@ export default {
     ...mapMutations([
       'setLoading'
     ]),
+    linkClick (item) {
+      this.$store.state.IM.friend = item
+      this.$router.push({name: 'userDetail'})
+    },
+    imgClick (context) {
+       window.instance = ImagePreview({
+        images: [context + '?imageMogr2/auto-orient'],
+      })
+    },
     onRefresh () {
       this.listGlobalDynamics({
         pageCurrent: 0,
@@ -182,14 +191,16 @@ export default {
     Tabs,
     Tab,
     PullRefresh,
-    List
+    List,
+    ImagePreview
   }
 }
 </script>
 
 <style scoped>
 .scroll_group{
-  overflow-y: scroll
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .praise{
   float: right;
@@ -210,6 +221,9 @@ export default {
 }
 .praise.give i{
   background-image: url('../../assets/images/no_like.png');
+}
+.dynamic{
+  height: 100%
 }
 .dynamic_group{
   padding: .3rem .32rem;

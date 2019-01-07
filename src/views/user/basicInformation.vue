@@ -191,6 +191,22 @@ export default {
         this.$toast('请选择生日');
         return false
       }
+      if(this.fromData.domicileProvinceId.replace(' ', '') === '' || this.fromData.domicileCityId.replace(' ', '') === ''){
+        this.$toast('请选择地区');
+        return false
+      }
+      if(this.fromData.height.replace(' ', '') === ''){
+        this.$toast('请选择身高');
+        return false
+      }
+      if(this.fromData.maritalStatusDictValue.replace(' ', '') === ''){
+        this.$toast('请选择婚姻状况');
+        return false
+      }
+      if(this.fromData.incomeMin.replace(' ', '') === '' || this.fromData.incomeMax.replace(' ', '') === ''){
+        this.$toast('请选择月收入');
+        return false
+      }
       initialInformation(this.fromData).then((res) => {
         this.$toast('信息完善成功')
         setTimeout(() => {

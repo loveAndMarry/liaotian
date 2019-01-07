@@ -94,7 +94,7 @@
           <li @click="orderClick">我的订单
             <span class="sanjiao"></span>
           </li>
-          <!-- <li>邀请好友
+          <!-- <li @click="serviceClick">联系客服
             <span class="sanjiao"></span>
           </li> -->
         </ul>
@@ -201,6 +201,9 @@ export default {
       this.$store.state.common.member = item
       this.$router.push({ name: "memberDetails"});
     },
+    serviceClick() {
+      this.$router.push({ name: "service"});
+    },
     beforeClose(action, done) {
       if (action === "confirm") {
         setTimeout(done, 1000);
@@ -289,7 +292,8 @@ export default {
 .overflow{
   height: calc( 100% - 50px - .88rem);
   overflow-x: hidden;
-  overflow-y: scroll
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .submit {
   display: block;

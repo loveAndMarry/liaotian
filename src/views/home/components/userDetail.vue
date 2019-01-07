@@ -334,7 +334,7 @@ export default {
       }
       if(res.data.userBaseInformation){
         this.userBaseInformation = res.data.userBaseInformation
-
+        this.$store.state.IM.friend = this.userBaseInformation
         this.interestDictVoList = utils.mergeArr(this.userBaseInformation.interestDictVoList, this.$store.state.IM.user.interestDictVoList)
       }
     })
@@ -376,7 +376,6 @@ export default {
 .dynamic{
   overflow-x: hidden;
   overflow-y: scroll;
-  
   -webkit-overflow-scrolling: touch;
 }
 .dynamic .dynamic_group{
@@ -477,6 +476,7 @@ export default {
   left: 0;
   overflow-y: scroll;
   overflow-x: hidden; 
+  -webkit-overflow-scrolling: touch;
   background-color: #fff;
   z-index: 999;
 }

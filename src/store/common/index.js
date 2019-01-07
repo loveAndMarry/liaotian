@@ -5,6 +5,7 @@ const state = {
   member: null, // 储存当前选择的会员类型
   Loading: true,
   pageYOffset: 0, // 记录当前滚动条的位置
+  Jurisdiction: [], //权限数组
   fromData: {
     type: 1,
     // 基本筛选条件
@@ -35,6 +36,7 @@ const state = {
 }
 
 const actions = {
+  // 获取默认的检索条件
   getFromData ({commit, state}, userId) {
     return new Promise((resolve) => {
       getUserSpouseIntention({userId}).then((res) => {
@@ -118,7 +120,7 @@ const actions = {
         resolve(state.fromData)
       })
     })
-  }
+  },
 }
 
 
@@ -135,6 +137,12 @@ const mutations = {
   },
   setFromData (state,obj) {
     state.fromData = Object.assign(state.fromData, obj)
+  },
+  isJurisdiction ( state, str){
+    if(str === ''){
+      return true
+    }
+    return state.Jurisdiction.some(el => el === str)
   },
   resetFromData () {
     state.fromData = {

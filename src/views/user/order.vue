@@ -98,6 +98,7 @@ export default {
   overflow-y: scroll;
   background: #fff;
   padding: 0 0.3rem;
+  -webkit-overflow-scrolling: touch;
 }
 .orderGroup {
   padding: 0.2rem;

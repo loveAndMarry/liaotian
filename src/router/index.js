@@ -48,6 +48,8 @@ import authentication from '@/views/user/authentication'
 import purchase from '@/views/purchase'
 // 支付详情
 import PaymentDetails from '@/views/user/PaymentDetails'
+// 在线客服
+import service from '@/views/user/service'
 
 import test from '@/views/test'
 
@@ -210,6 +212,11 @@ const router = new Router({
     path: '/PaymentDetails',
     name: 'PaymentDetails',
     component: PaymentDetails
+  },
+  {
+    path: '/service',
+    name: 'service',
+    component: service
   }
   ]
 })

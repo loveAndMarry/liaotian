@@ -1,5 +1,5 @@
 <template>
-  <div class="chat_list">
+  <div class="chat_list" :style="{height: 'calc('+height+'px - 240px)'}">
     <PullRefresh :disabled="isDisabled" v-model="isLoading" @refresh="onRefresh">
       <List
         v-model="loading"
@@ -55,6 +55,9 @@ export default {
       offsetEnd: 0, // 记录滑动的结束距离
       isOne: 0, // 第一次不执行
     }
+  },
+  beforeMount () {
+    this.height = document.body.clientHeight || document.documentElement.clientHeight
   },
   computed: {
     ...mapState({

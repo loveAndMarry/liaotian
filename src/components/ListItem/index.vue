@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="intention_item" @click.stop="intantionClick">{{title}}:
-      <div class="sanjiao" :class="{hide: noClick}" v-text="replaceName(names, hint)"></div>
+      <div class="sanjiao" :class="{hide: noClick}">
+        <i class="lock" v-if="!Lock"></i>
+        <span v-if="Lock">{{replaceName(names, hint)}}</span>
+      </div>
     </div>
     <Actionsheet v-model="isShow" :close-on-click-overlay='false' ref="content">
       <!-- 地址组件 -->
@@ -24,7 +27,7 @@ import PackerList from '@/components/ListItem/PackerList'
 import PackerOne from '@/components/ListItem/PackerOne'
 import PackerTwo from '@/components/ListItem/PackerTwo'
 import { Actionsheet } from 'vant'
-import{ mapState } from 'vuex'
+import{ mapState} from 'vuex'
 
 export default {
   props: {
@@ -49,6 +52,10 @@ export default {
     default: {
       type: Object/Array,
       default: () => []
+    },
+    isLock:{
+      type: String,
+      default: ''
     },
     // 是否自动提交
     isSubmit: {
@@ -92,6 +99,12 @@ export default {
     }),
     data () {
       return this.result
+    },
+    Lock () {
+      if(this.isLock === ''){
+        return true
+      }
+      return this.$store.state.common.Jurisdiction.some(el => el === this.isLock)
     }
   },
   watch : {
@@ -147,6 +160,9 @@ export default {
       return (label.indexOf(this.suffix) === -1 && label.indexOf(this.suffix) !== 0) ? label + this.suffix : label
     },
     intantionClick () {
+      if(!this.Lock){
+        this.$router.push({name: 'member'})
+      }
       // 当前是否能够点击
       if(this.noClick){
         return false
@@ -175,6 +191,16 @@ export default {
 </script>
 
 <style>
+.lock{
+  display: block;
+  background-image: url('../../assets/images/lock.png');
+  width: .5rem;
+  height: .5rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: .2rem;
+  float: left;
+}
 .intention_item {
   width: 100%;
   display: block;

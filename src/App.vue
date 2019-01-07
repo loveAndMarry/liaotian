@@ -66,6 +66,16 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
   height: 100%;
   overflow-y: scroll
 } */
+
+.service .van-nav-bar__title{
+  background-color: #fff
+}
+.dynamic .van-tabs--line{
+  height: calc(100% - 44px);
+}
+.dynamic .van-tabs__content--animated{
+  height: 100%
+}
 .chat_list .van-pull-refresh,
 .chat_list .van-pull-refresh__track{
   height: 100%

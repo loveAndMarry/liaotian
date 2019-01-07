@@ -26,7 +26,7 @@ export default {
       this.$router.push({name: 'memberDetails'})
     },
     onClickLeft () {
-      this.$router.push({name: 'user'})
+      this.$router.back()
     }
   },
   mounted () {

@@ -3,7 +3,7 @@
     <NavBar
     left-arrow
     @click-left="onClickLeft" title="我的动态"/>
-    <div style="height:calc(100% - 46px);overflow-y: scroll;" ref='contentView'>
+    <div style="height:calc(100% - 46px);overflow-y: scroll;-webkit-overflow-scrolling: touch;" ref='contentView'>
       <!-- <PullRefresh v-model="isLoading" @refresh="onRefresh"> -->
       <List 
       v-model="loading"
@@ -24,7 +24,7 @@
             </div>
             <div class="dynamic_bottom">
               <span>{{el.dynamicDate | dateTime}}</span>
-              <span>0赞</span>
+              <span>{{el.likeCount}}赞</span>
               <i @click="remove(el.id)"></i>
             </div>
           </div>
@@ -165,12 +165,6 @@ export default {
 
 
 <style scoped>
-.dynamic{
-  overflow-x: hidden;
-  overflow-y: scroll;
-  
-  -webkit-overflow-scrolling: touch;
-}
 .dynamic .dynamic_group{
   border-bottom: .2rem solid #f0f0f0;
   background-color: #fff;
