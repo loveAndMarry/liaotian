@@ -1,6 +1,6 @@
 <template>
   <div>
-    <keep-alive exclude="tabs,tabbar">
+    <keep-alive exclude="tabs,tabbar,ListItem">
       <router-view  v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view  v-if="!$route.meta.keepAlive"></router-view>

@@ -3,16 +3,16 @@
     <NavBar title='消息'></NavBar>
     <div class="scroll_group">
       <Banner page='1'></Banner>
-      <div style="height:calc(100% - 96px);position: relative">
+      <div style="height:calc(100% - 96px);position: relative" class="chat">
         <Tabs v-model="active" animated :sticky="true" :offset-top="46" @click="onClick">
           <Tab title='全部'>
             <CharList type="1" ref="charList0"></CharList>
           </Tab>
           <Tab title='择偶'>
-            <CharList type="2" ref="charList1"></CharList>
+            <CharList type="2" ref="charList1" examine="intention_message_filtering"></CharList>
           </Tab>
           <Tab title='实名'>
-            <CharList type="3" ref="charList2"></CharList>
+            <CharList type="3" ref="charList2" examine="realname_message_filtering"></CharList>
           </Tab>
         </Tabs>
       </div>

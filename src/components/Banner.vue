@@ -1,5 +1,5 @@
 <template>
-  <Swipe :autoplay="3000" :height="height">
+  <Swipe :autoplay="3000" :height="height" indicator-color="#ed7794">
     <SwipeItem v-for="(image, index) in images" :key="index">
       <img v-lazy="image.imageUrl" @click="imageClick(image)" class="banner_img"/>
     </SwipeItem>

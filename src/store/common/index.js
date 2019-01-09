@@ -1,4 +1,4 @@
-import { getUserSpouseIntention } from '@/assets/common/api'
+import { getUserSpouseIntention , listJurisdictionPermissionList} from '@/assets/common/api'
 
 const state = {
   active: 0, // 记录当前是哪一页
@@ -68,12 +68,12 @@ const actions = {
         // 年龄
         if(data.intentionAgeMin || data.intentionAgeMax){
           state.fromData.age.push({
-            value: data.intentionAgeMin.replace('岁', '') || '',
-            label: data.intentionAgeMin
+            value: data.intentionAgeMin || '',
+            label: data.intentionAgeMin + '岁'
           })
           state.fromData.age.push({
-            value: data.intentionAgeMax.replace('岁', '') || '',
-            label: data.intentionAgeMax
+            value: data.intentionAgeMax || '',
+            label: data.intentionAgeMax + '岁'
           })
         }
   
@@ -121,6 +121,15 @@ const actions = {
       })
     })
   },
+  // 获取所有的权限标识
+  getJurisdiction ({state}, userId) {
+    return new Promise(resolve => {
+      listJurisdictionPermissionList({userId: userId}).then((res) => {
+        state.Jurisdiction = res.data ? res.data : []
+        resolve()
+      })
+    })
+  }
 }
 
 
@@ -138,40 +147,54 @@ const mutations = {
   setFromData (state,obj) {
     state.fromData = Object.assign(state.fromData, obj)
   },
-  isJurisdiction ( state, str){
-    if(str === ''){
-      return true
-    }
-    return state.Jurisdiction.some(el => el === str)
-  },
   resetFromData () {
-    state.fromData = {
-      type: 1,
-      // 基本筛选条件
-      address: [], // 居住地
-      age: [], // 年龄（区间）
-      height: [], // 身高（区间）
-      maritalStatus: [], // 婚姻状况
-      education: [], // 学历（区间）
-      income: [], // 收入（区间）
-      loveType: [], // 恋爱类型
-      // 高级筛选
-      housePurchase: [], // 是否购房
-      car: [], // 购车情况
-      registeredPermanentResidence: [], // 户口
-      hometown:[], // 家乡(地址)
-      children:[], // 子女
-      constellation: [], // 星座
-      theRealNameSystem:[], // 实名
-      picture: [], // 是否有照片
-      member: [], // 是否会员
-      onLine: [], // 是否在线
-      // profession: [], // 职业
-      bloodType: [], // 血型
-      nation: [], // 民族
-      religion: [], // 宗教,
-      sex: '2'
-    }
+    state.fromData['type'] = 1
+    state.fromData['address'] = []
+    state.fromData['age'] = []
+    state.fromData['height'] = []
+    state.fromData['maritalStatus'] = []
+    state.fromData['education'] = []
+    state.fromData['income'] = []
+    state.fromData['loveType'] = []
+    state.fromData['housePurchase'] = []
+    state.fromData['car'] = []
+    state.fromData['registeredPermanentResidence'] = []
+    state.fromData['hometown'] = []
+    state.fromData['children'] = []
+    state.fromData['constellation'] = []
+    state.fromData['theRealNameSystem'] = []
+    state.fromData['picture'] = []
+    state.fromData['onLine'] = []
+    state.fromData['member'] = []
+    state.fromData['bloodType'] = []
+    state.fromData['nation'] = []
+    state.fromData['religion'] = []
+    // state.fromData = {
+    //   type: 1,
+    //   // 基本筛选条件
+    //   address: [], // 居住地
+    //   age: [], // 年龄（区间）
+    //   height: [], // 身高（区间）
+    //   maritalStatus: [], // 婚姻状况
+    //   education: [], // 学历（区间）
+    //   income: [], // 收入（区间）
+    //   loveType: [], // 恋爱类型
+    //   // 高级筛选
+    //   housePurchase: [], // 是否购房
+    //   car: [], // 购车情况
+    //   registeredPermanentResidence: [], // 户口
+    //   hometown:[], // 家乡(地址)
+    //   children:[], // 子女
+    //   constellation: [], // 星座
+    //   theRealNameSystem:[], // 实名
+    //   picture: [], // 是否有照片
+    //   member: [], // 是否会员
+    //   onLine: [], // 是否在线
+    //   // profession: [], // 职业
+    //   bloodType: [], // 血型
+    //   nation: [], // 民族
+    //   religion: [], // 宗教,
+    // }
   }
 }
 

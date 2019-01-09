@@ -7,7 +7,7 @@
       <div v-show="isShow === 0" class="tabs_content_group">
         <div class="item" v-for="(item, index) in IntelligentSorting" :key="item" v-text="item" :class="{isShow: index === IntelligentSortingShow}" @click.stop="IntelligentSortingEvent(index)"></div>
       </div>
-      <div v-show="isShow === 1" class="tabs_content_group">
+      <div v-show="isShow === 1" class="tabs_content_group basic">
         <div class="tabs_content_group_scroll">
           <ListItem title="居住地"  :isSubmit="false" :default='fromData.address' type='address' @confirm="a => setFromData({address : a})" hint="不限" ref="address"></ListItem>
 
@@ -15,12 +15,16 @@
 
          <ListItem title="学历" dictionaries='education' :default='fromData.education' type="packerTwo" :isSubmit="false" @confirm="a => setFromData({education : a})" hint="不限" ref="education"></ListItem>
 
-          <ListItem title="月收入" dictionaries='income' :default='fromData.income' type="packerTwo" :isSubmit="false" @confirm="a => setFromData({income : a})" hint="不限" ref="incomeDefault"></ListItem>
+          <ListItem title="月收入" dictionaries='income' :default='fromData.income' type="packerTwo"  :isSubmit="false" @confirm="a => setFromData({income : a})" hint="不限" ref="incomeDefault"></ListItem>
 
           <ListItem title="年龄" dictionaries='ages' type='packerTwo'  :default='fromData.age' :isSubmit="false" @confirm="a => setFromData({age : a})" hint="不限" ref="age"></ListItem>
 
           <div class="item"  @click.stop="clickEvent($event, 0, 'maritalStatus')">
             婚姻状况<div class="sanjiao">{{fromData['maritalStatus'][0] ? fromData['maritalStatus'][0].label : '不限'}}</div>
+          </div>
+
+          <div class="item"  @click.stop="clickEvent($event, 0, 'children')">
+            子女情况<div class="sanjiao">{{fromData['children'][0] ? fromData['children'][0].label : '不限'}}</div>
           </div>
         </div>
         <div class="item submit">
@@ -28,7 +32,7 @@
           <span class="btn" style="color:#fff" @click='submitData'>确定</span>
         </div>
       </div>
-      <div v-show="isShow === 2" class="tabs_content_group" style="position: relative;">
+      <div v-show="isShow === 2" class="tabs_content_group advanced" style="position: relative;">
         <div class="tabs_content_group_scroll">
           <ListItem title="户口"  isLock="registeredPermanentResidence" :isSubmit="false" type='address' :default='fromData.registeredPermanentResidence' @confirm="a => setFromData({registeredPermanentResidence : a})" hint="不限" ref="registeredPermanentResidence"></ListItem>
 
@@ -37,8 +41,8 @@
           <div class="item" v-for="(item, index) in advancedFilter" :key="item" @click.stop="clickEvent($event, index, 'advancedFilterValue')">
             {{item}}
             <div class="sanjiao">
-              <i class="lock" v-if="!isJurisdiction(advancedFilterValue[index])"></i>
-              <span v-if="isJurisdiction(advancedFilterValue[index])">{{fromData[advancedFilterValue[index]][0] ? fromData[advancedFilterValue[index]][0].label : '不限'}}</span>
+              <i class="lock" v-if="!isLock(advancedFilterValue[index])"></i>
+              <span v-if="isLock(advancedFilterValue[index])">{{fromData[advancedFilterValue[index]][0] ? fromData[advancedFilterValue[index]][0].label : '不限'}}</span>
             </div>
           </div>
         </div>
@@ -101,8 +105,9 @@ export default {
       IntelligentSorting: ['智能排序', '最新加入', '收入排序', '最新推荐'], // 智能排序
       IntelligentSortingShow: 0, // 智能排序默认显示的内容
       maritalStatus: ['maritalStatus'],
-      advancedFilter: ['购房情况', '购车情况', '有无子女', '星座', '是否实名', '是否有照片', '是否是会员', '是否在线', '血型', '民族', '宗教信仰'], // 高级筛选
-      advancedFilterValue: ['housePurchase', 'car', 'children', 'constellation', 'theRealNameSystem', 'picture', 'member', 'onLine', 'bloodType', 'nation', 'religion'], // 高级筛选对应名称,
+      children: ['children'],
+      advancedFilter: ['购房情况', '购车情况', '星座', '是否实名', '是否有照片', '是否是会员', '是否在线', '血型', '民族', '宗教信仰'], // 高级筛选
+      advancedFilterValue: ['housePurchase', 'car', 'constellation', 'theRealNameSystem', 'picture', 'member', 'onLine', 'bloodType', 'nation', 'religion'], // 高级筛选对应名称,
       flag: {
         maritalStatusShow: false,
         // 高级筛选
@@ -131,10 +136,13 @@ export default {
   computed: {
     ...mapState({
       fromData: state => state.common.fromData
-    })
+    }),
   },
   methods: {
-    ...mapMutations(['setFromData','resetFromData','isJurisdiction']),
+    ...mapMutations(['setFromData','resetFromData']),
+    isLock (str) {
+      return this.$store.state.common.Jurisdiction.some(el => el === str)
+    },
     confirmCallback (name, value) {
       if(value && value.length > 0){
         value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
@@ -163,8 +171,14 @@ export default {
         pageSize: this.pageSize
       })
       
-      var eles = document.querySelectorAll('.sanjiao');
-      eles.forEach(element => {
+      var basic = document.querySelectorAll('.basic .sanjiao');
+      var advanced = document.querySelectorAll('.advanced .sanjiao');
+      if(this.isLock()){
+        basic.forEach(element => {
+          element.innerHTML = "不限"
+        });
+      }
+      basic.forEach(element => {
         element.innerHTML = "不限"
       });
 
@@ -220,7 +234,7 @@ export default {
     clickEvent ($event, index, name) {
       console.log('进来了')
       if(name === 'advancedFilterValue'){
-        if(!this.isJurisdiction(this.advancedFilterValue[index])){
+        if(!this.isLock(this.advancedFilterValue[index])){
           this.$router.push({name: 'member'})
           return false
         }
@@ -344,10 +358,14 @@ export default {
   z-index: 99;
   background-color: rgba(0,0,0,.1);
 }
+.tabs_content .tabs_content_group{
+  background-color: #fff
+}
 .tabs_content .tabs_content_group .tabs_content_group_scroll{
   max-height: 7.1rem;
   overflow-x: hidden;
-  overflow-y: scroll
+  overflow-y: scroll;
+  background-color: #fff
 }
 .tabs_content .item{
   width: 100%;

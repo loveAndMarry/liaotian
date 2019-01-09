@@ -7,7 +7,7 @@
       <div class="group_content">
         <div class="top"></div>
       </div>
-      <div class="content">
+      <div class="content link">
         <NavBar left-arrow @click-left="onClickLeft"/>
         <div class="content_head">
           <div class="head">
@@ -27,8 +27,7 @@
             @load="onLoad"
             class="links"
           >
-          <!-- isJurisdiction('visit') -->
-            <div class="links_group" v-for="(el, index) in links" :key="index" @click="linkClick(el)"> 
+            <div class="links_group" v-for="(el, index) in links" :key="index" @click="linkClick(el)" :class="{hide: !isLock}"> 
               <img :src="el.userHead" alt="">
               <p>{{el.operationDate | dateTime}}</p>
             </div>
@@ -49,6 +48,7 @@ Vue.use(Circle);
 export default {
   data() {
     return {
+      examine: '',
       loading: false,
       finished: false,
       currentRate: 0,
@@ -69,10 +69,16 @@ export default {
         userId: this.user.id
       }
     },
+    isLock () {
+      if(!this.examine){
+        return true
+      }
+      return this.$store.state.common.Jurisdiction.some(el => el === this.examine)
+    }
   },
-  // mounted () {
-  //  this.updateData()
-  // },
+  mounted () {
+   this.examine = this.$route.query.examine
+  },
   methods: {
     updateData () {
       if(this.$route.query.type - 0 === 1){
@@ -102,11 +108,20 @@ export default {
         this.finished = true
       }
       this.loading = false
+
+      if(!this.isLock){
+        this.finished = true
+      }
     },
     onLoad() {
       this.updateData()
     },
     linkClick (item) {
+      if(!this.isLock){
+        this.$router.push({name: 'member'})
+        return false
+      }
+
       this.$store.state.IM.friend = item
       this.$router.push({name: 'userDetail'})
     },
@@ -289,7 +304,7 @@ export default {
   width: 100%;
   background-color: #fff;
   top: 3rem;
-  min-height: calc( 100% - .5rem);
+  min-height: calc( 100% - 3rem);
 }
 .group_content .top {
   display: block;

@@ -1,7 +1,7 @@
 <template>
     <div class="left">
         <div class="left_img">
-            <img :src="userHead" alt="">
+            <img :src="imgDefault ? 'http://systemmaiyuan.minmai1688.com/271658f606964beea25d5ca0a69024181547017098(1).jpg' : userHead">
         </div>
         <div class="left_content"  v-html="Replace(item.context)">
         </div>
@@ -11,7 +11,13 @@
 import { mapState } from 'vuex'
 import utils from '@/assets/common/utils'
 export default {
-  props: ['item'],
+  props: {
+    item: Object,
+    imgDefault: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     ...mapState({
       userHead: state => state.IM.friend? state.IM.friend.userHead: 'https://avatars1.githubusercontent.com/u/6126885?s=88&v=4'

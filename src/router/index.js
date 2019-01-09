@@ -78,6 +78,9 @@ const router = new Router({
       components: {
         default: chat,
         tabbar: tabbar
+      },
+      meta: {
+        keepAlive: true
       }
     },{
       path: 'user',
@@ -86,6 +89,9 @@ const router = new Router({
         default: user,
         tabbar: tabbar
       },
+      meta: {
+        keepAlive: true
+      }
       // children: [
       //   {
       //     path: 'userDetails',
@@ -233,12 +239,17 @@ router.beforeEach((to, from, next) => {
 
   if(to.path === '/'){
     console.log('进入路由拦截')
+    // 获取当前用户信息
     store.dispatch('UPDATEUSER', {userId: utils.getUrlArgObject('userId')}).then((res)=>{
       if(res.registerState - 0 < 2){
         next({name: 'basicInformation' })
       }else {
+        // 获取默认筛选条件
         store.dispatch('getFromData',utils.getUrlArgObject('userId')).then(() => {
-          next({name: 'home'})
+          // 获取权限
+          store.dispatch('getJurisdiction',utils.getUrlArgObject('userId')).then(() => {
+            next({name: 'home'})
+          })
         })
       }
     })

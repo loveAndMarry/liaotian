@@ -94,7 +94,6 @@ export default {
     showData () {
       this.isLoading = false
       this.$nextTick(() => {
-        console.log(this.data, '默认数据')
         if(this.data.length > 0){
           let label1 = this.getLabel(this.data[0].replace('岁', ''))
           let label2 = this.getLabel(this.data[1].replace('岁', ''))

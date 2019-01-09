@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import { NavBar, CellGroup, Field } from "vant"
+import { NavBar, CellGroup, Field, Toast } from "vant"
 import { updateUserNiceName} from "@/assets/common/api";
 export default {
   data () {
@@ -28,6 +28,12 @@ export default {
   },
   methods: {
     onClickRight () {
+      if(this.value.replace(/ /g,'') === ''){
+        Toast({
+          message: '请输入昵称',
+          duration: 1000
+        })
+      }
       updateUserNiceName({
         userId: this.$store.state.IM.user.id,
         nickName: this.value

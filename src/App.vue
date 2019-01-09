@@ -61,12 +61,21 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 
 <style>
 
-/* .dynamic .van-pull-refresh,
-.dynamic .van-pull-refresh__track{
-  height: 100%;
-  overflow-y: scroll
+/* .service_content .van-pull-refresh{
+  width: 100%;
+  height: 100%
+}
+.service_content .van-pull-refresh .van-pull-refresh__track{
+  width: 100%;
+  min-height: 100%
 } */
 
+.van-cell__title{
+  text-align: left
+}
+.link .van-list__finished-text,.link .van-list__loading-text{
+  width: 100%
+}
 .service .van-nav-bar__title{
   background-color: #fff
 }

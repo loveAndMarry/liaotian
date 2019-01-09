@@ -4,6 +4,10 @@
       text="当前处于无网络状态，请检查网络"
       v-show="State"
     />
+    <NoticeBar
+      text="没有根据您的筛选条件查询到用户"
+      v-show="isData"
+    />
     <ul class="home_list">
       <li v-for="(item, index) in columns" :key="index" @click="showDetail(item)">
         <div class="title">
@@ -45,6 +49,7 @@ export default {
     return {
       columns: [],
       State: false,
+      isData: false,
       noDataText: '没有更多的数据',
       pageCurrent: 1,
       pageSize: 10
@@ -131,15 +136,22 @@ export default {
       //if(this.index){
        listUser(this.transitionObj(fromData)).then((res) => {
          this.noDataText = '没有更多数据'
-         if(res.data.list){
-           res.data.list.length < fromData.pageSize ? fn(true) :fn()
-           if(res.data.count <= this.columns.length){
-             return false
-           } else {
-             this.columns.push(...res.data.list)
-           }
-         } else {
+         if(res.code === 201){
+           this.isData = true
+           this.columns = res.data.list
            fn ? fn(true): this.$refs.scroller.finishPullToRefresh()
+         } else {
+           this.isData = false
+            if(res.data.list){
+              res.data.list.length < fromData.pageSize ? fn(true) :fn()
+            if(res.data.count <= this.columns.length){
+              return false
+            } else {
+              this.columns.push(...res.data.list)
+            }
+          } else {
+            fn ? fn(true): this.$refs.scroller.finishPullToRefresh()
+          }
          }
         if(this.$store.state.common.Loading){
           this.setLoading(false)
@@ -159,7 +171,11 @@ export default {
         userId: this.$store.state.IM.user.id
       })
       listUser(this.transitionObj(obj)).then((res) => {
-
+        if(res.code === 201) {
+          this.isData = true
+        } else {
+          this.isData = false
+        }
         if(res.data.list){
           this.columns = res.data.list
         } else {

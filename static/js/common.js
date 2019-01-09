@@ -35,6 +35,15 @@ window.authentication = function(callback){
   }
 }
 
+// 点击调用实名认证
+window.serviceRmation = function(callback){
+  if(typeof callback === 'function'){
+    this.callback = callback
+  } else {
+    this.callback(callback)
+  }
+}
+
 // 安卓点击返回键的时候触发这个函数
 window.closeImagesView = function () {
   console.log('返回上一页成功')

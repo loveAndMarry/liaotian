@@ -19,7 +19,7 @@
           <i @click="removeEvent(item)"></i>
         </li>
       </template>
-      <template v-show="Object.keys(data).length === 0"><p>当前还没有访问记录</p></template>
+      <!-- <template v-show="Object.keys(data).length === 0"><p>当前还没有访问记录</p></template> -->
     </List>
   </PullRefresh>
   <Actionsheet

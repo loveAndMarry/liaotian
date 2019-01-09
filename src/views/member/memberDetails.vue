@@ -48,7 +48,7 @@
 <script>
 import Group from '@/components/Group'
 import { getMemberPrice } from '@/assets/common/api'
-import { NavBar } from 'vant'
+import { NavBar, Toast } from 'vant'
 import { mapState } from 'vuex'
 export default {
   data () {
@@ -81,6 +81,13 @@ export default {
   },
   methods: {
     payment (el) {
+      if((this.user.levelCode) - 0 > 0){
+        Toast({
+          message: '您已经购买了会员，无需再次购买',
+          duration: 1000
+        })
+        return false
+      }
       let obj = {
         body: '购买会员',
         totalAmount: el.discountsStart === '0' ? el.priceY : el.discountsPriceY,

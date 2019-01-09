@@ -13,6 +13,9 @@ export const getFriendsList = data => HTTP.GET('getFriendsList', data)
 // 发送聊天信息
 export const postMsg = data => HTTP.GET('web/messengerAccount/sendMessage', data)
 
+// 发送聊天信息
+export const sendMessageCustomerService = data => HTTP.GET('web/messengerAccount/sendMessageCustomerService', data)
+
 // 根据容联云账号获取详细信息
 export const getFriendMessage = data => HTTP.GET('web/selectUser/queryContactsUserInfo', data)
 
@@ -57,6 +60,9 @@ export const dynamicLike = data => HTTP.GET('web/dynamic/dynamicLike',data)
 
 //获取所有动态
 export const listGlobalDynamics = data => HTTP.GET('web/dynamic/listGlobalDynamics',data)
+
+//获取所有权限标识
+export const listJurisdictionPermissionList = data => HTTP.GET('web/userMember/listJurisdictionPermissionList',data)
 
 /**
  * 个人中心模块
@@ -117,6 +123,9 @@ export const deletePhoto = data => HTTP.GET('web/updateUserController/deletePhot
 
 // 获取个人订单列表
 export const listUserOrder = data => HTTP.GET('web/userOrders/listUserOrder',data)
+
+// 获取展示列表
+export const menuTreeDate = data => HTTP.GET('web/menu/menuTreeDate?parentId=1',data)
 
 /**
  * 字典接口

@@ -1,38 +1,49 @@
 <template>
   <div class="chat_list" :style="{height: 'calc('+height+'px - 240px)'}">
-    <PullRefresh :disabled="isDisabled" v-model="isLoading" @refresh="onRefresh">
-      <List
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-      <div class="chat_list_item" v-for="(el, index) in List" :key="index" @click="chatListClick(el)">
-            <SwipeCell :right-width="65" :on-close="onClose" :el="el" :ref='"swipeCell" + index'>
-              <div class="chat_list_item_group"  @touchstart='touchstart($event, index)' @touchend="touchend($event, index)">
-                <div class="portrait">
-                  <img :src="el.userHead" alt="">
-                </div>
-                <div class="content">
-                  <div class="title">
-                    <div class="top">
-                        <h3 v-text="el.nickName"></h3>
-                        <span v-if="el.theRealNameSystem">实名</span>
-                        <img v-if="el.levelCode - 0 > 0" :src="el.ico" alt="">
-                    </div>
-                    <p v-text="uncodeUtf16(el.context)"></p>
-                  </div>
-                  <div class="info">
-                    <p>{{el.time | fromNow}}</p>
-                    <span v-show="el.hint">{{el.hint}}</span>
-                  </div>
-                </div>
-              </div>
-            <span slot="right" class="remove">删除</span>
-          </SwipeCell>
+    <template v-if="!isExamine()">
+      <div class="link_hint_group">
+        <div class="link_hint_content">
+          <img src="../../../assets/images/without_permission.png" alt="">
+          <p>您不能查看该组消息,<br/>水晶及水晶以上会员才能过滤不符合条件用户信息</p>
+          <span @click="updateMember">升级会员</span>
         </div>
-      </List>
-    </PullRefresh>
+      </div>
+    </template>
+    <template  v-if="isExamine()">
+      <PullRefresh :disabled="isDisabled" v-model="isLoading" @refresh="onRefresh">
+        <List
+          v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+        <div class="chat_list_item" v-for="(el, index) in List" :key="index" @click="chatListClick(el)">
+              <SwipeCell :right-width="65" :on-close="onClose" :el="el" :ref='"swipeCell" + index'>
+                <div class="chat_list_item_group"  @touchstart='touchstart($event, index)' @touchend="touchend($event, index)">
+                  <div class="portrait">
+                    <img :src="el.userHead" alt="">
+                  </div>
+                  <div class="content">
+                    <div class="title">
+                      <div class="top">
+                          <h3  :class="{name_level:(el.levelCode - 0) > 0 }" v-text="el.nickName"></h3>
+                          <span v-if="el.theRealNameSystem">实名</span>
+                          <img v-if="el.levelCode - 0 > 0" :src="el.ico" alt="">
+                      </div>
+                      <p v-text="uncodeUtf16(el.context)"></p>
+                    </div>
+                    <div class="info">
+                      <p>{{el.time | fromNow}}</p>
+                      <span v-show="el.hint">{{el.hint}}</span>
+                    </div>
+                  </div>
+                </div>
+              <span slot="right" class="remove">删除</span>
+            </SwipeCell>
+          </div>
+        </List>
+      </PullRefresh>
+    </template>
   </div>
 </template>
 
@@ -44,7 +55,7 @@ import Vue from "vue";
 import utils from "@/assets/common/utils";
 
 export default {
-  props: ['type'],
+  props: ['type','examine'],
   data () {
     return {
       isDisabled: false, // 禁用下拉刷新
@@ -77,6 +88,15 @@ export default {
     })
   },
   methods: {
+    updateMember () {
+      this.$router.push({name: 'member'})
+    },
+    isExamine(){
+      if(!this.examine){
+        return true
+      }
+      return this.$store.state.common.Jurisdiction.some(el => el === this.examine)
+    },
     touchstart ($event,index) {
       this.offsetStart = this.$refs['swipeCell' + index][0].offset
     },
@@ -95,6 +115,9 @@ export default {
     onRefresh () {
       if( this.isOne === 0){
         this.isOne = this.isOne + 1
+        window.setTimeout(() => {
+          this.isLoading = false
+        }, 300)
         return false
       }
       this.UPDATE_FRIEND_LIST({
@@ -193,6 +216,40 @@ export default {
 </script>
 
 <style scoped>
+
+.link_hint_group{
+  height: 100%;
+  position: relative;
+}
+.link_hint_content{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.link_hint_content img{
+      width: 2rem;
+    height: 2rem;
+    display: block;
+    margin: 0 auto;
+}
+.link_hint_content p{
+      text-align: center;
+    white-space: nowrap;
+    font-size: .26rem;
+}
+.link_hint_content span{
+  display: block;
+    width: 2.68rem;
+    height: .7rem;
+    border: 1px solid #ff5c1a;
+    color: #ff5c1a;
+    border-radius: .5rem;
+    text-align: center;
+    line-height: .7rem;
+    margin: 0 auto;
+    margin-top: .7rem;
+}
 .remove{
 color: #fff;
 font-size: 15px;
@@ -209,7 +266,10 @@ background-color: #f44;
   font-size: 0.19rem;
   margin-top: 0;
   text-align: left;
-  height: 100%
+  height: 100%;
+  /* position: absolute;
+  top: 0;
+  left: 0 */
 }
 .chat_list .chat_list_item {
   display: block;
@@ -240,12 +300,13 @@ background-color: #f44;
 
 .content{
   width: calc(100% - 1.2rem);
+  height: 1.63rem;
   display: inline-block;
   padding: .39rem .3rem;
   box-sizing: border-box;
   box-sizing: -webkit-border-box;
   background-color: #fff;
-  border-bottom: 1px solid #d8d8d8
+  border-bottom: .01rem solid #f2f2f2
 }
 .content .title{
   width: 3.8rem;
@@ -264,6 +325,9 @@ background-color: #f44;
   white-space: nowrap;
   float: left;
   max-width: 3rem;
+}
+.content .title .top h3.name_level{
+  color: #fe2d61
 }
 .content .title .top span{
   display: inline-block;

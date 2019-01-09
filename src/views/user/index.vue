@@ -42,13 +42,13 @@
           </li>
         </ul>
         <ul class="links">
-          <li @click="linkClick(1)" :class="{show: data.accessRecordUserPhotoUrl !== ''}">
+          <li @click="linkClick(1, 'who_visits_me')" :class="{show: data.accessRecordUserPhotoUrl !== ''}">
             <div class="back_Img">
               <img :src="data.accessRecordUserPhotoUrl" alt>
             </div>
             <p>谁看过我</p>
           </li>
-          <li @click="linkClick(2)" :class="{show: data.likeMePhotoUrl !== ''}">
+          <li @click="linkClick(2, 'who_likes_me')" :class="{show: data.likeMePhotoUrl !== ''}">
             <div class="back_Img">
               <img :src="data.likeMePhotoUrl" alt>
             </div>
@@ -60,7 +60,7 @@
             </div>
             <p>我喜欢谁</p>
           </li>
-          <li @click="linkClick(4)">
+          <li @click="linkClick(4, 'like_each_other')">
             <img src="../../assets/images/love@2x.png" alt style="width: inherit;background-image: none;">
             <p>相互喜欢</p>
           </li>
@@ -86,19 +86,14 @@
           </div>
         </div>
       </Group>
-      <div class="group">
-        <ul class="lists">
-          <li @click="myDynamicClick">我的动态
-            <span class="sanjiao"></span>
-          </li>
-          <li @click="orderClick">我的订单
-            <span class="sanjiao"></span>
-          </li>
-          <!-- <li @click="serviceClick">联系客服
-            <span class="sanjiao"></span>
-          </li> -->
-        </ul>
-      </div>
+      <CellGroup>
+        <Cell title="我的动态" is-link to="/MyDynamic"></Cell>
+        <Cell title="我的订单" is-link to="/order"></Cell>
+        <Cell title="联系客服" is-link to="/service"></Cell>
+      </CellGroup>
+      <!-- <div class="group">
+        <Cell v-for="(el, index) in List" :key="index" :title="el.menuName" is-link :url="el.linkHref"></Cell>
+      </div> -->
     </div>
     <van-dialog
       v-model="isshow"
@@ -118,8 +113,8 @@
 </template>
 <script>
 import Group from "@/components/Group";
-import { ImagePreview } from 'vant'
-import { personalCenter, uploadPhoto} from "@/assets/common/api";
+import { ImagePreview , Cell, CellGroup} from 'vant'
+import { personalCenter, uploadPhoto, menuTreeDate} from "@/assets/common/api";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -134,6 +129,7 @@ export default {
         photoList: [],
         userMemberAndUserHeadDTO: {}
       },
+      List: [],
       isLoading: false
     }
   },
@@ -190,12 +186,9 @@ export default {
     photosClick() {
       this.$router.push({ name: "Photo" });
     },
-    linkClick(type) {
+    linkClick(type, examine) {
       // this.isshow = true
-      this.$router.push({ name: "link", query: { type: type } }); // 1为谁看过我 2 为谁喜欢我 3 我喜欢谁 4 互相喜欢
-    },
-    orderClick() {
-      this.$router.push({ name: "order" });
+      this.$router.push({ name: "link", query: { type: type ,examine : examine} }); // 1为谁看过我 2 为谁喜欢我 3 我喜欢谁 4 互相喜欢
     },
     toastClick(item) {
       this.$store.state.common.member = item
@@ -210,9 +203,6 @@ export default {
       } else {
         done();
       }
-    },
-    myDynamicClick() {
-      this.$router.push({ name: "MyDynamic" });
     }
   },
   mounted() {
@@ -222,9 +212,14 @@ export default {
         this.isLoading = true
       }
     });
+    // menuTreeDate({}).then(res => {
+    //   this.List = res.data
+    // })
   },
   components: {
-    Group
+    Group,
+    Cell,
+    CellGroup
   }
 };
 </script>

@@ -1,7 +1,9 @@
-import { postMsg, login, getFriendMessage, messageListing, getChatRecord} from '@/assets/common/api'
+import { postMsg, login, getFriendMessage, messageListing, getChatRecord, sendMessageCustomerService} from '@/assets/common/api'
 import utils from '@/assets/common/utils'
 import IM from '@/assets/common/IM'
 
+const SERVICE_RMATION = 'SERVICERMATION' // 接受到客服发送的消息时触发
+const POST_SERVICE_RMATION = 'POSTSERVICERMATION' // 和客服发送消息的方法，不会建立好友关系
 const POST_MSG = 'POSTMSG' // 提交当前发送的信息
 const UPDATE_USER = 'UPDATEUSER' // 更新个人信息
 const FRIEND_SORT = 'FRIEND_SORT' // 排序当前展示好友的显示顺序
@@ -28,6 +30,35 @@ const getters = {
 }
 
 const actions = {
+  // 和客服聊天时接受消息方法
+  [SERVICE_RMATION] ({ commit, state }, products) {
+    this.callback = null
+    if(typeof products === 'function'){
+      this.callback = products
+    } else {
+      this.callback(products)
+    }
+  },
+  // 和客服聊天时向服务器提交聊天信息
+  [POST_SERVICE_RMATION] ({ commit, state }, products) {
+    return new Promise(resolve => {
+      IM.postMsg({
+        data:products.context,
+        id: products.receiver
+      }).then((res) => {
+        sendMessageCustomerService({
+          context:products.context,
+          sendUserId: products.sendUserId,
+          receiveUserId: products.receiveUserId,
+          chatDate: products.time,
+          type: products.msgType
+        }).then((res) => {
+          resolve()
+        })
+      })
+    })
+  },
+
   [POST_MSG] ({ commit, state }, products) {
     return new Promise((resolve) => {
       // 判断当前好友是否存在，不存在将好友添加到联系人列表

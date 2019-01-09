@@ -88,7 +88,7 @@ export default {
       this.$emit('editHeight', this.isGiftShow)
     },
     postMsg (i) {
-      if(this.context !== ''){
+      if(this.context.replace(/ /g, '') !== ''){
          var context = typeof i === 'object'? utils.utf16toEntities(this.context): i
         var that = this
         this.isShow = false

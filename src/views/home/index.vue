@@ -4,10 +4,10 @@
        <div slot="action" @click="search">搜索</div>
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search> -->
-    <Tabs v-model="active" animated>
+    <Tabs v-model="active" animated @click="onClick">
       <Tab title="搜索">
         <Banner page="1"></Banner>
-        <TabList @search="search"/>
+        <TabList @search="search" ref="TabList"/>
         <div style="position: relative;top:.8rem;width: 100%;" :style="{height: 'calc('+height+'px - 1.6rem - 100px)'}" ref="content">
           <HomeList ref='HomeList' ></HomeList>
         </div>
@@ -25,7 +25,7 @@
               <div class="dynamic_title">
                 <img :src="el.userHead" alt="" @click="linkClick(el)">
                 <div class="dynamic_title_content">
-                  <h3>{{el.nickName}}</h3>
+                  <h3 :class="{name_level:(el.levelCode - 0) > 0 }">{{el.nickName}} <img v-if="el.levelCode - 0 > 0" class="title_level" :src="el.ico" alt=""></h3>
                   <div><span>{{el.age + '岁 |'}}</span><span>{{el.height + "厘米 |"}}</span><span>{{el.education + ' |'}}</span><span>{{el.income}}</span></div>
                 </div>
               </div>
@@ -99,6 +99,9 @@ export default {
   beforeMount () {
     this.height = document.body.clientHeight || document.documentElement.clientHeight
   },
+  activated () {
+    this.active = 0
+  },
   computed: {
     ...mapState({
       user: state => state.IM.user
@@ -108,6 +111,11 @@ export default {
     ...mapMutations([
       'setLoading'
     ]),
+    // 切换tabs时关闭筛选条件框
+    onClick() {
+      this.$refs.TabList.isContentType = false
+      this.$refs.TabList.isShow = -1
+    },
     linkClick (item) {
       this.$store.state.IM.friend = item
       this.$router.push({name: 'userDetail'})
@@ -253,12 +261,24 @@ export default {
 
 .dynamic_title .dynamic_title_content h3{
   display: block;
-  font-size: .33rem;
+  font-size: .29rem;
   line-height: .54rem;
   color: #000000;
   text-overflow: ellipsis;
   overflow: hidden;
   margin:0
+}
+.dynamic_title .dynamic_title_content h3.name_level{
+  color: #fe2d61
+}
+
+.dynamic_title .dynamic_title_content h3 img.title_level{
+  float: none;
+  display: inline-block;
+  height: .4rem;
+  width: .4rem;
+  vertical-align: middle;
+  margin-left: .1rem;
 }
 .dynamic_title .dynamic_title_content div{
   overflow: hidden;

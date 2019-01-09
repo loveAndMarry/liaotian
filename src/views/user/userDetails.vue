@@ -114,7 +114,7 @@
 
           <ListItem title="购车情况" dictionaries='car' :default='getData(intentionCarSituation)' type="radioOne" :defaultSubmitData ="intentionCarSituation"></ListItem>
 
-          <!-- <ListItem title="子女情况" dictionaries='children' :default='getData(intentionChildrenSituation)' type="radioOne" :defaultSubmitData ="intentionChildrenSituation"></ListItem> -->
+          <ListItem title="子女情况" dictionaries='children' :default='getData(intentionChildrenSituation)' type="radioOne" :defaultSubmitData ="intentionChildrenSituation"></ListItem>
 
         </SplitGroup>
 
@@ -158,11 +158,25 @@
       :showConfirmButton="false"
       :showCancelButton="false"
       closeOnClickOverlay
-      :before-close="beforeClose">
+    >
       <div class="dialog_content">
         <span>谁喜欢了我</span>
+        <p>开通会员，随时查看喜欢你的用户，更可享有更多特权！</p>
+        <router-link to="/member" class="submit">开通会员</router-link>
+      </div>
+    </van-dialog>
+
+    <van-dialog
+      v-model="isShow2"
+      show-cancel-button
+      :showConfirmButton="false"
+      :showCancelButton="false"
+      closeOnClickOverlay
+      >
+      <div class="dialog_content">
+        <span>谁查看了我</span>
         <p>开通会员，随时查看悄悄查看你的用户，更可享有更多特权！</p>
-        <router-link to="###" class="submit">开通会员</router-link>
+        <router-link to="/member" class="submit">开通会员</router-link>
       </div>
     </van-dialog>
   </div>
@@ -182,8 +196,8 @@ export default {
       index: 1,
       isData: false,
       isShow: false,
+      isShow2: false,
       currentRate: 0,
-      nickNameShow: false,
       data: {
         dataIntegrity: 0,
         userBaseInformation: {
@@ -223,7 +237,7 @@ export default {
       // 择偶意向购车情况
       intentionCarSituation: ['intentionCarSituationDictValue','intentionCarSituation'],
       // 择偶意向子女状况
-      // intentionChildrenSituationintentionChildrenSituation: ['intentionChildrenSituationDictValue','intentionChildrenSituation'],
+      intentionChildrenSituation: ['intentionChildrenSituationDictValue','intentionChildrenSituation'],
        // 家乡
       hometown: ['hometownProvinceId','hometownProvinceName','hometownCityId','hometownCityName'],
        // 户口
@@ -276,8 +290,15 @@ export default {
     this.updateData()
   },
   methods: {
+     isLock (str) {
+      return this.$store.state.common.Jurisdiction.some(el => el === str)
+    },
     // 点击最近访客进入个人信息页面
     accessRecord (item) {
+      if(!this.isLock('who_visits_me')){
+        this.isShow2 = true
+        return false
+      }
       this.$store.state.IM.friend = item
       this.$router.push({name: 'userDetail'})
     },
@@ -383,8 +404,12 @@ export default {
       })
     },
     linkClick () {
-      // this.isShow = true
-      this.$router.push({name: 'link', query: {type: 2}})
+      this.isShow = true
+      if(this.isLock('who_likes_me')){
+        this.$router.push({name: 'link', query: {type: 2, examine : ''}})
+      } else {
+        this.isShow = true
+      }
     },
     nickNameClick () {
       this.$router.push({name: 'nickName',query:{nickName: this.data.userBaseInformation.nickName}})
@@ -393,6 +418,10 @@ export default {
       this.$router.push({name: 'user'})
     },
     visitorClick () {
+      if(!this.isLock('who_visits_me')){
+        this.isShow2 = true
+        return false
+      }
       this.$router.push({name: 'RecentVisitors'})
     },
     selfClick () {
@@ -404,11 +433,7 @@ export default {
       this.$router.push({name: 'Hobbies', query: {
         interestDictVoList: this.data.userBaseInformation.interestDictVoList || []
       }})
-    },
-    beforeClose () {
-      this.nickNameShow = false
-    },
-    
+    }
   },
   components: {
     NavBar,
@@ -503,7 +528,7 @@ export default {
 .dialog_content p{
   margin-top: .8rem;
   padding: 0 .5rem;
-  font-size: .23rem;
+  font-size: .28rem;
   color: #868686
 }
 

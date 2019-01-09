@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="intention_item" @click.stop="intantionClick">{{title}}:
-      <div class="sanjiao" :class="{hide: noClick}">
-        <i class="lock" v-if="!Lock"></i>
-        <span v-if="Lock">{{replaceName(names, hint)}}</span>
+      <div class="sanjiao" :class="{hide: noClick, locks: !Lock()}" v-text="replaceName(names, hint)">
       </div>
     </div>
     <Actionsheet v-model="isShow" :close-on-click-overlay='false' ref="content">
@@ -30,6 +28,7 @@ import { Actionsheet } from 'vant'
 import{ mapState} from 'vuex'
 
 export default {
+  name: 'ListItem',
   props: {
     // 是否可以点击
     noClick: {
@@ -99,17 +98,11 @@ export default {
     }),
     data () {
       return this.result
-    },
-    Lock () {
-      if(this.isLock === ''){
-        return true
-      }
-      return this.$store.state.common.Jurisdiction.some(el => el === this.isLock)
     }
   },
   watch : {
     result (val) {
-      // this.$nextTick(() => {
+       // this.$nextTick(() => {
         if(val.length > 0){
           
           if(this.type === 'packerTwo'){
@@ -144,12 +137,21 @@ export default {
     },
     default (val) {
       if(val.length === 0){
-        this.result = this.default
+        this.result = []
       }
     }
   },
   methods: {
+    Lock () {
+      if(this.isLock === ''){
+        return true
+      }
+      return this.$store.state.common.Jurisdiction.some(el => el === this.isLock)
+    },
     replaceName (val,hint) {
+      if(!this.Lock()){
+        return ''
+      }
       if(val.replace(/,/g,'').replace(/-/g,'').replace(/\s/g,'') === ''){
         return hint
       } else {
@@ -160,7 +162,7 @@ export default {
       return (label.indexOf(this.suffix) === -1 && label.indexOf(this.suffix) !== 0) ? label + this.suffix : label
     },
     intantionClick () {
-      if(!this.Lock){
+      if(!this.Lock()){
         this.$router.push({name: 'member'})
       }
       // 当前是否能够点击
@@ -191,7 +193,8 @@ export default {
 </script>
 
 <style>
-.lock{
+.locks::before{
+  content:"";
   display: block;
   background-image: url('../../assets/images/lock.png');
   width: .5rem;
