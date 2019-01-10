@@ -1,56 +1,29 @@
 <template>
   <div id="app">
-    <!-- <transition :name="transitionName"> -->
-      <!-- <keep-alive> -->
       <router-view class="Router"></router-view>
-
-      <!-- </keep-alive> -->
-    <!-- </transition> -->
-    <!-- <transition :name="transitionName1"> -->
-      <!-- <keep-alive> -->
-        <router-view class="Router1" name="content"></router-view>
-      <!-- </keep-alive> -->
-    <!-- </transition> -->
-    <!-- <div class="loading" :style="{
-        show: this.isLoading
-      }">
-    </div> -->
+      <router-view class="Router" name="content"></router-view>
     <div class="loading_group" v-show="Loading"><Loading class="loading" type="spinner" size="1.5rem"/></div>
-    <!-- <div class="loading_back " v-show="Loading"></div> -->
   </div>
 </template>
 
 <script>
-import { Loading } from 'vant'
+
 import { mapState } from 'vuex'
+import { validRange, valid } from 'semver';
+import { Loading } from 'vant'
 export default {
   name: 'App',
   data () {
     return {
       transitionName: 'slide-left', // 默认动态路由变化为slide-right
-      transitionName1: 'slide-right' // 默认动态路由变化为slide-right
+      transitionName1: 'slide-right', // 默认动态路由变化为slide-right
     }
   },
   computed: {
     ...mapState({
       Loading: state => state.common.Loading
-    })
+    }),
   },
-  // watch: {
-  //   $route (to, from) {
-  //     let isBack = this.$router.isBack //  监听路由变化时的状态为前进还是后退
-  //     if(to.path.indexOf('/view') === -1 && from.path.indexOf('/view') === -1){
-  //        if (isBack) {
-  //         this.transitionName = 'slide-left'
-  //         this.transitionName1 = 'slide-left'
-  //       } else {
-  //         this.transitionName = 'slide-left'
-  //         this.transitionName1 = 'slide-right'
-  //       }
-  //     }
-  //     this.$router.isBack = false
-  //   }
-  // },
   components: {
     Loading
   }
@@ -60,16 +33,28 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 </script>
 
 <style>
-
-/* .service_content .van-pull-refresh{
-  width: 100%;
-  height: 100%
+/* 设置免费领取会员按钮的样式*/
+.ToReceiveTheMember .van-button--large{
+  top: 8rem;
+  width: 50%;
+  height: 44px;
+  background-color: #ff6f93;
+  border: #ff6f93;
 }
-.service_content .van-pull-refresh .van-pull-refresh__track{
-  width: 100%;
-  min-height: 100%
-} */
 
+/* 设置海选tabs页字体颜色 */
+.Auditions .van-tab{
+  color: #2c2c2c
+}
+.Auditions .van-tab--active{
+  color: #f86b95
+}
+
+#app .van-popup--right{
+  width: 100%;
+  height: 100%;
+  background-color: #fff
+}
 .van-cell__title{
   text-align: left
 }
@@ -152,148 +137,14 @@ body {
   -webkit-touch-callout:none;/*系统默认菜单被禁用*/-webkit-user-select:none;/*webkit浏览器*/-khtml-user-select:none;/*早起浏览器*/-moz-user-select:none;/*火狐浏览器*/-ms-user-select:none;/*IE浏览器*/user-select:none;/*用户是否能够选中文本*/
 }
 
-.Router,.Router1 {
+.Router {
   position: absolute;
   width: 100%;
   top:0;
   height: 100%;
   background-color: #f0f0f0
 }
-/* .Router{
-  transition: all 0.8s ease;
-}
-.Router1{
-  transition: all 0.3s ease;
-} */
 
-.slide-left-enter{
-   -webkit-transform: translate(-100%, 0);
-    transform: translate(-100%, 0);
-}
-
-.slide-left-enter-active{
-  transition: all .3s ease
-}
-
-.slide-left-enter-to{
-     -webkit-transform: translate(0, 0);
-    transform: translate(0, 0);
-}
-
-.slide-left-leave{
-   -webkit-transform: translate(0, 0);
-    transform: translate(0, 0);
-}
-
-.slide-left-leave-active{
-  transition: all .3s
-}
-
-.slide-left-leave-to{
-     -webkit-transform: translate(-100%, 0);
-    transform: translate(-100%, 0);
-}
-/* .slide-left-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-} */
-.slide-right-enter{
-   -webkit-transform: translate(100%, 0);
-    transform: translate(100%, 0);
-}
-
-.slide-right-enter-active{
-  transition: all .3s
-}
-
-.slide-right-enter-to{
-     -webkit-transform: translate(0, 0);
-    transform: translate(0, 0);
-}
-
-.slide-right-leave{
-   -webkit-transform: translate(100%, 0);
-    transform: translate(100%, 0);
-}
-
-.slide-right-leave-active{
-  transition: all .3s
-}
-
-.slide-right-leave-to{
-     -webkit-transform: translate(100%, 0);
-    transform: translate(100%, 0);
-}
-
-/* .slide-right-enter{ */
-  /* -webkit-transform: translate(80%, 0);
-  transform: translate(80%, 0); */
-/* }
-.slide-right-enter-active {
-  animation: slide_Right 1.1s ease
-}
-.slide-right-enter-to { */
-  /* -webkit-transform: translate(100%, 0);
-  transform: translate(100%, 0); */
-/* } */
-/* .slide-right-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-} */
-
-/* @keyframes slide_Right {
-  0% {
-    -webkit-transform: translate(0%, 0);
-    transform: translate(0%, 0);
-  }
-  20% {
-    -webkit-transform: translate(80%, 0);
-    transform: translate(80%, 0);
-  }
-  80% {
-    -webkit-transform: translate(100%, 0);
-    transform: translate(100%, 0);
-  }
-} */
-
-/* .slide-left-leave-active {
-  -webkit-transform: translate(-100%, 0);
-  transform: translate(-100% 0);
-} */
-
-/* .slide-right-enter {
-  -webkit-transform: translate(-100%, 0);
-  transform: translate(-100%, 0);
-}
-
-.slide-right-leave-active {
-  -webkit-transform: translate(0, 0);
-  transform: translate(0, 0);
-} */
-
-/* .slide-right-active {
-  animation: bounce-in 1s
-} */
-/* .slide-right-leave-active {
-  opacity: 0;
-  -webkit-transform: translate(100%, 0);
-  transform: translate(100%, 0);
-} */
-
-/* @keyframes bounce-in {
-  0% {
-    -webkit-transform: translate(100%, 0);
-    transform: translate(100% 0);
-  }
-  50% {
-    opacity: .5;
-     -webkit-transform: translate(20%, 0);
-    transform: translate(20% 0);
-  }
-  100% {
-    opacity: 0;
-     -webkit-transform: translate(0, 0);
-    transform: translate(0, 0);
-  }
-} */
 ._v-container>._v-content>.loading-layer{
   font-size: .28rem !important;
   line-height: .6rem !important;

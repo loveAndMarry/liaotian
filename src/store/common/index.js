@@ -6,6 +6,8 @@ const state = {
   Loading: true,
   pageYOffset: 0, // 记录当前滚动条的位置
   Jurisdiction: [], //权限数组
+  isShow: false, // 控制左侧滑出框
+  popupTitle: '', // 弹出框的标题
   fromData: {
     type: 1,
     // 基本筛选条件
@@ -146,6 +148,15 @@ const mutations = {
   },
   setFromData (state,obj) {
     state.fromData = Object.assign(state.fromData, obj)
+  },
+  // 设置右侧弹出层的title和是否显示
+  setPopup (state,obj) {
+    if(typeof obj === 'boolean'){
+      state.isShow = obj
+      return false
+    }
+    state.isShow = obj.isShow
+    state.popupTitle = obj.popupTitle
   },
   resetFromData () {
     state.fromData['type'] = 1

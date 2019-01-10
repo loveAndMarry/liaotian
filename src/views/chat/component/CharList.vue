@@ -87,6 +87,11 @@ export default {
       }
     })
   },
+  watch : {
+    List (val) {
+      console.log(val,'最新的好友列表更新了')
+    }
+  },
   methods: {
     updateMember () {
       this.$router.push({name: 'member'})

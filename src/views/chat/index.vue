@@ -4,7 +4,7 @@
     <div class="scroll_group">
       <Banner page='1'></Banner>
       <div style="height:calc(100% - 96px);position: relative" class="chat">
-        <Tabs v-model="active" animated :sticky="true" :offset-top="46" @click="onClick">
+        <Tabs v-model="active" animated sticky :offset-top="46" @click="onClick">
           <Tab title='全部'>
             <CharList type="1" ref="charList0"></CharList>
           </Tab>

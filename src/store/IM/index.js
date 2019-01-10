@@ -160,14 +160,14 @@ const actions = {
             receiveUserId: state.user.id,
           })
   
-          commit(RECEIVE_INFORMATION, products)
-          // 置顶当前好友
-          commit(FRIEND_SORT, {
-            id: products.sender
-          })
         })
         state.friendArr.push(products.sender)
       }
+      commit(RECEIVE_INFORMATION, products)
+      // 置顶当前好友
+      commit(FRIEND_SORT, {
+        id: products.sender
+      })
       return false
     } else {
        // 如果当前好友存在，就获取当前好友的id

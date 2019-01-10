@@ -6,6 +6,8 @@ import utils from '@/assets/common/utils'
 import chat from '@/views/chat'
 // 首页
 import home from '@/views/home'
+// 海选
+import Auditions from '@/views/Auditions'
 // 主页
 import view from '@/views'
 // 底部导航栏
@@ -82,6 +84,17 @@ const router = new Router({
       meta: {
         keepAlive: true
       }
+    },
+    {
+      path: 'Auditions',
+      name: 'Auditions',
+      components: {
+        default: Auditions,
+        tabbar: tabbar
+      },
+      meta: {
+        keepAlive: true
+      }
     },{
       path: 'user',
       name: 'user',
@@ -92,28 +105,17 @@ const router = new Router({
       meta: {
         keepAlive: true
       }
-      // children: [
-      //   {
-      //     path: 'userDetails',
-      //     name: 'userDetails',
-
-      //   }
-      // ]
     }]
   },
   {
     path: '/exchange',
     name: 'exchange',
-    components: {
-      content: exchange
-    }
+    component: exchange
   },
   {
     path: '/userDetail',
     name: 'userDetail',
-    components: {
-      content: userDetail
-    },
+    component: userDetail,
     meta: {
       keepAlive: true
     }
@@ -121,58 +123,42 @@ const router = new Router({
   {
     path: '/userDetails',
     name: 'userDetails',
-    components: {
-      content: userDetails
-    }
+    component: userDetails
   },
   {
     path: '/RecentVisitors',
     name: 'RecentVisitors',
-    components: {
-      content: RecentVisitors
-    }
+    component: RecentVisitors
   },
   {
     path: '/selfIntroduction',
     name: 'selfIntroduction',
-    components: {
-      content: selfIntroduction
-    }
+    component: selfIntroduction
   },
   {
     path: '/Hobbies',
     name: 'Hobbies',
-    components: {
-      content: Hobbies
-    }
+    component: Hobbies
   },
   {
     path: '/Photo',
     name: 'Photo',
-    components: {
-      content: Photo
-    }
+    component: Photo
   },
   {
     path: '/link',
     name: 'link',
-    components: {
-      content: link
-    }
+    component: link
   },
   {
     path: '/MyDynamic',
     name: 'MyDynamic',
-    components: {
-      content: MyDynamic
-    }
+    component: MyDynamic
   },
   {
     path: '/nickName',
     name: 'nickName',
-    components: {
-      content: nickName
-    }
+    component: nickName
   },
   {
     path: '/member',

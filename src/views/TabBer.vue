@@ -17,20 +17,20 @@
             :src="active === 1 ? msgicon.active : msgicon.normal"
           >
         </TabbarItem>
-        <!-- <TabbarItem>
+        <TabbarItem to='/view/Auditions'>
           <span>海选</span>
           <img
             slot="icon"
             slot-scope="props"
             :src="active === 2 ? choiceicon.active : choiceicon.normal"
           >
-        </TabbarItem> -->
+        </TabbarItem>
         <TabbarItem to='/view/user'>
           <span>个人中心</span>
           <img
             slot="icon"
             slot-scope="props"
-            :src="active === 2 ? usericon.active : usericon.normal"
+            :src="active === 3 ? usericon.active : usericon.normal"
           >
         </TabbarItem>
       </Tabbar>
@@ -54,8 +54,8 @@ export default {
         normal: require('../assets/images/message_btn@2x.png')
       },
       choiceicon: {
-        active: require('../assets/images/choice_active@2x.png'),
-        normal: require('../assets/images/choice_btn@2x.png')
+        active: require('../assets/images/choice_active.png'),
+        normal: require('../assets/images/choice.png')
       },
       usericon: {
         active: require('../assets/images/user_active@2x.png'),

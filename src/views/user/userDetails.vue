@@ -45,7 +45,7 @@
           <div>
             <span>{{data.userBaseInformation.age}}岁</span>
             <span>{{data.userBaseInformation.height}}厘米</span>
-            <span>{{data.userBaseInformation.domicileName}}</span>
+            <span>{{data.userBaseInformation.income}}</span>
           </div>
         </div>
 

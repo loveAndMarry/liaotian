@@ -203,18 +203,18 @@ export default {
       } else {
         done();
       }
-    }
-  },
-  mounted() {
-    personalCenter({ userId: this.user.id }).then(res => {
+    },
+    getData () {
+      personalCenter({ userId: this.user.id }).then(res => {
       if (res.data) {
         this.data = Object.assign(this.data, res.data);
         this.isLoading = true
       }
     });
-    // menuTreeDate({}).then(res => {
-    //   this.List = res.data
-    // })
+    }
+  },
+  activated() {
+    this.getData()
   },
   components: {
     Group,

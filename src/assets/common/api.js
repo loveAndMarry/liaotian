@@ -154,3 +154,11 @@ export const listBanner = data => HTTP.GET('web/banner/listBanner', data)
  */
 
 export const initialInformation = data => HTTP.GET('web/updateUserController/initialInformation', data)
+
+
+/**
+ * 活动接口
+ */
+
+ // 领取会员活动接口
+export const participationActivities = data => HTTP.GET('web/userActivity/participationActivities', data)

@@ -361,7 +361,7 @@ export default {
   display: block;
   width: .3rem;
   height: .3rem;
-  background-image: url('../../../assets/images/give_like.png');
+  background-image: url('../../../assets/images/no_like.png');
   background-repeat: no-repeat;
   background-size: 100%;
   margin-top: .1rem;
@@ -371,7 +371,7 @@ export default {
   color: #fb97ac;
 }
 .praise.give i{
-  background-image: url('../../../assets/images/no_like.png');
+  background-image: url('../../../assets/images/give_like.png');
 }
 .dynamic{
   overflow-x: hidden;

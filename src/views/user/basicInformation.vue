@@ -1,6 +1,7 @@
 <template>
   <div class='left basicInformation'>
     <NavBar title="完善资料"></NavBar>
+    <NoticeBar mode="closeable">请完善页面中所有的个人信息</NoticeBar>
        <div style="padding: .2rem 0 .2rem .3rem;overflow: hidden;background-color: #fff;">
       <div class="head" @click="submitPhoto">
         <div class="headImg"><img v-if="imgUrl !== ''" :src="imgUrl + '?imageMogr2/auto-orient'" alt></div>
@@ -71,7 +72,7 @@
   </div>
 </template>
 <script>
-import { NavBar, Actionsheet, Cell, CellGroup, Field, RadioGroup, Radio, Button} from "vant"
+import { NavBar, Actionsheet, Cell, CellGroup, Field, RadioGroup, Radio, Button, NoticeBar} from "vant"
 import ListItem from '@/components/ListItem' 
 import { initialInformation } from '@/assets/common/api'
 import utils from '@/assets/common/utils'
@@ -115,7 +116,8 @@ export default {
     RadioGroup,
     Radio,
     Field,
-    Button
+    Button,
+    NoticeBar
   },
   mounted () {
     this.fromData.userId = utils.getUrlArgObject('userId')
@@ -151,12 +153,12 @@ export default {
       this.fromData.education = result[0].label
     },
     incomeConfirm (result) {
-      if(result[0].label.indexof('以下')){
+      if(result[0].label.indexOf('以下') !== -1){
         this.fromData.incomeMin = result[0].label.replace('以下', '')
         this.fromData.incomeMax = '-1'
         return false
       }
-      if(result[0].label.indexof('以上')){
+      if(result[0].label.indexOf('以上') !== -1){
         this.fromData.incomeMin = '-1'
         this.fromData.incomeMax = result[0].label.replace('以上', '')
         return false
@@ -183,6 +185,7 @@ export default {
       this.fromData.sex = this.radio
     },
     submitClick () {
+      console.log(this.fromData.incomeMin,this.fromData.incomeMax)
       if(this.fromData.nickName.replace(' ', '') === ''){
         this.$toast('请输入昵称');
         return false
@@ -201,6 +204,10 @@ export default {
       }
       if(this.fromData.maritalStatusDictValue.replace(' ', '') === ''){
         this.$toast('请选择婚姻状况');
+        return false
+      }
+      if(this.fromData.educationDictValue.replace(' ', '') === ''){
+        this.$toast('请选择学历');
         return false
       }
       if(this.fromData.incomeMin.replace(' ', '') === '' || this.fromData.incomeMax.replace(' ', '') === ''){
