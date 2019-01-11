@@ -1,6 +1,7 @@
 import MD5 from 'js-md5'
 import store from '@/store'
 import utils from './utils'
+import { promises } from 'fs';
 var RL_YTX = window.RL_YTX
 
 function IM () {
@@ -91,8 +92,20 @@ IM.prototype = {
           })
         }
       })
-
-      RL_YTX. onConnectStateChangeLisenter((res) => {
+      
+      // 登录之后监听跟自己相关的群组信息
+      RL_YTX.onNoticeReceiveListener(function(obj) {
+        // this.dispatch()
+        // 触发store
+        // 群组id   obj.groupId;
+        // 群组名称   obj.groupName;
+        // 申请者id   obj.member;
+        // 申请者名称   (!!obj.memberName)?obj.memberName:obj.member;
+        // obj.auditType   1申请加入群组，2邀请加入群组，3直接加入群组，4解散群组，5退出群组，6踢出群组，7确认申请加入，8确认邀请结果，10管理员修改群组信息，11用户修改群组成员名片
+      })
+      
+      // 监听连接状态为断开时，重新登录
+      RL_YTX.onConnectStateChangeLisenter((res) => {
         if(res.code === 5){
           that.login()
         }
@@ -103,6 +116,7 @@ IM.prototype = {
       that.login()
     })
   },
+
   /**
    * 当前只能够发送文本信息和图片信息
    * 向当前好友发送信息
@@ -148,6 +162,123 @@ IM.prototype = {
         // 如果发送文本消息，可以不传该参数
         })
       }
+    })
+  },
+
+  /**
+   * @param {*} name 创建的群组名称
+   * 创建群组，返回当前群组的id
+   */
+  createGroup (name) {
+    return new Promise(resolve => {
+      //新建创建群组对象
+      var obj = new RL_YTX.CreateGroupBuilder();
+      //设置群组名称
+      obj.setGroupName(name);
+      //设置群组公告
+      obj. setDeclared('');
+      //设置群组类型，如：1临时群组（100人）
+      obj. setScope(1);
+      //设置群组验证权限，如：需要身份验证2
+      obj. setPermission(2);
+      //设置为讨论组，该字段默认为2，表示群组，创建讨论组时设置为1
+      obj.setTarget(1);
+      RL_YTX.createGroup(obj, function(obj){
+      //获取新建群组id
+        resolve(obj.data)
+      //更新页面
+      }, function(obj){
+      //创建群组失败
+      console.log('创建群组失败')
+      }); 
+    })
+  },
+
+  /**
+   * 申请进入群组
+   */
+  applyGroup (groupId, content) {
+    return new Promise(resolve => {
+      //新建加入群组对象
+      var builder= new RL_YTX.JoinGroupBuilder();
+      //设置申请群组id
+      builder.setGroupId(groupId);
+      //设置申请理由
+      builder.setDeclared(content);
+      //发送请求
+      RL_YTX.joinGroup(builder, function(){
+        resolve()
+      //操作成功
+      },function(obj){
+        console.log('请求加入群组失败')
+      //操作失败 
+      });
+    })
+  },
+
+  /**
+   * @param {*} groupId 群组id
+   * @param {*} memberId 申请者id
+   * @param {*} num 是否同意进群 1 拒绝 2 同意
+   * 同意其他用户进入群组
+   */
+  confirmJoinGroup (groupId,memberId, num) {
+    return new Promise(resolve => {
+      //新建同意加入请求对象
+      var builder = new RL_YTX.ConfirmJoinGroupBuilder();
+      //设置群组id
+      builder.setGroupId(groupId);
+      //设置申请者账号
+      builder.setMemberId(memberId);
+      //设置同意或拒绝 1拒绝 2同意
+      builder.setConfirm(num);
+      //发送请求
+      RL_YTX.confirmJoinGroup(builder, function(){
+        //处理成功
+        resolve()
+      }, function(obj){
+        //处理失败
+        console.log('同意其他进入群组失败')
+      });
+    })
+  },
+
+  /**
+   *  退出当前群组
+   */
+  quitGroup (groupId) {
+    return new Promise(resolve => {
+      //新建退出群组请求对象
+      var builder = new RL_YTX.QuitGroupBuilder();
+      //设置群组id
+      builder.setGroupId(groupId);
+      //发送请求 
+      RL_YTX.quitGroup(builder, function(){
+        //退出群组成功
+        resolve()
+      }, function(obj){
+        //退出群组失败
+        console.log('退出群组失败')
+      });
+    })
+  },
+
+  /**
+   * 解散群组
+   */
+  dismissGroup (groupId) {
+    return new promise(resolve => {
+      //构建解散群组消息对象
+      var obj = new RL_YTX.DismissGroupBuilder();
+      //设置群组id
+      obj.setGroupId(groupId);
+      RL_YTX.dismissGroup(obj, function(){
+        //解散成功,更新页面
+        resolve()
+      }, function(obj){
+        //解散失败
+        console.log('解散群组失败')
+      });
     })
   }
 }

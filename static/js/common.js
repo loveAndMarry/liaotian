@@ -57,3 +57,24 @@ window.addEventListener("popstate", function(e) {
     window.Android.homeBack(  )
   }
 }, false);
+
+window.getLocalStorage = function() {
+  var obj = {}
+  for( var i in localStorage ) {
+    if(i.indexOf('_') === -1 && i.indexOf('#') !== -1){
+      if(typeof localStorage[i] === 'string'){
+        obj[i] = localStorage[i]
+      }
+    }
+  }
+  console.log(JSON.stringify(obj),'安卓接受到返回值')
+  return JSON.stringify(obj)
+}
+
+window.setLocalStorage = function(str) {
+  var obj = JSON.parse(str)
+  for( var i in obj){
+    localStorage.setItem(i, obj[i])
+  }
+  console.log(JSON.stringify(obj),'webview的localstorage设置完成')
+}
