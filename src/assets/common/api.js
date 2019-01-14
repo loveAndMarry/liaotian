@@ -128,6 +128,16 @@ export const listUserOrder = data => HTTP.GET('web/userOrders/listUserOrder',dat
 export const menuTreeDate = data => HTTP.GET('web/menu/menuTreeDate?parentId=1',data)
 
 /**
+ *  海选模块
+ */
+
+// 发布海选内容
+export const initiateMassSelection = data => HTTP.GET('web/massSelection/initiateMassSelection',data)
+
+// 获取海选列表
+export const listMassSelection = data => HTTP.GET('web/massSelection/listMassSelection',data)
+
+/**
  * 字典接口
  */
 // 获取省市区域

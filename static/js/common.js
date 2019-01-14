@@ -1,5 +1,5 @@
-// window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
-window.baseURL = 'http://yuan.minmai1688.com/'
+window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
+// window.baseURL = 'http://yuan.minmai1688.com/'
 
 // 点击调用图片和拍照
 window.updatePhoto = function(callback){
@@ -58,6 +58,7 @@ window.addEventListener("popstate", function(e) {
   }
 }, false);
 
+// 安卓
 window.getLocalStorage = function() {
   var obj = {}
   for( var i in localStorage ) {
@@ -71,7 +72,31 @@ window.getLocalStorage = function() {
   return JSON.stringify(obj)
 }
 
+//ios
+window.webkit.messageHandlers.getLocalStorage = function() {
+  var obj = {}
+  for( var i in localStorage ) {
+    if(i.indexOf('_') === -1 && i.indexOf('#') !== -1){
+      if(typeof localStorage[i] === 'string'){
+        obj[i] = localStorage[i]
+      }
+    }
+  }
+  console.log(JSON.stringify(obj),'安卓接受到返回值')
+  return JSON.stringify(obj)
+}
+
+// 安卓
 window.setLocalStorage = function(str) {
+  var obj = JSON.parse(str)
+  for( var i in obj){
+    localStorage.setItem(i, obj[i])
+  }
+  console.log(JSON.stringify(obj),'webview的localstorage设置完成')
+}
+
+// ios
+window.webkit.messageHandlers.setLocalStorage = function(str) {
   var obj = JSON.parse(str)
   for( var i in obj){
     localStorage.setItem(i, obj[i])

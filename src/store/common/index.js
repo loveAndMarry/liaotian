@@ -34,6 +34,17 @@ const state = {
     nation: [], // 民族
     religion: [], // 宗教,
     sex: '2'
+  },
+  selectionIntention: {
+    education: [],
+    address: [],
+    age: [],
+    height: [],
+    income: [],
+    maritalStatus: [],
+    housePurchase: [],
+    car: [],
+    children: []
   }
 }
 
@@ -53,6 +64,8 @@ const actions = {
             label: data.intentionEducationMaxName,
             value: data.intentionEducationDictValueMax
           })
+
+          state.selectionIntention.education = state.fromData.education
         }
   
         // 居住地
@@ -65,6 +78,7 @@ const actions = {
             name: data.intentionDomicileCityName,
             code: data.intentionDomicileCityId
           })
+          state.selectionIntention.address = state.fromData.address
         }
   
         // 年龄
@@ -77,6 +91,7 @@ const actions = {
             value: data.intentionAgeMax || '',
             label: data.intentionAgeMax + '岁'
           })
+          state.selectionIntention.age = state.fromData.age
         }
   
         // 身高
@@ -89,6 +104,7 @@ const actions = {
             value: data.intentionHeightMax || '',
             label: data.intentionHeightMax
           })
+          state.selectionIntention.height = state.fromData.height
         }
   
         // 月收入
@@ -101,6 +117,7 @@ const actions = {
             value: data.intentionIncomeMax || '',
             label: data.intentionIncomeMax
           })
+          state.selectionIntention.income = state.fromData.income
         }
   
         // 婚姻状况
@@ -109,6 +126,25 @@ const actions = {
             value: data.intentionMaritalStatusDictValue || '',
             label: data.intentionMaritalStatus
           })
+          state.selectionIntention.maritalStatus = state.fromData.maritalStatus
+        }
+
+        // 购房情况
+        if(data.intentionHouseSituationDictValue || data.intentionHouseSituation){
+          state.fromData.housePurchase.push({
+            value: data.intentionHouseSituationDictValue || '',
+            label: data.intentionHouseSituation
+          })
+          state.selectionIntention.housePurchase = state.fromData.housePurchase
+        }
+
+        // 购车情况
+        if(data.intentionCarSituationDictValue || data.intentionCarSituation){
+          state.fromData.car.push({
+            value: data.intentionCarSituationDictValue || '',
+            label: data.intentionCarSituation
+          })
+          state.selectionIntention.car = state.fromData.car
         }
   
         // 子女状况
@@ -117,6 +153,7 @@ const actions = {
             value: data.intentionChildrenSituationDictValue || '',
             label: data.intentionChildrenSituation
           })
+          state.selectionIntention.children = state.fromData.children
         }
 
         resolve(state.fromData)

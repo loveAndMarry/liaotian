@@ -160,4 +160,10 @@ body {
   color:#fe7998;
   font-size: .28rem
 }
+.hide{
+  display: none
+}
+.show{
+  display: block
+}
 </style>

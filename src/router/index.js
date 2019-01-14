@@ -8,6 +8,8 @@ import chat from '@/views/chat'
 import home from '@/views/home'
 // 海选
 import Auditions from '@/views/Auditions'
+// 发起海选
+import initiate from '@/views/Auditions/initiate'
 // 主页
 import view from '@/views'
 // 底部导航栏
@@ -209,6 +211,11 @@ const router = new Router({
     path: '/service',
     name: 'service',
     component: service
+  },
+  {
+    path: '/initiate',
+    name: 'initiate',
+    component: initiate
   }
   ]
 })
