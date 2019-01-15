@@ -40,6 +40,7 @@ export default {
   mounted () {
     this.isDisabled = true
     var _this = this
+    // 监听接受容联云发送的消息
     window.serviceRmation(function(res) {
 
       _this.message.push({
@@ -47,7 +48,7 @@ export default {
         sendUserId: 'maiyuanhunliankefu00001',
         id: new Date().getTime(),
         time: new Date().getTime(),
-        userHead: 'http://systemmaiyuan.minmai1688.com/271658f606964beea25d5ca0a69024181547017098(1).jpg'
+        userHead: 'http://systemmaiyuan.minmai1688.com/d408bd27bcd44393bcca5ec3b9010bc9customer_service.png'
       })
 
       // 储存客服发送的信息
@@ -70,7 +71,7 @@ export default {
       sendUserId: 'maiyuanhunliankefu00001',
       id: new Date().getTime(),
       time: new Date().getTime(),
-      userHead: 'http://systemmaiyuan.minmai1688.com/271658f606964beea25d5ca0a69024181547017098(1).jpg'
+      userHead: 'http://systemmaiyuan.minmai1688.com/d408bd27bcd44393bcca5ec3b9010bc9customer_service.png'
     })
   },
   computed: {

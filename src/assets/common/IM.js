@@ -92,6 +92,45 @@ IM.prototype = {
           })
         }
       })
+
+      // 监听群组消息通知
+      RL_YTX. onMCMMsgReceiveListener(function(obj) {
+        /**
+         *  obj.msgId; //消息msgId
+
+            obj.msgType; //消息类型1:文本消息 2:语音消息 3:视频消息  4:图片消息  
+            5:位置消息  6:文件
+
+            obj.msgContent; //文本消息内容
+
+            obj.msgSender;  //发送者
+
+            obj.msgReceiver; //接收者群组Im消息时，接收者为群组id
+
+            obj.msgDomain;  //扩展信息
+
+            obj.msgFileName; //消息文件名
+
+            obj.msgFileUrl; //消息下载地址
+
+            obj.msgDateCreated; //服务器接收消息时间
+
+            obj.senderNickName; //发送者昵称
+
+            obj.mcmEvent; //mcm消息类型 1 start消息  2 end消息 3发送mcm消息
+
+            obj.msgFileSize;//附件大小
+         */
+        // 触发store里的接受事件 
+        store.dispatch('monitorNewMsg', {
+          id: obj.msgId,
+          receiver: obj.msgReceiver,
+          sender: obj.msgSender,
+          context: obj.msgContent,
+          msgType: obj.msgType,
+          chatDate: new Date().getTime() // 接受时间
+        })
+      })
       
       // 登录之后监听跟自己相关的群组信息
       RL_YTX.onNoticeReceiveListener(function(obj) {

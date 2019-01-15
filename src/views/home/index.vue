@@ -159,7 +159,7 @@ export default {
           userId: obj.userId
         }).then(res => {
           if(res.data && res.data.list && res.data.list.length > 0){
-            if(res.data.list.length < 10){
+            if(res.data.list.length < 10 || this.dynamicList.length + 10 === res.data.totalCount){
               this.finished = true
               resolve(res.data.list)
               return 
@@ -220,7 +220,7 @@ export default {
   height: .3rem;
   background-image: url('../../assets/images/no_like.png');
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
   margin-top: .1rem;
   margin-right: .1rem;
 }

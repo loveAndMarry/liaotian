@@ -141,7 +141,7 @@ export default {
         })
         return
       }
-      this.submitData['title'] = this.context
+      this.submitData['content'] = this.context
       this.submitData['groupSizeLimit'] = this.groupSizeLimit
       this.submitData['userId'] = this.$store.state.IM.user.id
       this.active = 1

@@ -10,6 +10,10 @@ import home from '@/views/home'
 import Auditions from '@/views/Auditions'
 // 发起海选
 import initiate from '@/views/Auditions/initiate'
+// 海选参与人资料
+import datum from '@/views/Auditions/datum'
+// 海选群聊
+import group from '@/views/Auditions/group'
 // 主页
 import view from '@/views'
 // 底部导航栏
@@ -216,6 +220,16 @@ const router = new Router({
     path: '/initiate',
     name: 'initiate',
     component: initiate
+  },
+  {
+    path: '/datum',
+    name: 'datum',
+    component: datum
+  },
+  {
+    path: '/group',
+    name: 'group',
+    component: group
   }
   ]
 })

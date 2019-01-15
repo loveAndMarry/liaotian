@@ -1,5 +1,5 @@
-window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
-// window.baseURL = 'http://yuan.minmai1688.com/'
+//window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
+window.baseURL = 'http://yuan.minmai1688.com/'
 
 // 点击调用图片和拍照
 window.updatePhoto = function(callback){
@@ -35,7 +35,7 @@ window.authentication = function(callback){
   }
 }
 
-// 点击调用实名认证
+// 监听容联云发送的消息（客服专用）
 window.serviceRmation = function(callback){
   if(typeof callback === 'function'){
     this.callback = callback

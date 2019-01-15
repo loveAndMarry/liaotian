@@ -1,14 +1,20 @@
 <template>
   <div class="item">
-    <img class="item_img" src="../../../assets/images/phone_authentication_bg@2x.png"/>
+    <img class="item_img" :src="el.picture"/>
     <div class="item_content">
         <div class="state">审核中</div>
-        <p>搜科技公司哦啊家公司价格来看上京赶考</p>
+        <p>{{el.content}}</p>
         <div class="time">截止日期：2019-01-01至2019-12-12</div>
         <div class="time">报名金额：200元</div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  props: ['el']
+}
+</script>
+
 
 <style scoped>
 .item{
@@ -24,14 +30,14 @@
 }
 .item_img{
   display: block;
-  width: 2.28rem;
+  width: 1.58rem;
   height: 1.58rem;
   margin-top: .39rem;
   float: left;
 }
 .item_content{
   display: inline-block;
-  width: calc(100% - 2.28rem);
+  width: calc(100% - 1.58rem);
   height: 100%;
   padding:0 .15rem;
   box-sizing: border-box;

@@ -363,7 +363,7 @@ export default {
   height: .3rem;
   background-image: url('../../../assets/images/no_like.png');
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
   margin-top: .1rem;
   margin-right: .1rem;
 }
