@@ -1,13 +1,14 @@
 import { getUserSpouseIntention , listJurisdictionPermissionList} from '@/assets/common/api'
 
 const state = {
-  active: 0, // 记录当前是哪一页
+  active: 0, // TabBer 记录当前是哪一页
   member: null, // 储存当前选择的会员类型
   Loading: true,
   pageYOffset: 0, // 记录当前滚动条的位置
   Jurisdiction: [], //权限数组
   isShow: false, // 控制左侧滑出框
   popupTitle: '', // 弹出框的标题
+  AuditionsActive: 0, // 海选停留在哪一栏
   fromData: {
     type: 1,
     // 基本筛选条件
@@ -176,6 +177,10 @@ const mutations = {
   // 设置当前显示的是哪一页
   setActive (state, products) {
     state.active = products.active
+  },
+  // 设置当前显示的是哪一页
+  setAuditionsActive (state, products) {
+    state.AuditionsActive = products.AuditionsActive
   },
   setLoading (state, products) {
     state.Loading = products

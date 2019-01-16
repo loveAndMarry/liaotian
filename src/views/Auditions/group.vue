@@ -37,7 +37,7 @@ export default {
       context: '',
       title: '瞎聊群',
       num: 46,
-      loading: true, // 下拉刷新的内容是否加载完成
+      loading: true, // 下拉刷新的内容是否加载完成 
       isLoading: false, // 下拉刷新是否完成
       isDisabled: false, // 数据是否加载完毕
       limitStart: 0,

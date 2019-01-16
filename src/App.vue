@@ -122,7 +122,7 @@ img[src=""],img:not([src]){opacity:0;}
   display: block
 }
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'microsoft yahei',"Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

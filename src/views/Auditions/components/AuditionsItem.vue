@@ -1,18 +1,78 @@
 <template>
-  <div class="item">
+  <div class="item" @click="AuditionsClick">
     <img class="item_img" :src="el.picture"/>
     <div class="item_content">
-        <div class="state">审核中</div>
+        <div class="state" :style="{color: stateColor}">{{state}}</div>
         <p>{{el.content}}</p>
-        <div class="time">截止日期：2019-01-01至2019-12-12</div>
-        <div class="time">报名金额：200元</div>
+        <div class="time">截止日期：{{el.startTime}}&nbsp;&nbsp;至&nbsp;&nbsp;{{el.endTime}}</div>
+        <div class="time">报名金额：{{el.initiatingAmountY}}元</div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  props: ['el']
+  props: ['el', 'type'],
+  computed: {
+    state () {
+      var _this = this
+      var title = ''
+      // 全部海选列表
+      if(_this.type === '1' || _this.type === '3'){
+        switch(_this.el.openState){
+          case '2': 
+            _this.stateColor = '#ff5a85'
+            title =  '活动进行中'
+            break
+          case '3': 
+            title =  '活动已结束'
+            break
+        }
+      } else if(_this.type === '2') {
+        switch(_this.el.auditStatus){
+          case '1': 
+            _this.stateColor = '#ffa000'
+            title =  '审核中'
+            break
+          case '2': 
+            switch(_this.el.openState){
+              case '1': 
+                _this.stateColor = '#ff5a85'
+                title =  '审核成功'
+                break
+              case '2': 
+                _this.stateColor = '#ff5a85'
+                title = '已发布'
+                break
+              case '3': 
+                title =  '海选结束'
+                break
+            }
+            break
+          case '3': 
+            title =  '审核失败'
+            break
+        }
+      }
+      return title
+    }
+  },
+  data () {
+    return {
+      stateColor: '#b5b5b5'
+    }
+  },
+  methods: {
+        // 点击进入详情
+    AuditionsClick () {
+      if(this.type === 1){
+        this.$router.push({name: 'apply', query: {massSelectionId: this.el.id}})
+      } else {
+        this.$router.push({name: 'publish', query: {massSelectionId: this.el.id}})
+      }
+    },
+  }
 }
+
 </script>
 
 

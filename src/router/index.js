@@ -14,6 +14,10 @@ import initiate from '@/views/Auditions/initiate'
 import datum from '@/views/Auditions/datum'
 // 海选群聊
 import group from '@/views/Auditions/group'
+// 海选报名
+import apply from '@/views/Auditions/apply'
+// 海选确认发布
+import publish from '@/views/Auditions/publish'
 // 主页
 import view from '@/views'
 // 底部导航栏
@@ -230,6 +234,16 @@ const router = new Router({
     path: '/group',
     name: 'group',
     component: group
+  },
+  {
+    path: '/apply',
+    name: 'apply',
+    component: apply
+  },
+  {
+    path: '/publish',
+    name: 'publish',
+    component: publish
   }
   ]
 })

@@ -1,63 +1,79 @@
 <template>
   <div>
      <NavBar left-arrow @click-left="onClickLeft" title="我要发起"/>
-     <div class="option">
-        <div class="one"  :class="{active: active >= 0}">
-          <span>1</span>
-          <i></i>
-          <h5>基本资料</h5>
+     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;">
+        <div class="option">
+          <div class="one"  :class="{active: active >= 0}">
+            <span>1</span>
+            <i></i>
+            <h5>基本资料</h5>
+          </div>
+          <div class="two" :class="{active: active >= 1}">
+            <i></i>
+            <span>2</span>
+            <h5>参选条件</h5>
+          </div>
         </div>
-        <div class="two" :class="{active: active >= 1}">
-          <i></i>
-          <span>2</span>
-          <h5>参选条件</h5>
-       </div>
-     </div>
 
-     <div class="content_one" v-if="active === 0">
-       <div class="userHead"  @click="submitPhoto">
-         <img :src="userHead" alt="">
-         <span>封面</span>
-       </div>
-       <div class="textarea_group">
-         <textarea placeholder="备注信息" v-model="context"></textarea>
-       </div>
-       <div class="numberOfPeople">
-         <h6>参选人数</h6>
-         <ul>
-           <li v-for="(el, index) in groupSize" :key="index" :class="{disabled: !el.isDisabled, active: el.value === groupSizeLimit}" @click="numberOfPeopleClick(el)">{{el.label}}</li>
-         </ul>
-       </div>
-       <div style="text-align: left;">
-         <span class="van-radio__input"><input type="radio" class="van-radio__control" value="1"><i class="van-icon van-icon-checked" style="color: rgb(7, 193, 96);"><!----><!----></i></span>
-         我保证以上信息属实，绝无虚假
-       </div>
-       <Button size="large" round class="next" @click="nextClick">下一步</Button>
-     </div>
+        <div class="content_one" v-if="active === 0">
+          <div class="userHead"  @click="submitPhoto">
+            <img :src="userHead" alt="">
+            <span>封面</span>
+          </div>
+          <div class="textarea_group">
+            <textarea placeholder="备注信息" v-model="context"></textarea>
+          </div>
+          <div class="numberOfPeople">
+            <h6>参选人数</h6>
+            <ul>
+              <li v-for="(el, index) in groupSize" :key="index" :class="{disabled: !el.isDisabled, active: el.value === groupSizeLimit}" @click="numberOfPeopleClick(el)">{{el.label}}</li>
+            </ul>
+          </div>
+          <div class="numberOfPeople">
+            <h6 style="margin-top: 0;">参选时间</h6>
+            <div style="text-align: left;margin-top: .2rem;color:#fd6e99">
+              <span class="time" @click="TimeClick('startTime')">{{startTime}}</span>
+                &nbsp;&nbsp;至&nbsp;&nbsp;
+              <span class="time" @click="TimeClick('endTime')">{{endTime}}</span>
+            </div>
+          </div>
+          <div class="numberOfPeople">
+            <h6>参选基金</h6>
+            <div style="text-align: left;margin-top: .2rem;color:#fd6e99">
+              <input type="text" class="initiatingAmount" placeholder="请输入参选基金" v-model="initiatingAmount"> 元
+            </div>
+          </div>
+          <div style="text-align: left;margin-top:.2rem">
+            <span class="van-radio__input"><input type="radio" class="van-radio__control" value="1"><i class="van-icon van-icon-checked" style="color: rgb(7, 193, 96);"><!----><!----></i></span>
+            我保证以上信息属实，绝无虚假
+          </div>
+          <Button size="large" round class="next" @click="nextClick">下一步</Button>
+        </div>
 
-     <div class="content_two" v-if="active === 1">
-      <h5 class="content_two_title">择偶意向 (9/9)</h5>
-      <ListItem title="年龄" dictionaries='ages' :default='defaultData.age' type="packerTwo" :isSubmit="false" suffix="岁" @confirm="a => defaultData.age = a"></ListItem>
+        <div class="content_two" v-if="active === 1">
+          <h5 class="content_two_title">择偶意向 (9/9)</h5>
+          <ListItem title="年龄" dictionaries='ages' :default='defaultData.age' type="packerTwo" :isSubmit="false" suffix="岁" @confirm="a => defaultData.age = a"></ListItem>
 
-      <ListItem title="身高" dictionaries='heights' :default='defaultData.height' type="packerTwo"  :isSubmit="false" suffix="厘米" @confirm="a => defaultData.height = a"></ListItem>
+          <ListItem title="身高" dictionaries='heights' :default='defaultData.height' type="packerTwo"  :isSubmit="false" suffix="厘米" @confirm="a => defaultData.height = a"></ListItem>
 
-      <ListItem title="学历" dictionaries='education' :default='defaultData.education' type="packerTwo" :isSubmit="false" @confirm="a => defaultData.education = a"></ListItem>
+          <ListItem title="学历" dictionaries='education' :default='defaultData.education' type="packerTwo" :isSubmit="false" @confirm="a => defaultData.education = a"></ListItem>
 
-      <ListItem title="月收入" dictionaries='income' :default='defaultData.income' type="packerTwo" :isSubmit="false" @confirm="a => defaultData.income = a"></ListItem>
+          <ListItem title="月收入" dictionaries='income' :default='defaultData.income' type="packerTwo" :isSubmit="false" @confirm="a => defaultData.income = a"></ListItem>
 
-      <ListItem title="居住地" :default='defaultData.address' type='address' :isSubmit="false" @confirm="a => defaultData.address = a"></ListItem>
+          <ListItem title="居住地" :default='defaultData.address' type='address' :isSubmit="false" @confirm="a => defaultData.address = a"></ListItem>
 
-      <ListItem title="婚姻状况" dictionaries='maritalStatus' :default='defaultData.maritalStatus' type="radioOne" :isSubmit="false" @confirm="a => defaultData.maritalStatus = a"></ListItem>
+          <ListItem title="婚姻状况" dictionaries='maritalStatus' :default='defaultData.maritalStatus' type="radioOne" :isSubmit="false" @confirm="a => defaultData.maritalStatus = a"></ListItem>
 
-      <ListItem title="购房情况" dictionaries='housePurchase' :default='defaultData.housePurchase' type="radioOne" :isSubmit="false" @confirm="a => defaultData.housePurchase = a"></ListItem>
+          <ListItem title="购房情况" dictionaries='housePurchase' :default='defaultData.housePurchase' type="radioOne" :isSubmit="false" @confirm="a => defaultData.housePurchase = a"></ListItem>
 
-      <ListItem title="购车情况" dictionaries='car' :default='defaultData.car' type="radioOne" :isSubmit="false" @confirm="a => defaultData.car = a"></ListItem>
+          <ListItem title="购车情况" dictionaries='car' :default='defaultData.car' type="radioOne" :isSubmit="false" @confirm="a => defaultData.car = a"></ListItem>
 
-      <ListItem title="子女情况" dictionaries='children' :default='defaultData.children' type="radioOne" :isSubmit="false" @confirm="a => defaultData.children = a"></ListItem>
+          <ListItem title="子女情况" dictionaries='children' :default='defaultData.children' type="radioOne" :isSubmit="false" @confirm="a => defaultData.children = a"></ListItem>
 
-      <div style="padding: 0 .68rem;  box-sizing: border-box;box-sizing: -webkit-border-box">
-        <Button size="large" round class="next publish" @click="publishClick">发布</Button>
-      </div>
+          <div style="padding: 0 .68rem;  box-sizing: border-box;box-sizing: -webkit-border-box">
+            <Button size="large" round class="next publish" @click="publishClick">发布</Button>
+          </div>
+        </div>
      </div>
   </div>
 </template>
@@ -77,6 +93,9 @@ export default {
       userHead: '',
       // 参选人数
       groupSizeLimit: 1,
+      startTime: '',
+      endTime: '',
+      initiatingAmount: 0,
       groupSize: [{
         value: 1,
         label: '1-100人',
@@ -112,6 +131,17 @@ export default {
     this.userHead = this.$store.state.IM.user.userHead
   },
   methods: {
+    TimeClick (name) {
+      this.$picker.show({
+        type:'datePicker',
+        date:'',  //初始化时间
+        endTime:(new Date().getFullYear() + 1) + '-' + (new Date().getMonth() + 1) +'-' + new Date().getDate(),  //截至时间
+        startTime:new Date().getFullYear() + '-' + (new Date().getMonth() + 1) +'-' + new Date().getDate(),  //开始时间
+        onOk:(e)=>{
+          this[name] = e
+        },
+      })
+    },
     numberOfPeopleClick (el) {
       if(!el.isDisabled){
         this.groupSizeLimit = el.value
@@ -134,14 +164,38 @@ export default {
         })
         return
       }
-      if(this.context.length > 64){
+      if(this.startTime.replace(/ /g, '') === ''){
         Toast({
-          message: '请将字体个数控制在64位之内，当前为' + this.context.length + '位',
+          message: '请选择开始时间',
+          duration: 1000
+        })
+        return
+      }
+      if(this.endTime.replace(/ /g, '') === ''){
+        Toast({
+          message: '请选择结束时间',
+          duration: 1000
+        })
+        return
+      }
+      if(this.initiatingAmount.replace(/ /g, '') === '' || this.initiatingAmount == 0){
+        Toast({
+          message: '请输入参选基金',
+          duration: 1000
+        })
+        return
+      }
+      if(!(/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/.test(this.initiatingAmount))){
+        Toast({
+          message: '请输入正确的参选基金',
           duration: 1000
         })
         return
       }
       this.submitData['content'] = this.context
+      this.submitData['initiatingAmount'] = this.initiatingAmount
+      this.submitData['startTime'] = this.startTime
+      this.submitData['endTime'] = this.endTime
       this.submitData['groupSizeLimit'] = this.groupSizeLimit
       this.submitData['userId'] = this.$store.state.IM.user.id
       this.active = 1
@@ -156,36 +210,94 @@ export default {
     // 发布
     publishClick () {
       // 年龄
-      this.submitData['intentionAgeMin'] = this.defaultData['age'][0].value
-      this.submitData['intentionAgeMax'] = this.defaultData['age'][1].value
+      if(this.defaultData['age'].length === 0){
+        this.submitData['intentionAgeMin'] = '-1'
+        this.submitData['intentionAgeMax'] = '-1'
+      } else {
+        this.submitData['intentionAgeMin'] = this.defaultData['age'][0].value
+        this.submitData['intentionAgeMax'] = this.defaultData['age'][1].value
+      }
+
       // 身高
-      this.submitData['intentionHeightMin'] = this.defaultData['height'][0].value
-      this.submitData['intentionHeightMax'] = this.defaultData['height'][1].value
+      if(this.defaultData['height'].length === 0){
+        this.submitData['intentionHeightMin'] = '-1'
+        this.submitData['intentionHeightMax'] = '-1'
+      } else {
+        this.submitData['intentionHeightMin'] = this.defaultData['height'][0].value
+        this.submitData['intentionHeightMax'] = this.defaultData['height'][1].value
+      }
+      
       // 收入
-      this.submitData['intentionIncomeMin'] = this.defaultData['income'][0].value
-      this.submitData['intentionIncomeMin'] = this.defaultData['income'][1].value
+      if(this.defaultData['income'].length === 0){
+        this.submitData['intentionIncomeMin'] = '-1'
+        this.submitData['intentionIncomeMax'] = '-1'
+      } else {
+        this.submitData['intentionIncomeMin'] = this.defaultData['income'][0].value
+        this.submitData['intentionIncomeMax'] = this.defaultData['income'][1].value
+      }
+      
       // 学历
-      this.submitData['intentionEducationDictValueMin'] = this.defaultData['education'][0].value
-      this.submitData['intentionEducationDictValueMin'] = this.defaultData['education'][1].value
-      this.submitData['intentionEducationMinName'] = this.defaultData['education'][0].label
-      this.submitData['intentionEducationMaxName'] = this.defaultData['education'][1].label
+      if(this.defaultData['education'].length === 0) {
+        this.submitData['intentionEducationDictValueMin'] = '-1'
+        this.submitData['intentionEducationDictValueMax'] = '-1'
+        this.submitData['intentionEducationMinName'] = ''
+        this.submitData['intentionEducationMaxName'] = ''
+      } else {
+        this.submitData['intentionEducationDictValueMin'] = this.defaultData['education'][0].value
+        this.submitData['intentionEducationDictValueMax'] = this.defaultData['education'][1].value
+        this.submitData['intentionEducationMinName'] = this.defaultData['education'][0].label
+        this.submitData['intentionEducationMaxName'] = this.defaultData['education'][1].label
+      }
+
       // 居住地
-      this.submitData['intentionDomicileProvinceId'] = this.defaultData['address'][0].code
-      this.submitData['intentionDomicileCityId'] = this.defaultData['address'][1].code
-      this.submitData['intentionDomicileProvinceName'] = this.defaultData['address'][0].name
-      this.submitData['intentionDomicileCityName'] = this.defaultData['address'][1].name
+      if(this.defaultData['address'].length === 0) {
+        this.submitData['intentionDomicileProvinceId'] = ''
+        this.submitData['intentionDomicileCityId'] = ''
+        this.submitData['intentionDomicileProvinceName'] = ''
+        this.submitData['intentionDomicileCityName'] = ''
+      } else {
+        this.submitData['intentionDomicileProvinceId'] = this.defaultData['address'][0].code
+        this.submitData['intentionDomicileCityId'] = this.defaultData['address'][1].code
+        this.submitData['intentionDomicileProvinceName'] = this.defaultData['address'][0].name
+        this.submitData['intentionDomicileCityName'] = this.defaultData['address'][1].name
+      }
+
       // 婚姻状况
-      this.submitData['intentionMaritalStatusDictValue'] = this.defaultData['maritalStatus'][0].value
-      this.submitData['intentionMaritalStatus'] = this.defaultData['maritalStatus'][0].label
+      if(this.defaultData['maritalStatus'].length === 0) {
+        this.submitData['intentionMaritalStatusDictValue'] = ''
+        this.submitData['intentionMaritalStatus'] = ''
+      } else {
+        this.submitData['intentionMaritalStatusDictValue'] = this.defaultData['maritalStatus'][0].value
+        this.submitData['intentionMaritalStatus'] = this.defaultData['maritalStatus'][0].label
+      }
+      
       // 子女状况
-      this.submitData['intentionChildrenSituationDictValue'] = this.defaultData['children'][0].value
-      this.submitData['intentionChildrenSituation'] = this.defaultData['children'][0].label
+      if(this.defaultData['children'].length === 0){
+        this.submitData['intentionChildrenSituationDictValue'] = ''
+        this.submitData['intentionChildrenSituation'] = ''
+      } else {
+        this.submitData['intentionChildrenSituationDictValue'] = this.defaultData['children'][0].value
+        this.submitData['intentionChildrenSituation'] = this.defaultData['children'][0].label
+      }
+      
       // 购房情况
-      this.submitData['intentionHouseSituationDictValue'] = this.defaultData['housePurchase'][0].value
-      this.submitData['intentionHouseSituation'] = this.defaultData['housePurchase'][0].label
+      if(this.defaultData['housePurchase'].length === 0){
+        this.submitData['intentionHouseSituationDictValue'] = ''
+        this.submitData['intentionHouseSituation'] = ''
+      } else {
+        this.submitData['intentionHouseSituationDictValue'] = this.defaultData['housePurchase'][0].value
+        this.submitData['intentionHouseSituation'] = this.defaultData['housePurchase'][0].label
+      }
+      
       // 购车情况
-      this.submitData['intentionCarSituationDictValue'] = this.defaultData['car'][0].value
-      this.submitData['intentionCarSituation'] = this.defaultData['car'][0].label
+      if(this.defaultData['car'].length === 0){
+        this.submitData['intentionCarSituationDictValue'] = ''
+        this.submitData['intentionCarSituation'] = ''
+      } else {
+        this.submitData['intentionCarSituationDictValue'] = this.defaultData['car'][0].value
+        this.submitData['intentionCarSituation'] = this.defaultData['car'][0].label
+      }
+      
 
       initiateMassSelection(this.submitData).then((res) => {
         Toast({
@@ -199,6 +311,25 @@ export default {
 }
 </script>
 <style scoped>
+.initiatingAmount{
+  height: .46rem;
+  border-radius: .1rem;
+  border: 1px solid #fd6e99;
+  vertical-align: middle;
+  padding: 0 .1rem;
+  color: #000
+}
+.time{
+  display: inline-block;
+  width: 1.7rem;
+  height: .46rem;
+  border: 1px solid #fd6e99;
+  border-radius: .1rem;
+  vertical-align: middle;
+  text-align: center;
+  line-height: .46rem;
+  color: #000
+}
 .publish{
   margin-top: .5rem !important;
 }
@@ -208,7 +339,7 @@ export default {
   line-height: .8rem;
   font-size: .32rem;
   color: #fff;
-  margin-top: 2.3rem
+  margin-top: .5rem
 }
 .numberOfPeople ul{
   padding-top: .15rem;
@@ -303,7 +434,7 @@ export default {
   overflow: hidden;
   position: relative;
   z-index: 10;
-  margin: .4rem auto .6rem
+  margin: .1rem auto .4rem
 }
 .userHead img{
   width: 100%;

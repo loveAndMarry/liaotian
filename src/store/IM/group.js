@@ -70,7 +70,8 @@ const actions = {
             // 将没有添加的最新信息添加到消息列表中
             state.newMsg[products.msgSender].forEach(ele => {
               state.message[products.msgReceiver].push(Object.assign({
-                userHead: obj.userHead
+                userHead: obj.userHead,
+                sendUserId: obj.userId
               }, ele))
             })
           })
@@ -80,7 +81,8 @@ const actions = {
         var obj = state.groupMembers[products.msgReceiver].find(el => el.accountNumber === products.msgSender)
         // 将当前发送消息的头像保存到数据中
         state.message[products.msgReceiver].push(Object.assign({
-          userHead: obj.userHead
+          userHead: obj.userHead,
+          sendUserId: obj.userId
         }, products))
       }
     }

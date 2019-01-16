@@ -6,7 +6,7 @@
     finished-text="没有更多了"
     @load="onLoad"
     class="dynamic" ref='dynamic'>
-      <AuditionsItem v-for="(el, index) in list" :key="index" :el="el"></AuditionsItem>
+      <AuditionsItem v-for="(el, index) in list" :key="index" :el="el" :type="type"/>
     </List>
   </PullRefresh>
 </template>

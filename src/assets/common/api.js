@@ -137,6 +137,9 @@ export const initiateMassSelection = data => HTTP.GET('web/massSelection/initiat
 // 获取海选列表
 export const listMassSelection = data => HTTP.GET('web/massSelection/listMassSelection',data)
 
+// 根据海选活动id获取详情
+export const getMassSelectionDetails = data => HTTP.GET('web/massSelection/getMassSelectionDetails',data)
+
 /**
  * 字典接口
  */

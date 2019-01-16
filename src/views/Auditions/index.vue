@@ -22,6 +22,7 @@
 <script>
 import { NavBar, Tabs, Tab} from 'vant'
 import AuditionsList from './components/AuditionsList'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -29,11 +30,22 @@ export default {
     }
   },
   methods : {
+    ...mapMutations([
+      'setAuditionsActive'
+    ]),
     onClick () {
 
     },
     onClickRight () {
       this.$router.push({name: 'initiate'})
+    }
+  },
+  mounted () {
+    this.active = this.$store.state.common.AuditionsActive
+  },
+  watch: {
+    active (val) {
+      this.setAuditionsActive({AuditionsActive:val})
     }
   },
   components:{
