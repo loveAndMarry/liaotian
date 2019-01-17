@@ -10,6 +10,7 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   props: ['el', 'type'],
   computed: {
@@ -62,12 +63,22 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'getGroupData'
+    ]),
         // 点击进入详情
     AuditionsClick () {
-      if(this.type === 1){
-        this.$router.push({name: 'apply', query: {massSelectionId: this.el.id}})
+      if(this.type === '2'){
+        if(this.state === '已发布'){
+          this.getGroupData(this.el.id).then(() => {
+            console.log(this.$store.state.group, '群组容器')
+            this.$router.push({name: 'group'})
+          })
+        } else {
+          this.$router.push({name: 'publish', query: {massSelectionId: this.el.id}})
+        }
       } else {
-        this.$router.push({name: 'publish', query: {massSelectionId: this.el.id}})
+        this.$router.push({name: 'apply', query: {massSelectionId: this.el.id}})
       }
     },
   }

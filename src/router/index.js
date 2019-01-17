@@ -14,6 +14,10 @@ import initiate from '@/views/Auditions/initiate'
 import datum from '@/views/Auditions/datum'
 // 海选群聊
 import group from '@/views/Auditions/group'
+// 海选群聊好友列表
+import groupList from '@/views/Auditions/groupList'
+// 报名海选群聊好友列表
+import Election from '@/views/Auditions/Election'
 // 海选报名
 import apply from '@/views/Auditions/apply'
 // 海选确认发布
@@ -244,6 +248,16 @@ const router = new Router({
     path: '/publish',
     name: 'publish',
     component: publish
+  },
+  {
+    path: '/groupList',
+    name: 'groupList',
+    component: groupList
+  },
+  {
+    path: '/Election',
+    name: 'Election',
+    component: Election
   }
   ]
 })

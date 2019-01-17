@@ -67,11 +67,11 @@
 
          <SplitGroup title="基本资料" :isRight="false">
 
-          <ListItem title="ID" :default='getData(["","userNo"])' :noClick="true"></ListItem>
+          <ListItem title="ID" :default='getData(["","userNo"])'  :isEmitClick="true"></ListItem>
 
           <ListItem title="昵称" :default='getData(["","nickName"])' :isEmitClick="true" @click="nickNameClick"></ListItem>
 
-          <ListItem title="性别" :default='getData(["","sexName"])' :noClick="true"></ListItem>
+          <ListItem title="性别" :default='getData(["","sexName"])' :isEmitClick="true"></ListItem>
           
           <div class="intention_item" @click="birthdayClick">生日:
             <div class="sanjiao ">{{data.userBaseInformation.birthday || '未填写'}}</div>
@@ -126,9 +126,9 @@
 
           <ListItem title="民族" dictionaries='nation' :default='getData(nation)' type="radioOne" :defaultSubmitData ="nation"></ListItem>
 
-          <ListItem title="属相" :default="getData(['','zodiac'])" :noClick="true" ref="zodiac"></ListItem>
+          <ListItem title="属相" :default="getData(['','zodiac'])" :isEmitClick="true" ref="zodiac"></ListItem>
 
-          <ListItem title="星座" :default="getData(['','constellation'])" :noClick="true" ref="constellation"></ListItem>
+          <ListItem title="星座" :default="getData(['','constellation'])" :isEmitClick="true" ref="constellation"></ListItem>
 
           <ListItem title="血型" dictionaries='bloodType' :default='getData(bloodType)' type="radioOne" :defaultSubmitData ="bloodType"></ListItem>
 

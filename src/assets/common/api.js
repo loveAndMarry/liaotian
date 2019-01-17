@@ -140,6 +140,21 @@ export const listMassSelection = data => HTTP.GET('web/massSelection/listMassSel
 // 根据海选活动id获取详情
 export const getMassSelectionDetails = data => HTTP.GET('web/massSelection/getMassSelectionDetails',data)
 
+// 用户报名海选活动
+export const participateInMassSelection = data => HTTP.GET('web/massSelection/participateInMassSelection',data)
+
+// 获取群组聊天记录
+export const listGroupChatRecord = data => HTTP.GET('web/messengerAccount/listGroupChatRecord',data)
+
+// 获取群成员列表
+export const listMassSelectionMembers = data => HTTP.GET('web/massSelection/listMassSelectionMembers',data)
+
+// 获取报名参加人员列表
+export const applyToJoinMassSelectionList = data => HTTP.GET('web/massSelection/applyToJoinMassSelectionList',data)
+
+// 获取报名参加人员列表
+export const candidacyAudit = data => HTTP.GET('web/massSelection/candidacyAudit',data)
+
 /**
  * 字典接口
  */

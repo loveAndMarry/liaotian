@@ -5,7 +5,7 @@
         <Intro :data="data"/>
         <!-- 容器 -->
         <div style="background-color: #fff;margin-top: .2rem;padding-top: .2rem">
-          <div class="apply">我要报名</div>
+          <div class="apply">发起资料</div>
 
           <div class="apply_group">
             <span class="apply_group_title">参选费用</span>
@@ -15,14 +15,14 @@
           </div>
 
           <div style="padding: 0.25rem .77rem">
-            <Button round size="large" class="submit" @click="submit">确认发布</Button>
+            <Button round size="large" class="submit" @click="submit">{{submitText}}</Button>
           </div>
         </div>
      </div>
   </div>
 </template>
 <script>
-import { NavBar , Button} from 'vant'
+import { NavBar , Button, Toast} from 'vant'
 import { getMassSelectionDetails } from '@/assets/common/api'
 import Intro from './components/intro'
 export default {
@@ -30,6 +30,31 @@ export default {
     NavBar,
     Button,
     Intro
+  },
+  computed: {
+    submitText () {
+      switch(this.data.auditStatus){
+        case '1': 
+          return  '审核中'
+          break
+        case '2': 
+          switch(this.data.openState){
+            case '1': 
+              return  '进行发布'
+              break
+            case '2': 
+              return '已发布'
+              break
+            case '3': 
+              return  '海选结束'
+              break
+          }
+          break
+        case '3': 
+          return  '审核失败'
+          break
+      }
+    }
   },
   data () {
     return {
@@ -47,6 +72,12 @@ export default {
   },
   methods: {
     submit () {
+      if(this.data.auditStatus === '1' || this.data.auditStatus === '3' || this.data.openState === '2' || this.data.openState === '3'){
+        Toast({
+          message: '当前状态为' + this.submitText + ', 不可以操作'
+        })
+        return false
+      }
       var obj = {
         body: '海选基金',
         subject: '发起海选',
@@ -67,8 +98,8 @@ export default {
 <style scoped>
 .submit{
   background-color: #ff6f93;
-  height: .7rem;
-  line-height: .7rem;
+  height: .8rem;
+  line-height: .8rem;
   color: #fff;
   margin-top: 0
 }

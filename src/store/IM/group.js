@@ -5,6 +5,7 @@
 import IM from '@/assets/common/IM'
 import Axios from 'axios';
 import utils from '@/assets/common/utils'
+import { listGroupChatRecord , listMassSelectionMembers} from '@/assets/common/api'
 
 const state = {
   newMsg: {}, // 储存最新接受到的聊天信息（获取个人信息时是异步，所以现将最新消息保存起来）
@@ -16,7 +17,13 @@ const state = {
 
 const getters = {
   // 获取当前进入群组的聊天信息
-  messageList: state => utils.arraySort(state.message[state.groupId], 'chatDate')
+  messageList: state => utils.arraySort(state.message[state.groupId], 'chatDate'),
+  // 获取当前进入群组的好友列表
+  memberList: state => state.groupMembers[state.groupId],
+  // 获取管理员
+  admin: state => state.groupMembers[state.groupId].filter(el => el.isGroupOwner === 0),
+  // 获取群成员
+  groupMemberList: state => state.groupMembers[state.groupId].filter(el => el.isGroupOwner === 1),
 }
 
 const actions = {
@@ -88,7 +95,9 @@ const actions = {
     }
   },
   // 通过群组id获取当前群组成员信息和历史信息
-  getGroupData ({dispatch}, products) {
+  getGroupData ({dispatch, state}, products) {
+    state.groupId = products
+
     return new Promise((resolve, reject) => {
       let arr = []
       
@@ -104,7 +113,6 @@ const actions = {
 
       Axios.all(arr).then(() => {
         // 设置当前进入的群组id
-        state.groupId = products
         resolve()
       })
     })
@@ -113,11 +121,14 @@ const actions = {
   // 获取当前群组的好友列表信息
   getGroupMembers ({state, rootState}, products) {
     return new Promise(resolve => {
-      getGroupMembers({
-        userId: rootState.IM.user.id,
-        groupId : products
+      listMassSelectionMembers({
+        groupId : state.groupId
       }).then(res => {
-        state.groupMembers[products] = res.data
+        if(res.data && res.data.length > 0){
+          state.groupMembers[state.groupId] = res.data
+        } else {
+          state.groupMembers[state.groupId] = []
+        }
         resolve()
       })
     })
@@ -129,38 +140,42 @@ const actions = {
    */
   getGroupMessage ({state, rootState}, products) {
     return new Promise((resolve,reject) => {
-      getGroupMembers({
-        groupId : products,
+      listGroupChatRecord({
+        groupId : state.groupId,
         userId: rootState.IM.user.id,
         // 判断当前群组的历史消息个数，如果还没有创建储存群组消息的数组，那就从0个查询
-        pageCurrent: state.message[products] ? state.message[products].length : 0
+        limitStart: state.message[state.groupId] ? state.message[state.groupId].length : 0,
+        pageSize: 10
       }).then(res => {
         // 判断当前是否获取到了历史消息
-        if(res.data.list){
+        if(res.data){
           // 如果当前历史消息存在并且有数据
-          if (state.message[products] && state.message[products].length > 0) {
+          if (state.message[state.groupId] && state.message[state.groupId].length > 0) {
 
-            state.message[products].push(...res.data.list) 
+            state.message[state.groupId].push(...res.data) 
 
             // 如果没有最新的消息了
-            if(res.data.list.length < 10){
-              state.message[products].unshift({
+            if(res.data.length < 10){
+              state.message[state.groupId].unshift({
                 type: 'msg',
                 context: '--没有更多的历史消息了--'
               })
-              reject()
+              resolve(res.data)
             } else {
-              resolve()
+              resolve(res.data)
             }
           //没有数据就直接赋值
           } else {
-            state.message[products] = res.data.list
-            resolve() 
+            state.message[state.groupId] = res.data
+            resolve(res.data) 
           }
         // 没有获取到历史消息就赋值为空
         } else {
-          state.message[products] = [];
-          resolve()
+          state.message[state.groupId] = [{
+            type: 'msg',
+            context: '--没有更多的历史消息了--'
+          }];
+          resolve(res.data)
         }
       })
     })

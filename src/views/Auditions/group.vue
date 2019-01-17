@@ -2,11 +2,11 @@
   <div>
     <NavBar left-arrow @click-left="onClickLeft">
       <span slot="title">{{title}} (<i style="color: #ff7a99;font-style: initial;">{{num}}人</i>)</span>
-      <i class="friendList" slot="right" />
+      <i class="friendList" slot="right" @click="$router.push({name: 'groupList'})"/>
     </NavBar>
     <div class="service_content"  id="content">
       <PullRefresh  v-model="isLoading" @refresh="onRefresh" class="scroller_content" :disabled="isDisabled">
-        <div v-for="(el, index) in List" :key="index" class="scroller_item" v-show="loading">
+        <div v-for="(el, index) in messageList" :key="index" class="scroller_item" v-show="loading">
           <div v-if='el.type === "msg" ' v-text="el.context" style="color:#918d8d"></div>
           <left-content v-else-if="el.sendUserId !== user.id" :item="el"></left-content>
           <right-content v-else-if="el.sendUserId === user.id" :item="el"></right-content>
@@ -22,7 +22,7 @@
 </template>
 <script>
 import { NavBar ,PullRefresh} from 'vant'
-import { mapState } from 'vuex'
+import { mapState , mapGetters , mapActions} from 'vuex'
 import LeftContent from './components/LeftContent'
 import RightContent from './components/RightContent'
 export default {
@@ -48,16 +48,28 @@ export default {
     ...mapState({
       user: state => state.IM.user
     }),
+    ...mapGetters([
+      'messageList'
+    ]),
     HEIGHT () {
-      return this.List.length <= 7 ? ((7 - this.List.length) * 1.4) + 'rem' : '0rem'
+      return this.messageList.length <= 7 ? ((7 - this.messageList.length) * 1.4) + 'rem' : '0rem'
     }
   },
   methods: {
+    ...mapActions(['getGroupMessage']),
     onClickLeft () {
-
+      this.$router.back()
     },
     postMsg () {
 
+    },
+    onRefresh () {
+      this.getGroupMessage().then(res => {
+        if(!res || res.length === 0) {
+          this.isDisabled = true
+        }
+        this.isLoading = false
+      })
     }
   }
 }

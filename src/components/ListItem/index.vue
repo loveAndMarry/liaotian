@@ -165,16 +165,18 @@ export default {
       if(!this.Lock()){
         this.$router.push({name: 'member'})
       }
-      // 当前是否能够点击
-      if(this.noClick){
-        return false
-      }
       // 点击触发点击事件
       if(this.isEmitClick){
         this.$emit('click')
         return false
       }
-      this.isShow = true
+      // 当前是否能够点击
+      if(this.noClick){
+        return false
+      } else {
+        this.isShow = true
+      }
+      
     },
     onConfirm (arr) {
       this.isShow = false

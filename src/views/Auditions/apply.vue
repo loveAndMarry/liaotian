@@ -9,7 +9,7 @@
         <div class="apply_group">
           <span class="apply_group_title">自我介绍</span>
           <div class="apply_group_content">
-            <textarea class="textarea" placeholder="简单的一段话介绍自己"></textarea>
+            <textarea class="textarea" placeholder="简单的一段话介绍自己" v-model="content"></textarea>
           </div>
         </div>
 
@@ -23,7 +23,14 @@
                 <p>上传图片</p>
               </div>
             </li>
-            <li class="photo_item isShow" v-for="item in photos" :key="item" @click="examinePhoto(item)">
+            <li 
+              class="photo_item isShow"
+              v-for="item in photos" 
+              :key="item" 
+              @click="examinePhoto(item)" 
+              @touchstart="showDeleteButton(item)"
+              @touchend="clearLoop(item)"
+            >
               <img :src="item + '?imageMogr2/auto-orient'" v-if="item" alt>
             </li>
             <template v-show="Length === 0" >
@@ -35,15 +42,15 @@
         </div>
 
         <div style="padding: 0.25rem .77rem">
-          <Button round size="large" class="submit">提交</Button>
+          <Button round size="large" class="submit" @click="submitClick" :disabled='isDisabled'>提交</Button>
         </div>
      </div>
   </div>
 </template>
 <script>
-import { NavBar , Button} from 'vant'
+import { NavBar , Button, Toast ,ImagePreview} from 'vant'
 import Intro from './components/intro'
-import { getMassSelectionDetails } from '@/assets/common/api'
+import { getMassSelectionDetails , participateInMassSelection } from '@/assets/common/api'
 export default {
   components: {
     NavBar,
@@ -58,7 +65,10 @@ export default {
   data () {
     return {
       photos: [],
-      data: {}
+      data: {},
+      content: '',
+      isDisabled: false,
+      Loop: null
     }
   },
   mounted () {
@@ -70,22 +80,78 @@ export default {
     })
   },
   methods: {
-    submitPhoto() {
-      window.updatePhoto(str => {
-        if(str) {
-          this.photos.push(str)
-        }
+    submitClick () {
+      if(this.content.replace(/ /g, '') === ''){
+        Toast({
+          message: '请输入一句话介绍',
+          duration: 1000
+        })
+        return
+      }
+      if(this.photos.length === 0){
+        Toast({
+          message: '请上传至少一张图片',
+          duration: 1000
+        })
+        return
+      }
+
+      participateInMassSelection({
+        userId: this.$store.state.IM.user.id,
+        massSelectionId: this.data.id,
+        auditIntroduction: this.content,
+        picture: this.photos.join(', ')
+      }).then(res => {
+        Toast({
+          message: '报名成功，请等待审核',
+          duration: 1000
+        })
+        this.isDisabled = true
       })
+    },
+    submitPhoto() {
+      if(this.photos.length < 9){
+         window.updatePhoto(str => {
+          if(str) {
+            this.photos.push(str)
+          }
+        })
+      } else {
+        Toast({
+          message: '最多只能上传8张图片',
+          duration: 1000
+        })
+      }
     },
     examinePhoto (item) {
       let index = this.photos.findIndex(el => el === item)
       window.instance = ImagePreview({
-        images: this.photos.map(el => item),
+        images: this.photos.map(el => el),
         startPosition: index
       })
     },
     onClickLeft () {
       this.$router.back()
+    },
+    showDeleteButton(e) {
+      clearTimeout(this.Loop); //再次清空定时器，防止重复注册定时器
+      this.Loop = setTimeout(function() {
+        this.$dialog.confirm({   //这是个弹出框，用的ydui
+          title: '是否删除当前图片',
+          beforeClose: (action, done) => {
+            if(action === 'confirm') {
+              this.photos = this.photos.filter(el => el !== e)
+              done()
+            } else {
+              done()
+              this.$dialog.close()
+            }
+          }
+        });
+      }.bind(this), 1000);
+    },
+    clearLoop(e) {
+      clearTimeout(this.Loop)
     }
   }
 }
@@ -93,8 +159,8 @@ export default {
 <style scoped>
 .submit{
   background-color: #ff6f93;
-  height: .7rem;
-  line-height: .7rem;
+  height: .8rem;
+  line-height: .8rem;
   color: #fff;
 }
 .apply{

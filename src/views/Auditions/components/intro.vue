@@ -7,7 +7,7 @@
     <!-- 活动简介 -->
     <div class="intro_group">
       <h5 class="intro_group_title">活动简介</h5>
-      <p class="intro_group_context">{{data.contetn}}</p>
+      <p class="intro_group_context">{{data.content}}</p>
     </div>
     <!-- 发起人简介 -->
     <div class="intro_group">
@@ -100,7 +100,7 @@ export default {
 }
 .intro_group_content .title{
   float: left;
-  font-size: .29rem
+  font-size: .24rem
 }
 .intro_group_content .content{
   float: right;

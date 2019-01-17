@@ -52,7 +52,6 @@ export default {
       this.$router.back()
     },
     submit () {
-      console.log('传入字符串:     ' + JSON.stringify(this.$route.query.obj)) 
 
       this.$route.query.obj.payType = this.payType
       var u = navigator.userAgent;

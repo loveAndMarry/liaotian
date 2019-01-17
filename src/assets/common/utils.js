@@ -17,6 +17,9 @@ const utils = {
    * 对象数组排序
    */
   arraySort (arr, key, num) {
+    if(arr.length === 0){
+      return []
+    }
     num = num || null
     arr.sort((a, b) => { return Number(a[key]) - Number(b[key]) })
     if (num) {
