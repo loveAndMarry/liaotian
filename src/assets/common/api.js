@@ -28,6 +28,9 @@ export const getChatRecord = data => HTTP.GET('web/messengerAccount/getChatRecor
 // 删除好友列表
 export const deleteMessageRecords = data => HTTP.GET('web/messengerAccount/deleteMessageRecords',data)
 
+// 发送群组消息
+export const sendGroupMessage = data => HTTP.GET('web/messengerAccount/sendGroupMessage',data)
+
 /**
  * 主页模块
  */
@@ -154,6 +157,9 @@ export const applyToJoinMassSelectionList = data => HTTP.GET('web/massSelection/
 
 // 获取报名参加人员列表
 export const candidacyAudit = data => HTTP.GET('web/massSelection/candidacyAudit',data)
+
+// 判断当前用户是否加入海选中
+export const isJoinMassSelection = data => HTTP.GET('web/massSelection/isJoinMassSelection',data)
 
 /**
  * 字典接口

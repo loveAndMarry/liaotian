@@ -11,6 +11,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import { isJoinMassSelection } from '@/assets/common/api'
 export default {
   props: ['el', 'type'],
   computed: {
@@ -70,15 +71,40 @@ export default {
     AuditionsClick () {
       if(this.type === '2'){
         if(this.state === '已发布'){
-          this.getGroupData(this.el.id).then(() => {
-            console.log(this.$store.state.group, '群组容器')
+          localStorage.setItem('massSelectionId', this.el.id)
+          this.getGroupData(this.el.groupId).then(() => {
             this.$router.push({name: 'group'})
           })
         } else {
           this.$router.push({name: 'publish', query: {massSelectionId: this.el.id}})
         }
       } else {
-        this.$router.push({name: 'apply', query: {massSelectionId: this.el.id}})
+        if(this.type === '1'){
+          // 判断当前用户是否进入海选
+          isJoinMassSelection({
+            userId: this.$store.state.IM.user.id,
+            massSelectionId: this.el.id
+          }).then(res => {
+            // 审核成功之后直接进入聊天室
+            if(res.data.isJoinMassSelection === '1'){
+              if(res.data.auditJoinMassSelection.auditIsAgree === '2'){
+                localStorage.setItem('massSelectionId', this.el.id)
+                this.getGroupData(this.el.groupId).then(() => {
+                  this.$router.push({name: 'group'})
+                })
+              } else {
+                this.$router.push({name: 'apply', query: {massSelectionId: this.el.id, default: res.data.auditJoinMassSelection}})
+              }
+            } else {
+              this.$router.push({name: 'apply', query: {massSelectionId: this.el.id, default: ''}})
+            }
+          })
+        } else {
+            localStorage.setItem('massSelectionId', this.el.id)
+              this.getGroupData(this.el.groupId).then(() => {
+              this.$router.push({name: 'group'})
+            })
+        }
       }
     },
   }

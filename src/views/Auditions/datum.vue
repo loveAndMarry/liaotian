@@ -2,21 +2,25 @@
   <div>
     <NavBar left-arrow @click-left="onClickLeft" title="资料"/>
     <div class="datum_content">
-      <img :src="data.userHead" alt="">
+      <img :src="data.userHead" alt="" class="userHead">
       <div>
         <span style="margin-right: .25rem;color: #8d8d8d">{{data.nickName}}</span>
         <Tag style="background-color: #ff7997">{{data.levelName}}</Tag>
       </div>
+      <div class="file_group">
+        <img  v-for="(item, index) in file" :src="item" :key="index" @click="fileClick(index)">
+      </div>
+      
       <p class="context">{{data.auditIntroduction}}</p>
       <div>
         <span class="button default" @click="submit('2')">拒绝</span>
-        <sapn class="button confirm" @click="submit('1')">同意</sapn>
+        <span class="button confirm" @click="submit('1')">同意</span>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { NavBar, Tag ,Button, Toast} from 'vant'
+import { NavBar, Tag ,Button, Toast , ImagePreview} from 'vant'
 import { candidacyAudit } from '@/assets/common/api'
 export default {
   components: {
@@ -26,20 +30,28 @@ export default {
   },
   data () {
     return {
-      data: {}
+      data: {},
+      file: []
     }
   },
   mounted () {
     this.data = this.$route.query.el
+    this.file = this.data.file.split(',')
   },
   methods: {
+    fileClick (index) {
+      window.instance = ImagePreview({
+        images: this.file,
+        startPosition: index
+      })
+    },
     onClickLeft () {
       this.$router.back()
     },
     submit (type) {
       candidacyAudit({
         userId: this.$store.state.IM.user.id,
-        massSelectionId: this.$store.state.group.groupId,
+        massSelectionId: localStorage.getItem('massSelectionId'),
         auditJoinMassSelectionId: this.data.id,
         auditStatus: type
       }).then(res => {
@@ -47,7 +59,9 @@ export default {
           message: '操作成功',
           duration: 1000
         }),
-        this.$router.back()
+        window.setTimeout(() => {
+          this.$router.back()
+        }, 1000)
       })
     }
   }
@@ -86,11 +100,20 @@ export default {
   box-sizing: border-box;
   box-sizing: -webkit-border-box;
 }
-.datum_content img{
+.datum_content img.userHead{
   display: block;
   width: 1.51rem;
   height: 1.51rem;
   border-radius: 50%;
   margin: .38rem auto .24rem
+}
+.file_group{
+  width: 100%;
+  padding: .2rem 0;
+  border-radius: .05rem;
+  text-align: left;
+}
+.file_group img{
+  width: 24%;
 }
 </style>

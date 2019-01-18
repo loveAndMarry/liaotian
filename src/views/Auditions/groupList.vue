@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar left-arrow title="参选成员" @click-left="onClickLeft">
-      <i class="Election" slot="right" @click="$router.push({name: 'Election'})"/>
+      <i class="Election" v-if="admin[0].userId === $store.state.IM.user.id" slot="right" @click="$router.push({name: 'Election'})"/>
     </NavBar>
     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #fff;">
       <div class="groupList_title">
@@ -10,7 +10,7 @@
       <div class="groupList_item noBorder" v-for="(el, index) in admin" :key="index">
         <img :src="el.userHead" alt="">
         <span class="hint">群主</span>
-        <span class="hint" v-if="el.levelCode - 0 > 0">{{el.levelName}}</span>
+        <span class="hint" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
         <p>{{el.nickName}}</p>
       </div>
       <div class="groupList_title">
@@ -18,7 +18,7 @@
       </div>
       <div class="groupList_item" v-for="(el, index) in groupMemberList" :key="index">
         <img :src="el.userHead" alt="">
-        <span class="hint" v-if="el.levelCode - 0 > 0">{{el.levelName}}</span>
+        <span class="hint" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
         <p>{{el.nickName}}</p>
       </div>
     </div>
@@ -26,7 +26,7 @@
 </template>
 <script>
 import { NavBar } from 'vant'
-import { mapGetters } from 'vuex'
+import { mapGetters , mapActions} from 'vuex'
 export default {
   components: {
     NavBar
@@ -34,7 +34,12 @@ export default {
   computed: {
     ...mapGetters(['memberList','admin','groupMemberList'])
   },
+  mounted () {
+    // 获取好友列表
+    this.getGroupMembers()
+  },
   methods: {
+    ...mapActions(['getGroupMembers']),
     onClickLeft () {
       this.$router.back()
     }

@@ -26,7 +26,7 @@ export default {
   width: 100%;
   overflow: hidden;
   text-align: left;
-  padding: 0 .3rem;
+  padding: 0.2rem .3rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }

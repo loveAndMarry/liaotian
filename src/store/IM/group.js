@@ -5,7 +5,7 @@
 import IM from '@/assets/common/IM'
 import Axios from 'axios';
 import utils from '@/assets/common/utils'
-import { listGroupChatRecord , listMassSelectionMembers} from '@/assets/common/api'
+import { listGroupChatRecord , listMassSelectionMembers , sendGroupMessage, getFriendMessage} from '@/assets/common/api'
 
 const state = {
   newMsg: {}, // 储存最新接受到的聊天信息（获取个人信息时是异步，所以现将最新消息保存起来）
@@ -21,9 +21,9 @@ const getters = {
   // 获取当前进入群组的好友列表
   memberList: state => state.groupMembers[state.groupId],
   // 获取管理员
-  admin: state => state.groupMembers[state.groupId].filter(el => el.isGroupOwner === 0),
+  admin: state => state.groupMembers[state.groupId].filter(el => el.isGroupOwner === '1'),
   // 获取群成员
-  groupMemberList: state => state.groupMembers[state.groupId].filter(el => el.isGroupOwner === 1),
+  groupMemberList: state => state.groupMembers[state.groupId].filter(el => el.isGroupOwner === '0'),
 }
 
 const actions = {
@@ -32,17 +32,19 @@ const actions = {
     // 将当前发送的信息添加到历史消息里
     state.message[state.groupId].push(products)
     
+    state.message = Object.assign({}, state.message)
+    console.log(state)
     return new Promise((resolve, reject) => {
       // 向容联云发送消息
       IM.postMsg({
         data:products.context,
-        id: products.receiver
+        id: state.groupId
       }).then((res) => {
         // 向服务器发送消息,用于保存历史数据
-        postGroupMsg({
+        sendGroupMessage({
           context:products.context,
-          sendUserId: rootState.user.id,
-          receiveUserId: state.groupId,
+          sendUserId: rootState.IM.user.id,
+          groupId: state.groupId,
           chatDate: products.chatDate,
           type: products.msgType
         }).then(res => {
@@ -66,9 +68,9 @@ const actions = {
         // 判断当前发送者的详细信息是否在请求中，没有请求中，就请求
         if( state.newMembers.findIndex(el => el === products.msgSender) === -1 ){
           // 获取好友详情接口
-          getGroupMemberDetails({
+          getFriendMessage({
             userId: rootState.IM.user.id,
-            memberId: products.msgSender
+            accountNumber: products.msgSender
           }).then(res => {
 
             // 将获取到得用户信息添加到好友列表中
@@ -77,8 +79,8 @@ const actions = {
             // 将没有添加的最新信息添加到消息列表中
             state.newMsg[products.msgSender].forEach(ele => {
               state.message[products.msgReceiver].push(Object.assign({
-                userHead: obj.userHead,
-                sendUserId: obj.userId
+                userHead: res.data.userHead,
+                sendUserId: res.data.userId
               }, ele))
             })
           })
@@ -152,7 +154,7 @@ const actions = {
           // 如果当前历史消息存在并且有数据
           if (state.message[state.groupId] && state.message[state.groupId].length > 0) {
 
-            state.message[state.groupId].push(...res.data) 
+            state.message[state.groupId].unshift(...res.data)
 
             // 如果没有最新的消息了
             if(res.data.length < 10){
@@ -171,10 +173,10 @@ const actions = {
           }
         // 没有获取到历史消息就赋值为空
         } else {
-          state.message[state.groupId] = [{
+          state.message[state.groupId].unshift({
             type: 'msg',
             context: '--没有更多的历史消息了--'
-          }];
+          })
           resolve(res.data)
         }
       })

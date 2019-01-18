@@ -42,7 +42,7 @@
         </div>
 
         <div style="padding: 0.25rem .77rem">
-          <Button round size="large" class="submit" @click="submitClick" :disabled='isDisabled'>提交</Button>
+          <Button round size="large" class="submit" @click="submitClick" :disabled='isDisabled'>{{submitText}}</Button>
         </div>
      </div>
   </div>
@@ -68,7 +68,9 @@ export default {
       data: {},
       content: '',
       isDisabled: false,
-      Loop: null
+      Loop: null,
+      default: {},
+      submitText: '提交'
     }
   },
   mounted () {
@@ -78,6 +80,18 @@ export default {
     }).then(res => {
       this.data = res.data
     })
+
+    // 如果已经提交过信息了，就不能操作了
+    this.default = this.$route.query.default
+
+    if(this.default){
+      this.photos = this.default.file.split(',')
+      this.content = this.default.auditIntroduction
+      if(this.default.auditIsAgree === '1'){
+        this.submitText = '审核中'
+        this.isDisabled = true
+      }
+    }
   },
   methods: {
     submitClick () {

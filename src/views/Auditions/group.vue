@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar left-arrow @click-left="onClickLeft">
-      <span slot="title">{{title}} (<i style="color: #ff7a99;font-style: initial;">{{num}}人</i>)</span>
+      <span slot="title">{{admin[0].nickName + '的海选'}} (<i style="color: #ff7a99;font-style: initial;">{{memberList.length}}人</i>)</span>
       <i class="friendList" slot="right" @click="$router.push({name: 'groupList'})"/>
     </NavBar>
     <div class="service_content"  id="content">
@@ -35,40 +35,78 @@ export default {
   data () {
     return {
       context: '',
-      title: '瞎聊群',
-      num: 46,
       loading: true, // 下拉刷新的内容是否加载完成 
       isLoading: false, // 下拉刷新是否完成
       isDisabled: false, // 数据是否加载完毕
       limitStart: 0,
-      pageSize: 10
+      pageSize: 10,
+      isToBottom: true
     }
+  },
+  mounted () {
+    this.scrollToBottom()
   },
   computed: {
     ...mapState({
       user: state => state.IM.user
     }),
     ...mapGetters([
-      'messageList'
+      'messageList',
+      'memberList',
+      'admin'
     ]),
     HEIGHT () {
       return this.messageList.length <= 7 ? ((7 - this.messageList.length) * 1.4) + 'rem' : '0rem'
     }
   },
+  watch: {
+    'messageList': function (arr) {
+      if(this.isToBottom){
+        // 将滚动条置为底部
+        this.scrollToBottom()
+      }
+    }
+  },
   methods: {
-    ...mapActions(['getGroupMessage']),
+    ...mapActions(['getGroupMessage','postGroupMsg']),
+    scrollToBottom () {
+       this.$nextTick(() => {
+        var container = this.$el.querySelector(".scroller_content");
+        var content = document.getElementById('content')
+        content.scrollTop = container.scrollHeight;
+      })
+    },
     onClickLeft () {
       this.$router.back()
     },
     postMsg () {
-
+      this.postGroupMsg({
+        context: this.context,
+        sendUserId: this.user.id,
+        chatDate: new Date().getTime(),
+        msgType: 1,
+        userHead: this.$store.state.IM.user.userHead
+      }).then(() => {
+        this.context = ''
+      })
     },
     onRefresh () {
+      var container = this.$el.querySelector(".scroller_content");
+      var scrollHeight = container.scrollHeight;
+      this.isToBottom = false
+      this.loading = false
       this.getGroupMessage().then(res => {
         if(!res || res.length === 0) {
           this.isDisabled = true
         }
-        this.isLoading = false
+        console.log(this.messageList)
+        this.loading = true
+        this.isToBottom = true
+        this.$nextTick(() => {
+          this.isLoading = false;
+          var content = document.getElementById('content')
+          content.scrollTop = container.scrollHeight - scrollHeight
+        })
       })
     }
   }

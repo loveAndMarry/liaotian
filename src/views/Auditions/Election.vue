@@ -40,11 +40,10 @@ export default {
     onLoad () {
       applyToJoinMassSelectionList({
         userId: this.$store.state.IM.user.id,
-        massSelectionId: this.$store.state.group.groupId,
+        massSelectionId: localStorage.getItem('massSelectionId'),
         pageCurrent: this.pageCurrent,
         pageSize: this.pageSize
       }).then(res => {
-        console.log(this,"this")
         if(res.data && res.data.list && res.data.list.length > 0 && (res.data.totalCount - 0) > this.List.length) {
           ++this.pageCurrent
           this.List.push(...res.data.list)
