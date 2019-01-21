@@ -38,7 +38,8 @@ const actions = {
       // 向容联云发送消息
       IM.postMsg({
         data:products.context,
-        id: state.groupId
+        id: state.groupId,
+        type: 2
       }).then((res) => {
         // 向服务器发送消息,用于保存历史数据
         sendGroupMessage({
@@ -56,43 +57,47 @@ const actions = {
   // 监听获取的最新的信息
   monitorNewMsg ({ state , rootState}, products) {
     // 接受到消息后，先判断是否进入了当前群组聊天室，进入聊天室就向当前聊天室添加最新消息，没有进入聊天室就跳出操作，因为进入聊天室之后，第一件事是加载历史数据
-    if( state.groupId !== '' &&  state.groupId === products.msgReceiver){
+    if( state.groupId !== '' &&  state.groupId === products.receiver){
 
       // 判断信息的发送者在不在当前群里（当这个发送者刚刚进入这个群时，本地的好友列表还没有更新，所以会查不到当前好友的信息）
-      if(state.groupMembers[products.msgReceiver].findIndex(el => el.accountNumber === products.msgSender) === -1){
+      if(state.groupMembers[products.receiver].findIndex(el => el.accountNumber === products.sender) === -1){
 
         // 先将接受到的历史消息保存起来
-        state.newMsg[products.msgSender] = []
-        state.newMsg[products.msgSender].push(products)
+        state.newMsg[products.sender] = []
+        state.newMsg[products.sender].push(products)
         
         // 判断当前发送者的详细信息是否在请求中，没有请求中，就请求
-        if( state.newMembers.findIndex(el => el === products.msgSender) === -1 ){
+        if( state.newMembers.findIndex(el => el === products.sender) === -1 ){
           // 获取好友详情接口
           getFriendMessage({
             userId: rootState.IM.user.id,
-            accountNumber: products.msgSender
+            accountNumber: products.sender
           }).then(res => {
 
             // 将获取到得用户信息添加到好友列表中
-            state.groupMembers[products.msgReceiver].push(res.data);
+            state.groupMembers[products.receiver].push(res.data);
 
             // 将没有添加的最新信息添加到消息列表中
-            state.newMsg[products.msgSender].forEach(ele => {
-              state.message[products.msgReceiver].push(Object.assign({
+            state.newMsg[products.sender].forEach(ele => {
+              state.message[products.receiver].push(Object.assign({
                 userHead: res.data.userHead,
                 sendUserId: res.data.userId
               }, ele))
             })
+
+            state.message = Object.assign({}, state.message)
           })
         }
       } else {
         // 获取当前发送信息的人的详细信息
-        var obj = state.groupMembers[products.msgReceiver].find(el => el.accountNumber === products.msgSender)
+        var obj = state.groupMembers[products.receiver].find(el => el.accountNumber === products.sender)
         // 将当前发送消息的头像保存到数据中
-        state.message[products.msgReceiver].push(Object.assign({
+        state.message[products.receiver].push(Object.assign({
           userHead: obj.userHead,
           sendUserId: obj.userId
         }, products))
+
+        state.message = Object.assign({}, state.message)
       }
     }
   },

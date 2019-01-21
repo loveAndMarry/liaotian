@@ -1,5 +1,6 @@
 <template>
     <div class="left">
+        <div class="nickName">{{item.nickName}}</div>
         <div class="left_img">
             <img :src="item.userHead">
         </div>
@@ -22,6 +23,11 @@ export default {
 </script>
 
 <style scoped>
+.nickName{
+  margin-bottom: .1rem;
+  color: #a8a8a8;
+  display: inline-block
+}
 .left{
   width: 100%;
   overflow: hidden;
@@ -51,6 +57,9 @@ export default {
   background-color: #fff;
   border-radius: 5px;
   -webkit-border-radius: 5px;
-  font-size: .28rem
+  font-size: .28rem;
+  display: block;
+  margin-left: 1.14rem;
+  width: max-content;
 }
 </style>

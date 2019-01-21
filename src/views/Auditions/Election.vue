@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar left-arrow title="参选成员" @click-left="onClickLeft"/>
+    <NavBar left-arrow title="报名人员" @click-left="onClickLeft"/>
     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #fff;">
       <List
       v-model="loading"

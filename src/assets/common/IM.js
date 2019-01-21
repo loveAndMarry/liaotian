@@ -65,70 +65,45 @@ IM.prototype = {
         // 收到push消息或者离线消息或判断输入状态//如果obj.msgType==12  判断obj.msgDomainn的值//obj.msgDomain 0 无输入状态  1 正在输入  2 正在录音
         console.log('有新的消息', obj)
 
-        // 客服发送消息时触发
-        if(obj.msgSender === '00001'){
-          window.serviceRmation({
-            id: obj.msgId,
-            receiver: obj.msgReceiver,
-            sender: obj.msgSender,
-            context: obj.msgContent,
-            msgType: obj.msgType,
-            time: parseInt(obj.msgDateCreated),
-            chatDate: parseInt(obj.msgDateCreated),
-            status: 2
-          })
+        // 单聊
+        if(obj.msgDomain === '1') {
+           // 客服发送消息时触发
+          if(obj.msgSender === '00001'){
+            window.serviceRmation({
+              id: obj.msgId,
+              receiver: obj.msgReceiver,
+              sender: obj.msgSender,
+              context: obj.msgContent,
+              msgType: obj.msgType,
+              time: parseInt(obj.msgDateCreated),
+              chatDate: parseInt(obj.msgDateCreated),
+              status: 2
+            })
+          } else {
+            store.dispatch('RECEIVEINFORMATION', {
+              id: obj.msgId,
+              receiver: obj.msgReceiver,
+              sender: obj.msgSender,
+              context: obj.msgContent,
+              msgType: obj.msgType,
+              time: parseInt(obj.msgDateCreated),
+              chatDate: parseInt(obj.msgDateCreated),
+              status: 2
+            })
+          }
         } else {
-          store.dispatch('RECEIVEINFORMATION', {
+          // 群聊
+          store.dispatch('monitorNewMsg', {
             id: obj.msgId,
             receiver: obj.msgReceiver,
             sender: obj.msgSender,
             context: obj.msgContent,
             msgType: obj.msgType,
-            time: parseInt(obj.msgDateCreated),
-            chatDate: parseInt(obj.msgDateCreated),
-            status: 2
+            chatDate: new Date().getTime() // 接受时间
           })
         }
       })
 
-      // 监听群组消息通知
-      RL_YTX. onMCMMsgReceiveListener(function(obj) {
-        /**
-         *  obj.msgId; //消息msgId
-
-            obj.msgType; //消息类型1:文本消息 2:语音消息 3:视频消息  4:图片消息  
-            5:位置消息  6:文件
-
-            obj.msgContent; //文本消息内容
-
-            obj.msgSender;  //发送者
-
-            obj.msgReceiver; //接收者群组Im消息时，接收者为群组id
-
-            obj.msgDomain;  //扩展信息
-
-            obj.msgFileName; //消息文件名
-
-            obj.msgFileUrl; //消息下载地址
-
-            obj.msgDateCreated; //服务器接收消息时间
-
-            obj.senderNickName; //发送者昵称
-
-            obj.mcmEvent; //mcm消息类型 1 start消息  2 end消息 3发送mcm消息
-
-            obj.msgFileSize;//附件大小
-         */
-        // 触发store里的接受事件 
-        store.dispatch('monitorNewMsg', {
-          id: obj.msgId,
-          receiver: obj.msgReceiver,
-          sender: obj.msgSender,
-          context: obj.msgContent,
-          msgType: obj.msgType,
-          chatDate: new Date().getTime() // 接受时间
-        })
-      })
       
       // 登录之后监听跟自己相关的群组信息
       RL_YTX.onNoticeReceiveListener(function(obj) {
@@ -157,8 +132,10 @@ IM.prototype = {
   /**
    * 当前只能够发送文本信息和图片信息
    * 向当前好友发送信息
+   * 
+   * type: 设置聊天类型  1 为单聊  2 为群聊
    */
-  postMsg ({msgType = 1, data = '', id}) {
+  postMsg ({msgType = 1, data = '', id , type = 1}) {
     return new Promise((resolve, reject) => {
       var msgid = new Date().getTime()
       // 新建消息体对象
@@ -170,6 +147,8 @@ IM.prototype = {
       obj.setType(msgType)
       // 设置接收者
       obj.setReceiver(id)
+      // 设置聊天类型
+      obj.setDomain(type)
       if (msgType === 1 || msgType === 2) {
         // 设置发送的文本内容
         obj.setText(data)

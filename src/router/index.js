@@ -22,6 +22,8 @@ import Election from '@/views/Auditions/Election'
 import apply from '@/views/Auditions/apply'
 // 海选确认发布
 import publish from '@/views/Auditions/publish'
+// 我的资产
+import property from '@/views/property'
 // 主页
 import view from '@/views'
 // 底部导航栏
@@ -66,6 +68,8 @@ import purchase from '@/views/purchase'
 import PaymentDetails from '@/views/user/PaymentDetails'
 // 在线客服
 import service from '@/views/user/service'
+// 消息通知
+import message from '@/views/user/message'
 
 import test from '@/views/test'
 
@@ -258,6 +262,16 @@ const router = new Router({
     path: '/Election',
     name: 'Election',
     component: Election
+  },
+  {
+    path: '/property',
+    name: 'property',
+    component: property
+  },
+  {
+    path: '/message',
+    name: 'message',
+    component: message
   }
   ]
 })

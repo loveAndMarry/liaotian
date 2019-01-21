@@ -16,7 +16,7 @@
       <div class="groupList_title">
         群成员({{groupMemberList.length}}人)
       </div>
-      <div class="groupList_item" v-for="(el, index) in groupMemberList" :key="index">
+      <div class="groupList_item">
         <img :src="el.userHead" alt="">
         <span class="hint" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
         <p>{{el.nickName}}</p>
@@ -48,6 +48,14 @@ export default {
 </script>
 
 <style scoped>
+.pairing{
+  display: block;
+  height: 1.28rem;
+  line-height: 1.28rem;
+  background-color: #f44;
+  padding: 0 .11rem;
+  color: #fff;
+}
 .Election{
   display: block;
   background-image: url('../../assets/images/add_friend.png');

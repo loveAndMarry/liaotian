@@ -1,9 +1,11 @@
 <template>
     <div class="right">
-        <div class="right_content" v-html="Replace(item.context)">
-        </div>
+        <div class="nickName">{{item.nickName}}</div>
          <div class="right_img">
             <img :src="item.userHead" alt="">
+        </div>
+        <div class="right_content">
+          <div v-html="Replace(item.context)"></div>
         </div>
     </div>
 </template>
@@ -20,6 +22,11 @@ export default {
 </script>
 
 <style scoped>
+.nickName{
+  margin-bottom: .1rem;
+  color: #a8a8a8;
+  display: inline-block
+}
 .right{
   width: 100%;
   overflow: hidden;
@@ -40,7 +47,7 @@ export default {
   border-radius: 50%;
   -webkit-border-radius: 50%;
 }
-.right .right_content{
+.right .right_content>div{
   max-width:calc( 100% - 1.14rem);
   padding: .3rem;
   display: inline-block;
@@ -49,6 +56,7 @@ export default {
   background-color: #fff;
   border-radius: 5px;
   -webkit-border-radius: 5px;
-  font-size: .28rem
+  font-size: .28rem;
+  width: max-content;
 }
 </style>
