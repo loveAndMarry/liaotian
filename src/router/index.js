@@ -22,6 +22,12 @@ import Election from '@/views/Auditions/Election'
 import apply from '@/views/Auditions/apply'
 // 海选确认发布
 import publish from '@/views/Auditions/publish'
+// 海选配对成功
+import success from '@/views/Auditions/success'
+// 海选发起匹配
+import Match from '@/views/Auditions/Match'
+// 海选发起人操作列表
+import check from '@/views/Auditions/check'
 // 我的资产
 import property from '@/views/property'
 // 主页
@@ -272,6 +278,21 @@ const router = new Router({
     path: '/message',
     name: 'message',
     component: message
+  },
+  {
+    path: '/success',
+    name: 'success',
+    component: success
+  },
+  {
+    path: '/Match',
+    name: 'Match',
+    component: Match
+  },
+  {
+    path: '/check',
+    name: 'check',
+    component: check
   }
   ]
 })

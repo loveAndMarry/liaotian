@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar left-arrow title="参选成员" @click-left="onClickLeft">
-      <i class="Election" v-if="admin[0].userId === $store.state.IM.user.id" slot="right" @click="$router.push({name: 'Election'})"/>
+      <i class="check" v-if="admin[0].userId === $store.state.IM.user.id" slot="right" @click="$router.push({name: 'check'})"/>
     </NavBar>
     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #fff;">
       <div class="groupList_title">
@@ -16,7 +16,7 @@
       <div class="groupList_title">
         群成员({{groupMemberList.length}}人)
       </div>
-      <div class="groupList_item">
+      <div class="groupList_item" v-for="(el, index) in groupMemberList" :key="index">
         <img :src="el.userHead" alt="">
         <span class="hint" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
         <p>{{el.nickName}}</p>
@@ -56,9 +56,9 @@ export default {
   padding: 0 .11rem;
   color: #fff;
 }
-.Election{
+.check{
   display: block;
-  background-image: url('../../assets/images/add_friend.png');
+  background-image: url('../../assets/images/更多.png');
   background-repeat: no-repeat;
   background-size: 100%;
   width: .4rem;
