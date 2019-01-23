@@ -24,10 +24,14 @@ import apply from '@/views/Auditions/apply'
 import publish from '@/views/Auditions/publish'
 // 海选配对成功
 import success from '@/views/Auditions/success'
-// 海选发起匹配
+// 海选搜索人员
 import Match from '@/views/Auditions/Match'
+// 海选发起匹配
+import MatchSearch from '@/views/Auditions/MatchSearch'
 // 海选发起人操作列表
 import check from '@/views/Auditions/check'
+// 海选人审核失败
+import beDefeated from '@/views/Auditions/beDefeated'
 // 我的资产
 import property from '@/views/property'
 // 主页
@@ -282,17 +286,36 @@ const router = new Router({
   {
     path: '/success',
     name: 'success',
-    component: success
+    component: success,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/MatchSearch',
+    name: 'MatchSearch',
+    component: MatchSearch
   },
   {
     path: '/Match',
     name: 'Match',
-    component: Match
+    component: Match,
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/check',
     name: 'check',
     component: check
+  },
+  {
+    path: '/beDefeated',
+    name: 'beDefeated',
+    component: beDefeated,
+    meta: {
+      keepAlive: true
+    }
   }
   ]
 })
@@ -323,6 +346,7 @@ router.beforeEach((to, from, next) => {
         })
       }
     })
+  
   } else {
     next()
   }

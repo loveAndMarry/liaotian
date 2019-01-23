@@ -33,6 +33,10 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 </script>
 
 <style>
+/* 设置海选下拉刷新时的字体隐藏的问题 */
+.Auditions .van-tabs__content--animated{
+  overflow: inherit;
+}
 /* 设置免费领取会员按钮的样式*/
 .ToReceiveTheMember .van-button--large{
   top: 8rem;

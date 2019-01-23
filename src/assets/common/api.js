@@ -161,6 +161,15 @@ export const candidacyAudit = data => HTTP.GET('web/massSelection/candidacyAudit
 // 判断当前用户是否加入海选中
 export const isJoinMassSelection = data => HTTP.GET('web/massSelection/isJoinMassSelection',data)
 
+// 跟据用户id模糊查询用户列表
+export const listMassSelectionMembeByUserNoLike = data => HTTP.GET('user/maritimeMatchingApplication/listMassSelectionMembeByUserNoLike',data)
+
+// 海选发起人向用户发起配对邀请
+export const maritimeMatchingApplication = data => HTTP.GET('web/massSelection/maritimeMatchingApplication',data)
+
+// 查看当前匹配申请的状态
+export const getMatchingResults = data => HTTP.GET('user/maritimeMatchingApplication/getMatchingResults',data)
+
 /**
  * 字典接口
  */

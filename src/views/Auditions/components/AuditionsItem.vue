@@ -12,6 +12,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { isJoinMassSelection } from '@/assets/common/api'
+import { Toast } from 'vant';
 export default {
   props: ['el', 'type'],
   computed: {
@@ -69,6 +70,15 @@ export default {
     ]),
         // 点击进入详情
     AuditionsClick () {
+      // 如果活动已经接受，就进不去了
+      if(this.el.openState === '3'){
+        Toast({
+          message: '活动已经结束，不能再进行操作',
+          duration: 1000
+        })
+        return false
+      }
+
       if(this.type === '2'){
         if(this.state === '已发布'){
           localStorage.setItem('massSelectionId', this.el.id)

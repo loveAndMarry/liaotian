@@ -62,6 +62,9 @@ export default {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+.van-pull-refresh{
+  overflow: inherit
+}
 .add{
   display: block;
   background-image: url('../../assets/images/initiate_btn.png');
