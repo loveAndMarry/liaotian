@@ -1,5 +1,5 @@
 <template>
-  <div class="chat_list" :style="{height: 'calc('+height+'px - 240px)'}">
+  <div class="chat_list" :style="{height: 'calc('+height+'px - 240px)'}" style="overflow-y: scroll;" @touchstart="onTouchstart">
     <template v-if="!isExamine()">
       <div class="link_hint_group">
         <div class="link_hint_content">
@@ -10,7 +10,7 @@
       </div>
     </template>
     <template  v-if="isExamine()">
-      <PullRefresh :disabled="isDisabled" v-model="isLoading" @refresh="onRefresh">
+      <PullRefresh :disabled="isDisabled" v-model="isLoading" @refresh="onRefresh" ref="refresh">
         <List
           v-model="loading"
           :finished="finished"
@@ -93,6 +93,10 @@ export default {
     }
   },
   methods: {
+    onTouchstart () {
+      console.dir(this.$refs.refresh);
+      console.log('123')
+    },
     updateMember () {
       this.$router.push({name: 'member'})
     },
@@ -109,7 +113,6 @@ export default {
       this.offsetEnd = this.$refs['swipeCell' + index][0].offset
       // 鼠标右滑
       if(this.offsetStart < this.offsetEnd &&  (this.offsetEnd - this.offsetStart > -10) || this.offsetEnd === 0){
-        console.log('鼠标右滑')
         this.$refs['swipeCell' + index][0].close()
         this.isDisabled = false
       } else {
@@ -254,6 +257,7 @@ export default {
     line-height: .7rem;
     margin: 0 auto;
     margin-top: .7rem;
+    font-size: .23rem;
 }
 .remove{
 color: #fff;

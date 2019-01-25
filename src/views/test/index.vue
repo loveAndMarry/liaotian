@@ -1,13 +1,14 @@
 <template>
-  <PullRefresh v-model="isLoading" @refresh="onRefresh" :animation-duration='0' :disabled="disabled">
-    <p>刷新次数: {{ count }}</p>
-  </PullRefresh>
+  <container title="测试">
+
+  </container>
 </template>
 <script>
-import { PullRefresh } from 'vant';
+import container from '@/components/ZX/container'
+
 export default {
   components: {
-    PullRefresh
+    container
   },
   data() {
     return {

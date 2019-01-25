@@ -74,10 +74,10 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 .dynamic .van-tabs__content--animated{
   height: 100%
 }
-.chat_list .van-pull-refresh,
+/* .chat_list .van-pull-refresh,
 .chat_list .van-pull-refresh__track{
   height: 100%
-}
+} */
 #app .van-nav-bar .van-icon{
   color: #858585 !important
 }
