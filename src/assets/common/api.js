@@ -130,6 +130,9 @@ export const listUserOrder = data => HTTP.GET('web/userOrders/listUserOrder',dat
 // 获取展示列表
 export const menuTreeDate = data => HTTP.GET('web/menu/menuTreeDate?parentId=1',data)
 
+// 获取消息通知列表
+export const listMessageNotification = data => HTTP.GET('web/messageNotification/listMessageNotification',data)
+
 /**
  *  海选模块
  */
@@ -170,6 +173,11 @@ export const maritimeMatchingApplication = data => HTTP.GET('web/massSelection/m
 // 查看当前匹配申请的状态
 export const getMatchingResults = data => HTTP.GET('user/maritimeMatchingApplication/getMatchingResults',data)
 
+// 查看申请配对邀请详情
+export const selectMaritimeMatchingApplication = data => HTTP.GET('user/maritimeMatchingApplication/selectMaritimeMatchingApplication',data)
+
+
+
 /**
  * 字典接口
  */
@@ -190,6 +198,9 @@ export const getMemberPrice = data => HTTP.GET('web/userMember/getMemberPrice', 
 
 // 获取轮播图内容
 export const listBanner = data => HTTP.GET('web/banner/listBanner', data)
+
+// 获取当前群组可以注册的人数类型
+export const listConfigureDictByType = data => HTTP.GET('web/configuredict/listConfigureDictByType',data)
 
 
 /**

@@ -26,7 +26,7 @@
           <div class="numberOfPeople">
             <h6>参选人数</h6>
             <ul>
-              <li v-for="(el, index) in groupSize" :key="index" :class="{disabled: !el.isDisabled, active: el.value === groupSizeLimit}" @click="numberOfPeopleClick(el)">{{el.label}}</li>
+              <li v-for="(el, index) in groupSize" :key="index" :class="{disabled: el.isEffective !== '2', active: el.dictKey === groupSizeLimit}" @click="numberOfPeopleClick(el)">{{el.dictValue}}</li>
             </ul>
           </div>
           <div class="numberOfPeople">
@@ -80,7 +80,7 @@
 <script>
 import { NavBar , Button, Toast } from 'vant'
 import ListItem from '@/components/ListItem'
-import { initiateMassSelection } from '@/assets/common/api' 
+import { initiateMassSelection , listConfigureDictByType} from '@/assets/common/api' 
 export default {
   data () {
     return {
@@ -96,27 +96,7 @@ export default {
       startTime: '',
       endTime: '',
       initiatingAmount: 0,
-      groupSize: [{
-        value: 1,
-        label: '1-100人',
-        isDisabled: false
-      },{
-        value: 2,
-        label: '1-300人',
-        isDisabled: false
-      },{
-        value: 3,
-        label: '1-500人',
-        isDisabled: false
-      },{
-        value: 4,
-        label: '1-1000人',
-        isDisabled: true
-      },{
-        value: 5,
-        label: '1-2000人',
-        isDisabled: true
-      }],
+      groupSize: [],
       // 提交服务器的数据
       submitData: {}
     }
@@ -129,8 +109,16 @@ export default {
   mounted () {
     this.defaultData = this.$store.state.common.selectionIntention
     this.userHead = this.$store.state.IM.user.userHead
+    this.listConfigureDictByType()
   },
   methods: {
+    listConfigureDictByType () {
+      listConfigureDictByType({
+        type: 'group_size_limit'
+      }).then(res => {
+        this.groupSize = res.data
+      })
+    },
     TimeClick (name) {
       this.$picker.show({
         type:'datePicker',
@@ -143,8 +131,8 @@ export default {
       })
     },
     numberOfPeopleClick (el) {
-      if(!el.isDisabled){
-        this.groupSizeLimit = el.value
+      if(el.isEffective === '1'){
+        this.groupSizeLimit = el.dictKey
       }
     },
     submitPhoto () {
@@ -367,14 +355,12 @@ export default {
   font-size: .23rem;
   color: #fff;
   background-color: #d8d8d8;
-  margin-right: .76rem;
+  margin-right: .5rem;
   margin-bottom: .28rem;
   border-radius: .05rem;
   position: relative;
 }
-.numberOfPeople li.active{
 
-}
 .numberOfPeople h6{
   margin: 0;
   text-align: left;

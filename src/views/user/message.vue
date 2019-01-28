@@ -1,33 +1,107 @@
 <template>
   <div>
     <NavBar left-arrow @click-left="onClickLeft" title="消息通知"/>
-    <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #f0f0f0;padding: 0 .3rem;box-sizing: border-box;box-sizing: -webkit-border-box;">
-      <div class="msg_group">
-        <div class="msg_time">2019-01-09 12:36:54</div>
-        <div class="msg_content">
-          <div class="title">都快放假啊速度快解放卢卡斯的解放军卡视角</div>
-          <div class="context">没拿申达股份凉快哪三个你萨科技发卡机了圣诞节发哪里开始的房间里卡圣诞节福利卡圣诞节疯狂了发送到发送到</div>
-        </div>
-      </div>
+    <div class="message">
+      <PullRefresh v-model="isLoading" @refresh="onRefresh">
+         <List
+          v-model="loading"
+          :finished="finished"
+          finished-text='没有更多了'
+          @load="onLoad"
+        >
+          <div class="msg_group" v-for="(el, index) in MsgList" :key="index">
+            <div class="msg_time">{{el.createDate}}</div>
+            <div class="msg_content" @click="$router.push({path: el.linkAddressRouting, query: {el: el}})">
+              <div class="title">{{el.title}}</div>
+              <div class="context">{{el.content}}</div>
+            </div>
+          </div>
+        </List>
+      </PullRefresh>
     </div>
   </div>
 </template>
 
 <script>
-import { NavBar} from 'vant'
+import { NavBar, PullRefresh, List} from 'vant'
+import { listMessageNotification } from '@/assets/common/api'
+import { resolve } from 'url';
 export default {
   components: {
-    NavBar
+    NavBar,
+    PullRefresh,
+    List
+  },
+  data () {
+    return {
+      isLoading: false, // 下拉刷新是否完成
+      loading: false, // 列表是否加载完成
+      finished: false, // 列表数据是否全部加载完成
+      MsgList: [],
+      pageCurrent: 0,
+      pageSize: 10
+    }
   },
   methods: {
+    onLoad () {
+      this.updateData({
+        pageCurrent: this.pageCurrent,
+        pageSize: this.pageSize
+      }).then(res => {
+        this.loading = false
+        this.MsgList.push(...res)
+
+        if(res.length < 10) {
+          this.finished = true
+        }
+
+        ++this.pageCurrent
+      }).catch(res => {
+        this.loading = false
+        this.finished = true
+      })
+    },
+    onRefresh () {
+      this.updateData({
+        pageCurrent: 0,
+        pageSize: this.MsgList.length
+      }).then(res => {
+        this.MsgList = res
+      }).catch(res => {
+        this.MsgList = []
+      })
+    },
     onClickLeft () {
       this.$router.back()
+    },
+    // 请求通知列表数据
+    updateData (obj) {
+      return new Promise((resolve, reject) => {
+         listMessageNotification(Object.assign({
+          userId: this.$store.state.IM.user.id,
+        }, obj)).then(res => {
+          if(res.data.list && res.data.list.length > 1) {
+            resolve(res.data.list)
+          } else {
+            reject()
+          }
+        })
+      })
     }
   }
 }
 </script>
 
 <style scoped>
+.message {
+  height: calc(100% - 46px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #f0f0f0;
+  padding: 0 .3rem;
+  box-sizing: border-box;
+  box-sizing: -webkit-border-box;
+}
 .msg_time{
   height: .68rem;
   font-size: .16rem;

@@ -7,7 +7,7 @@
       <div class="groupList_title">
         群主、管理员({{admin.length}}人)
       </div>
-      <div class="groupList_item noBorder" v-for="(el, index) in admin" :key="index">
+      <div class="groupList_item noBorder" v-for="(el, index) in admin" :key="index + '1'" @click="checkDetais('1', el)">
         <img :src="el.userHead" alt="">
         <span class="hint">群主</span>
         <span class="hint" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
@@ -16,7 +16,7 @@
       <div class="groupList_title">
         群成员({{groupMemberList.length}}人)
       </div>
-      <div class="groupList_item" v-for="(el, index) in groupMemberList" :key="index">
+      <div class="groupList_item" v-for="(el, index) in groupMemberList" :key="index" @click="checkDetais('2', el)">
         <img :src="el.userHead" alt="">
         <span class="hint" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
         <p>{{el.nickName}}</p>
@@ -42,6 +42,15 @@ export default {
     ...mapActions(['getGroupMembers']),
     onClickLeft () {
       this.$router.back()
+    },
+    checkDetais (type, el) {
+      if(type === '2') {
+        if(this.admin[0].userId !== this.$store.state.IM.user.id){
+          return false
+        }
+      }
+      this.$store.state.IM.friend = el
+      this.$router.push({name: 'userDetail', query:{type: '2'}})
     }
   }
 }

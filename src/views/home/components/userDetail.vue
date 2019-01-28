@@ -170,7 +170,7 @@
         </Tab>
       </Tabs>
       <div style="height: .98rem"></div>
-      <div class="immediately" :class="{show: isShow}" @click="immediately">立即联系</div>
+      <div class="immediately" v-if="isType === '1'" :class="{show: isShow}" @click="immediately">立即联系</div>
       <!-- <Group title="礼物">
         <a href="" class="gift">赠送礼物</a>
         <div class="default hide">
@@ -201,7 +201,8 @@ export default {
       loading: false,
       finished: false,
       pageSize: 10,
-      pageCurrent: 1
+      pageCurrent: 1,
+      isType: '1'
     }
   },
   computed: {
@@ -325,6 +326,8 @@ export default {
   },
   mounted () {
     // document.getElementById('userDetail_content').addEventListener('scroll', this.showConnection)
+    // type 为1时显示聊天按钮  2则不显示
+    this.$route.query.type ? this.isType = '2' : this.isType = '1'
     userInformationDisplay({
       userId: this.$store.state.IM.user.id,
       accessRecordId: this.$store.state.IM.friend.userId

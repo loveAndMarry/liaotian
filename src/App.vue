@@ -54,6 +54,10 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
   color: #f86b95
 }
 
+.message .van-pull-refresh, .message .van-pull-refresh__track {
+    height: 100%
+}
+
 #app .van-popup--right{
   width: 100%;
   height: 100%;

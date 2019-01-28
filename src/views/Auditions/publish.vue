@@ -58,7 +58,7 @@ export default {
   },
   data () {
     return {
-      title: '审核通过',
+      title: '海选资料',
       data: {}
     }
   },

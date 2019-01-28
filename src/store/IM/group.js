@@ -133,6 +133,7 @@ const actions = {
       }).then(res => {
         if(res.data && res.data.length > 0){
           state.groupMembers[state.groupId] = res.data
+          state.groupMembers = Object.assign({}, state.groupMembers)
         } else {
           state.groupMembers[state.groupId] = []
         }
@@ -178,6 +179,7 @@ const actions = {
           }
         // 没有获取到历史消息就赋值为空
         } else {
+          state.message[state.groupId] = []
           state.message[state.groupId].unshift({
             type: 'msg',
             context: '--没有更多的历史消息了--'

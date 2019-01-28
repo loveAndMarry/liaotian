@@ -80,6 +80,8 @@ import PaymentDetails from '@/views/user/PaymentDetails'
 import service from '@/views/user/service'
 // 消息通知
 import message from '@/views/user/message'
+// 是否通过配对邀请
+import MatchTheAudit from '@/views/msg/MatchTheAudit'
 
 import test from '@/views/test'
 
@@ -316,6 +318,11 @@ const router = new Router({
     meta: {
       keepAlive: true
     }
+  },
+  {
+    path: '/MatchTheAudit',
+    name: 'MatchTheAudit',
+    component: MatchTheAudit
   }
   ]
 })
