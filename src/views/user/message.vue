@@ -11,7 +11,8 @@
         >
           <div class="msg_group" v-for="(el, index) in MsgList" :key="index">
             <div class="msg_time">{{el.createDate}}</div>
-            <div class="msg_content" @click="$router.push({path: el.linkAddressRouting, query: {el: el}})">
+            <!-- applyToJoinMassSelectionId  申请id  只有群主接受申请人的请求时才会有 -->
+            <div class="msg_content" @click="$router.push({path: el.linkAddressRouting, query: {el: el, applyToJoinMassSelectionId: el.extId}})">
               <div class="title">{{el.title}}</div>
               <div class="context">{{el.content}}</div>
             </div>
@@ -25,7 +26,6 @@
 <script>
 import { NavBar, PullRefresh, List} from 'vant'
 import { listMessageNotification } from '@/assets/common/api'
-import { resolve } from 'url';
 export default {
   components: {
     NavBar,
@@ -38,7 +38,7 @@ export default {
       loading: false, // 列表是否加载完成
       finished: false, // 列表数据是否全部加载完成
       MsgList: [],
-      pageCurrent: 0,
+      pageCurrent: 1,
       pageSize: 10
     }
   },
@@ -50,7 +50,7 @@ export default {
       }).then(res => {
         this.loading = false
         this.MsgList.push(...res)
-
+        console.log(this.MsgList,'获取到内容了')
         if(res.length < 10) {
           this.finished = true
         }
@@ -64,11 +64,14 @@ export default {
     onRefresh () {
       this.updateData({
         pageCurrent: 0,
-        pageSize: this.MsgList.length
+        pageSize: this.pageCurrent * this.pageSize
       }).then(res => {
+        console.log(this.MsgList,'刷新到内容了')
         this.MsgList = res
+        this.isLoading = false
       }).catch(res => {
         this.MsgList = []
+        this.isLoading = false
       })
     },
     onClickLeft () {
@@ -80,7 +83,7 @@ export default {
          listMessageNotification(Object.assign({
           userId: this.$store.state.IM.user.id,
         }, obj)).then(res => {
-          if(res.data.list && res.data.list.length > 1) {
+          if(res.data.list && res.data.list.length > 0) {
             resolve(res.data.list)
           } else {
             reject()

@@ -34,7 +34,7 @@ export default {
       this.updateData({
         type: this.type,
         pageCurrent: 1,
-        pageSize: this.list.length,
+        pageSize: this.pageCurrent * this.pageSize,
         userId: this.$store.state.IM.user.id
       }).then(res => {
         this.list = res

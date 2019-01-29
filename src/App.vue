@@ -57,6 +57,9 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 .message .van-pull-refresh, .message .van-pull-refresh__track {
     height: 100%
 }
+.chat_list .van-pull-refresh, .chat_list .van-pull-refresh__track {
+    min-height: 9rem
+}
 
 #app .van-popup--right{
   width: 100%;

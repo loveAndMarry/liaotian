@@ -174,16 +174,25 @@ const actions = {
             }
           //没有数据就直接赋值
           } else {
-            state.message[state.groupId] = res.data
+            if(!state.message[state.groupId]){
+              state.message[state.groupId] = []
+            }
+            if(!res.data && !state.message[state.groupId]){
+              state.message[state.groupId] = []
+            } else {
+              state.message[state.groupId].push(...res.data)
+            }
             resolve(res.data) 
           }
         // 没有获取到历史消息就赋值为空
         } else {
-          state.message[state.groupId] = []
-          state.message[state.groupId].unshift({
-            type: 'msg',
-            context: '--没有更多的历史消息了--'
-          })
+          if(!state.message[state.groupId]){
+            state.message[state.groupId] = []
+            state.message[state.groupId].unshift({
+              type: 'msg',
+              context: '--没有更多的历史消息了--'
+            })
+          }
           resolve(res.data)
         }
       })

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { NavBar, Tabs, Tab} from 'vant'
+import { NavBar, Tabs, Tab, Toast} from 'vant'
 import AuditionsList from './components/AuditionsList'
 import { mapMutations } from 'vuex'
 export default {
@@ -37,7 +37,14 @@ export default {
 
     },
     onClickRight () {
-      this.$router.push({name: 'initiate'})
+      console.log(this.$store.state.IM.user.registerState)
+      if(this.$store.state.IM.user.registerState - 0 >= 3){
+        this.$router.push({name: 'initiate'})
+      }  else {
+        Toast({
+          message: '请先完成实名注册'
+        })
+      }
     }
   },
   mounted () {
@@ -52,7 +59,8 @@ export default {
     Tabs,
     Tab,
     NavBar,
-    AuditionsList
+    AuditionsList,
+    Toast
   }
 }
 </script>

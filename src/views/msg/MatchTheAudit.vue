@@ -10,15 +10,15 @@
       
       <p class="context">{{data.auditIntroduction}}</p>
       <div>
-        <span class="button default" @click="submit('2')">拒绝</span>
-        <span class="button confirm" @click="submit('1')">同意</span>
+        <span class="button default" @click="submit('3')">拒绝</span>
+        <span class="button confirm" @click="submit('2')">同意</span>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { NavBar, Tag ,Button, Toast} from 'vant'
-import { candidacyAudit , selectMaritimeMatchingApplication} from '@/assets/common/api'
+import { selectMaritimeMatchingApplication, disposeMaritimeMatchingApplication} from '@/assets/common/api'
 export default {
   components: {
     NavBar,
@@ -27,18 +27,62 @@ export default {
   },
   data () {
     return {
-
+      el: {},
+      data: {}
     }
   },
+  beforeRouteEnter (to, from, next) {
+    selectMaritimeMatchingApplication({
+      pairUserId: to.query.el.acceptUserId,
+      maritimeMatchingApplicationId: to.query.el.extId
+    }).then(res => {
+      if(res.code === 300){
+        Toast({
+          message: res.msg,
+          duration: 1000
+        })
+        window.setTimeout(() => {
+          next({name: from.name})
+        })
+        return 
+      }
+      if(res.data.pairUserIsAgree === '1'){
+        next()
+      }
+      if(res.data.pairUserIsAgree === '2'){
+        next({name: 'success', query: {el : res.data, context: '恭喜你&nbsp;&nbsp;&nbsp;<br/>配对成功！', title: '你和'+res.data.nickName+'配对成功了~'}})
+      }
+      if(res.data.pairUserIsAgree === '3'){
+        next({name: 'beDefeated', query: {el : res.data}})
+      }
+    })
+  },
   mounted () {
-   
+    let data = this.$route.query.el
+    selectMaritimeMatchingApplication({
+      pairUserId: data.acceptUserId,
+      maritimeMatchingApplicationId: data.extId
+    }).then(res => {
+      this.data = res.data
+    })
   },
   methods: {
     onClickLeft () {
       this.$router.back()
     },
     submit (type) {
-      
+      disposeMaritimeMatchingApplication({
+        pairUserIsAgree: type,
+        maritimeMatchingApplicationId: this.data.id
+      }).then(res => {
+        Toast({
+          message: '操作成功',
+          duration: 1000
+        })
+        window.setTimeout(() => {
+          this.$router.back()
+        },1000)
+      })
     }
   }
 }

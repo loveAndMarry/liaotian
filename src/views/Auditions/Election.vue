@@ -13,7 +13,7 @@
           <img :src="el.userHead" alt="">
           <span class="hint" v-if="el.levelCode - 0 > 0">{{el.levelName}}</span>
           <p>{{el.nickName}}</p>
-          <span class="hint check" @click="$router.push({name: 'datum', query: {el: el}})">查看</span>
+          <span class="hint check" @click="$router.push({name: 'datum', query: {applyToJoinMassSelectionId: el.id}})">查看</span>
         </div>
       </List>
     </div>

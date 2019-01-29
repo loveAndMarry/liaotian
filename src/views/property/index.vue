@@ -10,15 +10,18 @@
               <div class="title">收益 (元)</div>
               <div class="money">2000</div>
             </div>
-            <div class="property_group_item">
+            <!-- <div class="property_group_item">
               <div class="title">虚拟币</div>
               <div class="money">50000</div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
 
        <CellGroup>
+        <Cell title="银行卡" is-link to="">
+          <span slot="icon" class="bank"></span>
+        </Cell>
         <Cell title="提现" is-link to="">
           <span slot="icon" class="withdraw"></span>
         </Cell>
@@ -45,6 +48,14 @@ export default {
 }
 </script>
 <style scoped>
+.bank{
+  width: .4rem;
+  background-image: url('../../assets/images/bank_icon.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  vertical-align: middle;
+  margin-right: .2rem
+}
 .withdraw{
   width: .4rem;
   background-image: url('../../assets/images/withdrawal.png');
@@ -78,11 +89,11 @@ export default {
   display: -webkit-box;
 }
 .property_group .property_group_item{
-  width: 50%;
+  width: 100%;
 }
-.property_group .property_group_item:first-child{
+/* .property_group .property_group_item:first-child{
   border-right: 1px solid;
-}
+} */
 .property_group_item .title{
   line-height: .48rem;
 }

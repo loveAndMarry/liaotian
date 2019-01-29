@@ -80,6 +80,9 @@ export default {
       this.$router.back()
     },
     postMsg () {
+      if(this.context.replace(/\s+/g, '') === ''){
+        return false
+      }
       this.postGroupMsg({
         context: this.context,
         sendUserId: this.user.id,

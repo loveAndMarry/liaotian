@@ -33,13 +33,13 @@
           </li>
         </ul>
       </div>
-      <div style="text-align: left;">
+      <!-- <div style="text-align: left;">
         <h4>请选择基金分配方式</h4>
         <RadioGroup v-model="radio">
           <Radio name="1">平分给每个用户</Radio>
           <Radio name="2">分配给当前用户</Radio>
         </RadioGroup>
-      </div>
+      </div> -->
       <div>
         <Button round type="danger" @click="submitClick" :disabled="isDisabled">{{title}}</Button>
       </div>

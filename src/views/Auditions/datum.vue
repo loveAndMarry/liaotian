@@ -12,7 +12,7 @@
       </div>
       
       <p class="context">{{data.auditIntroduction}}</p>
-      <div>
+      <div v-show="isDisabled">
         <span class="button default" @click="submit('2')">拒绝</span>
         <span class="button confirm" @click="submit('1')">同意</span>
       </div>
@@ -21,7 +21,7 @@
 </template>
 <script>
 import { NavBar, Tag ,Button, Toast , ImagePreview} from 'vant'
-import { candidacyAudit } from '@/assets/common/api'
+import { candidacyAudit, getApplyToJoinMassSelection } from '@/assets/common/api'
 export default {
   components: {
     NavBar,
@@ -31,12 +31,23 @@ export default {
   data () {
     return {
       data: {},
-      file: []
+      file: [],
+      isDisabled: false, // 是否已经申请通过了
     }
   },
   mounted () {
-    this.data = this.$route.query.el
-    this.file = this.data.file.split(',')
+    getApplyToJoinMassSelection({
+      applyToJoinMassSelectionId: this.$route.query.applyToJoinMassSelectionId,
+      userId: this.$store.state.IM.user.id
+    }).then(res => {
+      this.data = res.data
+      this.file = res.data.file.split(',')
+      if(res.data.auditIsAgree === '2' || res.data.auditIsAgree === '3') {
+        this.isDisabled = false
+      } else {
+        this.isDisabled = true
+      }
+    })
   },
   methods: {
     fileClick (index) {

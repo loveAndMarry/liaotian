@@ -95,6 +95,14 @@ export default {
   },
   methods: {
     submitClick () {
+      // 判断当前用户是否实名认证
+      if(this.$store.state.IM.user.registerState - 0 < 3){
+        Toast({
+          message: '请先完成实名注册'
+        })
+        return false
+      } 
+
       if(this.content.replace(/ /g, '') === ''){
         Toast({
           message: '请输入一句话介绍',
