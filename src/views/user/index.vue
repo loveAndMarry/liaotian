@@ -444,9 +444,9 @@ export default {
   float: left;
 }
 .photos .photo_item {
-  width: 1.44rem;
-  height: 1.44rem;
-  line-height: 1.44rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  line-height: 1.35rem;
   background-color: #dddddd;
   background-image: url("../../assets/images/user_photo_add@2x.png");
   background-size: 50%;
@@ -463,8 +463,8 @@ export default {
   width: 100%;
 }
 .photograph {
-  width: 1.44rem;
-  height: 1.44rem;
+  width: 1.35rem;
+  height: 1.35rem;
   border: 1px dashed #d7d7d7;
   text-align: center;
   position: relative;

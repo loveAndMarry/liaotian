@@ -194,7 +194,7 @@
 import { NavBar, ImagePreview, Tabs, Tab, List, Actionsheet} from 'vant'
 import Group from '@/components/Group'
 import utils from "@/assets/common/utils";
-import { userInformationDisplay, accessUserDynamics, dynamicLike, getMatchingResults} from '@/assets/common/api'
+import { userInformationDisplay, accessUserDynamics, dynamicLike, getMatchingResults,selectMaritimeMatchingApplicationByMassSelectionId} from '@/assets/common/api'
 import { mapActions } from "vuex";
 
 export default {
@@ -212,10 +212,10 @@ export default {
       pageCurrent: 1,
       isType: '1',
       show: false, // 上拉框是否显示
+      match: false,
       actions: [{
-          name: '发起匹配'
-        }],
-      match: false
+        name: '查看报名资料'
+      }]
     }
   },
   computed: {
@@ -258,7 +258,7 @@ export default {
       if(item.name === '发起匹配') {
         getMatchingResults({
           userId: this.$store.state.IM.user.id,
-          massSelectionId: localStorage.getItem('massSelectionId')
+          massSelectionId: this.$route.query.massSelectionId
         }).then(res => {
           if(res.data){
             if(res.data.auditStatus === '1') {
@@ -275,6 +275,8 @@ export default {
             this.$router.push({name: 'Match', query: {item: this.userBaseInformation}})
           }
         })
+      } else if (item.name === '查看报名资料') {
+        this.$router.push({name: 'datum', query: {massSelectionId: this.$route.query.massSelectionId, userId: this.userBaseInformation.userId}})
       }
     },
     imgClick (context) {
@@ -363,6 +365,21 @@ export default {
   mounted () {
     // document.getElementById('userDetail_content').addEventListener('scroll', this.showConnection)
     // type 为1时显示聊天按钮  2则不显示
+
+    // 判断当前海选是否已经发起过匹配
+    if(this.$route.query.massSelectionId){
+      selectMaritimeMatchingApplicationByMassSelectionId({
+        massSelectionId: this.$route.query.massSelectionId
+      }).then(res => {
+        if(!res.data){
+          this.actions.unshift({
+            name: '发起匹配'
+          })
+        }
+      })
+    }
+
+
     this.$route.query.type ? this.isType = '2' : this.isType = '1'
     this.$route.query.match ? this.match = true : this.match = false
     userInformationDisplay({

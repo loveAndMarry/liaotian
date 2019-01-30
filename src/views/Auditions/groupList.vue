@@ -20,6 +20,7 @@
         <img :src="el.userHead" alt="">
         <span class="hint" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
         <p>{{el.nickName}}</p>
+        <span class="hint details" v-show="el.auditStatus === '1'">配对审核中</span>
       </div>
     </div>
     <Actionsheet
@@ -74,7 +75,7 @@ export default {
         }
       }
       this.$store.state.IM.friend = el
-      this.$router.push({name: 'userDetail', query:{type: '2', match: type === '1'? false : true}})
+      this.$router.push({name: 'userDetail', query:{type: '2' , match: type === '1'? false :true, massSelectionId: localStorage.getItem('massSelectionId')}})
     }
   }
 }
@@ -113,7 +114,8 @@ export default {
   background-color: #fff;
   padding: 0 .3rem;
   text-align: left;
-  border-bottom: 1px solid #f0f0f0
+  border-bottom: 1px solid #f0f0f0;
+  position: relative;
 }
 .groupList_item.noBorder{
   border-bottom: none
@@ -136,8 +138,16 @@ export default {
   line-height: .18rem;
   margin-right: .2rem;
   border-radius: .02rem
-
 }
+.groupList_item .hint.details{
+  background-color: #ccc;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+  padding: .1rem;
+}
+
 .groupList_item p{
   display: inline-block;
   margin: 0;

@@ -72,10 +72,7 @@ export default {
     AuditionsClick () {
       // 如果活动已经接受，就进不去了
       if(this.el.openState === '3'){
-        Toast({
-          message: '活动已经结束，不能再进行操作',
-          duration: 1000
-        })
+        this.$router.push({name: 'activityDetails', query: {el: {id: this.el.id}}})
         return false
       }
 
@@ -162,6 +159,7 @@ export default {
   margin: 0.03rem 0;
   overflow:hidden; 
   text-overflow:ellipsis;
+  display: box;
   display:-webkit-box; 
   -webkit-box-orient:vertical;
   -webkit-line-clamp:2; 

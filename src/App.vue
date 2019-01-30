@@ -29,7 +29,7 @@ export default {
   }
 }
 
-document.documentElement.style.fontSize = (document.documentElement.clientWidth / 750) * 100 + 'px'
+document.documentElement.style.fontSize = (document.documentElement.clientWidth / 720) * 100 + 'px'
 </script>
 
 <style>
@@ -55,7 +55,7 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 }
 
 .message .van-pull-refresh, .message .van-pull-refresh__track {
-    height: 100%
+  min-height: 11.8rem;
 }
 .chat_list .van-pull-refresh, .chat_list .van-pull-refresh__track {
     min-height: 9rem

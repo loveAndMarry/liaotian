@@ -3,6 +3,7 @@
     <NavBar left-arrow @click-left="onClickLeft" title="活动详情"/>
     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #fff;">
       <Intro :data="data"/>
+      <div class="Intro_hint">{{this.data.openState === '2'? '已发布': '海选结束'}}</div>
     </div>
   </div>
 </template>
@@ -36,3 +37,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+.Intro_hint{
+  padding: .2rem;
+  line-height: .3rem;
+  font-size: .3rem;
+  color: #ff7994;
+}
+</style>

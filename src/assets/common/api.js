@@ -182,6 +182,12 @@ export const disposeMaritimeMatchingApplication = data => HTTP.GET('user/maritim
 // 根据申请加入海选的id获取详情 
 export const getApplyToJoinMassSelection = data => HTTP.GET('web/massSelection/getApplyToJoinMassSelection',data)
 
+// 获取申请加入海选的详情接口 
+export const getApplyToJoinMassSelectionByMassSelectionId = data => HTTP.GET('web/massSelection/getApplyToJoinMassSelectionByMassSelectionId',data)
+
+// 获取海选匹配状态
+export const selectMaritimeMatchingApplicationByMassSelectionId = data => HTTP.GET('user/maritimeMatchingApplication/selectMaritimeMatchingApplicationByMassSelectionId',data)
+
 
 
 /**

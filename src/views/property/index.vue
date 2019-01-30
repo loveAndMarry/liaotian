@@ -33,17 +33,29 @@
   </div>
 </template>
 <script>
-import { NavBar ,CellGroup ,Cell} from 'vant'
+import { NavBar ,CellGroup ,Cell, Toast} from 'vant'
 export default {
   components: {
     NavBar,
     CellGroup,
     Cell
   },
+  data () {
+    return {
+      Toast: null
+    }
+  },
   methods: {
     onClickLeft () {
-      this.$router.back()
+      this.$router.back();
+      this.Toast.clear()
     }
+  },
+  mounted () {
+    this.Toast = Toast({
+      message: '功能正在开发中...',
+      duration: 0
+    })
   }
 }
 </script>
