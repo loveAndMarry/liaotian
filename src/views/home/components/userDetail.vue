@@ -1,6 +1,8 @@
 <template>
   <div class="userDetail">
-    <NavBar title='个人信息' @click-left="onClickLeft" left-arrow></NavBar>
+    <NavBar title='个人信息' @click-left="onClickLeft" left-arrow>
+      <i v-if="match" class="check" slot="right" @click="show = true"/>
+    </NavBar>
     <div class="userDetail_content" id="userDetail_content">
       <div class="title">
         <div class="left">
@@ -179,14 +181,20 @@
         </div>
       </Group> -->
     </div>
+
+    <Actionsheet
+      v-model="show"
+      :actions="actions"
+      @select="onSelect"
+    />
   </div>
 </template>
 <script>
 
-import { NavBar, ImagePreview, Tabs, Tab, List} from 'vant'
+import { NavBar, ImagePreview, Tabs, Tab, List, Actionsheet} from 'vant'
 import Group from '@/components/Group'
 import utils from "@/assets/common/utils";
-import { userInformationDisplay, accessUserDynamics, dynamicLike} from '@/assets/common/api'
+import { userInformationDisplay, accessUserDynamics, dynamicLike, getMatchingResults} from '@/assets/common/api'
 import { mapActions } from "vuex";
 
 export default {
@@ -202,7 +210,12 @@ export default {
       finished: false,
       pageSize: 10,
       pageCurrent: 1,
-      isType: '1'
+      isType: '1',
+      show: false, // 上拉框是否显示
+      actions: [{
+          name: '发起匹配'
+        }],
+      match: false
     }
   },
   computed: {
@@ -241,6 +254,29 @@ export default {
   },
   methods: {
      ...mapActions(["UPDATEUSERLIST"]),
+    onSelect (item) {
+      if(item.name === '发起匹配') {
+        getMatchingResults({
+          userId: this.$store.state.IM.user.id,
+          massSelectionId: localStorage.getItem('massSelectionId')
+        }).then(res => {
+          if(res.data){
+            if(res.data.auditStatus === '1') {
+              this.$router.push({name: 'success', query: {el : res.data, context: '审核中&nbsp;&nbsp;&nbsp;<br/>请等待...', title: '正在审核中~'}})
+            }
+            if(res.data.auditStatus === '2') {
+              this.$router.push({name: 'success', query: {el : res.data, context: '恭喜你&nbsp;&nbsp;&nbsp;<br/>配对成功！', title: '你和棉花糖配对成功了~'}})
+            }
+            if(res.data.auditStatus === '3') {
+              this.$router.push({name: 'beDefeated', query: {el : res.data}})
+            }
+          } else {
+            // 没有返回值就是还没有发送过匹配
+            this.$router.push({name: 'Match', query: {item: this.userBaseInformation}})
+          }
+        })
+      }
+    },
     imgClick (context) {
        window.instance = ImagePreview({
         images: [context + '?imageMogr2/auto-orient'],
@@ -328,6 +364,7 @@ export default {
     // document.getElementById('userDetail_content').addEventListener('scroll', this.showConnection)
     // type 为1时显示聊天按钮  2则不显示
     this.$route.query.type ? this.isType = '2' : this.isType = '1'
+    this.$route.query.match ? this.match = true : this.match = false
     userInformationDisplay({
       userId: this.$store.state.IM.user.id,
       accessRecordId: this.$store.state.IM.friend.userId
@@ -351,11 +388,22 @@ export default {
     Group,
     Tabs,
     Tab,
-    List
+    List,
+    Actionsheet
   }
 }
 </script>
 <style scoped>
+.check{
+  display: block;
+  background-image: url('../../../assets/images/更多.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: .4rem;
+  height: .4rem;
+  transform: translate(0, -50%);
+}
+
 .praise{
   float: right;
 }

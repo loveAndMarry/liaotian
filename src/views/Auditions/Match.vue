@@ -67,7 +67,7 @@ export default {
     }
   },
   mounted () {
-    this.item = this.$route.query.el
+    this.item = this.$route.query.item
   },
   methods: {
     onClickLeft () {

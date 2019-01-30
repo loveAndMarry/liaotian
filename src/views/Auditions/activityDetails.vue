@@ -7,19 +7,32 @@
   </div>
 </template>
 <script>
+import { NavBar } from 'vant'
 import Intro from './components/intro'
 import { getMassSelectionDetails } from '@/assets/common/api'
 export default {
   components: {
-    Intro
+    Intro,
+    NavBar
+  },
+  data () {
+    return {
+      data: {}
+    }
   },
   mounted () {
+    console.log(this.$route.query)
     getMassSelectionDetails({
-      massSelectionId: this.$route.query.el,
+      massSelectionId: this.$route.query.el.id,
       userId: this.$store.state.IM.user.id
     }).then(res => {
       this.data = res.data
     })
+  },
+  methods: {
+    onClickLeft () {
+      this.$router.back()
+    }
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar left-arrow title="参选成员" @click-left="onClickLeft">
-      <i class="check" v-if="admin[0].userId === $store.state.IM.user.id" slot="right" @click="$router.push({name: 'check'})"/>
+      <i class="check" v-if="admin[0].userId === $store.state.IM.user.id" slot="right" @click="show = true"/>
     </NavBar>
     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #fff;">
       <div class="groupList_title">
@@ -22,17 +22,33 @@
         <p>{{el.nickName}}</p>
       </div>
     </div>
+    <Actionsheet
+      v-model="show"
+      :actions="actions"
+      @select="onSelect"
+    />
   </div>
 </template>
 <script>
-import { NavBar } from 'vant'
+import { NavBar, Actionsheet} from 'vant'
 import { mapGetters , mapActions} from 'vuex'
 export default {
   components: {
-    NavBar
+    NavBar,
+    Actionsheet
   },
   computed: {
     ...mapGetters(['memberList','admin','groupMemberList'])
+  },
+  data () {
+    return {
+      show: false, // 上拉框是否显示
+      actions: [{
+          name: '报名列表'
+        },{
+          name: '活动详情'
+        }]
+    }
   },
   mounted () {
     // 获取好友列表
@@ -40,6 +56,14 @@ export default {
   },
   methods: {
     ...mapActions(['getGroupMembers']),
+    onSelect (item) {
+      this.show = false
+      if(item.name === '报名列表') {
+        this.$router.push({name: 'Election'})
+      } else if(item.name === '活动详情') {
+        this.$router.push({name: 'activityDetails', query: {el: {id: localStorage.getItem('massSelectionId')}}})
+      }
+    },
     onClickLeft () {
       this.$router.back()
     },
@@ -50,7 +74,7 @@ export default {
         }
       }
       this.$store.state.IM.friend = el
-      this.$router.push({name: 'userDetail', query:{type: '2'}})
+      this.$router.push({name: 'userDetail', query:{type: '2', match: type === '1'? false : true}})
     }
   }
 }

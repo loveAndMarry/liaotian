@@ -55,6 +55,7 @@ import Vue from "vue";
 import utils from "@/assets/common/utils";
 
 export default {
+  name: 'CharList',
   props: ['type','examine'],
   data () {
     return {

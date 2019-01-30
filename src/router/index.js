@@ -32,6 +32,8 @@ import MatchSearch from '@/views/Auditions/MatchSearch'
 import check from '@/views/Auditions/check'
 // 海选人审核失败
 import beDefeated from '@/views/Auditions/beDefeated'
+// 海选详情
+import activityDetails from '@/views/Auditions/activityDetails'
 // 我的资产
 import property from '@/views/property'
 // 主页
@@ -323,6 +325,11 @@ const router = new Router({
     path: '/MatchTheAudit',
     name: 'MatchTheAudit',
     component: MatchTheAudit
+  },
+  {
+    path: '/activityDetails',
+    name: 'activityDetails',
+    component: activityDetails
   }
   ]
 })
