@@ -75,7 +75,7 @@ export default {
     submit (type) {
       candidacyAudit({
         userId: this.$store.state.IM.user.id,
-        massSelectionId: localStorage.getItem('massSelectionId'),
+        massSelectionId: this.$route.query.massSelectionId,
         auditJoinMassSelectionId: this.data.id,
         auditStatus: type
       }).then(res => {

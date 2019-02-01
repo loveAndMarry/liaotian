@@ -109,11 +109,11 @@ const actions = {
       let arr = []
       
       // 判断当前好友列表是否已经获取到了
-      if(!state.groupMembers[products] || state.groupMembers[products].length === 0){
+      //if(!state.groupMembers[products] || state.groupMembers[products].length === 0){
         arr.push(dispatch('getGroupMembers', products))
-      }
+      //}
 
-      // 判断当前好友列表是否已经获取到了
+      // 判断当前好友历史消息是否已经获取到了
       if(!state.message[products] || state.message[products].length === 0){
         arr.push(dispatch('getGroupMessage', products))
       }
