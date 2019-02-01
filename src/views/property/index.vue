@@ -8,7 +8,7 @@
           <div class="property_group">
             <div class="property_group_item">
               <div class="title">收益 (元)</div>
-              <div class="money">2000</div>
+              <div class="money">{{money}}</div>
             </div>
             <!-- <div class="property_group_item">
               <div class="title">虚拟币</div>
@@ -19,21 +19,22 @@
       </div>
 
        <CellGroup>
-        <Cell title="银行卡" is-link to="">
+        <Cell title="银行卡" is-link @click="BankCard">
           <span slot="icon" class="bank"></span>
         </Cell>
-        <Cell title="提现" is-link to="">
+        <Cell title="提现" is-link @click="withdrawal">
           <span slot="icon" class="withdraw"></span>
         </Cell>
-        <Cell title="账单" is-link to="">
+        <!-- <Cell title="账单" is-link to="">
           <span slot="icon" class="bill"></span>
-        </Cell>
+        </Cell> -->
       </CellGroup>
     </div>
   </div>
 </template>
 <script>
 import { NavBar ,CellGroup ,Cell, Toast} from 'vant'
+import {userWallet} from '@/assets/common/api'
 export default {
   components: {
     NavBar,
@@ -42,19 +43,33 @@ export default {
   },
   data () {
     return {
-      Toast: null
+      money: 0
     }
   },
   methods: {
     onClickLeft () {
       this.$router.back();
-      this.Toast.clear()
+      //this.Toast.clear()
+    },
+    BankCard () {
+      window.BankCard()
+    },
+    withdrawal () {
+      if(this.$store.state.IM.user.registerState !== '5') {
+        Toast({
+          message: '请先实名认证',
+          duration: 1000
+        })
+        return false
+      }
+      window.withdrawal()
     }
   },
   mounted () {
-    this.Toast = Toast({
-      message: '功能正在开发中...',
-      duration: 0
+    userWallet({
+      userId: this.$store.state.IM.user.id
+    }).then(res => {
+      this.money = res.data.useBalance
     })
   }
 }

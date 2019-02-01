@@ -133,6 +133,9 @@ export const menuTreeDate = data => HTTP.GET('web/menu/menuTreeDate?parentId=1',
 // 获取消息通知列表
 export const listMessageNotification = data => HTTP.GET('web/messageNotification/listMessageNotification',data)
 
+// 获取个人余额
+export const userWallet = data => HTTP.GET('web/userWallet/userWallet',data)
+
 /**
  *  海选模块
  */

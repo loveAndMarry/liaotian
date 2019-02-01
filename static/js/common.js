@@ -35,6 +35,30 @@ window.authentication = function(callback){
   }
 }
 
+// 点击查看银行卡列表
+window.BankCard = function(){
+  var u = navigator.userAgent;
+  if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+    console.log("安卓手机");
+    alert('BankCard')
+  } else if (u.indexOf('iPhone') > -1) {//苹果手机
+    console.log("苹果手机");
+    window.webkit.messageHandlers.BankCard.postMessage(null)
+  }
+}
+
+// 点击提现
+window.withdrawal = function(){
+  var u = navigator.userAgent;
+  if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+    console.log("安卓手机");
+    alert('withdrawal')
+  } else if (u.indexOf('iPhone') > -1) {//苹果手机
+    console.log("苹果手机");
+    window.webkit.messageHandlers.withdrawal.postMessage(null)
+  } 
+}
+
 // 监听容联云发送的消息（客服专用）
 window.serviceRmation = function(callback){
   if(typeof callback === 'function'){
@@ -88,18 +112,22 @@ window.webkit.messageHandlers.getLocalStorage = function() {
 
 // 安卓
 window.setLocalStorage = function(str) {
-  var obj = JSON.parse(str)
-  for( var i in obj){
-    localStorage.setItem(i, obj[i])
+  if(str){
+    var obj = JSON.parse(str)
+    for( var i in obj){
+      localStorage.setItem(i, obj[i])
+    }
+    console.log(JSON.stringify(obj),'webview的localstorage设置完成')
   }
-  console.log(JSON.stringify(obj),'webview的localstorage设置完成')
 }
 
 // ios
 window.webkit.messageHandlers.setLocalStorage = function(str) {
-  var obj = JSON.parse(str)
-  for( var i in obj){
-    localStorage.setItem(i, obj[i])
+  if(str){
+    var obj = JSON.parse(str)
+    for( var i in obj){
+      localStorage.setItem(i, obj[i])
+    }
+    console.log(JSON.stringify(obj),'webview的localstorage设置完成')
   }
-  console.log(JSON.stringify(obj),'webview的localstorage设置完成')
 }
