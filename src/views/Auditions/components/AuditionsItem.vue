@@ -3,7 +3,7 @@
     <img class="item_img" :src="el.picture"/>
     <div class="item_content">
         <div class="state" :style="{color: stateColor}">{{state}}</div>
-        <p>{{el.content}}</p>
+        <p>{{content}}</p>
         <div class="time">截止日期：{{el.startTime}}&nbsp;&nbsp;至&nbsp;&nbsp;{{el.endTime}}</div>
         <div class="time">报名金额：{{el.initiatingAmountY}}元</div>
     </div>
@@ -11,11 +11,15 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import utils from '@/assets/common/utils'
 import { isJoinMassSelection } from '@/assets/common/api'
 import { Toast } from 'vant';
 export default {
   props: ['el', 'type'],
   computed: {
+    content () {
+      return utils.uncodeUtf16(this.el.content)
+    },
     state () {
       var _this = this
       var title = ''

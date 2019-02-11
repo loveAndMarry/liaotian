@@ -7,6 +7,7 @@
           v-model="loading"
           :finished="finished"
           finished-text='没有更多了'
+          :style="{minHeight: height - 46 + 'px'}"
           @load="onLoad"
         >
           <div class="msg_group" v-for="(el, index) in MsgList" :key="index">
@@ -40,6 +41,11 @@ export default {
       MsgList: [],
       pageCurrent: 1,
       pageSize: 10
+    }
+  },
+  computed: {
+    height () {
+      return window.document.body.clientHeight || window.document.documentElement.clientHeight
     }
   },
   methods: {

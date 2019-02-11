@@ -46,19 +46,17 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
   border: #ff6f93;
 }
 
+/* 设置tab选项卡底部边框颜色 */
+.van-tabs__line{
+  background-color: rgb(239, 115, 152) !important;
+}
+
 /* 设置海选tabs页字体颜色 */
 .Auditions .van-tab{
   color: #2c2c2c
 }
 .Auditions .van-tab--active{
   color: #f86b95
-}
-
-.message .van-pull-refresh, .message .van-pull-refresh__track {
-  min-height: 11.8rem;
-}
-.chat_list .van-pull-refresh, .chat_list .van-pull-refresh__track {
-    min-height: 9rem
 }
 
 #app .van-popup--right{

@@ -371,7 +371,7 @@ export default {
       selectMaritimeMatchingApplicationByMassSelectionId({
         massSelectionId: this.$route.query.massSelectionId
       }).then(res => {
-        if(!res.data){
+        if(!res.data || res.data.auditStatus === '3'){
           this.actions.unshift({
             name: '发起匹配'
           })

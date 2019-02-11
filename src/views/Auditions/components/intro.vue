@@ -7,7 +7,7 @@
     <!-- 活动简介 -->
     <div class="intro_group">
       <h5 class="intro_group_title">活动简介</h5>
-      <p class="intro_group_context">{{data.content}}</p>
+      <p class="intro_group_context">{{content}}</p>
     </div>
     <!-- 发起人简介 -->
     <div class="intro_group">
@@ -62,8 +62,14 @@
   </div>
 </template>
 <script>
+import utils from '@/assets/common/utils'
 export default {
-  props: ['data']
+  props: ['data'],
+  computed: {
+    content () {
+      return  utils.uncodeUtf16(this.data.content)
+    }
+  }
 }
 </script>
 

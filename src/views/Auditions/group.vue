@@ -23,6 +23,7 @@
 <script>
 import { NavBar ,PullRefresh} from 'vant'
 import { mapState , mapGetters , mapActions} from 'vuex'
+import utils from '@/assets/common/utils'
 import LeftContent from './components/LeftContent'
 import RightContent from './components/RightContent'
 export default {
@@ -83,8 +84,9 @@ export default {
       if(this.context.replace(/\s+/g, '') === ''){
         return false
       }
+      console.log(utils.utf16toEntities(this.context),'群聊')
       this.postGroupMsg({
-        context: this.context,
+        context: utils.utf16toEntities(this.context),
         sendUserId: this.user.id,
         chatDate: new Date().getTime(),
         msgType: 1,

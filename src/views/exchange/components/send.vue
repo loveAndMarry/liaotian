@@ -90,6 +90,7 @@ export default {
     postMsg (i) {
       if(this.context.replace(/ /g, '') !== ''){
          var context = typeof i === 'object'? utils.utf16toEntities(this.context): i
+         console.log(context,'单聊')
         var that = this
         this.isShow = false
         this.$emit('editHeight', this.isShow)

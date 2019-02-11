@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar left-arrow title="参选成员" @click-left="onClickLeft">
-      <i class="check" v-if="admin[0].userId === $store.state.IM.user.id" slot="right" @click="show = true"/>
+      <i class="check" slot="right" @click="show = true"/>
     </NavBar>
     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #fff;">
       <div class="groupList_title">
@@ -45,15 +45,18 @@ export default {
     return {
       show: false, // 上拉框是否显示
       actions: [{
-          name: '报名列表'
-        },{
-          name: '活动详情'
-        }]
+        name: '活动详情'
+      }]
     }
   },
   mounted () {
     // 获取好友列表
     this.getGroupMembers()
+    if(this.admin[0].userId === this.$store.state.IM.user.id){
+      this.actions.unshift({
+        name: '报名列表'
+      })
+    }
   },
   methods: {
     ...mapActions(['getGroupMembers']),

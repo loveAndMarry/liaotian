@@ -1,5 +1,5 @@
 <template>
-  <div class="chat_list" :style="{height: 'calc('+height+'px - 240px)'}" style="overflow-y: scroll;" @touchstart="onTouchstart">
+  <div class="chat_list" :style="{height: height - 240 + 'px'}" style="overflow-y: scroll;" @touchstart="onTouchstart">
     <template v-if="!isExamine()">
       <div class="link_hint_group">
         <div class="link_hint_content">
@@ -15,6 +15,7 @@
           v-model="loading"
           :finished="finished"
           finished-text="没有更多了"
+          :style="{minHeight: height - 240 + 'px'}"
           @load="onLoad"
         >
         <div class="chat_list_item" v-for="(el, index) in List" :key="index" @click="chatListClick(el)">

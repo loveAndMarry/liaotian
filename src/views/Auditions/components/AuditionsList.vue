@@ -5,7 +5,9 @@
     :finished="finished"
     finished-text="没有更多了"
     @load="onLoad"
-    class="dynamic" ref='dynamic'>
+    class="dynamic"
+    :style="{minHeight: height - 140 + 'px'}"
+    ref='dynamic'>
       <AuditionsItem v-for="(el, index) in list" :key="index" :el="el" :type="type"/>
     </List>
   </PullRefresh>
@@ -27,6 +29,11 @@ export default {
       pageSize: 10,
       pageCurrent: 1,
       list: []
+    }
+  },
+  computed: {
+    height () {
+      return window.document.body.clientHeight || window.document.documentElement.clientHeight
     }
   },
   methods: {

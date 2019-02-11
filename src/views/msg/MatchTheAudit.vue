@@ -32,8 +32,9 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
+    let data = to.query.el
     selectMaritimeMatchingApplication({
-      pairUserId: to.query.el.acceptUserId,
+      pairUserId: data.messageType === '2'? data.sendUserId : data.acceptUserId,
       maritimeMatchingApplicationId: to.query.el.extId
     }).then(res => {
       if(res.code === 300){
@@ -60,7 +61,7 @@ export default {
   mounted () {
     let data = this.$route.query.el
     selectMaritimeMatchingApplication({
-      pairUserId: data.acceptUserId,
+      pairUserId: data.messageType === '2'? data.sendUserId : data.acceptUserId,
       maritimeMatchingApplicationId: data.extId
     }).then(res => {
       this.data = res.data

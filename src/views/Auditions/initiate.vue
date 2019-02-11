@@ -40,7 +40,7 @@
           <div class="numberOfPeople">
             <h6>参选基金</h6>
             <div style="text-align: left;margin-top: .2rem;color:#fd6e99">
-              <input type="text" class="initiatingAmount" placeholder="请输入参选基金" v-model="initiatingAmount"> 元
+              <input type="text" class="initiatingAmount" placeholder="请输入参选基金,最多保留后两位" v-model="initiatingAmount"> 元
             </div>
           </div>
           <div style="text-align: left;margin-top:.2rem">
@@ -80,6 +80,7 @@
 <script>
 import { NavBar , Button, Toast } from 'vant'
 import ListItem from '@/components/ListItem'
+import utils from '@/assets/common/utils'
 import { initiateMassSelection , listConfigureDictByType} from '@/assets/common/api' 
 export default {
   data () {
@@ -92,10 +93,10 @@ export default {
       // 活动封面
       userHead: '',
       // 参选人数
-      groupSizeLimit: 1,
+      groupSizeLimit: '1',
       startTime: '',
       endTime: '',
-      initiatingAmount: 0,
+      initiatingAmount: '0',
       groupSize: [],
       // 提交服务器的数据
       submitData: {}
@@ -166,7 +167,7 @@ export default {
         })
         return
       }
-      if(this.initiatingAmount.replace(/ /g, '') === '' || this.initiatingAmount == 0){
+      if(this.initiatingAmount === '0' || this.initiatingAmount.replace(/ /g, '') === '' ){
         Toast({
           message: '请输入参选基金',
           duration: 1000
@@ -180,7 +181,7 @@ export default {
         })
         return
       }
-      this.submitData['content'] = this.context
+      this.submitData['content'] = utils.utf16toEntities(this.context)
       this.submitData['initiatingAmount'] = this.initiatingAmount
       this.submitData['startTime'] = this.startTime
       this.submitData['endTime'] = this.endTime

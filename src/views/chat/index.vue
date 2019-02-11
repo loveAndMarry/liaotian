@@ -53,6 +53,5 @@ export default {
   position: relative;
   overflow-y: scroll;
   overflow-x: hidden;
-  height: calc(100% - 96px);
 }
 </style>
