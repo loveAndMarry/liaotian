@@ -191,6 +191,10 @@ export const getApplyToJoinMassSelectionByMassSelectionId = data => HTTP.GET('we
 // 获取海选匹配状态
 export const selectMaritimeMatchingApplicationByMassSelectionId = data => HTTP.GET('user/maritimeMatchingApplication/selectMaritimeMatchingApplicationByMassSelectionId',data)
 
+// 获取海选分润列表                                                                                                             
+export const listBonusRecord = data => HTTP.GET('qike-maiyuan/web/bouns/listBonusRecord',data)
+
+
 
 
 /**

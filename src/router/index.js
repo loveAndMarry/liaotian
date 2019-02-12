@@ -34,6 +34,8 @@ import check from '@/views/Auditions/check'
 import beDefeated from '@/views/Auditions/beDefeated'
 // 海选详情
 import activityDetails from '@/views/Auditions/activityDetails'
+// 海选基金分润明细
+import record from '@/views/Auditions/record'
 // 我的资产
 import property from '@/views/property'
 // 主页
@@ -330,6 +332,11 @@ const router = new Router({
     path: '/activityDetails',
     name: 'activityDetails',
     component: activityDetails
+  },
+  {
+    path: '/record',
+    name: 'record',
+    component: record
   }
   ]
 })

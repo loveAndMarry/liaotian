@@ -98,6 +98,12 @@ export default {
   },
   beforeMount () {
     this.height = document.body.clientHeight || document.documentElement.clientHeight
+    // 触发获取好友列表的请求
+    this.$store.dispatch('GETFRIENDLIST',{
+      type: '1'
+    }).then(res => {}).catch(res => {
+
+    })
   },
   activated () {
     this.active = 0

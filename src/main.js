@@ -59,17 +59,13 @@ new Vue({
     App
   },
   template: '<App/>',
-  created () {
-    // // 触发获取当前本地好友列表
-    // this.$store.dispatch('GETFRIEND')
-    // // 触发获取当前本地聊天记录
-    // this.$store.dispatch('GETCHATMESSAGE')
-  },
   watch: {
     '$store.state.IM.user': function (val) {
       console.log('当前获取到用户信息',val)
+
       if(!this.isLogin){
         Vue.$IM.init()
+
         this.isLogin = 1
       }
     }

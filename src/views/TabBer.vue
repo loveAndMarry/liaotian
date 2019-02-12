@@ -9,7 +9,7 @@
             :src="active === 0 ? homeicon.active : homeicon.normal"
           >
         </TabbarItem>
-        <TabbarItem to='/view/chat'>
+        <TabbarItem to='/view/chat' :info="info === 0 ? '' : info">
           <span>消息</span>
           <img
             slot="icon"
@@ -62,6 +62,11 @@ export default {
         normal: require('../assets/images/user_btn@2x.png')
       }
     }
+  },
+  computed: {
+    ...mapState({
+      info: state => state.IM.info
+    })
   },
   mounted () {
     this.active = this.$store.state.common.active

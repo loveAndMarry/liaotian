@@ -1,21 +1,27 @@
 <template>
-  <div class="item" @click="AuditionsClick">
-    <img class="item_img" :src="el.picture"/>
-    <div class="item_content">
-        <div class="state" :style="{color: stateColor}">{{state}}</div>
-        <p>{{content}}</p>
-        <div class="time">截止日期：{{el.startTime}}&nbsp;&nbsp;至&nbsp;&nbsp;{{el.endTime}}</div>
-        <div class="time">报名金额：{{el.initiatingAmountY}}元</div>
+  <SwipeCell :right-width="65" :on-close="onClose">
+    <div class="item" @click="AuditionsClick">
+      <img class="item_img" :src="el.picture"/>
+      <div class="item_content">
+          <div class="state" :style="{color: stateColor}">{{state}}</div>
+          <p>{{content}}</p>
+          <div class="time">截止日期：{{el.startTime}}&nbsp;&nbsp;至&nbsp;&nbsp;{{el.endTime}}</div>
+          <div class="time">报名金额：{{el.initiatingAmountY}}元</div>
+      </div>
     </div>
-  </div>
+    <span slot="right" class="remove">删除</span>
+  </SwipeCell>
 </template>
 <script>
 import { mapActions } from 'vuex'
 import utils from '@/assets/common/utils'
 import { isJoinMassSelection } from '@/assets/common/api'
-import { Toast } from 'vant';
+import { Toast ,SwipeCell} from 'vant';
 export default {
   props: ['el', 'type'],
+  components: {
+    SwipeCell
+  },
   computed: {
     content () {
       return utils.uncodeUtf16(this.el.content)
@@ -72,11 +78,14 @@ export default {
     ...mapActions([
       'getGroupData'
     ]),
+    onClose () {
+
+    },
         // 点击进入详情
     AuditionsClick () {
       // 如果活动已经接受，就进不去了
       if(this.el.openState === '3'){
-        this.$router.push({name: 'activityDetails', query: {el: {id: this.el.id}}})
+        this.$router.push({name: 'activityDetails', query: {id: this.el.id}})
         return false
       }
 
@@ -125,6 +134,16 @@ export default {
 
 
 <style scoped>
+.remove{
+  color: #fff;
+  font-size: 15px;
+  width: 65px;
+  height: 2.37rem;
+  line-height: 2.37rem;
+  display: inline-block;
+  text-align: center;
+  background-color: #f44;
+}
 .item{
   padding: 0 .3rem .39rem;
   box-sizing: border-box;
@@ -160,6 +179,8 @@ export default {
 .item_content p{
   color: #393939;
   font-size: .27rem;
+  line-height: .27rem;
+  height: .54rem;
   margin: 0.03rem 0;
   overflow:hidden; 
   text-overflow:ellipsis;

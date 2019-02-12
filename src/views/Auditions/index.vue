@@ -1,5 +1,5 @@
 <template>
-  <div class="Auditions">
+  <div class="Auditions" ref="Auditions">
     <NavBar title="海选" @click-right="onClickRight">
       <i class="add" slot="right" />
     </NavBar>
@@ -34,10 +34,9 @@ export default {
       'setAuditionsActive'
     ]),
     onClick () {
-
+      this.$refs.Auditions.scrollTo(0,0)
     },
     onClickRight () {
-      console.log(this.$store.state.IM.user.registerState)
       if(this.$store.state.IM.user.registerState - 0 >= 3){
         this.$router.push({name: 'initiate'})
       }  else {
@@ -69,6 +68,7 @@ export default {
   height: calc(100% - 50px);
   overflow-y: scroll;
   overflow-x: hidden;
+  z-index: 1000;
 }
 .van-pull-refresh{
   overflow: inherit

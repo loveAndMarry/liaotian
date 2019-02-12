@@ -65,7 +65,7 @@ export default {
       if(item.name === '报名列表') {
         this.$router.push({name: 'Election'})
       } else if(item.name === '活动详情') {
-        this.$router.push({name: 'activityDetails', query: {el: {id: localStorage.getItem('massSelectionId')}}})
+        this.$router.push({name: 'activityDetails', query: {id: localStorage.getItem('massSelectionId')}})
       }
     },
     onClickLeft () {

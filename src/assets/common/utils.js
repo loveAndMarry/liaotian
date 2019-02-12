@@ -96,6 +96,28 @@ const utils = {
       return []
     }
   },
+  /**
+   * 合并数组
+   */
+  MergeArray(arr1,arr2, key){
+    var _arr = new Array();
+    for(var i=0;i<arr1.length;i++){
+       _arr.push(arr1[i]);
+    }
+    for(var i=0;i<arr2.length;i++){
+        var flag = true;
+        for(var j=0;j<arr1.length;j++){
+            if(arr2[i][key]==arr1[j][key]){
+                flag=false;
+                break;
+            }
+        }
+        if(flag){
+            _arr.push(arr2[i]);
+        }
+    }
+    return _arr;
+  },
 
   /**
    * 用于把用utf16编码的字符转换成实体字符，以供后台存储

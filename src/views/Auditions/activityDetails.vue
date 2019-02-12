@@ -1,9 +1,11 @@
 <template>
   <div>
-    <NavBar left-arrow @click-left="onClickLeft" title="活动详情"/>
+    <NavBar left-arrow @click-left="onClickLeft" title="活动详情">
+      <i class="record" slot="right" @click="recordClick"/>
+    </NavBar>
     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #fff;">
       <Intro :data="data"/>
-      <div class="Intro_hint">{{this.data.openState === '2'? '已发布': '海选结束'}}</div>
+      <div class="Intro_hint">{{this.data.massSelectionState === '3'? '匹配成功': '匹配失败'}}</div>
     </div>
   </div>
 </template>
@@ -22,9 +24,8 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$route.query)
     getMassSelectionDetails({
-      massSelectionId: this.$route.query.el.id,
+      massSelectionId: this.$route.query.id,
       userId: this.$store.state.IM.user.id
     }).then(res => {
       this.data = res.data
@@ -33,6 +34,9 @@ export default {
   methods: {
     onClickLeft () {
       this.$router.back()
+    },
+    recordClick () {
+      this.$router.push({name: 'record', query: {id: this.data.id}})
     }
   }
 }
@@ -43,5 +47,14 @@ export default {
   line-height: .3rem;
   font-size: .3rem;
   color: #ff7994;
+}
+.record{
+  display: block;
+  background-image: url('../../assets/images/record.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: .4rem;
+  height: .4rem;
+  transform: translate(0, -50%);
 }
 </style>

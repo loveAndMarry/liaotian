@@ -124,8 +124,8 @@ export default {
     // 下拉刷新
     onRefresh () {
       if( this.isOne === 0){
-        this.isOne = this.isOne + 1
         window.setTimeout(() => {
+          this.isOne = this.isOne + 1
           this.isLoading = false
         }, 300)
         return false
@@ -136,7 +136,7 @@ export default {
         this.isLoading = false
       })
     },
-    onLoad () {
+    onLoad () { 
         this.GETFRIENDLIST({
           type: this.type
         }).then(() => {
@@ -182,6 +182,10 @@ export default {
     },
     chatListClick(item) {
       this.UPDATEUSERLIST(item).then(() => {
+        // 获取当前的未读消息
+        let obj = this.$store.state.IM.friendList.find(item => item.accountNumber === item.accountNumber)
+        this.$store.state.IM.info = this.$store.state.IM.info - Number(obj.hint)
+
         utils.updateArray(this.$store.state.IM.friendList, item.accountNumber, {
           hint: 0
         });

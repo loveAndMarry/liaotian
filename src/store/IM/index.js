@@ -23,6 +23,7 @@ const state = {
   isLogin: false, // 是否登录成功
   isMsg: true, // 是否还有历史记录
   friendArr: [], // 储存当前来源消息的用户ID（当一次性接受好几条消息时，好友数据好没有获取，就会向好友数组添加多次）
+  info: 0
 }
 
 const getters = {
@@ -113,21 +114,7 @@ const actions = {
       })
     })
   },
-  // [GET_FRIEND] ({ commit, state }, products) {
-  //   // 如果当前没有好友信息
-  //   if(!JSON.parse(localStorage.getItem('friendList'))){
-  //     localStorage.setItem('friendList', JSON.stringify([]))
-  //   }
-  //   state.friendList = JSON.parse(localStorage.getItem('friendList'))
-  // },
-  // [GET_CHAT_MESSAGE] ({ commit, state }, products) {
-  //   if(!JSON.parse(localStorage.getItem('chatMessage'))){
-  //     localStorage.setItem('chatMessage', JSON.stringify({}))
-  //   }
-  //   state.chatMessage = JSON.parse(localStorage.getItem('chatMessage'))
-  // },
   [UPDATE_USER] ({ commit, state }, products) {
-    console.log(products,'没有获取到吗？')
     return new Promise((resolve) => {
       login({
         userId: products.userId
@@ -212,20 +199,20 @@ const actions = {
         userId: state.user.id,
         type: obj.type
       }).then((res) => {
-        if(res.data){
+        let data = res.data
+        if(data){
           switch(obj.type) {
             case '1':
-              state.friendList.push(...res.data)
+              state.friendList.push(...data)
               break
             case '2':
-              state.intentionList.push(...res.data)
+              state.intentionList.push(...data)
               break
             case '3':
-              state.autonymList.push(...res.data)
+              state.autonymList.push(...data)
               break
           }
-
-          if(res.data.length < 10){
+          if(data.length < 10){
             reject()
             return 
           }
@@ -252,23 +239,23 @@ const actions = {
       }
       messageListing({
         limitStart: 0,
-        pageSize: len,
+        pageSize: len < 10 ? 10 : len,
         userId: state.user.id,
         type: obj.type
       }).then((res) => {
         if(res.data){
-          if(res.data.length < 10){
+          if(res.data.length === 0){
             resolve()
           }
           switch(obj.type) {
             case '1':
-              state.friendList = res.data
+              state.friendList = utils.MergeArray(state.friendList, res.data, 'userId')
               break
             case '2':
-              state.intentionList = res.data
+              state.intentionList = utils.MergeArray(state.intentionList, res.data, 'userId')
               break
             case '3':
-              state.autonymList = res.data
+              state.autonymList = utils.MergeArray(state.friendList, res.data, 'userId')
               break
           }
           resolve()
@@ -320,6 +307,10 @@ const mutations = {
 
     // 更改本地缓存中的数据
     // utils.pushLocalData('chatMessage', products.receiver, products)
+    
+    // 获取当前的未读消息
+    let obj = state.friendList.find(item => item.accountNumber === products.receiver)
+    state.info = state.info - (Number(obj.hint) || 0)
     // 修改当前用户的最新消息
     utils.updateArray(state.friendList, products.receiver, {
       hint: 0,
@@ -362,7 +353,11 @@ const mutations = {
       hint: true, // 更新最新消息条数
       status: 2,
       time: products.time
-    } )
+    })
+    console.log(products)
+    console.log(state.friendList,'数据')
+    // 增加最新消息提醒
+    ++state.info
 
     utils.updateArray(state.intentionList, products.sender, {
       context: products.context,
