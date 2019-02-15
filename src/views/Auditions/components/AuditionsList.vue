@@ -8,14 +8,19 @@
     class="dynamic"
     :style="{minHeight: height - 140 + 'px'}"
     ref='dynamic'>
-      <AuditionsItem v-for="(el, index) in list" :key="index" :el="el" :type="type"/>
+      <div v-for="(el, index) in list" :key="index" @touchstart="touchstart(el, index)">
+        <SwipeCell :right-width="65" :on-close="onClose" :ref="'SwipeCell' + index" :disabled="swipeDisabled(el)">
+          <AuditionsItem  :el="el" :type="type"/>
+          <span slot="right" class="remove">删除</span>
+        </SwipeCell>
+      </div>
     </List>
   </PullRefresh>
 </template>
 <script>
-import { PullRefresh , List } from 'vant'
+import { PullRefresh , List, SwipeCell, Dialog} from 'vant'
 import AuditionsItem from './AuditionsItem'
-import { listMassSelection } from '@/assets/common/api'
+import { listMassSelection ,deleteMassSelection} from '@/assets/common/api'
 import { rejects } from 'assert';
 
 export default {
@@ -28,7 +33,9 @@ export default {
       isDisabled: false, // 是否禁用下拉刷新
       pageSize: 10,
       pageCurrent: 1,
-      list: []
+      list: [],
+      instance: -1,
+      item:{} // 储存当前滑动的海选数据
     }
   },
   computed: {
@@ -37,6 +44,40 @@ export default {
     }
   },
   methods: {
+    onClose (clickPosition, instance) {
+       switch (clickPosition) {
+        case 'outside':
+          instance.close();
+          break;
+        case 'right':
+          Dialog.confirm({
+            message: '确定删除吗？'
+          }).then(() => {
+            deleteMassSelection({
+              userId: this.$store.state.IM.user.id,
+              massSelectionId: this.item.id
+            }).then(() => {
+              this.list = this.list.filter(item => item.id !== this.item.id)
+            })
+            
+          });
+          break;
+      }
+    },
+    swipeDisabled (el) {
+      this.item = el
+      if(this.type === '1'){
+        return true
+      }
+      return el.openState !== '2' ? false : true
+    },
+    touchstart (el, index) {
+      if(this.instance > -1 && this.instance != index){
+        this.$refs['SwipeCell' + this.instance][0].close()
+      }
+      this.item = el
+      this.instance = index
+    },
     onRefresh () {
       this.updateData({
         type: this.type,
@@ -83,7 +124,20 @@ export default {
   components: {
     AuditionsItem,
     List,
-    PullRefresh
+    PullRefresh,
+    SwipeCell
   }
 }
 </script>
+<style scoped>
+.remove{
+  color: #fff;
+  font-size: .32rem;
+  width: 65px;
+  height: 2.37rem;
+  line-height: 2.37rem;
+  display: inline-block;
+  text-align: center;
+  background-color: #f44;
+}
+</style>

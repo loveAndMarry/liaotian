@@ -59,6 +59,11 @@
       <h5 class="intro_group_title">参赛时间</h5>
       <p class="intro_group_context">{{data.startTime}}  至  {{data.endTime}}</p>
     </div>
+    <!-- 发起金额 -->
+    <div class="intro_group">
+      <h5 class="intro_group_title">发起金额</h5>
+      <p class="intro_group_context"> {{data.initiatingAmountY + '元'}}</p>
+    </div>
   </div>
 </template>
 <script>

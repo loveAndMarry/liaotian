@@ -21,6 +21,18 @@ Vue.use(Lazyload);
 import VueScroller  from 'vue-scroller'
 Vue.use(VueScroller)
 
+
+/**
+ * 安卓通过调用当前方法跳转路由
+ */
+window.pushRouter = function(a){
+  alert('方法执行了' + a)
+  let route = (JSON.parse(a))['sss']
+  console.log(route)
+  router.push({path:route.linkAddressRouting, query: { massSelectionId: route.extId, sendUserId: route.sendUserId, acceptUserId: route.acceptUserId, messageType: route.messageType}})
+}
+
+
 Vue.filter("dateTime", function(val) {   //全局方法 Vue.filter() 注册一个自定义过滤器,必须放在Vue实例化前面
   var time = new Date(new Date().setHours(0, 0, 0, 0)).getTime() // 获取当日凌晨的时间
   var currentTime = Date.parse(new Date());

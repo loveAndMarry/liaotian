@@ -13,7 +13,7 @@
           <div class="msg_group" v-for="(el, index) in MsgList" :key="index">
             <div class="msg_time">{{el.createDate}}</div>
             <!-- applyToJoinMassSelectionId  申请id  只有群主接受申请人的请求时才会有 -->
-            <div class="msg_content" @click="$router.push({path: el.linkAddressRouting, query: {el: el, massSelectionId: el.extId, userId: el.sendUserId}})">
+            <div class="msg_content" @click="$router.push({path: el.linkAddressRouting, query: { massSelectionId: el.extId, sendUserId: el.sendUserId, acceptUserId: el.acceptUserId, messageType: el.messageType}})">
               <div class="title">{{el.title}}</div>
               <div class="context">{{el.content}}</div>
             </div>

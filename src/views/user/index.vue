@@ -319,7 +319,7 @@ export default {
 .dialog_content p {
   margin-top: 0.8rem;
   padding: 0 0.5rem;
-  font-size: 0.23rem;
+  font-size: 0.24rem;
   color: #868686;
 }
 .lists {
@@ -362,7 +362,7 @@ export default {
 }
 .authentication p {
   display: block;
-  font-size: 0.23rem;
+  font-size: 0.24rem;
   color: #858585;
   padding-top: 0.1rem;
   padding-bottom: 0;
@@ -392,13 +392,13 @@ export default {
 }
 
 .links li .back_Img {
-  width: 0.64rem;
-  height: 0.64rem;
+  width: 0.66rem;
+  height: 0.66rem;
   border-radius: 50%;
   -webkit-border-radius: 50%;
   display: inline-block;
   background: url('../../assets/images/no_people@2x.png') no-repeat;
-  background-size: calc(.64rem + 2px) calc(.64rem + 2px);
+  background-size: calc(.66rem + 2px) calc(.66rem + 2px);
   background-position: -1px -1px;
   overflow: hidden;
   border: none
@@ -420,7 +420,7 @@ export default {
   z-index: 10;
 }
 .links li p {
-  font-size: 0.23rem;
+  font-size: 0.24rem;
   color: #818181;
   margin: 0;
   white-space: nowrap;

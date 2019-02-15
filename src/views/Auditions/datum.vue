@@ -38,7 +38,7 @@ export default {
   mounted () {
     getApplyToJoinMassSelectionByMassSelectionId({
       massSelectionId: this.$route.query.massSelectionId,
-      userId: this.$route.query.userId
+      userId: this.$route.query.sendUserId
     }).then(res => {
       this.data = res.data
       this.file = res.data.file.split(',')
@@ -48,19 +48,6 @@ export default {
         this.isDisabled = true
       }
     })
-
-    // getApplyToJoinMassSelection({
-    //   applyToJoinMassSelectionId: this.$route.query.applyToJoinMassSelectionId,
-    //   userId: this.$store.state.IM.user.id
-    // }).then(res => {
-    //   this.data = res.data
-    //   this.file = res.data.file.split(',')
-    //   if(res.data.auditIsAgree === '2' || res.data.auditIsAgree === '3') {
-    //     this.isDisabled = false
-    //   } else {
-    //     this.isDisabled = true
-    //   }
-    // })
   },
   methods: {
     fileClick (index) {

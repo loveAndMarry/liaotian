@@ -5,7 +5,7 @@
     </NavBar>
     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #fff;">
       <Intro :data="data"/>
-      <div class="Intro_hint">{{this.data.massSelectionState === '3'? '匹配成功': '匹配失败'}}</div>
+      <div class="Intro_hint">{{hint}}</div>
     </div>
   </div>
 </template>
@@ -23,9 +23,24 @@ export default {
       data: {}
     }
   },
+  computed: {
+    hint () {
+      switch(this.data.massSelectionState){
+        case '3':
+          return '配对审核中';
+          break;
+        case '4':
+          return '配对成功';
+          break;
+        case '5':
+          return '配对失败';
+          break
+      }
+    }
+  },
   mounted () {
     getMassSelectionDetails({
-      massSelectionId: this.$route.query.id,
+      massSelectionId: this.$route.query.massSelectionId,
       userId: this.$store.state.IM.user.id
     }).then(res => {
       this.data = res.data

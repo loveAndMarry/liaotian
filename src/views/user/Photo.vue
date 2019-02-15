@@ -137,8 +137,8 @@ export default {
   margin-left: 0
 }
 .photos li{
-  width: calc(2.38rem - 2px);
-  height: calc(2.38rem - 2px);
+  width: calc(2.26rem - 2px);
+  height: calc(2.26rem - 2px);
   border: 1px solid transparent;
   border-radius: .15rem;
   -webkit-border-radius: .15rem;
@@ -148,8 +148,8 @@ export default {
   float: left;
 }
 .photos .photo_item{
-  width: calc(2.38rem - 2px);
-  height: calc(2.38rem - 2px);
+  width: calc(2.26rem - 2px);
+  height: calc(2.26rem - 2px);
   line-height: calc(2.38rem - 2px);
   background-color: #dddddd;
   background-image: url('../../assets/images/user_photo_add@2x.png');

@@ -34,7 +34,7 @@
       <Tabs v-model="active" animated :sticky="true" :offset-top="46">
         <Tab title='资料'>
           <Group title="个人介绍">
-            <p style="color:#858585;font-size:.19rem;line-heigin:.23rem">{{userBaseInformation.personalIntroduction}}</p>
+            <p style="color:#858585;font-size:.26rem;line-heigin:.26rem">{{userBaseInformation.personalIntroduction}}</p>
           </Group>
           <Group title="认证">
             <div class="authentication">
@@ -427,8 +427,8 @@ export default {
 .praise i{
   float: left;
   display: block;
-  width: .3rem;
-  height: .3rem;
+  width: .34rem;
+  height: .34rem;
   background-image: url('../../../assets/images/no_like.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -470,11 +470,11 @@ export default {
 .dynamic_group .dynamic_title{
   line-height: .64rem;
   height: .64rem;
-  font-size: .23rem;
+  font-size: .24rem;
   color: #949494;
 }
 .dynamic_group .dynamic_bottom{
-  font-size: .2rem;
+  font-size: .24rem;
   color: #8f8f8f;
   line-height: .6rem;
   height: .6rem;
@@ -501,7 +501,7 @@ export default {
 }
 
 .default{
-  font-size: .23rem;
+  font-size: .24;
   color: #939393;
   line-height: .29rem;
   margin-top:.25rem
@@ -513,7 +513,7 @@ export default {
   position: absolute;
   top: -.6rem;
   right: 0;
-  font-size: .23rem;
+  font-size: .24;
   color:#fe5c8d
 }
 .hint_group{
@@ -526,7 +526,7 @@ export default {
 .hint{
   padding: .07rem .15rem;
   text-align: center;
-  font-size: .23rem;
+  font-size: .26rem;
   border:1px solid #d9d9d9;
   color:#858585;
   border-radius: .3rem;
@@ -550,7 +550,7 @@ export default {
 }
 .list_item{
   margin-top: .3rem;
-  font-size: .23rem;
+  font-size: .26rem;
   color: #8c8c8c;
   overflow: hidden
 }
@@ -584,10 +584,9 @@ export default {
 }
 .authentication p{
   display: block;
-  font-size: .23rem;
+  font-size: .24rem;
   color:#858585;
-  padding-top:.1rem;
-  padding-bottom: 0
+  margin-top: .05rem
 }
 .userDetail{
   text-align: left;
@@ -631,7 +630,7 @@ export default {
 }
 .top .praise{
   float: right;
-  font-size: .23rem;
+  font-size: .24;
   line-height: .3rem;
   color:#fe7996;
   margin-top: .03rem;

@@ -38,7 +38,7 @@ div.group{
   text-align: left
 }
 .sanjiao{
-  font-size: .23rem;
+  font-size: .24rem;
   color: #8d8d8d;
   float: right;
 }

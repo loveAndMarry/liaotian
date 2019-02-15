@@ -54,7 +54,7 @@
           <img
             class="visitor_img"
             :src="item.userHead"
-            v-for="(item, index) in data.accessRecordUserList" :key="index" @click="accessRecord(item)">
+            v-for="(item, index) in data.accessRecordUserList.filter((el, index) => index < 6)" :key="index" @click="accessRecord(item)">
         </SplitGroup>
 
 
@@ -563,7 +563,7 @@ export default {
   display: block;
   float: left;
   margin-top: 0.5rem;
-  margin-right: 0.2rem;
+  margin-right: 0.1rem;
   border-radius: 50%;
   -webkit-border-radius: 50%;
 }

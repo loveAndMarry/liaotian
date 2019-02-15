@@ -1,5 +1,5 @@
 <template>
-    <div class="back" id="content">
+    <div class="back" id="content" @click="$emit('click')">
       <PullRefresh v-model="isLoading" @refresh="onRefresh" class="scroller_content">
         <div v-for="(el, index) in getChatMessage" :key="index" class="scroller_item" v-show="loading">
           <div v-if='el.type === "msg" ' v-text="el.context" style="color:#918d8d"></div>

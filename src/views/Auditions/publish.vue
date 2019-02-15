@@ -62,16 +62,24 @@ export default {
       data: {}
     }
   },
+  inject: ['reload'],
   mounted () {
-    getMassSelectionDetails({
-      massSelectionId: this.$route.query.massSelectionId,
-      userId: this.$store.state.IM.user.id
-    }).then(res => {
-      this.data = res.data
-    })
+    this.getData()
+  },
+  activated() {
+    this.getData()
   },
   methods: {
+    getData () {
+      getMassSelectionDetails({
+        massSelectionId: this.$route.query.massSelectionId,
+        userId: this.$store.state.IM.user.id
+      }).then(res => {
+        this.data = res.data
+      })
+    },
     submit () {
+      // this.reload()
       if(this.data.auditStatus === '1' || this.data.auditStatus === '3' || this.data.openState === '2' || this.data.openState === '3'){
         Toast({
           message: '当前状态为' + this.submitText + ', 不可以操作'

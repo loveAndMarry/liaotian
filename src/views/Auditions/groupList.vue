@@ -31,8 +31,9 @@
   </div>
 </template>
 <script>
-import { NavBar, Actionsheet} from 'vant'
+import { NavBar, Actionsheet, Dialog, Toast} from 'vant'
 import { mapGetters , mapActions} from 'vuex'
+import { exitGroup } from '@/assets/common/api'
 export default {
   components: {
     NavBar,
@@ -56,6 +57,10 @@ export default {
       this.actions.unshift({
         name: '报名列表'
       })
+    } else {
+      this.actions.push({
+        name: '退出群组'
+      })
     }
   },
   methods: {
@@ -65,7 +70,23 @@ export default {
       if(item.name === '报名列表') {
         this.$router.push({name: 'Election'})
       } else if(item.name === '活动详情') {
-        this.$router.push({name: 'activityDetails', query: {id: localStorage.getItem('massSelectionId')}})
+        this.$router.push({name: 'activityDetails', query: {massSelectionId: localStorage.getItem('massSelectionId')}})
+      } else if(item.name === '退出群组'){
+         Dialog.confirm({
+            message: '确定退出群组吗？'
+          }).then(() => {
+            exitGroup({
+              userId: this.$store.state.IM.user.id,
+              massSelectionId: localStorage.getItem('massSelectionId')
+            }).then(() => {
+              Toast({
+                message: '退出群组成功',
+                duration: 2000
+              })
+              this.$router.push({name: 'Auditions'})
+            })
+            
+          });
       }
     },
     onClickLeft () {

@@ -75,7 +75,7 @@ export default {
 }
 .add{
   display: block;
-  background-image: url('../../assets/images/initiate_btn.png');
+  background-image: url('../../assets/images/initiate.png');
   background-repeat: no-repeat;
   background-size: 100%;
   width: .4rem;

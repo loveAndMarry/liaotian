@@ -74,7 +74,7 @@ IM.prototype = {
               receiver: obj.msgReceiver,
               sender: obj.msgSender,
               context: obj.msgContent,
-              msgType: obj.msgType,
+              type: obj.msgType,
               time: parseInt(obj.msgDateCreated),
               chatDate: parseInt(obj.msgDateCreated),
               status: 2
@@ -85,7 +85,7 @@ IM.prototype = {
               receiver: obj.msgReceiver,
               sender: obj.msgSender,
               context: obj.msgContent,
-              msgType: obj.msgType,
+              type: obj.msgType,
               time: parseInt(obj.msgDateCreated),
               chatDate: parseInt(obj.msgDateCreated),
               status: 2
@@ -98,7 +98,7 @@ IM.prototype = {
             receiver: obj.msgReceiver,
             sender: obj.msgSender,
             context: obj.msgContent,
-            msgType: obj.msgType,
+            type: obj.msgType,
             chatDate: new Date().getTime() // 接受时间
           })
         }

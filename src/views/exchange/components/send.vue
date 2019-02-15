@@ -1,20 +1,20 @@
 <template>
     <div class="bottom">
-      <div style="height: 0.7rem;line-height: 0.7rem;text-align:left">
+      <div style="height: 0.9rem;line-height: 0.9rem;text-align:left">
         <!-- <div class="icon yuyin" @click="voice($event)"></div> -->
         <div class="inputText">
-          <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg" @input="input" v-model="context">
+          <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg" v-model="context">
           <span v-show='!isText' @touchstart="touchstart($event)" @touchend="touchend($event)">按住 说话</span>
         </div>
-        <!-- <div class="icon biaoqing" @click="emotion"></div> -->
-        <!-- <div class="icon tianjia" @click="GiftShow" v-show="!isContext"></div> -->
-        <!-- <div class="send" @click="postMsg" v-show="isContext">发送</div> -->
-        <div  class="submitMsg" @click="postMsg">发送</div>
+        <div class="icon biaoqing" @click="emotion"></div>
+        <div class="icon tianjia" @click="GiftShow" v-show="!isContext"></div>
+        <!-- <div class="send" @click="postMsg">发送</div> -->
+        <div  class="submitMsg" @click="postMsg" v-show="isContext">发送</div>
         <!-- <div class="send" @click="postMsg">发送</div> -->
         <!-- <input type="file" id="file" style="display:none" accept="image/*" @change="fileChange($event)"> -->
       </div>
-      <emotion @emotion="postMsg" v-show="isShow"></emotion>
-      <Gift v-show="isGiftShow"></Gift>
+      <emotion @emotion="pushContent" v-show="isShow"></emotion>
+      <Gift v-show="isGiftShow" @hideGift="GiftShow"></Gift>
     </div>
 </template>
 
@@ -51,12 +51,8 @@ export default {
     touchend ($event) {
       $event.target.innerText = '按住 说话'
     },
-    input (e) {
-      if(this.context !== ''){
-        this.isContext = true
-      } else {
-        this.isContext = false
-      }
+    pushContent (i) {
+      this.context = this.context + i
     },
     // 语音文本切换
     voice ($event) {
@@ -77,8 +73,8 @@ export default {
       this.$emit('editHeight', this.isShow)
     },
     GiftShow () {
-      this.$toast('功能正在开发中...')
-      return false
+      // this.$toast('功能正在开发中...')
+      // return false
       if (this.isGiftShow) {
         this.isGiftShow = false
       } else {
@@ -89,14 +85,11 @@ export default {
     },
     postMsg (i) {
       if(this.context.replace(/ /g, '') !== ''){
-         var context = typeof i === 'object'? utils.utf16toEntities(this.context): i
-         console.log(context,'单聊')
         var that = this
         this.isShow = false
         this.$emit('editHeight', this.isShow)
-        this.context = ''
         this.POSTMSG({
-          context: context,
+          context: utils.utf16toEntities(this.context),
           id: new Date().getTime(),
           receiver:that.friend.accountNumber,
           sender: that.user.accountNumber,
@@ -106,11 +99,23 @@ export default {
           chatDate: new Date().getTime(),
           status: 1, // 当前信息提交状态
           userHead: this.user.userHead,
-          msgType: 1
+          type: '1'
         }).then((res) => {
           that.context = ''
           this.isContext = false
+        }).catch(res => {
+          that.context = ''
+          this.isContext = false
         })
+      }
+    }
+  },
+  watch: {
+    context (val) {
+      if(val.replace(/ /g, '') !== ''){
+        this.isContext = true
+      } else {
+        this.isContext = false
       }
     }
   },
@@ -129,15 +134,14 @@ export default {
   text-align: center;
   background-color: #fe5c8d;
   color: #fff;
-  vertical-align: 0.27rem;
+  vertical-align: 0.21rem;
   border-radius: .05rem;
-  margin-top: 0;
-  margin-left: .2rem;
-  height: 30px;
-  padding: 0 8px;
-  font-size: 12px;
+  padding: 0 .08rem;
+  font-size: .28rem;
   line-height: 30px;
   display: inline-block;
+  transform: translateY(-.15rem);
+  -webkit-transform: translateY(-.15rem);
 }
 .bottom{
   width: 100%;
@@ -145,13 +149,14 @@ export default {
   position: absolute;
   bottom: 0;
   left: 0;
-  padding: .2rem;
+  padding: 0.1rem .2rem;;
   box-sizing: border-box;
   -webkit-box-sizing: border-box; 
+  background-color: #f0f0f0;
 }
 
 .bottom .inputText{
-  width: calc(100% - 1.4rem);
+  width: calc(100% - 1.66rem);
   display: inline-block;
   height: 100%;
   position: relative;
@@ -163,7 +168,7 @@ export default {
   -webkit-border-radius: 3px;
   background-color: #f5f5f6;
   color:#333;
-  font-size: .27rem;
+  font-size: .32rem;
   padding: 0 .24rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -171,7 +176,8 @@ export default {
   top: 0;
   left: 0;
   height: 100%;
-  width: 100%
+  width: 100%;
+  background-color: #fff;
 }
 .bottom .inputText span{
   border:1px solid #f0f0f1;
@@ -200,6 +206,7 @@ export default {
   vertical-align: .03rem;
   background-repeat: no-repeat;
   background-size: cover;
+  margin-bottom: .14rem
 }
 .yuyin{
   background-image: url('../../../assets/images/yuyin.png');
@@ -215,9 +222,6 @@ export default {
 }
 .tianjia{
   background-image: url('../../../assets/images/tianjia.png');
-  width: .63rem;
-  height: .63rem;
-  margin-bottom: -0.02rem;
   margin-left: .1rem
 }
 .send{

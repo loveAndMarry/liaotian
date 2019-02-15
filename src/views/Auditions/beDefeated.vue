@@ -6,8 +6,8 @@
         <div class="img_group">
           <img :src="item.userHead" alt="">
         </div>
-        <p class="success_title">对方拒绝了你的邀请</p>
-        <div style="padding: .6rem;margin-top: 5rem;">
+        <p class="success_title">{{disabled ? '对方拒绝了你的请求' : '您拒绝了对方的请求'}}</p>
+        <div style="padding: .6rem;margin-top: 5rem;" v-show="disabled">
           <Button round type="danger" @click="$router.push({name: 'MatchSearch', query: {id: item.id}})">重新发起匹配</Button>
         </div>
       </div>
@@ -24,6 +24,11 @@ export default {
   data () {
     return {
       item: {},
+    }
+  },
+  computed: {
+    disabled () {
+      return this.$route.query.messageType === '2'
     }
   },
   mounted () {

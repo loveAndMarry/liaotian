@@ -266,19 +266,19 @@ export default {
     font-size: .23rem;
 }
 .remove{
-color: #fff;
-font-size: 15px;
-width: 65px;
-height: 1.63rem;
-line-height: 1.63rem;
-display: inline-block;
-text-align: center;
-background-color: #f44;
+  color: #fff;
+  font-size: .32rem;
+  width: 65px;
+  height: 1.63rem;
+  line-height: 1.63rem;
+  display: inline-block;
+  text-align: center;
+  background-color: #f44;
 }
 .chat_list {
   display: block;
   color: #8d8d8d;
-  font-size: 0.19rem;
+  font-size: 0.2rem;
   margin-top: 0;
   text-align: left;
   height: 100%;

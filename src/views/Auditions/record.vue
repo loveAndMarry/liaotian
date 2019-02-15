@@ -72,6 +72,8 @@ export default {
         } else {
           this.finished = true
         }
+      }).catch(res => {
+        this.finished = true
       })
     }
   }

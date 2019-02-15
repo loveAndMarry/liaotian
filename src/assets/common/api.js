@@ -192,7 +192,13 @@ export const getApplyToJoinMassSelectionByMassSelectionId = data => HTTP.GET('we
 export const selectMaritimeMatchingApplicationByMassSelectionId = data => HTTP.GET('user/maritimeMatchingApplication/selectMaritimeMatchingApplicationByMassSelectionId',data)
 
 // 获取海选分润列表                                                                                                             
-export const listBonusRecord = data => HTTP.GET('qike-maiyuan/web/bouns/listBonusRecord',data)
+export const listBonusRecord = data => HTTP.GET('web/bouns/listBonusRecord',data)
+
+// 删除列表中审核中或者失败或者未发布或者活动结束的群组                                                                                                             
+export const deleteMassSelection  = data => HTTP.GET('web/massSelection/deleteMassSelection',data)
+
+// 群成员退出群组                                                                                                         
+export const exitGroup  = data => HTTP.GET('web/massSelection/exitGroup',data)
 
 
 

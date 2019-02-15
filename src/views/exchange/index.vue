@@ -1,8 +1,8 @@
 <template>
   <div class="exchange">
     <Head></Head>
-    <Content id="content" ref="content"></Content>
-    <Send @editHeight="editHeight"></Send>
+    <Content id="content" ref="content" @click="contentClick"></Content>
+    <Send @editHeight="editHeight" ref="send"></Send>
   </div>
 </template>
 
@@ -47,6 +47,11 @@ export default {
         content.style.height = 'calc(100% - 1.1rem - 45px)'
       }
       this.$refs.content.scrollToBottom()
+    },
+    contentClick () {
+      this.$refs.send.isShow = false;
+      this.$refs.send.isGiftShow = false;
+      this.editHeight(false)
     }
   },
   components: {

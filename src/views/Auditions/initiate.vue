@@ -26,7 +26,7 @@
           <div class="numberOfPeople">
             <h6>参选人数</h6>
             <ul>
-              <li v-for="(el, index) in groupSize" :key="index" :class="{disabled: el.isEffective !== '2', active: el.dictKey === groupSizeLimit}" @click="numberOfPeopleClick(el)">{{el.dictValue}}</li>
+              <li v-for="(el, index) in groupSize" :key="index" :class="{disabled: el.isEffective !== '2', active: el.dictKey === groupSizeLimit}" @click="numberOfPeopleClick(el)">{{'上限' + el.dictValue + '人'}}</li>
             </ul>
           </div>
           <div class="numberOfPeople">

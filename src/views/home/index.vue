@@ -222,8 +222,8 @@ export default {
 .praise i{
   float: left;
   display: block;
-  width: .3rem;
-  height: .3rem;
+  width: .34rem;
+  height: .34rem;
   background-image: url('../../assets/images/no_like.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -316,11 +316,11 @@ export default {
 .dynamic_context .title{
   line-height: .64rem;
   height: .64rem;
-  font-size: .23rem;
+  font-size: .24rem;
   color: #949494;
 }
 .dynamic_context .dynamic_bottom{
-  font-size: .2rem;
+  font-size: .24rem;
   color: #8f8f8f;
   line-height: .6rem;
   height: .6rem;

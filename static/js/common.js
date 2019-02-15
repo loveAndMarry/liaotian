@@ -1,4 +1,4 @@
-// window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
+//window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
 window.baseURL = 'http://yuan.minmai1688.com/'
 
 // 点击调用图片和拍照
@@ -29,6 +29,23 @@ window.authentication = function(callback){
     } else if (u.indexOf('iPhone') > -1) {//苹果手机
       console.log("苹果手机");
       window.webkit.messageHandlers.authentication.postMessage(null)
+    } 
+  } else {
+    this.callback(callback)
+  }
+}
+
+// 选择图片
+window.selectImage = function(callback){
+  if(typeof callback === 'function'){
+    this.callback = callback
+    var u = navigator.userAgent;
+    if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+      console.log("安卓手机");
+      alert('selectImage')
+    } else if (u.indexOf('iPhone') > -1) {//苹果手机
+      console.log("苹果手机");
+      window.webkit.messageHandlers.selectImage.postMessage(null)
     } 
   } else {
     this.callback(callback)

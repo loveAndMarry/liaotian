@@ -52,7 +52,6 @@ export default {
       this.$router.back()
     },
     submit () {
-
       this.$route.query.obj.payType = this.payType
       var u = navigator.userAgent;
       if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机

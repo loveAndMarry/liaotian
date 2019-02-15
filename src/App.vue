@@ -13,16 +13,31 @@ import { validRange, valid } from 'semver';
 import { Loading } from 'vant'
 export default {
   name: 'App',
+  provide () {
+    return {
+      reload: this.reload
+    }
+  },
   data () {
     return {
       transitionName: 'slide-left', // 默认动态路由变化为slide-right
       transitionName1: 'slide-right', // 默认动态路由变化为slide-right
+      isRouterAlive: true
     }
   },
   computed: {
     ...mapState({
       Loading: state => state.common.Loading
     }),
+  },
+  methods: {
+    reload () {
+      console.log('刷新了')
+      this.isRouterAlive = false
+      this.$nextTick(function(){
+        this.isRouterAlive = true
+      })
+    }
   },
   components: {
     Loading
@@ -145,6 +160,10 @@ body {
   overflow: hidden;
   -webkit-touch-callout:none;/*系统默认菜单被禁用*/-webkit-user-select:none;/*webkit浏览器*/-khtml-user-select:none;/*早起浏览器*/-moz-user-select:none;/*火狐浏览器*/-ms-user-select:none;/*IE浏览器*/user-select:none;/*用户是否能够选中文本*/
 }
+input, textarea {
+  -webkit-user-select:auto;
+  -webkit-touch-callout: behavior
+}
 
 .Router {
   position: absolute;
@@ -161,6 +180,10 @@ body {
 }
 ._v-container>._v-content>.loading-layer .spinner-holder .text, ._v-container>._v-content>.pull-to-refresh-layer .spinner-holder .text{
   font-size: .28rem !important;
+}
+/* 更改字体大小 */
+.van-cell{
+  font-size: .28rem
 }
 
 /* 更改环形进度条默认样式

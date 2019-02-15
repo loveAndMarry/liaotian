@@ -27,7 +27,7 @@
           </li>
           <li class="photo_item isShow" v-for="(item, index) in photos" :key="item" @click.prevent="examinePhoto(index)">
             <img :src="item + '?imageMogr2/auto-orient'" v-if="item" alt>
-            <i @click.stop="$delete(photos, index)"></i>
+            <i @click.stop="$delete(photos, index)" v-show="isDelete"></i>
           </li>
           <li class="photo_item" v-if="3 - photos.length > 0" v-for="item in (3 - photos.length)" :key="item">
           </li>
@@ -63,7 +63,8 @@ export default {
       radio: '1',
       item: {},
       isDisabled: false,
-      title: '发起匹配申请'
+      title: '发起匹配申请',
+      isDelete: true
     }
   },
   mounted () {
@@ -114,6 +115,7 @@ export default {
           message: '请求发送成功',
           duration: 1000
         })
+        this.isDelete = false
         this.title = '等待对方审核中...'
         // window.setTimeout(() => {
         //   this.$router.back()
@@ -164,7 +166,7 @@ export default {
 .photos li {
   border-radius: 0.15rem;
   -webkit-border-radius: .15rem;
-  margin-right: 0.15rem;
+  margin-right: 0.1rem;
   float: left;
 }
 .photos .photo_item {

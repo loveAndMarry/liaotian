@@ -52,7 +52,7 @@ const actions = {
           sendUserId: products.sendUserId,
           receiveUserId: products.receiveUserId,
           chatDate: products.time,
-          type: products.msgType
+          type: products.type
         }).then((res) => {
           resolve()
         })
@@ -75,7 +75,7 @@ const actions = {
           sendUserId: state.user.id,
           receiveUserId: state.friend.userId,
           chatDate: products.time,
-          type: products.msgType
+          type: products.type
         }).then((res) => {
           console.log('当前数据已经提交到服务器')
           if(state.friendList.findIndex(el => el.accountNumber === products.receiver) === -1 || state.friendList.length === 0) {
@@ -255,7 +255,7 @@ const actions = {
               state.intentionList = utils.MergeArray(state.intentionList, res.data, 'userId')
               break
             case '3':
-              state.autonymList = utils.MergeArray(state.friendList, res.data, 'userId')
+              state.autonymList = utils.MergeArray(state.autonymList, res.data, 'userId')
               break
           }
           resolve()

@@ -32,10 +32,10 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
-    let data = to.query.el
+    let data = to.query
     selectMaritimeMatchingApplication({
       pairUserId: data.messageType === '2'? data.sendUserId : data.acceptUserId,
-      maritimeMatchingApplicationId: to.query.el.extId
+      maritimeMatchingApplicationId: data.massSelectionId
     }).then(res => {
       if(res.code === 300){
         Toast({
@@ -54,15 +54,15 @@ export default {
         next({name: 'success', query: {el : res.data, context: '恭喜你&nbsp;&nbsp;&nbsp;<br/>配对成功！', title: '你和'+res.data.nickName+'配对成功了~'}})
       }
       if(res.data.pairUserIsAgree === '3'){
-        next({name: 'beDefeated', query: {el : res.data}})
+        next({name: 'beDefeated', query: {el : res.data, messageType: data.messageType}})
       }
     })
   },
   mounted () {
-    let data = this.$route.query.el
+    let data = this.$route.query
     selectMaritimeMatchingApplication({
       pairUserId: data.messageType === '2'? data.sendUserId : data.acceptUserId,
-      maritimeMatchingApplicationId: data.extId
+      maritimeMatchingApplicationId: data.massSelectionId
     }).then(res => {
       this.data = res.data
     })
