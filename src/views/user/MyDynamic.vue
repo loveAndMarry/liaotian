@@ -12,7 +12,7 @@
       @load="onLoad"
       class="dynamic" ref='dynamic'>
         <template v-show="data.length !== 0" v-for="(el, index) in data">
-          <div class="dynamic_group" :key="index">
+          <div class="dynamic_group S24" :key="index">
             <div class="title">上传了{{el.type | type}}</div>
             <div class="dynamic_content">
               <template v-if="el.type === '1'">
@@ -164,7 +164,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style scoped lang="less">
 .dynamic .dynamic_group{
   border-bottom: .2rem solid #f0f0f0;
   background-color: #fff;
@@ -175,12 +175,9 @@ export default {
 }
 .dynamic_group .dynamic_content p{
   margin: 0;
-  padding: .3rem .15rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  font-size: .24rem;
-  color: #949494;
-  background-color: #f0f0f0
+  color: @base-black;
 }
 .dynamic_group .dynamic_content img{
   max-width: 100%;
@@ -189,12 +186,10 @@ export default {
 .dynamic_group .title{
   line-height: .64rem;
   height: .64rem;
-  font-size: .23rem;
-  color: #949494;
+  color: @base-gray;
 }
 .dynamic_group .dynamic_bottom{
-  font-size: .2rem;
-  color: #8f8f8f;
+  color:  @base-gray;
   line-height: .6rem;
   height: .6rem;
 }

@@ -4,50 +4,50 @@
      <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;">
         <div class="option">
           <div class="one"  :class="{active: active >= 0}">
-            <span>1</span>
+            <span class="S20">1</span>
             <i></i>
-            <h5>基本资料</h5>
+            <h5 class="S24">基本资料</h5>
           </div>
           <div class="two" :class="{active: active >= 1}">
             <i></i>
-            <span>2</span>
-            <h5>参选条件</h5>
+            <span class="S20">2</span>
+            <h5 class="S24">参选条件</h5>
           </div>
         </div>
 
         <div class="content_one" v-if="active === 0">
           <div class="userHead"  @click="submitPhoto">
             <img :src="userHead" alt="">
-            <span>封面</span>
+            <span class="S24">封面</span>
           </div>
           <div class="textarea_group">
-            <textarea placeholder="备注信息" v-model="context"></textarea>
+            <textarea placeholder="备注信息" v-model="context" class="S24"></textarea>
           </div>
           <div class="numberOfPeople">
-            <h6>参选人数</h6>
+            <h6 class="S24">参选人数</h6>
             <ul>
-              <li v-for="(el, index) in groupSize" :key="index" :class="{disabled: el.isEffective !== '2', active: el.dictKey === groupSizeLimit}" @click="numberOfPeopleClick(el)">{{'上限' + el.dictValue + '人'}}</li>
+              <li v-for="(el, index) in groupSize" :key="index" class="S24" :class="{disabled: el.isEffective !== '2', active: el.dictKey === groupSizeLimit}" @click="numberOfPeopleClick(el)">{{'上限' + el.dictValue + '人'}}</li>
             </ul>
           </div>
           <div class="numberOfPeople">
-            <h6 style="margin-top: 0;">参选时间</h6>
-            <div style="text-align: left;margin-top: .2rem;color:#fd6e99">
+            <h6 style="margin-top: 0;" class="S24">参选时间</h6>
+            <div style="text-align: left;margin-top: .2rem;color:#ff5e80">
               <span class="time" @click="TimeClick('startTime')">{{startTime}}</span>
                 &nbsp;&nbsp;至&nbsp;&nbsp;
               <span class="time" @click="TimeClick('endTime')">{{endTime}}</span>
             </div>
           </div>
           <div class="numberOfPeople">
-            <h6>参选基金</h6>
-            <div style="text-align: left;margin-top: .2rem;color:#fd6e99">
-              <input type="text" class="initiatingAmount" placeholder="请输入参选基金,最多保留后两位" v-model="initiatingAmount"> 元
+            <h6 class="S24">参选基金</h6>
+            <div style="text-align: left;margin-top: .2rem;color:#ff5e80">
+              <input type="number" class="initiatingAmount" placeholder="请输入参选基金,最多保留后两位" v-model="initiatingAmount"> 元
             </div>
           </div>
           <div style="text-align: left;margin-top:.2rem">
             <span class="van-radio__input"><input type="radio" class="van-radio__control" value="1"><i class="van-icon van-icon-checked" style="color: rgb(7, 193, 96);"><!----><!----></i></span>
             我保证以上信息属实，绝无虚假
           </div>
-          <Button size="large" round class="next" @click="nextClick">下一步</Button>
+          <Button size="large" round class="next S36" @click="nextClick">下一步</Button>
         </div>
 
         <div class="content_two" v-if="active === 1">
@@ -299,20 +299,20 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="less">
 .initiatingAmount{
   height: .46rem;
   border-radius: .1rem;
-  border: 1px solid #fd6e99;
+  border: 1px solid @base-color;
   vertical-align: middle;
   padding: 0 .1rem;
-  color: #000
+  color: @base-black
 }
 .time{
   display: inline-block;
   width: 1.7rem;
   height: .46rem;
-  border: 1px solid #fd6e99;
+  border: 1px solid @base-color;
   border-radius: .1rem;
   vertical-align: middle;
   text-align: center;
@@ -323,7 +323,7 @@ export default {
   margin-top: .5rem !important;
 }
 .next{
-  background-color: #ee7795;
+  background-color: @base-color;
   height: .8rem;
   line-height: .8rem;
   font-size: .32rem;
@@ -335,7 +335,7 @@ export default {
   overflow: hidden;
 }
 .numberOfPeople li.disabled{
-  background-color: #ff7994
+  background-color: @base-color
 }
 
 .numberOfPeople li.active::before{
@@ -492,8 +492,8 @@ export default {
   margin-right: -.06rem;
 }
 .option > div.active span, .option > div.active i{
-  background-color: #ef7896;
-  border-color: #ef7896;
+  background-color: @base-color;
+  border-color: @base-color;
   color: #fff
 }
 </style>

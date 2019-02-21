@@ -28,10 +28,10 @@ export default {
         if(num > 50){
             //当软键盘弹出，在这里面操作
             console.log('软键盘弹起')
+            that.$refs.send.isShow = false
+            that.$refs.send.isGiftShow = false
             that.editHeight(false)
-            this.$refs.content.isShow = false
-            this.$refs.content.isGiftShow = false
-            content.style.height = 'calc(100% - 1.1rem - 45px)'
+            //content.style.height = 'calc(100% - 1.1rem - 45px)'
         }else{
             //当软键盘收起，在此处操作
             console.log('软键盘收起')
@@ -42,7 +42,7 @@ export default {
     editHeight (isShow) {
       var content = document.getElementById('content')
       if (isShow) {
-        content.style.height = 'calc(100% - 3.6rem - 45px)'
+        content.style.height = 'calc(100% - 4.6rem - 45px)'
       } else {
         content.style.height = 'calc(100% - 1.1rem - 45px)'
       }

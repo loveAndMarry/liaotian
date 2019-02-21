@@ -15,12 +15,12 @@
         </div>
         <div class="list_content">
           <div class="top">
-            <div class="name">{{item.nickName}}
-              <span v-if='item.registerState === "3"'>实名</span>
+            <div class="name S36">{{item.nickName}}
+              <span class="S24 Tag" v-if="item.registerState === '1'">实名</span>
             </div>
-            <div class="praise" @click.stop="link(item)" :class="{unlink:item.isLikeUser === 0}"><span></span>{{item.likeCount}}</div>
+            <div class="praise S36" @click.stop="link(item)" :class="{unlink:item.isLikeUser === 0}"><span></span>{{item.likeCount}}</div>
           </div>
-          <div class="message">
+          <div class="message S28">
             <p v-text="item.age ? `${item.age}岁` : '未填写'"></p>
             <i>|</i>
             <p v-text="item.height? `${item.height}cm` : '未填写'"></p>
@@ -32,7 +32,7 @@
           <ul class="tags" v-if="item.interestDictVoList && item.interestDictVoList.length > 0">
             <li v-for="(el, dex) in interestDictVoList(item.interestDictVoList)" :key="dex" v-text="el.label"></li>
           </ul>
-          <div class="manifesto" v-text="`爱情宣言 :${item.personalIntroduction? item.personalIntroduction : '未填写' }`"></div>
+          <div class="manifesto S28" v-text="`爱情宣言 :${item.personalIntroduction? item.personalIntroduction : '未填写' }`"></div>
         </div>
       </li>
     </ul>
@@ -189,11 +189,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 
 .rad{
-  color: #fd7194;
-  background-color: #fff !important;
+  color: @base-color;
+  background-color: @base-white !important;
 }
 .home_list{
   display: block;
@@ -204,27 +204,27 @@ export default {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   overflow: hidden;
-  background-color: #fff
+  background-color: @base-white
 }
 .home_list li .title{
   float: left;
-  width: 1.5rem;
+  width: 1.56rem;
   padding-top: .1rem;
 }
 .home_list li .title img{
   width: 100%;
-  height: 1.5rem;
+  height: 1.56rem;
   border-radius: 50%;
   -webkit-border-radius: 50%;
   display: block
 }
 .list_content {
   float: left;
-  width: calc(100% - 1.5rem);
+  width: calc(100% - 1.56rem);
   padding:0 .3rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  color:#8d8d8d;
+  color:@base-gray;
   text-align: left
 }
 .list_content .top{
@@ -232,32 +232,29 @@ export default {
 }
 .list_content .top .name{
   float: left;
-  font-size: .3rem;
-  color:#313131;
+  color: @base-black;
 }
-.list_content .top .name span{
-  width: .54rem;
-  height: .3rem;
-  display: inline-block;
-  border-radius: .02rem;
-  -webkit-border-radius: .02rem;
-  background-color: #33c1ff;
-  color: #fff;
-  font-size: .18rem;
-  margin-left:.1rem;
-  text-align: center
-}
+// .list_content .top .name span{
+//   width: .54rem;
+//   height: .3rem;
+//   display: inline-block;
+//   border-radius: .02rem;
+//   -webkit-border-radius: .02rem;
+//   background-color: @base-blue;
+//   color: @base-white;
+//   margin-left:.1rem;
+//   text-align: center
+// }
 .list_content .top .praise{
   float: right;
-  font-size: .23rem;
   line-height: .3rem;
-  color:#fe7996;
+  color: @base-color;
   margin-top: .03rem;
 }
 .list_content .top .praise span{
   display: inline-block;
-  width: .3rem;
-  height:.3rem;
+  width: .36rem;
+  height:.36rem;
   background-image: url('../../../assets/images/like_btn.png');
   background-repeat: no-repeat;
   background-size: 100%;
@@ -265,13 +262,12 @@ export default {
   vertical-align: top;
 }
 .list_content .top .praise.unlink{
-    color: #8d8d8d;
+    color: @base-gray;
 }
 .list_content .top .praise.unlink span{
    background-image: url('../../../assets/images/unlike_btn.png');
 }
 .list_content .message{
-  font-size: .26rem;
   overflow: hidden;
   line-height: .34rem;
 }
@@ -285,20 +281,24 @@ export default {
   margin: 0 .1rem
 }
 .list_content .manifesto{
-  margin-top: .1rem;
+  margin-top: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(100% - .32rem)
 }
 .list_content .tags{
-  font-size: .2rem;
-  color: #8e8e8e;
+  color: @base-gray;
   margin-top: .2rem
 }
 .list_content .tags li{
-  background-color: #dedede;
+  background-color: @base-gray;
   display: inline-block;
   padding: .04rem .1rem;
   margin-right: .1rem;
-  border: 1px solid #dedede;
+  border: 1px solid @base-gray;
   border-radius: .05rem;
+  color: @base-white
 }
 
 </style>

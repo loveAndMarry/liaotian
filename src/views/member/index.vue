@@ -48,7 +48,7 @@ export default {
     height: 1.12rem;
     background-color: #fff;
     text-align: left;
-    font-size: 0.31rem;
+    font-size: 0.32rem;
     padding: 0.23rem 0.3rem;
     line-height: 0.66rem;
     box-sizing: border-box;
@@ -69,13 +69,13 @@ export default {
   line-height: 1;
 }
 .member .intention_item .item div{
-  font-size: .27rem;
+  font-size: .28rem;
   color: #323232;
   margin-bottom: .1rem;
 }
 .member .intention_item .item p{
   margin: 0;
-  font-size: .19rem;
+  font-size: .2rem;
   color: #8d8d8d;
 }
 .member .intention_item .sanjiao {

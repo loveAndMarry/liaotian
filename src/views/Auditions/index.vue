@@ -4,7 +4,7 @@
       <i class="add" slot="right" />
     </NavBar>
     <div class="scroll_group">
-      <Tabs v-model="active" animated sticky @click="onClick" color="#ef7398">
+      <Tabs v-model="active" animated sticky @click="onClick" color="#ff5e80">
         <Tab title="全部海选">
           <AuditionsList type="1"></AuditionsList>
         </Tab>

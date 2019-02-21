@@ -47,7 +47,145 @@ export default {
 document.documentElement.style.fontSize = (document.documentElement.clientWidth / 720) * 100 + 'px'
 </script>
 
-<style>
+<style lang="less">
+// 设置聊天礼物展示样式（需要全局配置）
+
+.gift_content{
+  text-align: left;
+  margin-top: .23rem;
+  img{
+    display: block;
+    float: left;
+    max-width: 1.3rem;
+    max-height: 1.3rem;
+  }
+  p{
+    margin: 0;
+    line-height: 1.3rem;
+    display: inline-block;
+    margin-left: .16rem;
+    color: #8d8d8d;
+    font-size: .28rem;
+  }
+}
+
+// 自定义弹出框样式
+.gift-content-back{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0,0,0,.3);
+  z-index: 2001;
+  text-align: center
+}
+.gift-content{
+  width: 5.3rem;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: #fff;
+  border-radius: .2rem;
+  overflow: hidden;
+  .title{
+    img{
+      max-width: 1.6rem;
+      max-height: 1.6rem;
+      margin: 0 auto;
+      display: block;
+      margin-top: .8rem;
+    }
+    span{
+      display: block;
+      font-size: .3rem;
+      color: #323232;
+      line-height: .3rem;
+      padding: .16rem 0;
+    }
+    b{
+      font-size: .28rem;
+      line-height: .28rem;
+      font-weight: initial;
+      color: #ff5e80;
+      display: block;
+    }
+  }
+  .img{
+    background-color: #dddddd;
+    margin: .4rem 0;
+    padding: .15rem 0;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: .24rem;
+    img{
+      display: inline-block;
+      width: .9rem;
+      height: .9rem;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+    span{
+      display: inline-block;
+      width: .5rem;
+      height: .5rem;
+      margin: 0 .35rem;
+      vertical-align: middle;
+      background: url('./assets/gift/heart.png') no-repeat;
+      background-size: 100%;
+      background-position: bottom;
+    }
+  }
+  .bottom {
+    height: .86rem;
+    line-height: .86rem;
+    font-size: .32rem;
+    color: #fff;
+    background-color: #ff5e80
+  }
+}
+/* 
+  去掉首页顶部tabs页的边框
+*/
+.van-hairline--top-bottom::after{
+  border: 0px !important
+}
+
+/* 自定义图片预览和下载框 */
+.imageDiv{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  z-index: 1
+}
+.imageImg{
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+}
+.imageSpan {
+  position: absolute;
+  right: .75rem;
+  bottom: .75rem;
+  width: .5rem;
+  height: .5rem;
+  padding: .2rem;
+  border-radius: .05rem;
+  background-image: url('../src/assets/images/download.png');
+  background-repeat: no-repeat;
+  background-color: rgba(0,0,0,.3);
+  background-size: .5rem .5rem;
+  background-position: center;
+}
 /* 设置海选下拉刷新时的字体隐藏的问题 */
 .Auditions .van-tabs__content--animated{
   overflow: inherit;
@@ -57,21 +195,11 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
   top: 8rem;
   width: 50%;
   height: 44px;
-  background-color: #ff6f93;
-  border: #ff6f93;
+  background-color: #ff5e80;
+  border: #ff5e80;
 }
-
-/* 设置tab选项卡底部边框颜色 */
-.van-tabs__line{
-  background-color: rgb(239, 115, 152) !important;
-}
-
-/* 设置海选tabs页字体颜色 */
-.Auditions .van-tab{
-  color: #2c2c2c
-}
-.Auditions .van-tab--active{
-  color: #f86b95
+.van-nav-bar__title{
+  font-size: .36rem
 }
 
 #app .van-popup--right{
@@ -152,6 +280,7 @@ img[src=""],img:not([src]){opacity:0;}
   text-align: center;
   font-size: 0.24rem;
   height: 100%;
+  color: #323232
 }
 html,
 body {
@@ -189,7 +318,7 @@ input, textarea {
 /* 更改环形进度条默认样式
 */
 .item .van-circle__text{
-  color:#fe7998;
+  color:#ff5e80;
   font-size: .28rem
 }
 .hide{

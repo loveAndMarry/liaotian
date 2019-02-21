@@ -1,11 +1,16 @@
 <template>
     <div class="left">
         <div class="left_img">
-            <img :src="imgDefault ? 'http://systemmaiyuan.minmai1688.com/271658f606964beea25d5ca0a69024181547017098(1).jpg' : userHead">
+            <img v-if="images" :src="images">
+            <img v-if="!images" :src="imgDefault ? 'http://systemmaiyuan.minmai1688.com/271658f606964beea25d5ca0a69024181547017098(1).jpg' : userHead">
         </div>
         <div class="left_content">
-          <img v-if="item.type === '4'" :src="item.context" alt="">
-          <a v-else-if="item.type !== '4' && (item.context.indexOf('http') !== -1)" @click="window.Android.openWebview(item.context)">{{item.context}}</a>
+          <img v-if="item.type == '4'" :src="item.context" alt="" @click="openImage(item.context)">
+          <div v-else-if="item.type == '1' && (item.context.indexOf('http') !== -1)" style="padding: .25rem">
+            <div style="white-space: nowrap;">礼物代表我的心意，期待你的回复！</div>
+            <div v-html="item.context" class="gift_content"></div>
+          </div>
+          <a v-else-if="item.type !== '4' && (item.context.indexOf('http') !== -1)" @click="openWebview(item.context)">{{item.context}}</a>
           <p v-else v-html="Replace(item.context)"></p>
         </div>
     </div>
@@ -16,6 +21,7 @@ import utils from '@/assets/common/utils'
 export default {
   props: {
     item: Object,
+    images: String,
     imgDefault: {
       type: Boolean,
       default: false
@@ -40,19 +46,55 @@ export default {
       return utils.uncodeUtf16(val.replace(/#[\u4E00-\u9FA5]{1,3};/gi, this.emotion))
     },
     openWebview (val) {
-      window.openWebview(val)
+      var u = navigator.userAgent;
+      if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+        console.log("安卓手机");
+        window.Android.openWebview(val)
+      } else if (u.indexOf('iPhone') > -1) {//苹果手机
+        console.log("苹果手机");
+        window.webkit.messageHandlers.openWebview.postMessage(val)
+      } 
+    },
+    openImage (val) {
+      let div = document.createElement('div')
+      div.className = 'imageDiv'
+      div.onclick = function (e) {
+        e.stopPropagation()
+        div.remove()
+      }
+      let img = document.createElement('img')
+      img.src = val
+      img.className = 'imageImg'
+      div.appendChild(img)
+      let span = document.createElement('span')
+      span.className = 'imageSpan'
+      span.onclick = function(e) {
+        e.stopPropagation()
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+          console.log("安卓手机");
+          window.Android.openImage(val)
+        } else if (u.indexOf('iPhone') > -1) {//苹果手机
+          console.log("苹果手机");
+          window.webkit.messageHandlers.openImage.postMessage(val)
+        } 
+      }
+      div.appendChild(span)
+      window.imageView = div
+      document.body.appendChild(div)
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .left{
   width: 100%;
   text-align: left;
   padding: 0 .3rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  clear: both;
 }
 .left .left_img{
   margin-right: .14rem;
@@ -68,7 +110,6 @@ export default {
 }
 .left .left_content{
   max-width:calc( 100% - 1.14rem);
-  padding: .25rem;
   display: inline-block;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -85,12 +126,17 @@ export default {
   user-select: all;
 }
 .left .left_content p{
+  padding: .25rem;
+  display: block;
   margin: 0
 }
 .left .left_content a{
+  display: block;
+  padding: .25rem;
   color: #4d82d9
 }
 .left .left_content img{
+  display: block;
   max-width: 5rem;
   max-height: 2rem;
 }

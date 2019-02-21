@@ -1,0 +1,68 @@
+.S36{
+  font-size: .36rem !important;
+}
+.S30{
+  font-size: .3rem !important;
+}
+.S28{
+  font-size: .28rem !important;
+}
+.S24{
+  font-size: .24rem !important;
+}
+.S20{
+  font-size: .2rem !important;
+}
+
+/* 所有tabs页的字体大小 */
+.van-tab, .van-tag--large{
+  font-size: .28rem !important;
+  color: #323232 !important;
+}
+
+/* 所有返回按钮的图标大小 */
+.van-nav-bar__arrow, .van-nav-bar__title{
+  font-size: .36rem !important;
+}
+
+/* 所有tabs选项卡下边的边框颜色 */
+.van-tabs__line{
+  height: 2px !important;
+  background-color: #ff5e80 !important;
+}
+
+/* 所有tabs标签页的选中时的字体颜色 */
+.van-tab--active{
+  color: #ff5e80 !important;
+}
+
+/* 首页的tabs标签页字体 */
+.dynamic .van-tab, .dynamic  .van-tag--large{
+  font-size: .36rem !important
+}
+
+/* 生日选择控件样式修改 */
+.m-picker-item .m-scroller-item{
+  font-size: .28rem !important
+}
+.m-picker{
+  font-size: .36rem !important
+}
+
+/* vant底部弹框样式修改 */
+.van-picker__cancel, .van-picker__confirm,.van-picker__title{
+  font-size: .36rem !important
+}
+.van-picker-column{
+  font-size: .28rem !important
+}
+
+/* 修改vant导航栏组件的样式 */
+.van-nav-bar__left, .van-nav-bar__right{
+  font-size: .28rem !important
+}
+
+/* 修改vant加载完成后提示的文字样式 */
+.van-list__finished-text, .van-list__loading-text{
+  font-size: .24rem !important
+}

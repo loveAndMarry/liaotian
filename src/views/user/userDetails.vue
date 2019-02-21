@@ -24,25 +24,25 @@
               <span class="dataIntegrity_num">{{data.dataIntegrity + '%'}}</span>
               <div class="dataIntegrity_back" :style="{top: 75 - (data.dataIntegrity / 100 * 90) + '%'}"></div> 
             </div>
-            <p>资料完整度</p>
+            <p class="S24">资料完整度</p>
           </div>
           <div class="head" @click="updatePhoto">
             <div class="head_img">
               <img :src="data.userBaseInformation.userHead + '?imageMogr2/auto-orient'" alt>
-              <span>{{data.userBaseInformation.states === '1'? '审核中' : '更换头像'}}</span>
+              <span class="S24">{{data.userBaseInformation.states === '1'? '审核中' : '更换头像'}}</span>
             </div>
             <i class="member"><img :src="data.userBaseInformation.ico" alt=""></i>
           </div>
           <div class="item" @click="linkClick">
             <div class="link"></div>
-            <p>谁喜欢我</p>
+            <p class="S24">谁喜欢我</p>
           </div>
         </div>
         <div class="content_name">
           <!-- <h2>{{data.userBaseInformation.nickName}}
             <span v-if="user.registerState === '5'">实名</span>
           </h2> -->
-          <div>
+          <div class="S24">
             <span>{{data.userBaseInformation.age}}岁</span>
             <span>{{data.userBaseInformation.height}}厘米</span>
             <span>{{data.userBaseInformation.income}}</span>
@@ -60,7 +60,7 @@
 
         <SplitGroup title="自我介绍" rightTitle="编辑" @confirm="selfClick">
           <p
-            class="self-introduction"
+            class="self-introduction S24"
           >{{data.userBaseInformation.personalIntroduction}}</p>
         </SplitGroup>
 
@@ -73,8 +73,8 @@
 
           <ListItem title="性别" :default='getData(["","sexName"])' :isEmitClick="true"></ListItem>
           
-          <div class="intention_item" @click="birthdayClick">生日:
-            <div class="sanjiao ">{{data.userBaseInformation.birthday || '未填写'}}</div>
+          <div class="intention_item S28" @click="birthdayClick">生日:
+            <div class="sanjiao S24">{{data.userBaseInformation.birthday || '未填写'}}</div>
           </div>
 
           <ListItem title="身高" dictionaries='heights' :default='getData(height)' type="packerOne" :defaultSubmitData ="height" suffix="厘米"></ListItem>
@@ -542,7 +542,7 @@ export default {
 .hint{
   padding: .07rem .15rem;
   text-align: center;
-  font-size: .23rem;
+  font-size: .24rem;
   border:1px solid #d9d9d9;
   color:#858585;
   border-radius: .3rem;
@@ -552,7 +552,7 @@ export default {
 }
 
 .self-introduction {
-  font-size: 0.23rem;
+  font-size: 0.26rem;
   line-height: 0.29rem;
   color: #8d8d8d;
   margin-top: 0.4rem;
@@ -587,7 +587,7 @@ export default {
   text-align: center;
 }
 .content_name div span {
-  font-size: 0.23rem;
+  font-size: 0.24rem;
   color: #8d8d8d;
   margin-right: 0.18rem;
 }
@@ -608,7 +608,7 @@ export default {
 }
 .content_head .item p {
   white-space: nowrap;
-  font-size: 0.23rem;
+  font-size: 0.24rem;
   color: #ff7b96;
 }
 .content_head .item .link {

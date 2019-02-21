@@ -11,13 +11,13 @@
         <div class="orderGroup" v-for="(el, index) in list" :key="index" @click="PaymentDetails(el)">
           <img :src="el.productPictures">
           <div class="order_content">
-            <p>{{el.title}}</p>
+            <p class="S24">{{el.title}}</p>
             <div>
-              <span>￥{{el.payMoneyY}}</span>
-              <span style="float: right;">x {{el.productCount}}</span>
+              <span class="S20">￥{{el.payMoneyY}}</span>
+              <span class="S20" style="float: right;">x {{el.productCount}}</span>
             </div>
           </div>
-          <div class="order_type" :class="{success: el.status === '2'}">{{el.status | status}}</div>
+          <div class="order_type S20" :class="{success: el.status === '2'}">{{el.status | status}}</div>
         </div>
       </List>
     </div>
@@ -91,7 +91,7 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="less">
 .scroll {
   height: calc(100% - 46px);
   overflow-x: hidden;
@@ -108,6 +108,7 @@ export default {
   color: #8e8e8e;
   font-size: 0.19rem;
   overflow: hidden;
+  border-bottom: 1px solid @base-back
 }
 .orderGroup img {
   float: left;
@@ -122,7 +123,9 @@ export default {
 }
 .order_content p {
   margin: 0;
-  font-size: 0.23rem;
+  font-size: 0.24rem;
+  line-height: .28rem;
+  height: .56rem;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -136,6 +139,7 @@ export default {
   width: 1rem;
   word-break: break-word;
   height: 0.95rem;
+  line-height: .95rem
 }
 .success{
   color: #ff7994

@@ -9,11 +9,11 @@
       @load="onLoad"
       >
         <div style="height: .15rem;background-color: #f0f0f0;"></div>
-        <div class="groupList_item" v-for="(el, index) in List" :key="index">
+        <div class="groupList_item S28" v-for="(el, index) in List" :key="index">
           <img :src="el.userHead" alt="">
-          <span class="hint" v-if="el.levelCode - 0 > 0">{{el.levelName}}</span>
+          <span class="hint S24" v-if="el.levelCode - 0 > 0">{{el.levelName}}</span>
           <p>{{el.nickName}}</p>
-          <span class="hint check" @click="$router.push({name: 'datum', query: {massSelectionId: massSelectionId , userId: el.userId}})">查看</span>
+          <span class="hint check S24" @click="$router.push({name: 'datum', query: {massSelectionId: massSelectionId , userId: el.userId}})">查看</span>
         </div>
       </List>
     </div>
@@ -70,7 +70,6 @@ export default {
 .groupList_title{
   height: .6rem;
   line-height: .6rem;
-  font-size: .27rem;
   color: #8b8b8b;
   padding: 0 .3rem;
   background-color: #f0f0f0;
@@ -102,8 +101,7 @@ export default {
   padding: .05rem .1rem;
   background-color: #ff7997;
   color: #fff;
-  font-size: .18rem;
-  line-height: .18rem;
+  line-height: .24rem;
   margin-right: .2rem;
   border-radius: .02rem
 

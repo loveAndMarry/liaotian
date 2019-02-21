@@ -1,8 +1,12 @@
 <template>
     <div class="right">
         <div class="right_content">
-          <img v-if="item.type === '4'" :src="item.context" alt="">
-          <a v-else-if="item.type !== '4' && (item.context.indexOf('http') !== -1)" @click="window.Android.openWebview(item.context)">{{item.context}}</a>
+          <img v-if="item.type == '4'" :src="item.context" alt="" @click="openImage(item.context)">
+           <div v-else-if="item.type == '1' && (item.context.indexOf('http') !== -1)" style="padding: .25rem">
+            <div style="white-space: nowrap;">礼物代表我的心意，期待你的回复！</div>
+            <div v-html="item.context" class="gift_content"></div>
+          </div>
+          <a v-else-if="item.type !== '4' && (item.context.indexOf('http') !== -1)" @click="openWebview(item.context)">{{item.context}}</a>
           <p v-else v-html="Replace(item.context)"></p>
         </div>
          <div class="right_img">
@@ -32,19 +36,55 @@ export default {
       return utils.uncodeUtf16(val.replace(/#[\u4E00-\u9FA5]{1,3};/gi, this.emotion))
     },
     openWebview (val) {
-      window.openWebview(val)
+      var u = navigator.userAgent;
+      if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+        console.log("安卓手机");
+        window.Android.openWebview(val)
+      } else if (u.indexOf('iPhone') > -1) {//苹果手机
+        console.log("苹果手机");
+        window.webkit.messageHandlers.openWebview.postMessage(val)
+      } 
+    },
+    openImage (val) {
+      let div = document.createElement('div')
+      div.className = 'imageDiv'
+      div.onclick = function (e) {
+        e.stopPropagation()
+        div.remove()
+      }
+      let img = document.createElement('img')
+      img.src = val
+      img.className = 'imageImg'
+      div.appendChild(img)
+      let span = document.createElement('span')
+      span.className = 'imageSpan'
+      span.onclick = function(e) {
+        e.stopPropagation()
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+          console.log("安卓手机");
+          window.Android.openImage(val)
+        } else if (u.indexOf('iPhone') > -1) {//苹果手机
+          console.log("苹果手机");
+          window.webkit.messageHandlers.openImage.postMessage(val)
+        } 
+      }
+      div.appendChild(span)
+      window.imageView = div
+      document.body.appendChild(div)
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .right{
   width: 100%;
   text-align: right;
   padding: 0 .3rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  clear: both;
 }
 .right .right_img{
   margin-left: .14rem;
@@ -60,7 +100,6 @@ export default {
 }
 .right .right_content{
   max-width:calc( 100% - 1.14rem);
-  padding: .25rem;
   display: inline-block;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -77,9 +116,12 @@ export default {
   user-select: all;
 }
 .right .right_content p{
+  padding: .25rem;
+  display: block;
   margin: 0
 }
 .right .right_content img{
+  display: block;
   max-width: 5rem;
   max-height: 2rem;
 }
@@ -87,6 +129,8 @@ export default {
   vertical-align: middle
 }
 .right .right_content a{
+  padding: .25rem;
+  display: block;
   color: #4d82d9
 }
 </style>

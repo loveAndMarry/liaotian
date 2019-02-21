@@ -10,18 +10,18 @@
           <div class="head">
             <div class="head_img">
                 <img :src="data.userMemberAndUserHeadDTO.userHead + '?imageMogr2/auto-orient'" alt @click="userHead">
-                <span v-if="data.userMemberAndUserHeadDTO.states === '1'">审核中</span>
+                <span v-if="data.userMemberAndUserHeadDTO.states === '1'" class="S24">审核中</span>
             </div>
             <i class="member"><img :src="data.userMemberAndUserHeadDTO.ico" alt=""></i>
           </div>
-          <div class="datum_content">
+          <div class="datum_content S28">
             <div>
               资料完善度{{data.dataIntegrity}}%
-              <span class="sanjiao" @click="detailsClick">资料</span>
+              <span class="sanjiao S24" @click="detailsClick">资料</span>
             </div>
             <div>信用度
               <strong>98</strong>分
-              <span class="credit" @click="detailsClick">提高信用度</span>
+              <span class="credit S24" @click="detailsClick">提高信用度</span>
             </div>
           </div>
         </div>
@@ -29,7 +29,7 @@
           <li class="photograph" @click="submitPhoto">
             <div>
               <img src="../../assets/images/user_photo_upload@2x.png" alt>
-              <p>上传图片</p>
+              <p class="S24">上传图片</p>
             </div>
           </li>
           <li class="photo_item isShow" v-for="item in photos" :key="item" @click="examinePhoto(item.id)">
@@ -38,7 +38,7 @@
           <li class="photo_item" v-if="3 - photos.length > 0" v-for="item in (3 - photos.length)" :key="item">
           </li>
           <li class="photo_more">
-            <span class="sanjiao" @click="photosClick">相册</span>
+            <span class="sanjiao S24" @click="photosClick">相册</span>
           </li>
         </ul>
         <ul class="links">
@@ -46,23 +46,23 @@
             <div class="back_Img">
               <img :src="data.accessRecordUserPhotoUrl" alt>
             </div>
-            <p>谁看过我</p>
+            <p class="S24">谁看过我</p>
           </li>
           <li @click="linkClick(2, 'who_likes_me')" :class="{show: data.likeMePhotoUrl !== ''}">
             <div class="back_Img">
               <img :src="data.likeMePhotoUrl" alt>
             </div>
-            <p>谁喜欢我</p>
+            <p class="S24">谁喜欢我</p>
           </li>
           <li @click="linkClick(3)" :class="{show: data.likeUserPhotoUrl !== ''}">
             <div class="back_Img">
               <img :src="data.likeUserPhotoUrl" alt>
             </div>
-            <p>我喜欢谁</p>
+            <p class="S24">我喜欢谁</p>
           </li>
           <li @click="linkClick(4, 'like_each_other')">
             <img src="../../assets/images/love@2x.png" alt style="width: inherit;background-image: none;">
-            <p>相互喜欢</p>
+            <p class="S24">相互喜欢</p>
           </li>
         </ul>
       </div>
@@ -70,7 +70,7 @@
         <ul class="links" style="margin-top: 0.15rem">
           <li @click="toastClick(el)" v-for="(el, index) in data.levels" :key="index">
             <img :src="el.ico" class="link_img">
-            <p>{{el.levelName}}</p>
+            <p class="S24">{{el.levelName}}</p>
           </li>
         </ul>
       </Group>
@@ -78,16 +78,17 @@
         <div class="authentication">
           <div class="real_name" @click="$router.push({name: 'authentication'})">
             <div :class="{no: user.registerState !== '5'}"></div>
-            <p>实名认证</p>
+            <p class="S24">实名认证</p>
           </div>
           <div class="phone" @click="$router.push({name: 'YY'})">
             <div></div>
-            <p>手机认证</p>
+            <p class="S24">手机认证</p>
           </div>
         </div>
       </Group>
       <CellGroup>
         <Cell title="我的资产" is-link to="/property"></Cell>
+        <Cell title="礼物" is-link to="/gift"></Cell>
         <Cell title="消息通知" is-link to="/message"></Cell>
         <Cell title="我的动态" is-link to="/MyDynamic"></Cell>
         <Cell title="我的订单" is-link to="/order"></Cell>
@@ -226,12 +227,12 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .head_img {
   position: absolute;
   height: 100%;
   border-radius: 50%;
-  border: 1px solid #fff;
+  border: 1px solid @base-white;
   overflow: hidden;
   top: 0;
   left: 0;
@@ -253,7 +254,7 @@ export default {
   height: 100%
 }
 .head {
-  border: 1px solid #fff;
+  border: 1px solid @base-white;
   border-radius: 50%;
   -webkit-border-radius: 50%;
   position: relative;
@@ -270,8 +271,6 @@ export default {
 .head img {
   max-width: 100%;
   max-height: 100%;
-      height: 100%;
-    width: 100%;
 }
 .head span {
   position: absolute;
@@ -297,13 +296,13 @@ export default {
   margin: 0 auto;
   width: 5.2rem;
   height: 0.8rem;
-  background-color: #ff7994;
+  background-color: @base-color;
   border-radius: 0.5rem;
   -webkit-border-radius: .5rem;
   text-align: center;
   line-height: 0.8rem;
   font-size: 0.31rem;
-  color: #fff;
+  color: @base-white;
   margin-top: 1rem;
 }
 .dialog_content {
@@ -314,13 +313,13 @@ export default {
 }
 .dialog_content span {
   font-size: 0.35rem;
-  color: #ff6c8f;
+  color: @base-color;
 }
 .dialog_content p {
   margin-top: 0.8rem;
   padding: 0 0.5rem;
   font-size: 0.24rem;
-  color: #868686;
+  color: @base-black;
 }
 .lists {
   width: 100%;
@@ -363,7 +362,7 @@ export default {
 .authentication p {
   display: block;
   font-size: 0.24rem;
-  color: #858585;
+  color: @base-black;
   padding-top: 0.1rem;
   padding-bottom: 0;
   margin: 0;
@@ -421,9 +420,10 @@ export default {
 }
 .links li p {
   font-size: 0.24rem;
-  color: #818181;
+  color: @base-black;
   margin: 0;
   white-space: nowrap;
+  margin-top: .1rem;
 }
 .photos {
   text-align: left;
@@ -446,21 +446,24 @@ export default {
 .photos .photo_item {
   width: 1.35rem;
   height: 1.35rem;
-  line-height: 1.35rem;
-  background-color: #dddddd;
+  background-color: @base-ddd;
   background-image: url("../../assets/images/user_photo_add@2x.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: 50%;
+  position: relative;
 }
 .photos .photo_item.isShow{
-  background-color: #484040;
-  background-image: none
+  background-image: none;
+  text-align: center;
 }
 .photos .photo_item img {
   max-width: 100%;
   max-height: 100%;
-  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 .photograph {
   width: 1.35rem;
@@ -483,13 +486,13 @@ export default {
 }
 .photograph div p {
   font-size: 0.19rem;
-  color: #818181;
+  color: @base-black;
   margin: 0;
   white-space: nowrap;
 }
 .group {
   padding: 0 0.3rem;
-  background-color: #fff;
+  background-color: @base-white;
   border-bottom: 0.1rem solid #f0f0f0;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -498,11 +501,11 @@ export default {
 .title {
   position: relative;
   color: #323232;
-  font-size: 0.28rem;
+  font-size: 0.36rem;
   line-height: 0.88rem;
   height: 0.88rem;
   text-align: center;
-  background: #fff
+  background: @base-white
 }
 .title .shezhi {
   width: 0.38rem;
@@ -517,7 +520,7 @@ export default {
 }
 .sanjiao {
   font-size: 0.28rem;
-  color: #8d8d8d;
+  color: @base-black;
   float: right;
 }
 .sanjiao::after {
@@ -544,7 +547,7 @@ export default {
 .datum_content {
   padding-left: 0.4rem;
   width: calc(100% - 2rem);
-  color: #8d8d8d;
+  color: @base-black;
   font-size: 0.27rem;
   line-height: 0.67rem;
   padding: 0.11rem 0 0.15rem 0;
@@ -553,12 +556,12 @@ export default {
 }
 .credit {
   border: 1px solid #d8d8d8;
-  color: #35c0ff;
+  color: @base-blue;
   padding: 0.08rem 0.1rem;
   font-size: 0.2rem;
 }
 .datum_content strong {
-  color: #35c0ff;
+  color: @base-blue;
   font-weight: 500;
 }
 </style>

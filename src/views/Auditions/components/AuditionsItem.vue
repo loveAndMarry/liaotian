@@ -2,10 +2,10 @@
   <div class="item" @click="AuditionsClick">
     <img class="item_img" :src="el.picture"/>
     <div class="item_content">
-        <div class="state" :style="{color: stateColor}">{{state}}</div>
-        <p>{{content}}</p>
-        <div class="time">截止日期：{{el.startTime}}&nbsp;&nbsp;至&nbsp;&nbsp;{{el.endTime}}</div>
-        <div class="time">报名金额：{{el.initiatingAmountY}}元</div>
+        <div class="state S24" :style="{color: stateColor}">{{state}}</div>
+        <p class="S28">{{content}}</p>
+        <div class="time S24">截止日期：{{el.startTime}}至{{el.endTime}}</div>
+        <div class="time S24">报名金额：{{el.initiatingAmountY}}元</div>
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
       if(_this.type === '1' || _this.type === '3'){
         switch(_this.el.openState){
           case '2': 
-            _this.stateColor = '#ff5a85'
+            _this.stateColor = '#ff5e80'
             title =  '活动进行中'
             break
           case '3': 
@@ -43,11 +43,11 @@ export default {
           case '2': 
             switch(_this.el.openState){
               case '1': 
-                _this.stateColor = '#ff5a85'
+                _this.stateColor = '#ff5e80'
                 title =  '审核成功'
                 break
               case '2': 
-                _this.stateColor = '#ff5a85'
+                _this.stateColor = '#ff5e80'
                 title = '已发布'
                 break
               case '3': 
@@ -76,7 +76,7 @@ export default {
     AuditionsClick () {
       // 如果活动已经结束，就进不去了
       if(this.el.openState === '3'){
-        this.$router.push({name: 'activityDetails', query: {id: this.el.id}})
+        this.$router.push({name: 'activityDetails', query: {massSelectionId: this.el.id}})
         return false
       }
 
@@ -130,28 +130,27 @@ export default {
 
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .item{
   padding: 0 .3rem .39rem;
   box-sizing: border-box;
   box-sizing: -webkit-border-box;
-  font-size: .24rem;
-  color: #323232;
+  color: @base-black;
   text-align: left;
   overflow: hidden;
-  background-color: #fff;
+  background-color: @base-white;
   margin-bottom: .2rem
 }
 .item_img{
   display: block;
-  width: 1.58rem;
+  width: 2rem;
   height: 1.58rem;
   margin-top: .39rem;
   float: left;
 }
 .item_content{
   display: inline-block;
-  width: calc(100% - 1.58rem);
+  width: calc(100% - 2rem);
   height: 100%;
   padding:0 .15rem;
   box-sizing: border-box;
@@ -164,10 +163,9 @@ export default {
   line-height: .55rem;
 }
 .item_content p{
-  color: #323232;
-  font-size: .28rem;
+  color: @base-black;
   line-height: .28rem;
-  height: .54rem;
+  height: .56rem;
   margin-top: 0.22rem;
   margin-bottom: 0;
   overflow:hidden; 

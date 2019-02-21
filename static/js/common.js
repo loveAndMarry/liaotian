@@ -90,6 +90,8 @@ window.closeImagesView = function () {
   console.log('返回上一页成功')
   // window.instance 储存着当前打开的图片预览组件的实例，如果监听到当前的返回事件，就销毁实例
   window.instance ? window.instance.close() : null
+  // window.imageView 储存着聊天时打开的预览图片实例
+  window.imageView ? window.imageView.remove() : null
 }
 
 window.ishome = true

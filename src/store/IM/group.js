@@ -39,7 +39,8 @@ const actions = {
       IM.postMsg({
         data:products.context,
         id: state.groupId,
-        type: 2
+        type: 2,
+        msgType: products.type
       }).then((res) => {
         // 向服务器发送消息,用于保存历史数据
         sendGroupMessage({
@@ -47,7 +48,7 @@ const actions = {
           sendUserId: rootState.IM.user.id,
           groupId: state.groupId,
           chatDate: products.chatDate,
-          type: products.msgType
+          type: products.type
         }).then(res => {
           resolve()
         })

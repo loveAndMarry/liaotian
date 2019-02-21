@@ -6,6 +6,19 @@
     <title>麦缘婚恋</title>
     <script src="./static/js/common.js" type="text/javascript" charset="utf-8"></script>
     <script src="http://app.cloopen.com/im50/ytx-web-im-min-new-5.4.0.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+      var u = navigator.userAgent;
+      var link = document.createElement('link')
+      link.rel = 'stylesheet'
+      if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+        console.log("安卓手机");
+        link.href="./static/css/ios.css"
+      } else if (u.indexOf('iPhone') > -1) {//苹果手机
+        console.log("苹果手机");
+        link.href="./static/css/ios.css"
+      }
+      document.head.appendChild(link)
+    </script>
   </head>
   <body>
     <div id="app"></div>

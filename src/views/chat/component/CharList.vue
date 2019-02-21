@@ -1,11 +1,11 @@
 <template>
-  <div class="chat_list" :style="{height: height - 240 + 'px'}" style="overflow-y: scroll;" @touchstart="onTouchstart">
+  <div class="chat_list S24" :style="{height: height - 240 + 'px'}" style="overflow-y: scroll;" @touchstart="onTouchstart">
     <template v-if="!isExamine()">
       <div class="link_hint_group">
         <div class="link_hint_content">
           <img src="../../../assets/images/without_permission.png" alt="">
-          <p>您不能查看该组消息,<br/>水晶及水晶以上会员才能过滤不符合条件用户信息</p>
-          <span @click="updateMember">升级会员</span>
+          <p class="S28">您不能查看该组消息,<br/>水晶及水晶以上会员才能过滤不符合条件用户信息</p>
+          <span @click="updateMember" class="S24">升级会员</span>
         </div>
       </div>
     </template>
@@ -27,11 +27,11 @@
                   <div class="content">
                     <div class="title">
                       <div class="top">
-                          <h3  :class="{name_level:(el.levelCode - 0) > 0 }" v-text="el.nickName"></h3>
-                          <span v-if="el.theRealNameSystem">实名</span>
+                          <h3  class="S36" :class="{name_level:(el.levelCode - 0) > 0 }" v-text="el.nickName"></h3>
+                          <span class="S24 Tag" v-if="el.registerState === '5'">实名</span>
                           <img v-if="el.levelCode - 0 > 0" :src="el.ico" alt="">
                       </div>
-                      <p v-text="uncodeUtf16(el.context)"></p>
+                      <p class="S28" v-text="uncodeUtf16(el.context)"></p>
                     </div>
                     <div class="info">
                       <p>{{el.time | fromNow}}</p>
@@ -229,7 +229,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 
 .link_hint_group{
   height: 100%;
@@ -242,7 +242,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 .link_hint_content img{
-      width: 2rem;
+    width: 2rem;
     height: 2rem;
     display: block;
     margin: 0 auto;
@@ -266,7 +266,7 @@ export default {
     font-size: .23rem;
 }
 .remove{
-  color: #fff;
+  color: @base-white;
   font-size: .32rem;
   width: 65px;
   height: 1.63rem;
@@ -277,8 +277,7 @@ export default {
 }
 .chat_list {
   display: block;
-  color: #8d8d8d;
-  font-size: 0.2rem;
+  color: @base-gray;
   margin-top: 0;
   text-align: left;
   height: 100%;
@@ -292,7 +291,7 @@ export default {
   -webkit-box-sizing: border-box
 }
 .chat_list .chat_list_item .chat_list_item_group{
-  height: 1.63rem;
+  height: 2rem;
   overflow: hidden;
   position: relative;
   padding-left: .3rem
@@ -300,27 +299,27 @@ export default {
 .portrait{
   height: 100%;
   float: left;
-  width: 1.2rem;
+  width: 1.6rem;
   position: relative;
 }
 .portrait img{
-  width: 1.2rem;
+  width: 1.6rem;
   position: absolute;
-  height: 1.2rem;
+  height: 1.6rem;
   border-radius: 50%;
   top: 50%;
   left: 0;
-  margin-top: -.6rem;
+  margin-top: -.8rem;
 }
 
 .content{
-  width: calc(100% - 1.2rem);
-  height: 1.63rem;
+  width: calc(100% - 1.6rem);
+  height: 2rem;
   display: inline-block;
   padding: .39rem .3rem;
   box-sizing: border-box;
   box-sizing: -webkit-border-box;
-  background-color: #fff;
+  background-color: @base-white;
   border-bottom: .01rem solid #f2f2f2
 }
 .content .title{
@@ -332,8 +331,7 @@ export default {
 }
 .content .title .top h3{
   margin: 0;
-  font-size: .28rem;
-  color: #323232;
+  color: @base-black;
   margin-right: .1rem;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -348,21 +346,20 @@ export default {
   display: inline-block;
   border-radius: 0.02rem;
   -webkit-border-radius: 0.02rem;
-  background-color: #33c1ff;
-  color: #fff;
-  font-size: 0.18rem;
+  background-color: @base-blue;
+  color: @base-white;
   text-align: center;
   padding: 0.05rem 0.1rem;
 }
 .content .title .top img{
   height: 100%;
   display: inline-block;
+  vertical-align: middle
 }
 .content .title p{
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-size: .26rem;
   margin-bottom: .1rem;
   min-height: 0.345rem;
 }
@@ -386,7 +383,7 @@ export default {
   text-align: center;
   line-height: 0.3rem;
   background-color: #ff0037;
-  color: #fff;
+  color: @base-white;
   float: right;
   margin-top: 0.7rem;
 }

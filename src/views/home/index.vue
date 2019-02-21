@@ -25,8 +25,11 @@
               <div class="dynamic_title">
                 <img :src="el.userHead" alt="" @click="linkClick(el)">
                 <div class="dynamic_title_content">
-                  <h3 :class="{name_level:(el.levelCode - 0) > 0 }">{{el.nickName}} <img v-if="el.levelCode - 0 > 0" class="title_level" :src="el.ico" alt=""></h3>
-                  <div><span>{{el.age + '岁 |'}}</span><span>{{el.height + "厘米 |"}}</span><span>{{el.education + ' |'}}</span><span>{{el.income}}</span></div>
+                  <h3 :class="{name_level:(el.levelCode - 0) > 0 }">{{el.nickName}}
+                    <span class="S24 Tag" v-if="el.registerState === '5'">实名</span>
+                    <img v-if="el.levelCode - 0 > 0" class="title_level" :src="el.ico" alt="">
+                  </h3>
+                  <div><span>{{el.age + '岁 '}}</span><i>|</i><span>{{el.height + "厘米 "}}</span><i>|</i><span>{{el.education + ' '}}</span><i>|</i><span>{{el.income}}</span></div>
                 </div>
               </div>
               <div class="dynamic_context" :key="index">
@@ -53,7 +56,7 @@
 </template>
 
 <script>
-import { Search , Tabs, Tab, List, PullRefresh, ImagePreview} from 'vant'
+import { Search , Tabs, Tab, List, PullRefresh, ImagePreview, Tag} from 'vant'
 import TabList from './components/tabs'
 import HomeList from './components/HomeList'
 import Banner from '@/components/Banner'
@@ -206,12 +209,13 @@ export default {
     Tab,
     PullRefresh,
     List,
-    ImagePreview
+    ImagePreview,
+    Tag
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .scroll_group{
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -231,7 +235,7 @@ export default {
   margin-right: .1rem;
 }
 .praise.give{
-  color: #fb97ac;
+  color: #ff5e80;
 }
 .praise.give i{
   background-image: url('../../assets/images/give_like.png');
@@ -293,7 +297,7 @@ export default {
 .dynamic_title .dynamic_title_content div span{
   font-size: .26rem;
   color: #919191;
-  padding: 0 .1rem;
+  padding: 0 .05rem;
   display: inline-block;
 }
 .dynamic_title .dynamic_title_content div span:first-child{
@@ -302,16 +306,18 @@ export default {
 
 .dynamic_context .dynamic_content p{
   margin: 0;
-  padding: .3rem .15rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   font-size: .24rem;
-  color: #949494;
-  background-color: #f0f0f0
+  color: @base-gray;
 }
 .dynamic_context .dynamic_content img{
   max-width: 100%;
   max-height: 3.5rem;
+}
+.dynamic_title_content i{
+  font-style: normal;
+  color: #ccc;
 }
 .dynamic_context .title{
   line-height: .64rem;

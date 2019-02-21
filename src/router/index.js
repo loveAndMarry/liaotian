@@ -10,6 +10,8 @@ import home from '@/views/home'
 import Auditions from '@/views/Auditions'
 // 发起海选
 import initiate from '@/views/Auditions/initiate'
+// 购买虚拟币页面
+import virtualCurrency from '@/views/chat/virtualCurrency'
 // 海选参与人资料
 import datum from '@/views/Auditions/datum'
 // 海选群聊
@@ -46,8 +48,12 @@ import tabbar from '@/views/tabber'
 import exchange from '@/views/exchange'
 // 用户详细信息
 import userDetail from '@/views/home/components/userDetail'
+// 用户相册
+import photoList from '@/views/home/components/photoList'
 // 个人中心
 import user from '@/views/user'
+// 礼物
+import gift from '@/views/user/gift'
 // 个人详细资料
 import userDetails from '@/views/user/userDetails'
 // 访问记录
@@ -155,6 +161,11 @@ const router = new Router({
     }
   },
   {
+    path: 'photoList',
+    name: 'photoList',
+    component: photoList
+  },
+  {
     path: '/userDetails',
     name: 'userDetails',
     component: userDetails
@@ -183,6 +194,16 @@ const router = new Router({
     path: '/link',
     name: 'link',
     component: link
+  },
+  {
+    path: '/gift',
+    name: 'gift',
+    component: gift
+  },
+  {
+    path: '/virtualCurrency',
+    name: 'virtualCurrency',
+    component: virtualCurrency
   },
   {
     path: '/MyDynamic',

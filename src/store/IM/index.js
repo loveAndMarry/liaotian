@@ -52,7 +52,7 @@ const actions = {
           sendUserId: products.sendUserId,
           receiveUserId: products.receiveUserId,
           chatDate: products.time,
-          type: products.type
+          type: products.msgType
         }).then((res) => {
           resolve()
         })
@@ -65,6 +65,7 @@ const actions = {
       // 判断当前好友是否存在，不存在将好友添加到联系人列表
       // 将信息提交到容联云
       IM.postMsg({
+        msgType: products.type,
         data:products.context,
         id: products.receiver
       }).then((res) => {

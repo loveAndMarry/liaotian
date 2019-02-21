@@ -27,14 +27,15 @@
         </div>
         <div class="bottom">
           <ul class="img_group">
-            <li v-for="(el, dex) in photoList" :key="dex"><img :src="el" alt="" @click="photoClick(dex)"></li>
+            <li v-for="(el, dex) in photoFilters" :key="dex"><img :src="el" alt="" @click="photoClick(dex)"></li>
+            <li class="more S24 sanjiao" v-if="photoList.length > 3" @click="$router.push({name: 'photoList', query: { 'photoList': photoList}})">查看更多</li>
           </ul>
         </div>
       </div>
       <Tabs v-model="active" animated :sticky="true" :offset-top="46">
         <Tab title='资料'>
           <Group title="个人介绍">
-            <p style="color:#858585;font-size:.26rem;line-heigin:.26rem">{{userBaseInformation.personalIntroduction}}</p>
+            <p style="color:#858585;font-size:.28rem;line-heigin:.28rem">{{userBaseInformation.personalIntroduction}}</p>
           </Group>
           <Group title="认证">
             <div class="authentication">
@@ -187,6 +188,7 @@
       :actions="actions"
       @select="onSelect"
     />
+
   </div>
 </template>
 <script>
@@ -202,6 +204,7 @@ export default {
     return {
       isShow: false,
       photoList:[],
+      photoFilters: [],
       userBaseInformation: {},
       interestDictVoList: [],
       active: 0,
@@ -286,7 +289,7 @@ export default {
     },
     photoClick (index) {
       window.instance = ImagePreview({
-        images: this.photoList,
+        images: this.photoFilters,
         startPosition: index,
       })
     },
@@ -387,7 +390,8 @@ export default {
       accessRecordId: this.$store.state.IM.friend.userId
     }).then((res) => {
       if(res.data.photoList){
-        this.photoList = res.data.photoList.map(el => el.context)
+        this.photoList = res.data.photoList
+        this.photoFilters = this.photoList.filter((el, index) => index < 3).map(el => el.context)
       }
       if(res.data.userBaseInformation){
         this.userBaseInformation = res.data.userBaseInformation
@@ -410,7 +414,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="less">
 .check{
   display: block;
   background-image: url('../../../assets/images/更多.png');
@@ -436,7 +440,7 @@ export default {
   margin-right: .1rem;
 }
 .praise.give{
-  color: #fb97ac;
+  color: #ff5e80;
 }
 .praise.give i{
   background-image: url('../../../assets/images/give_like.png');
@@ -514,7 +518,7 @@ export default {
   top: -.6rem;
   right: 0;
   font-size: .24;
-  color:#fe5c8d
+  color:#ff5e80
 }
 .hint_group{
   margin-top: .2rem;
@@ -526,7 +530,7 @@ export default {
 .hint{
   padding: .07rem .15rem;
   text-align: center;
-  font-size: .26rem;
+  font-size: .28rem;
   border:1px solid #d9d9d9;
   color:#858585;
   border-radius: .3rem;
@@ -535,7 +539,7 @@ export default {
   margin-bottom: .2rem
 }
 .hint.rad{
-  color: #fd7194
+  color: #ff5e80
 }
 .userDetail_content{
   position: relative;
@@ -550,7 +554,7 @@ export default {
 }
 .list_item{
   margin-top: .3rem;
-  font-size: .26rem;
+  font-size: .28rem;
   color: #8c8c8c;
   overflow: hidden
 }
@@ -586,7 +590,7 @@ export default {
   display: block;
   font-size: .24rem;
   color:#858585;
-  margin-top: .05rem
+  margin-top: .15rem
 }
 .userDetail{
   text-align: left;
@@ -613,8 +617,8 @@ export default {
 }
 .top .name{
   float: left;
-  font-size: .3rem;
-  color:#313131;
+  font-size: .32rem;
+  color:#323232;
 }
 .top .name span{
   width: .54rem;
@@ -632,7 +636,7 @@ export default {
   float: right;
   font-size: .24;
   line-height: .3rem;
-  color:#fe7996;
+  color:#ff5e80;
   margin-top: .03rem;
 }
 .top .praise span{
@@ -647,8 +651,9 @@ export default {
 }
 
 .message{
-  font-size: .26rem;
-  line-height: .26rem;
+  font-size: .24rem;
+  line-height: .24rem;
+  color: #8d8d8d;
   overflow: hidden;
 }
 .message i, .message p{
@@ -680,6 +685,7 @@ export default {
   display: block;
   margin-top: 2rem;
   overflow: hidden;
+  position: relative;
 }
 .img_group li {
   display: block;
@@ -691,9 +697,26 @@ export default {
   margin-right: .1rem;
   margin-bottom: .1rem;
   float: left;
+  text-align: center;
+  background-color: @base-ddd;
+  position: relative;
 }
 .img_group li img{
-  width: 100%;
-  height: 100%
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.img_group .more{
+  position: absolute;
+  right: 0;
+  top: 50%;
+  line-height: 1.44rem;
+  text-align: right;
+  overflow: initial;
+  background-color: transparent;
+  transform: translateY(-50%)
 }
 </style>

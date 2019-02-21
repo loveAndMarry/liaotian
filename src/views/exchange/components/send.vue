@@ -3,7 +3,7 @@
       <div style="height: 0.9rem;line-height: 0.9rem;text-align:left">
         <!-- <div class="icon yuyin" @click="voice($event)"></div> -->
         <div class="inputText">
-          <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg" v-model="context">
+          <input type="text" v-show='isText' placeholder="输入后点击回车发送内容" @keyup.enter="postMsg" v-model="context" @blur="onBlur">
           <span v-show='!isText' @touchstart="touchstart($event)" @touchend="touchend($event)">按住 说话</span>
         </div>
         <div class="icon biaoqing" @click="emotion"></div>
@@ -14,12 +14,12 @@
         <!-- <input type="file" id="file" style="display:none" accept="image/*" @change="fileChange($event)"> -->
       </div>
       <emotion @emotion="pushContent" v-show="isShow"></emotion>
-      <Gift v-show="isGiftShow" @hideGift="GiftShow"></Gift>
+      <Gift v-show="isGiftShow" @hideGift="GiftShow" type="1"></Gift>
     </div>
 </template>
 
 <script>
-import { Button } from 'vant'
+import { Button, Toast } from 'vant'
 import utils from '@/assets/common/utils'
 import {mapState ,mapActions } from 'vuex'
 import emotion from './Emotion'
@@ -43,6 +43,10 @@ export default {
     ...mapActions([
       'POSTMSG'
     ]),
+    onBlur () {
+      this.isShow = false
+      this.isGiftShow = false
+    },
     // 按住说话事件
     touchstart ($event) {
       $event.target.innerText = '松开 结束'
@@ -65,26 +69,36 @@ export default {
     },
     emotion () {
       if (this.isShow) {
+        this.$emit('editHeight', false)
         this.isShow = false
       } else {
+        this.$emit('editHeight', true)
         this.isGiftShow = false
         this.isShow = true
       }
-      this.$emit('editHeight', this.isShow)
     },
     GiftShow () {
       // this.$toast('功能正在开发中...')
       // return false
       if (this.isGiftShow) {
+        this.$emit('editHeight', false)
         this.isGiftShow = false
       } else {
+        this.$emit('editHeight', true)
         this.isShow = false
         this.isGiftShow = true
       }
-      this.$emit('editHeight', this.isGiftShow)
+      
     },
     postMsg (i) {
-      if(this.context.replace(/ /g, '') !== ''){
+      if(this.context.length > 128) {
+        Toast({
+          message: '字数请控制在128位数之内',
+          duration: 1000
+        })
+        return false
+      }
+      if( this.context.replace(/ /g, '') !== ''){
         var that = this
         this.isShow = false
         this.$emit('editHeight', this.isShow)
@@ -142,11 +156,12 @@ export default {
   display: inline-block;
   transform: translateY(-.15rem);
   -webkit-transform: translateY(-.15rem);
+  box-shadow: 1px 1px 1px #8d8d8d
 }
 .bottom{
   width: 100%;
   background-color: #fff;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   padding: 0.1rem .2rem;;
@@ -178,6 +193,11 @@ export default {
   height: 100%;
   width: 100%;
   background-color: #fff;
+  -webkit-touch-callout: all;
+  -webkit-user-select: all;
+  -moz-user-select: all;
+  -ms-user-select: all;
+  user-select: all;
 }
 .bottom .inputText span{
   border:1px solid #f0f0f1;

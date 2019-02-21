@@ -149,14 +149,14 @@ export default {
 }
 .chart span{
   display: block;
-      font-size: .27rem;
+      font-size: .28rem;
     color: #323232;
 }
 .intention_item {
   width: 100%;
   background-color: #fff;
   text-align: left;
-  font-size: 0.31rem;
+  font-size: 0.32rem;
   padding: .18rem 0;
   line-height: 0.66rem;
   box-sizing: border-box;
@@ -179,13 +179,13 @@ export default {
   line-height: 1;
 }
 .intention_item .item div{
-  font-size: .27rem;
+  font-size: .28rem;
   color: #323232;
   margin-bottom: .1rem;
 }
 .intention_item .item p{
   margin: 0;
-  font-size: .19rem;
+  font-size: .2rem;
   color: #8d8d8d;
 }
 
@@ -197,7 +197,7 @@ export default {
   padding-right: .58rem;
   margin-bottom: .2rem;
   color: #ff7896;
-  font-size: .29rem;
+  font-size: .3rem;
   height: 1.24rem;
   line-height: 1.24rem;
   text-align: left;
@@ -209,7 +209,7 @@ export default {
 
 }
 .money_group .day{
-  font-size: .35rem;
+  font-size: .36rem;
   color:#323232;
   width: 1.38rem;
 }
@@ -217,7 +217,7 @@ export default {
   width: 1rem
 }
 .money_group .originalPrice{
-  font-size: .19rem;
+  font-size: .2rem;
   color:#8d8d8d
 }
 .money_group .buy{

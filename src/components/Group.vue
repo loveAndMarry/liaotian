@@ -34,7 +34,7 @@ div.group{
 }
 .group_title{
   font-size: .28rem;
-  color:#363636;
+  color:#353535;
   text-align: left
 }
 .sanjiao{

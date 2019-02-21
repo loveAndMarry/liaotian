@@ -13,8 +13,8 @@
         <li v-for="(el, index) in photoList" :key="index" class="photo_item" @touchstart="showDeleteButton(el.photoId)"
           @touchend="clearLoop(el.photoId)">
           <div
-          :style="{backgroundImage: 'url(' + el.context + '?imageMogr2/auto-orient)'}"
-          @click="imageClick(index)"></div>
+          @click="imageClick(index)">
+          <img :src="el.context + '?imageMogr2/auto-orient)'" alt=""></div>
           <span class="states" v-if="el.states !== '2'">{{el.states | statesFilter}}</span>
         </li>
     </ul>
@@ -176,9 +176,16 @@ export default {
   display: block;
   width: 100%;
   height: 100%;
-  background-repeat: no-repeat;
-  background-size: 100% 100%
+  position: relative;
 }
+.photos .photo_item div img{
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+} 
 .photos li.photograph{
   border: 1px dashed #d7d7d7;
   text-align: center;

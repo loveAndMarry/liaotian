@@ -4,23 +4,23 @@
       <i class="check" slot="right" @click="show = true"/>
     </NavBar>
     <div style="height: calc(100% - 46px);overflow-y: scroll;overflow-x: hidden;background-color: #fff;">
-      <div class="groupList_title">
+      <div class="groupList_title S28">
         群主、管理员({{admin.length}}人)
       </div>
-      <div class="groupList_item noBorder" v-for="(el, index) in admin" :key="index + '1'" @click="checkDetais('1', el)">
+      <div class="groupList_item noBorder S28" v-for="(el, index) in admin" :key="index + '1'" @click="checkDetais('1', el)">
         <img :src="el.userHead" alt="">
-        <span class="hint">群主</span>
-        <span class="hint" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
+        <span class="hint S24">群主</span>
+        <span class="hint S24" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
         <p>{{el.nickName}}</p>
       </div>
-      <div class="groupList_title">
+      <div class="groupList_title S28">
         群成员({{groupMemberList.length}}人)
       </div>
-      <div class="groupList_item" v-for="(el, index) in groupMemberList" :key="index" @click="checkDetais('2', el)">
+      <div class="groupList_item S28" v-for="(el, index) in groupMemberList" :key="index" @click="checkDetais('2', el)">
         <img :src="el.userHead" alt="">
-        <span class="hint" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
+        <span class="hint S24" v-if="(el.levelCode - 0) > 0">{{el.levelName}}</span>
         <p>{{el.nickName}}</p>
-        <span class="hint details" v-show="el.auditStatus === '1'">配对审核中</span>
+        <span class="hint details S24" v-show="el.auditStatus === '1'">配对审核中</span>
       </div>
     </div>
     <Actionsheet
@@ -176,5 +176,10 @@ export default {
   display: inline-block;
   margin: 0;
   color: #8d8d8d;
+  white-space: nowrap;
+  max-width: 2.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
 }
 </style>

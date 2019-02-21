@@ -184,7 +184,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 
 .service_content{
   height: calc( 100% - 46px - .8rem);
@@ -206,12 +206,12 @@ export default {
   top: .1rem;
   left: .1rem;
   height: calc( 100% - .2rem);
-  width: calc(100% - 1rem);
+  width: calc(100% - 1.4rem);
 
 }
 .service_btn{
   position: fixed;
-  height: .8rem;
+  height: 1rem;
   bottom: 0;
   width: 100%;
   left: 0;
@@ -221,10 +221,15 @@ export default {
 }
 .postMsg{
   float: right;
-  line-height: .6rem;
   font-size: .28rem;
-  color: #f32e2e;
-  width: .8rem;
+  color: #fff;
+  border-radius: .1rem;
+  padding: .12rem .12rem;
+  background-color: @base-color;
+  margin: 0 .2rem;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .scroller_item{
   padding-top:.1rem;

@@ -9,12 +9,12 @@
     @load="onLoad"
     class="recent">
       <template v-show="Object.keys(data).length !== 0" v-for="(value, key) in data">
-        <li class="time">{{key}}</li>
+        <li class="time S28">{{key}}</li>
         <li v-for="(item, index) in value">
           <img :src="item.userHead" alt="">
           <div>
-            <span>{{item.nickName}}</span>
-            <span>{{item.visitDateHour}} 访问了你的空间</span>
+            <span class="S24">{{item.nickName}}</span>
+            <span class="S24">{{item.visitDateHour}} 访问了你的空间</span>
           </div>
           <i @click="removeEvent(item)"></i>
         </li>
@@ -119,7 +119,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .van-pull-refresh{
   overflow: inherit;
 }
@@ -129,7 +129,7 @@ export default {
 .recent li{
   font-size: .23rem;
   text-align: left;
-  color:#313131;
+  color: @base-black;
   height: .89rem;
   width: 100%;
   border-bottom: .01rem solid #f0f0f0;
@@ -158,7 +158,7 @@ export default {
   display: block
 }
 .recent li div span:nth-child(2){
-  color: #8d8d8d
+  color: @base-black
 }
 .recent li i{
   display: inline-block;

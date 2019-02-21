@@ -323,12 +323,12 @@ export default {
   text-align: center;
   display: block;
   float: left;
-  font-size: .27rem;
-  color: #333333;
+  font-size: .28rem;
+  color: #323232;
   position: relative;
 }
 .isShow{
-  color:#ff7b93 !important
+  color:#ff5e80 !important
 }
 .tabs li::before{
   content:'';
@@ -390,7 +390,7 @@ export default {
 }
 .tabs_content .item.submit .btn:nth-child(2){
   margin-left:10%;
-  background-color: #ff7994;
-  border-color:#ff7994
+  background-color: #ff5e80;
+  border-color:#ff5e80
 }
 </style>

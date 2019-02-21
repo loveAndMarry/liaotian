@@ -142,42 +142,26 @@ IM.prototype = {
       var obj = new RL_YTX.MsgBuilder()
       // 设置自定义消息id
       obj.setId(msgid)
-      // 设置发送的消息类型1:文本消息 4:图片消息 6:压缩文件 7:非压缩文件
+      // 设置发送的消息类型1:文本消息 4:图片消息 6:礼物信息 7:非压缩文件
       // 发送非文本消息时，text字段将被忽略，发送文本消息时 file字段将被忽略
-      obj.setType(msgType)
+      obj.setType(msgType - 0)
       // 设置接收者
       obj.setReceiver(id)
       // 设置聊天类型
       obj.setDomain(type)
-      if (msgType === 1 || msgType === 2) {
-        // 设置发送的文本内容
-        obj.setText(data)
-        RL_YTX.sendMsg(obj, function (res) {
-        // 发送消息成功
-        // 处理用户逻辑，通知页面
-          resolve(res)
-          console.log(res, '消息发送成功')
-        }, function (res) { // 失败
-        // 发送消息失败
-        // 处理用户逻辑，通知页面刷新，展现重发按钮
-          reject(res)
-          console.log(res, '发送消息失败')
-        })
-      } else if (msgType === 4) {
-        obj.setFile(data)
-        RL_YTX.sendMsg(obj, function (res) {
-        // 发送消息成功
-        // 处理用户逻辑，通知页面
-          resolve(res)
-        }, function (obj) { // 失败
-        // 发送消息失败
-        // 处理用户逻辑，通知页面刷新，展现重发按钮
-          reject()
-        }, function (sended, total) {
-        // 发送图片或附件时的进度条
-        // 如果发送文本消息，可以不传该参数
-        })
-      }
+      // 设置发送的文本内容
+      obj.setText(data)
+      RL_YTX.sendMsg(obj, function (res) {
+      // 发送消息成功
+      // 处理用户逻辑，通知页面
+        resolve(res)
+        console.log(res, '消息发送成功')
+      }, function (res) { // 失败
+      // 发送消息失败
+      // 处理用户逻辑，通知页面刷新，展现重发按钮
+        reject(res)
+        console.log(res, '发送消息失败')
+      })
     })
   },
 

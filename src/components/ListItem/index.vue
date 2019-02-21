@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="intention_item" @click.stop="intantionClick">{{title}}:
-      <div class="sanjiao" :class="{hide: noClick, locks: !Lock()}" v-text="replaceName(names, hint)">
+    <div class="intention_item S24" @click.stop="intantionClick">{{title}}:
+      <div class="sanjiao S24" :class="{hide: noClick, locks: !Lock()}" v-text="replaceName(names, hint)">
       </div>
     </div>
     <Actionsheet v-model="isShow" :close-on-click-overlay='false' ref="content">

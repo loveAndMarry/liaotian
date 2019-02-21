@@ -5,7 +5,7 @@
         <span></span>
       </div>
       <div class="right">
-        <div class="title">{{title}}<span class="sanjiao" v-if="isRight" @click="RightClick">{{rightTitle}}</span></div>
+        <div class="title S28">{{title}}<span class="sanjiao S24" v-if="isRight" @click="RightClick">{{rightTitle}}</span></div>
         <div><slot></slot></div>
       </div>
   </div>

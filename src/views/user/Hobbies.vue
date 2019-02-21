@@ -9,11 +9,11 @@
     />
     <div style="height: calc(100% - 46px);overflow-x: hidden;overflow-y: scroll;">
       <div class="hobbies_group" v-for="(item , index) in data" :key="index">
-        <div class="title">
+        <div class="title S28">
           <i :class="index"></i>
           {{item.label}}
         </div>
-        <div class="context">
+        <div class="context S24">
           <span class="hint" :class="{rad: el.isShow}" v-for="(el, dex) in item.interestDictVoList" :key="dex" @click="interestDictVoClick($event,el)">{{el.label}}</span>
         </div>
       </div>
@@ -88,10 +88,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .content {
   height: 100%;
-  background-color: #fff;
+  background-color: @base-white;
 }
 .hobbies_group:nth-child(1){
   padding-top: .3rem
@@ -102,8 +102,7 @@ export default {
   -webkit-box-sizing: border-box;
 }
 .hobbies_group .title {
-  font-size: 0.28rem;
-  color: #242424;
+  color: @base-black;
   text-align: left;
 }
 .hobbies_group .title i {
@@ -126,12 +125,11 @@ export default {
   border-radius: 0.15rem;
   -webkit-border-radius: .15rem;
   border: 1px solid #dedede;
-  color: #171717;
-  font-size: 0.22rem;
+  color: @base-black;
   margin: 0 0.16rem 0.16rem 0;
 }
 .hint.rad{
-  color: #fff;
-  background-color: #ff7994
+  color: @base-white;
+  background-color: @base-color
 }
 </style>

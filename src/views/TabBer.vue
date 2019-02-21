@@ -9,7 +9,8 @@
             :src="active === 0 ? homeicon.active : homeicon.normal"
           >
         </TabbarItem>
-        <TabbarItem to='/view/chat' :info="info === 0 ? '' : info">
+        <!-- <TabbarItem to='/view/chat' :info="info === 0 ? '' : info"> -->
+        <TabbarItem to='/view/chat' :dot="info !== 0">
           <span>消息</span>
           <img
             slot="icon"

@@ -11,11 +11,11 @@
           @load="onLoad"
         >
           <div class="msg_group" v-for="(el, index) in MsgList" :key="index">
-            <div class="msg_time">{{el.createDate}}</div>
+            <div class="msg_time S24">{{el.createDate}}</div>
             <!-- applyToJoinMassSelectionId  申请id  只有群主接受申请人的请求时才会有 -->
             <div class="msg_content" @click="$router.push({path: el.linkAddressRouting, query: { massSelectionId: el.extId, sendUserId: el.sendUserId, acceptUserId: el.acceptUserId, messageType: el.messageType}})">
-              <div class="title">{{el.title}}</div>
-              <div class="context">{{el.content}}</div>
+              <div class="title S28">{{el.title}}</div>
+              <div class="context S28">{{el.content}}</div>
             </div>
           </div>
         </List>
@@ -101,12 +101,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .message {
   height: calc(100% - 46px);
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: #f0f0f0;
+  background-color: @base-back;
   padding: 0 .3rem;
   box-sizing: border-box;
   box-sizing: -webkit-border-box;
@@ -115,9 +115,9 @@ export default {
   height: .68rem;
   font-size: .16rem;
   line-height: .68rem;
-  background-color: #f0f0f0;
+  background-color:@base-back;
   text-align: center;
-  color: #8d8d8d
+  color: @base-gray
 }
 .msg_content{
   border-radius: .1rem;

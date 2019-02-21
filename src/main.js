@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import 'vant/lib/index.css'
+
 //引入容联云即时通讯
 import IM from '@/assets/common/IM'
 
@@ -26,7 +27,6 @@ Vue.use(VueScroller)
  * 安卓通过调用当前方法跳转路由
  */
 window.pushRouter = function(a){
-  alert('方法执行了' + a)
   let route = (JSON.parse(a))['sss']
   console.log(route)
   router.push({path:route.linkAddressRouting, query: { massSelectionId: route.extId, sendUserId: route.sendUserId, acceptUserId: route.acceptUserId, messageType: route.messageType}})
