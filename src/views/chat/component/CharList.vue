@@ -31,7 +31,7 @@
                           <span class="S24 Tag" v-if="el.registerState === '5'">实名</span>
                           <img v-if="el.levelCode - 0 > 0" :src="el.ico" alt="">
                       </div>
-                      <p class="S28" v-text="uncodeUtf16(el.context)"></p>
+                      <p class="S28" v-text="uncodeUtf16(el)"></p>
                     </div>
                     <div class="info">
                       <p>{{el.time | fromNow}}</p>
@@ -171,8 +171,16 @@ export default {
           break;
       }
     },
-    uncodeUtf16 (val) {
-      return utils.uncodeUtf16(val)
+    uncodeUtf16 (el) {
+      // 当前为礼物记录
+      if(el.type == '1' && el.context.indexOf('img') !== -1){
+        return '【礼物消息】'
+      } else if(el.type == '4') {
+        return '【图片消息】'
+      } else {
+        return utils.uncodeUtf16(el.context)
+      }
+      //return utils.uncodeUtf16(val)
     },
     infinite(done) {
       this.GETFRIENDLIST(done)

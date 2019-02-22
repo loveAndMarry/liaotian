@@ -198,7 +198,7 @@ export default {
   -webkit-border-radius: 3px;
   background-color: #f5f5f6;
   color:#333;
-  font-size: .27rem;
+  font-size: .32rem;
   padding: 0 .24rem;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -211,7 +211,7 @@ export default {
 }
 .service_btn{
   position: fixed;
-  height: 1rem;
+  height: 1.1rem;
   bottom: 0;
   width: 100%;
   left: 0;
@@ -230,6 +230,7 @@ export default {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+  box-shadow: 1px 1px 1px rgba(0,0,0,.3)
 }
 .scroller_item{
   padding-top:.1rem;

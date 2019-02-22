@@ -5,12 +5,12 @@
             <img v-if="!images" :src="imgDefault ? 'http://systemmaiyuan.minmai1688.com/271658f606964beea25d5ca0a69024181547017098(1).jpg' : userHead">
         </div>
         <div class="left_content">
-          <img v-if="item.type == '4'" :src="item.context" alt="" @click="openImage(item.context)">
-          <div v-else-if="item.type == '1' && (item.context.indexOf('http') !== -1)" style="padding: .25rem">
+          <img v-if="item.type == '4'" :src="item.context" alt="" @click="openImage(item.context)" v-lazy="item.context">
+          <div v-else-if="item.type == '1' && (item.context.indexOf('img') !== -1)" style="padding: .25rem">
             <div style="white-space: nowrap;">礼物代表我的心意，期待你的回复！</div>
             <div v-html="item.context" class="gift_content"></div>
           </div>
-          <a v-else-if="item.type !== '4' && (item.context.indexOf('http') !== -1)" @click="openWebview(item.context)">{{item.context}}</a>
+          <a v-else-if="item.type == '1' && (item.context.indexOf('http') !== -1)" @click="openWebview(item.context)">{{item.context}}</a>
           <p v-else v-html="Replace(item.context)"></p>
         </div>
     </div>
@@ -18,6 +18,7 @@
 <script>
 import { mapState } from 'vuex'
 import utils from '@/assets/common/utils'
+import {Lazyload} from 'vant'
 export default {
   props: {
     item: Object,

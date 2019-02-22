@@ -279,7 +279,7 @@ export default {
           }
         })
       } else if (item.name === '查看报名资料') {
-        this.$router.push({name: 'datum', query: {massSelectionId: this.$route.query.massSelectionId, userId: this.userBaseInformation.userId}})
+        this.$router.push({name: 'datum', query: {massSelectionId: this.$route.query.massSelectionId, sendUserId: this.userBaseInformation.userId}})
       }
     },
     imgClick (context) {

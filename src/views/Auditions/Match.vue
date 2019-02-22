@@ -59,7 +59,7 @@ export default {
   },
   data () {
     return {
-      photos: ['http://yuanimg.minmai1688.com/icon_20190110170647'],
+      photos: [],
       radio: '1',
       item: {},
       isDisabled: false,

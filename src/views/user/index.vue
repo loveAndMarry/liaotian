@@ -88,7 +88,7 @@
       </Group>
       <CellGroup>
         <Cell title="我的资产" is-link to="/property"></Cell>
-        <Cell title="礼物" is-link to="/gift"></Cell>
+        <Cell title="我的礼物" is-link to="/gift"></Cell>
         <Cell title="消息通知" is-link to="/message"></Cell>
         <Cell title="我的动态" is-link to="/MyDynamic"></Cell>
         <Cell title="我的订单" is-link to="/order"></Cell>

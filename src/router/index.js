@@ -10,7 +10,7 @@ import home from '@/views/home'
 import Auditions from '@/views/Auditions'
 // 发起海选
 import initiate from '@/views/Auditions/initiate'
-// 购买虚拟币页面
+// 购买婚恋豆页面
 import virtualCurrency from '@/views/chat/virtualCurrency'
 // 海选参与人资料
 import datum from '@/views/Auditions/datum'

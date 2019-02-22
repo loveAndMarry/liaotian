@@ -5,7 +5,7 @@
     </ul>
     <div class="tabs_content" v-show="isShow >= 0 && isContentType" @click.prevent="tabsContentClick($event)">
       <div v-show="isShow === 0" class="tabs_content_group">
-        <div class="item" v-for="(item, index) in IntelligentSorting" :key="item" v-text="item" :class="{isShow: index === IntelligentSortingShow}" @click.stop="IntelligentSortingEvent(index)"></div>
+        <div class="item S28" v-for="(item, index) in IntelligentSorting" :key="item" v-text="item" :class="{isShow: index === IntelligentSortingShow}" @click.stop="IntelligentSortingEvent(index)"></div>
       </div>
       <div v-show="isShow === 1" class="tabs_content_group basic">
         <div class="tabs_content_group_scroll">
@@ -19,12 +19,12 @@
 
           <ListItem title="年龄" dictionaries='ages' type='packerTwo'  :default='fromData.age' :isSubmit="false" @confirm="a => setFromData({age : a})" hint="不限" ref="age"></ListItem>
 
-          <div class="item"  @click.stop="clickEvent($event, 0, 'maritalStatus')">
-            婚姻状况<div class="sanjiao">{{fromData['maritalStatus'][0] ? fromData['maritalStatus'][0].label : '不限'}}</div>
+          <div class="item S28"  @click.stop="clickEvent($event, 0, 'maritalStatus')">
+            婚姻状况<div class="sanjiao S28">{{fromData['maritalStatus'][0] ? fromData['maritalStatus'][0].label : '不限'}}</div>
           </div>
 
-          <div class="item"  @click.stop="clickEvent($event, 0, 'children')">
-            子女情况<div class="sanjiao">{{fromData['children'][0] ? fromData['children'][0].label : '不限'}}</div>
+          <div class="item S28"  @click.stop="clickEvent($event, 0, 'children')">
+            子女情况<div class="sanjiao S28">{{fromData['children'][0] ? fromData['children'][0].label : '不限'}}</div>
           </div>
         </div>
         <div class="item submit">
@@ -38,9 +38,9 @@
 
           <ListItem title="家乡"  isLock="hometown" :isSubmit="false" type='address'  :default='fromData.hometown' @confirm="a => setFromData({hometown : a})" hint="不限" ref="hometown"></ListItem>
 
-          <div class="item" v-for="(item, index) in advancedFilter" :key="item" @click.stop="clickEvent($event, index, 'advancedFilterValue')">
+          <div class="item S28" v-for="(item, index) in advancedFilter" :key="item" @click.stop="clickEvent($event, index, 'advancedFilterValue')">
             {{item}}
-            <div class="sanjiao">
+            <div class="sanjiao S28">
               <i class="lock" v-if="!isLock(advancedFilterValue[index])"></i>
               <span v-if="isLock(advancedFilterValue[index])">{{fromData[advancedFilterValue[index]][0] ? fromData[advancedFilterValue[index]][0].label : '不限'}}</span>
             </div>
@@ -148,7 +148,7 @@ export default {
         value = value.map(item => typeof item === "object" ? item: item.replace('-1', '不限') )
         let str = ''
         this.flag[name + 'Show'] = false
-        str = typeof value[0] === 'string' ? value : value[0].code ? value.map(el => el.code) : value.map(el => el.label)
+        str = typeof value[0] === 'string' ? value : value[0].code ? value.map(el => el.code) : value.map(el => el.label).join(',')
         this.event.innerText = str
       } else {
         this.event.innerText = '不限'
@@ -173,11 +173,11 @@ export default {
       
       var basic = document.querySelectorAll('.basic .sanjiao');
       var advanced = document.querySelectorAll('.advanced .sanjiao');
-      if(this.isLock()){
-        basic.forEach(element => {
-          element.innerHTML = "不限"
-        });
-      }
+
+      advanced.forEach(element => {
+        element.innerHTML = "不限"
+      });
+
       basic.forEach(element => {
         element.innerHTML = "不限"
       });
@@ -232,7 +232,6 @@ export default {
     },
     // 点击事件
     clickEvent ($event, index, name) {
-      console.log('进来了')
       if(name === 'advancedFilterValue'){
         if(!this.isLock(this.advancedFilterValue[index])){
           this.$router.push({name: 'member'})
@@ -240,9 +239,9 @@ export default {
         }
       }
       // 获取当前元素
-      if ($event.target.className === 'item') {
+      if ($event.target.className === 'item S24') {
         this.event = $event.target.children[0]
-      } else if ($event.target.className === 'sanjiao') {
+      } else if ($event.target.className === 'sanjiao S24') {
         this.event = $event.target
       }
       // 获取当前名称

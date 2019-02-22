@@ -1,3 +1,4 @@
+
 //window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
 window.baseURL = 'http://yuan.minmai1688.com/'
 
@@ -100,6 +101,7 @@ window.addEventListener("popstate", function(e) {
     window.Android.homeBack(  )
   }
 }, false);
+
 
 // 安卓
 window.getLocalStorage = function() {

@@ -9,7 +9,7 @@
         <img :src="el.userHead" alt="" class="userHead">
         <div>
           <span class="S28">{{el.nickName}}</span>
-          <p class="S28">送你价值{{el.giftPrice}}婚恋豆的红玫瑰</p>
+          <p class="S28">价值{{el.giftPrice}}婚恋豆的红玫瑰</p>
           <p class="S24">{{el.givingTime}}</p>
         </div>
         <img :src="el.giftPicture" alt="" class="gift-img">

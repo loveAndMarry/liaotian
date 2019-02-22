@@ -72,7 +72,7 @@ export default {
           this.loading = true
           this.isToBottom = true
           this.$nextTick(() => {
-          this.isLoading = false;
+            this.isLoading = false;
             var content = document.getElementById('content')
               content.scrollTop = container.scrollHeight - scrollHeight
           })

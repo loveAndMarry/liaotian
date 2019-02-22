@@ -23,8 +23,7 @@ import Vue from 'vue'
 import store from '../../../../store'
 import router from '../../../../router'
 import {mapState ,mapActions } from 'vuex'
-import { getUserVirtualCurrencyPrice } from '@/assets/common/api'
-import { listGift } from '@/assets/common/api'
+import { getUserVirtualCurrencyPrice,listGift,sendGift } from '@/assets/common/api'
 
 let gift =  function(data) {
   return Vue.extend({
@@ -70,27 +69,29 @@ let gift =  function(data) {
           userId: user.id
         }).then(res => {
           if(res.data - 0 > 0){
-            let context = `<img src='${this.data.giftPicture}'><p>${this.data.giftMeaning}</p>`
-            that.POSTMSG({
-              context: context,
-              id: new Date().getTime(),
-              receiver:friend.accountNumber,
-              sender: user.accountNumber,
+            sendGift({
               sendUserId: user.id,
-              receiveUserId: friend.userId,
-              time: new Date().getTime(),
-              chatDate: new Date().getTime(),
-              status: 1, // 当前信息提交状态
-              userHead: user.userHead,
-              type: '1'
-            }).then(() => {
-              that.$el.remove()
-              that.sendGift({
+              recipientUserId: friend.userId,
+              giftId: that.data.id
+            }).then(res => {
+              let context = `<img v-lazy='${that.data.giftPicture}' src='${that.data.giftPicture}'><p>${that.data.giftMeaning}</p>`
+              that.POSTMSG({
+                context: context,
+                id: new Date().getTime(),
+                receiver:friend.accountNumber,
+                sender: user.accountNumber,
                 sendUserId: user.id,
-                recipientUserId: friend.userId,
-                giftId: that.data.id
+                receiveUserId: friend.userId,
+                time: new Date().getTime(),
+                chatDate: new Date().getTime(),
+                status: 1, // 当前信息提交状态
+                userHead: user.userHead,
+                type: '1'
+              }).then(() => {
+                 that.$el.remove()
               })
             })
+            
           } else {
             that.$el.remove()
             window.setTimeout(() => {
@@ -99,7 +100,7 @@ let gift =  function(data) {
             }, 1000)
 
             Toast({
-              message: '虚拟币不足，请先充值',
+              message: '婚恋豆不足，请先充值',
               duration: 1000
             })
           }

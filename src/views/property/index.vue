@@ -10,10 +10,10 @@
               <div class="title">收益 (元)</div>
               <div class="money">{{money}}</div>
             </div>
-            <!-- <div class="property_group_item">
-              <div class="title">虚拟币</div>
-              <div class="money">50000</div>
-            </div> -->
+            <div class="property_group_item">
+              <div class="title">婚恋豆</div>
+              <div class="money">{{virtualCurrencyCount}}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -25,9 +25,9 @@
         <Cell title="提现" is-link @click="withdrawal">
           <span slot="icon" class="withdraw"></span>
         </Cell>
-        <!-- <Cell title="账单" is-link to="">
-          <span slot="icon" class="bill"></span>
-        </Cell> -->
+        <Cell title="婚恋豆充值" is-link to="virtualCurrency">
+          <span slot="icon" class="virtualCurrency"></span>
+        </Cell>
       </CellGroup>
     </div>
   </div>
@@ -43,7 +43,8 @@ export default {
   },
   data () {
     return {
-      money: 0
+      money: 0,
+      virtualCurrencyCount: 0
     }
   },
   methods: {
@@ -69,7 +70,8 @@ export default {
     userWallet({
       userId: this.$store.state.IM.user.id
     }).then(res => {
-      this.money = res.data.useBalance
+      this.money = res.data.useBalance;
+      this.virtualCurrencyCount = res.data.virtualCurrencyCount;
     })
   }
 }
@@ -91,9 +93,9 @@ export default {
   vertical-align: middle;
   margin-right: .2rem
 }
-.bill{
+.virtualCurrency{
   width: .4rem;
-  background-image: url('../../assets/images/bill.png');
+  background-image: url('../../assets/images/recharge.png');
   background-repeat: no-repeat;
   background-size: 100%;
   vertical-align: middle;
@@ -116,11 +118,11 @@ export default {
   display: -webkit-box;
 }
 .property_group .property_group_item{
-  width: 100%;
+  width: 50%;
 }
-/* .property_group .property_group_item:first-child{
+.property_group .property_group_item:first-child{
   border-right: 1px solid;
-} */
+}
 .property_group_item .title{
   line-height: .48rem;
 }

@@ -13,11 +13,6 @@ import Content from './components/content'
 import { mapGetters } from 'vuex'
 export default {
   name: 'exchange',
-  data () {
-    return {
-      
-    }
-  },
   mounted () {
     var that = this
     var winHeight = document.documentElement.clientHeight || document.body.clientHeight;   //获取当前页面高度

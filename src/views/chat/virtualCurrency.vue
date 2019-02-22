@@ -6,7 +6,7 @@
       <div class="item_coin S30" v-for="(el, index) in priceList" :key="index">
         <span>{{el.virtualCurrencyCount}}颗</span>
         <i>￥{{el.priceY}}</i>
-        <div>购买</div>
+        <div @click="purchase(el)">购买</div>
       </div>
       <div class="item_hint S24">
         <p>1.部分特权请登录麦缘婚恋网使用。</p>
@@ -44,6 +44,19 @@ export default {
   methods: {
     onClickLeft () {
       this.$router.back()
+    },
+    purchase (el) {
+      let obj = {
+        body: '购买婚恋豆',
+        totalAmount: el.priceY,
+        subject: '购买婚恋豆',
+        userId: this.$store.state.IM.user.id,
+        type: '2',
+        productId: el.id,
+        productCount: '1'
+      }
+
+      this.$router.push({name: 'purchase', query: {obj : obj}})
     }
   }
 }

@@ -230,7 +230,7 @@ export const listConfigureDictByType = data => HTTP.GET('web/configuredict/listC
 // 获取当前所有的礼物列表
 export const listGift = data => HTTP.GET('web/gift/listGift',data)
 
-// 获取当前登录人的剩余虚拟币数量
+// 获取当前登录人的剩余婚恋豆数量
 export const getUserVirtualCurrencyPrice = data => HTTP.GET('web/virtualCurrencyPrice/getUserVirtualCurrencyPrice',data)
 
 // 获取当前登录人的礼物详情
@@ -239,7 +239,7 @@ export const listGiftRecord = data => HTTP.GET('web/gift/listGiftRecord',data)
 // 发送礼物
 export const sendGift = data => HTTP.GET('web/gift/sendGift',data)
 
-// 虚拟币价格表
+// 婚恋豆价格表
 export const listVirtualCurrencyPrice = data => HTTP.GET('web/virtualCurrencyPrice/listVirtualCurrencyPrice',data)
 
 
