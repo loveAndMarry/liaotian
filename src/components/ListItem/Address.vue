@@ -41,6 +41,11 @@ export default {
     getProvinceAndCityList({}).then((res) => {
       if(res.data) {
         this.defaultColumns = res.data
+        this.defaultColumns.unshift({
+        code: '-1',
+        name: '不限',
+        areaVoList: []
+      })
         localStorage.setItem('address', JSON.stringify(this.defaultColumns))
         this.showData()
       }
@@ -87,7 +92,8 @@ export default {
       return b
     },
     getProvince (name) {
-      return this.defaultColumns.find(el => el.name === name)
+      let arr = this.defaultColumns.find(el => el.name === name)
+      return arr
     },
     showData () {
       this.columns = [
@@ -120,7 +126,7 @@ export default {
     onConfirm (values) {
       let obj = this.getProvince(values[0])
       let province = obj
-      let city = obj.areaVoList.find(el => el.name === values[1])
+      let city = obj.areaVoList.find(el => el.name === values[1]) || { code: '-1', name: '不限'}
       let val = [province, city]
       if(this.isSubmit){
         updateUserSpecificInfo(this.fromData(val)).then(() => {

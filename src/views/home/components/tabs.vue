@@ -174,13 +174,16 @@ export default {
       var basic = document.querySelectorAll('.basic .sanjiao');
       var advanced = document.querySelectorAll('.advanced .sanjiao');
 
-      advanced.forEach(element => {
-        element.innerHTML = "不限"
-      });
-
       basic.forEach(element => {
         element.innerHTML = "不限"
       });
+
+      
+      if(this.$store.state.common.Jurisdiction.some(el => el == 'housePurchase')){
+        advanced.forEach(element => {
+          element.innerHTML = "不限"
+        });
+      }
 
       this.isShow = -1
       this.IntelligentSortingShow = 0

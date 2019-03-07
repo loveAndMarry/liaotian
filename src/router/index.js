@@ -50,6 +50,8 @@ import exchange from '@/views/exchange'
 import userDetail from '@/views/home/components/userDetail'
 // 用户相册
 import photoList from '@/views/home/components/photoList'
+// 邀请用户列表
+import addressBook from '@/views/home/addressBook'
 // 个人中心
 import user from '@/views/user'
 // 礼物
@@ -90,6 +92,12 @@ import PaymentDetails from '@/views/user/PaymentDetails'
 import service from '@/views/user/service'
 // 消息通知
 import message from '@/views/user/message'
+// 婚恋豆收益明细
+import VirtualCurrencyDetails from '@/views/property/VirtualCurrencyDetails'
+// 资产收益明细
+import ReturnsDetailed from '@/views/property/ReturnsDetailed'
+// 婚恋豆兑换
+import virtualCurrencyExchange from '@/views/property/virtualCurrencyExchange'
 // 是否通过配对邀请
 import MatchTheAudit from '@/views/msg/MatchTheAudit'
 
@@ -358,6 +366,26 @@ const router = new Router({
     path: '/record',
     name: 'record',
     component: record
+  },
+  {
+    path: '/addressBook',
+    name: 'addressBook',
+    component: addressBook
+  },
+  {
+    path: '/VirtualCurrencyDetails',
+    name: 'VirtualCurrencyDetails',
+    component: VirtualCurrencyDetails
+  },
+  {
+    path: '/ReturnsDetailed',
+    name: 'ReturnsDetailed',
+    component: ReturnsDetailed
+  },
+  {
+    path: '/virtualCurrencyExchange',
+    name: 'virtualCurrencyExchange',
+    component: virtualCurrencyExchange
   }
   ]
 })

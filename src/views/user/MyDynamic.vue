@@ -13,15 +13,25 @@
       class="dynamic" ref='dynamic'>
         <template v-show="data.length !== 0" v-for="(el, index) in data">
           <div class="dynamic_group S24" :key="index">
-            <div class="title">上传了{{el.type | type}}</div>
-            <div class="dynamic_content">
-              <template v-if="el.type === '1'">
-                <p>{{el.context}}</p>
-              </template>
-              <template v-if="el.type !== '1'">
-                <img :src="el.context + '?imageMogr2/auto-orient'" alt="" @click="imgClick(el.context)">
-              </template>
-            </div>
+            <div class="title" v-if="el.type < 4">上传了{{el.type | type}}</div>
+              <div class="dynamic_content">
+                <template v-if="el.type === '1'">
+                  <p>{{el.context}}</p>
+                </template>
+                <template v-if="el.type == '2' || el.type == '3'">
+                  <img :src="el.context + '?imageMogr2/auto-orient'" alt="" @click="imgClick(el.context)">
+                </template>
+                <template v-if="el.type == '4' || el.type == '5'">
+                  <p style="font-size: 0.34rem;margin: .2rem 0;">{{el.title}}</p>
+                  <!-- 图文详情 -->
+                  <img  v-if="el.type == '4'" :src="el.context + '?imageMogr2/auto-orient'" alt="" @click="imgClick(el.context)">
+                  <!-- 视频详情 -->
+                  <div v-if="el.type == '5'" class="video_group">
+                    <span @click="openVideo(el.context, el.firstFramePicture)"></span>
+                    <img :src="el.firstFramePicture">
+                  </div>
+                </template>
+              </div>
             <div class="dynamic_bottom">
               <span>{{el.dynamicDate | dateTime}}</span>
               <span>{{el.likeCount}}赞</span>
@@ -88,6 +98,16 @@ export default {
     }
   },
   methods: {
+    openVideo (url,image){
+      var u = navigator.userAgent;
+      if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+        console.log("安卓手机");
+        window.Android.openVideo(url,image)
+      } else if (u.indexOf('iPhone') > -1) {//苹果手机
+        console.log("苹果手机");
+        window.webkit.messageHandlers.openVideo.postMessage(url,image)
+      }
+    },
     imgClick (context) {
        window.instance = ImagePreview({
         images: [context + '?imageMogr2/auto-orient'],
@@ -182,6 +202,28 @@ export default {
 .dynamic_group .dynamic_content img{
   max-width: 100%;
   max-height: 3.5rem;
+}
+.dynamic_context .dynamic_content .video_group img{
+  width: 100%;
+  height: 100%;
+  display: block
+}
+
+.dynamic_context .dynamic_content .video_group{
+  position: relative;
+  width: 100%;
+  height: 50%;
+}
+.dynamic_context .dynamic_content .video_group span{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1rem;
+  height: 1rem;
+  background:url('../../assets/images/play.png') no-repeat;
+  background-size: 100% 100%;
+  background-position: center
 }
 .dynamic_group .title{
   line-height: .64rem;

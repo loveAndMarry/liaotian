@@ -6,11 +6,11 @@
         <div style="height: 3.32rem;border-radius: .3rem;background-color: #fe728f;color: rgba(255,255,255,.6)">
           <h4 class="property_title">总资产</h4>
           <div class="property_group">
-            <div class="property_group_item">
+            <div class="property_group_item" @click="$router.push({name: 'ReturnsDetailed'})">
               <div class="title">收益 (元)</div>
               <div class="money">{{money}}</div>
             </div>
-            <div class="property_group_item">
+            <div class="property_group_item" @click="$router.push({name: 'VirtualCurrencyDetails'})">
               <div class="title">婚恋豆</div>
               <div class="money">{{virtualCurrencyCount}}</div>
             </div>
@@ -27,6 +27,9 @@
         </Cell>
         <Cell title="婚恋豆充值" is-link to="virtualCurrency">
           <span slot="icon" class="virtualCurrency"></span>
+        </Cell>
+        <Cell title="婚恋豆兑换" is-link @click="virtualCurrencyExchange(virtualCurrencyCount)">
+          <span slot="icon" class="virtualCurrencyExchange"></span>
         </Cell>
       </CellGroup>
     </div>
@@ -64,6 +67,9 @@ export default {
         return false
       }
       window.withdrawal()
+    },
+    virtualCurrencyExchange (num) {
+      this.$router.push({name: 'virtualCurrencyExchange', query:{defaultNum: num}})
     }
   },
   mounted () {
@@ -96,6 +102,15 @@ export default {
 .virtualCurrency{
   width: .4rem;
   background-image: url('../../assets/images/recharge.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  vertical-align: middle;
+  margin-right: .2rem
+}
+
+.virtualCurrencyExchange{
+  width: .4rem;
+  background-image: url('../../assets/images/exchange.png');
   background-repeat: no-repeat;
   background-size: 100%;
   vertical-align: middle;

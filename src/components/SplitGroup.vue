@@ -5,7 +5,7 @@
         <span></span>
       </div>
       <div class="right">
-        <div class="title S28">{{title}}<span class="sanjiao S24" v-if="isRight" @click="RightClick">{{rightTitle}}</span></div>
+        <div class="title S28" :style="{'color': color ? color : ''}"><span v-html="title"></span><span class="sanjiao S24" v-if="isRight" @click="RightClick">{{rightTitle}}</span></div>
         <div><slot></slot></div>
       </div>
   </div>
@@ -18,7 +18,8 @@ export default {
     isRight: {
       type: Boolean,
       default: true
-    }
+    },
+    color: ''
   },
   methods: {
     RightClick () {
@@ -34,8 +35,8 @@ export default {
         case '自我介绍':
           return require('../assets/images/data_self@2x.png')
           break
-         case '择偶意向':
-          return require('../assets/images/data_mate_selection@2x.png')
+         case "择偶意向<span class='setting'>(用于设置默认检索条件)</span>":
+          return require('../assets/images/mate_selection.png')
           break
          case '兴趣爱好':
           return require('../assets/images/data_interest@2x.png')

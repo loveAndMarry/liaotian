@@ -27,13 +27,13 @@
 
       <ListItem  class="List_Group" title="地区" type='address' :isSubmit='false' @confirm="domicileConfirm"></ListItem>
 
-      <ListItem  class="List_Group" title="身高" dictionaries='heights' type="packerOne" suffix="厘米" :isSubmit='false' @confirm="heightConfirm"></ListItem>
+      <ListItem  class="List_Group" title="身高" dictionaries='heights' type="packerOne" suffix="厘米" :isSubmit='false' @confirm="heightConfirm" :default="height"></ListItem>
 
       <ListItem  class="List_Group" title="婚姻状况" dictionaries='maritalStatus' type="radioOne" :isSubmit='false' @confirm="maritalStatusConfirm"></ListItem>
 
       <ListItem  class="List_Group" title="学历" dictionaries='education' type="packerOne" :isSubmit='false' @confirm="educationConfirm"></ListItem>
 
-      <ListItem  class="List_Group" title="月收入" dictionaries='incomeRange' type="packerOne" :isSubmit='false' @confirm="incomeConfirm"></ListItem>
+      <ListItem  class="List_Group" title="月收入" :default="incomeRange" dictionaries='incomeRange' type="packerOne" :isSubmit='false' @confirm="incomeConfirm"></ListItem>
 
     </div>
     <div class="submit">
@@ -93,8 +93,8 @@ export default {
         educationDictValue:'',
         education: '',
         incomeDictValue:'',
-        incomeMin: '',
-        incomeMax: '',
+        incomeMin: '5000',
+        incomeMax: '10000',
         domicileProvinceId: '',
         domicileCityId: '',
         domicileProvinceName: '',
@@ -103,8 +103,10 @@ export default {
         maritalStatus: '',
         birthday: '',
         sex: '1',
-        height: '',
-      }
+        height: '170',
+      },
+      height: [{value: "170", label: "170厘米"}],
+      incomeRange: [{value: "3", label: "5000-10000元"}]
     }
   },
   components: {
@@ -185,7 +187,6 @@ export default {
       this.fromData.sex = this.radio
     },
     submitClick () {
-      console.log(this.fromData.incomeMin,this.fromData.incomeMax)
       if(this.fromData.nickName.replace(' ', '') === ''){
         this.$toast('请输入昵称');
         return false

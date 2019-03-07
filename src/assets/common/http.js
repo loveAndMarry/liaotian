@@ -66,8 +66,11 @@ HTTP.GET = function (url, data) {
 
 HTTP.POST = function (url, data) {
   return new Promise((resolve, reject) => {
-    axios.post(url, {
-      data: data
+    data = JSON.stringify(data)
+    axios.post(url, data, {
+      headers: {
+        "Content-Type": 'application/json; charset=UTF-8'
+      }
     }).then((res) => {
       if(res.data.code === 200){
         resolve(res.data)

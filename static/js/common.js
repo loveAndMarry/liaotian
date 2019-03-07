@@ -1,5 +1,5 @@
 
-//window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
+// window.baseURL = 'http://192.168.1.9:8080/qike-maiyuan'
 window.baseURL = 'http://yuan.minmai1688.com/'
 
 // 点击调用图片和拍照
@@ -8,10 +8,8 @@ window.updatePhoto = function(callback){
     this.callback = callback
     var u = navigator.userAgent;
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
-      console.log("安卓手机");
       alert('updatePhoto')
     } else if (u.indexOf('iPhone') > -1) {//苹果手机
-      console.log("苹果手机");
       window.webkit.messageHandlers.PhotoClick.postMessage(null)
     } 
   } else {
@@ -25,11 +23,39 @@ window.authentication = function(callback){
     this.callback = callback
     var u = navigator.userAgent;
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
-      console.log("安卓手机");
       alert('authentication')
     } else if (u.indexOf('iPhone') > -1) {//苹果手机
-      console.log("苹果手机");
       window.webkit.messageHandlers.authentication.postMessage(null)
+    } 
+  } else {
+    this.callback(callback)
+  }
+}
+
+// 监听上传动态之后的回调
+window.openDynamicCallback = function(callback){
+  if(typeof callback === 'function'){
+    this.callback = callback
+    var u = navigator.userAgent;
+    if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+      alert('openDynamicCallback')
+    } else if (u.indexOf('iPhone') > -1) {//苹果手机
+      window.webkit.messageHandlers.openDynamicCallback.postMessage(null)
+    } 
+  } else {
+    this.callback(callback)
+  }
+}
+
+// 获取通讯录信息
+window.invite = function(callback){
+  if(typeof callback === 'function'){
+    this.callback = callback
+    var u = navigator.userAgent;
+    if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+      alert('invite')
+    } else if (u.indexOf('iPhone') > -1) {//苹果手机
+      window.webkit.messageHandlers.invite.postMessage(null)
     } 
   } else {
     this.callback(callback)
@@ -42,10 +68,8 @@ window.selectImage = function(callback){
     this.callback = callback
     var u = navigator.userAgent;
     if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
-      console.log("安卓手机");
       alert('selectImage')
     } else if (u.indexOf('iPhone') > -1) {//苹果手机
-      console.log("苹果手机");
       window.webkit.messageHandlers.selectImage.postMessage(null)
     } 
   } else {
@@ -57,10 +81,8 @@ window.selectImage = function(callback){
 window.BankCard = function(){
   var u = navigator.userAgent;
   if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
-    console.log("安卓手机");
     alert('BankCard')
-  } else if (u.indexOf('iPhone') > -1) {//苹果手机
-    console.log("苹果手机");
+  } else if (u.indexOf('iPhone') > -1) {//苹果手
     window.webkit.messageHandlers.BankCard.postMessage(null)
   }
 }
@@ -69,11 +91,19 @@ window.BankCard = function(){
 window.withdrawal = function(){
   var u = navigator.userAgent;
   if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
-    console.log("安卓手机");
     alert('withdrawal')
-  } else if (u.indexOf('iPhone') > -1) {//苹果手机
-    console.log("苹果手机");
+  } else if (u.indexOf('iPhone') > -1) {//苹果手
     window.webkit.messageHandlers.withdrawal.postMessage(null)
+  } 
+}
+
+// 分享
+window.share = function(){
+  var u = navigator.userAgent;
+  if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+    alert('share')
+  } else if (u.indexOf('iPhone') > -1) {//苹果手
+    window.webkit.messageHandlers.share.postMessage(null)
   } 
 }
 

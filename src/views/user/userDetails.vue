@@ -96,7 +96,7 @@
         </SplitGroup>
 
 
-        <SplitGroup title="择偶意向" :isRight="false">
+        <SplitGroup title="择偶意向<span class='setting'>(用于设置默认检索条件)</span>" :isRight="false" color="#ff5e80">
 
           <ListItem title="年龄" dictionaries='ages' :default='getData(ages)' type="packerTwo" :defaultSubmitData ="ages" suffix="岁"></ListItem>
 
@@ -446,6 +446,7 @@ export default {
 };
 </script>
 <style scoped>
+
 .head_img {
   position: absolute;
   width: 100%;

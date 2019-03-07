@@ -4,6 +4,8 @@
        <div slot="action" @click="search">搜索</div>
       <div slot="action" @click="onSearch"><i class="tianjia"></i></div>
     </Search> -->
+    <!-- 发布动态 -->
+    <span class="dongtai" v-show="isDynamic" @click="show = !show"></span>
     <Tabs v-model="active" animated @click="onClick">
       <Tab title="搜索">
         <Banner page="1"></Banner>
@@ -33,13 +35,23 @@
                 </div>
               </div>
               <div class="dynamic_context" :key="index">
-                <div class="title">上传了{{el.type | type}}</div>
+                <div class="title" v-if="el.type < 4">上传了{{el.type | type}}</div>
                 <div class="dynamic_content">
                   <template v-if="el.type === '1'">
                     <p>{{el.context}}</p>
                   </template>
-                  <template v-if="el.type !== '1'">
+                  <template v-if="el.type == '2' || el.type == '3'">
                     <img :src="el.context + '?imageMogr2/auto-orient'" alt="" @click="imgClick(el.context)">
+                  </template>
+                  <template v-if="el.type == '4' || el.type == '5'">
+                    <p style="font-size: 0.34rem;margin: .2rem 0;">{{el.title}}</p>
+                    <!-- 图文详情 -->
+                    <img  v-if="el.type == '4'" :src="el.context + '?imageMogr2/auto-orient'" alt="" @click="imgClick(el.context)">
+                    <!-- 视频详情 -->
+                    <div v-if="el.type == '5'" class="video_group">
+                      <span @click="openVideo(el.context, el.firstFramePicture)"></span>
+                      <img :src="el.firstFramePicture">
+                    </div>
                   </template>
                 </div>
                 <div class="dynamic_bottom">
@@ -52,21 +64,32 @@
         </div>
       </Tab>
     </Tabs>
+    <Actionsheet
+    v-model="show"
+    :actions="actions"
+    cancel-text="取消"
+    @select="onSelect">
+
+    </Actionsheet>
+
+    <div class="invite" v-show="inviteShow">
+      <a @click.stop.prevent="invite" class="link"></a>
+      <span class="botton" @click="inviteClick"></span>
+    </div>
   </div>
 </template>
 
 <script>
-import { Search , Tabs, Tab, List, PullRefresh, ImagePreview, Tag} from 'vant'
+import { Search , Tabs, Tab, List, PullRefresh, ImagePreview, Tag, Actionsheet} from 'vant'
 import TabList from './components/tabs'
 import HomeList from './components/HomeList'
 import Banner from '@/components/Banner'
-import { listGlobalDynamics ,dynamicLike } from '@/assets/common/api'
+import { listGlobalDynamics ,dynamicLike ,getUserRecommendCodeByUserId} from '@/assets/common/api'
 import Vue from 'vue'
 import { mapMutations , mapState} from 'vuex'
 
 import utils from '@/assets/common/utils'
-import { promises } from 'fs';
-import { rejects } from 'assert';
+import pinyin from 'pinyin'
 
 export default {
   name: 'home',
@@ -81,7 +104,18 @@ export default {
       finished: false, // 列表刷新加载完毕
       dynamicList: [],
       pageCurrent: 1,
-      pageSize:10
+      pageSize:10,
+      isDynamic: false,
+      show: false,
+      inviteShow: false,
+      actions: [
+        {
+          name: '拍摄'
+        },
+        {
+          name: '选择图片'
+        }
+      ]
     }
   },
   filters: {
@@ -100,6 +134,8 @@ export default {
     }
   },
   beforeMount () {
+    var that = this
+    localStorage.getItem('inviteShow') ? this.inviteShow = false : this.inviteShow = true
     this.height = document.body.clientHeight || document.documentElement.clientHeight
     // 触发获取好友列表的请求
     this.$store.dispatch('GETFRIENDLIST',{
@@ -107,9 +143,15 @@ export default {
     }).then(res => {}).catch(res => {
 
     })
+
+    // 上传动态后刷新列表
+    window.openDynamicCallback(function(){
+      that.onRefresh()
+    })
   },
   activated () {
-    this.active = 0
+    this.active = 0;
+    this.isDynamic = false
   },
   computed: {
     ...mapState({
@@ -120,8 +162,78 @@ export default {
     ...mapMutations([
       'setLoading'
     ]),
+    openVideo (url, image){
+      var u = navigator.userAgent;
+      if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+        console.log("安卓手机");
+        window.Android.openVideo(url,image)
+      } else if (u.indexOf('iPhone') > -1) {//苹果手机
+        console.log("苹果手机");
+        window.webkit.messageHandlers.openVideo.postMessage(url,image)
+      }
+    },
+    inviteClick () {
+      this.inviteShow = false
+      localStorage.setItem('inviteShow','1') 
+    },
+    invite () {
+      this.inviteShow = false
+      // 分享微信
+       getUserRecommendCodeByUserId({
+        userId: this.user.id
+      }).then(res => {
+        if(res.data) {
+          let url = 'http://yuan.minmai1688.com/webregister/register.html?recommendCode=' + res.data
+          var u = navigator.userAgent;
+          if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+            console.log("安卓手机");
+            window.Android.Share(url)
+          } else if (u.indexOf('iPhone') > -1) {//苹果手机
+            console.log("苹果手机");
+            window.webkit.messageHandlers.Share.postMessage(url)
+          } 
+        } else {
+          Toast({
+            message: '当前不支持分享，请稍后再试',
+            duration: 1000
+          })
+        }
+      })
+
+      // 调取通讯录
+      // let that = this
+      // window.invite(function(str) {
+      //   if(typeof str === 'object') {
+      //     str = JSON.stringify(str)
+      //   } else {
+      //     str = str
+      //   }
+      //   that.$router.push({name: 'addressBook', query: {str : str}})
+      // })
+    },
+    onSelect (item) {
+      let type = null
+      if(item.name === '拍摄') {
+        type = 1
+      } else if(item.name === '选择图片') {
+        type = 2
+      }
+
+      var u = navigator.userAgent;
+      if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+        console.log("安卓手机");
+        window.Android.openDynamic(type)
+      } else if (u.indexOf('iPhone') > -1) {//苹果手机
+        console.log("苹果手机");
+        window.webkit.messageHandlers.openDynamic.postMessage(type)
+      }
+
+      this.show = false
+
+    }, 
     // 切换tabs时关闭筛选条件框
-    onClick() {
+    onClick(index) {
+      index == 1 ? this.isDynamic = true : this.isDynamic = false
       this.$refs.TabList.isContentType = false
       this.$refs.TabList.isShow = -1
     },
@@ -137,7 +249,7 @@ export default {
     onRefresh () {
       this.listGlobalDynamics({
         pageCurrent: 0,
-        pageSize: this.dynamicList.length,
+        pageSize: this.pageCurrent * this.pageSize,
         userId: this.user.id
       }).then(res => {
         this.isLoading = false
@@ -210,12 +322,66 @@ export default {
     PullRefresh,
     List,
     ImagePreview,
-    Tag
+    Tag,
+    Actionsheet
   }
 }
 </script>
 
 <style scoped lang="less">
+.invite{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,.1);
+  z-index: 998;
+  background-image: url('../../assets/images/invitation_bg.png');
+  background-repeat: no-repeat;
+  background-position: 35% 50%;
+  background-size: 80%;
+}
+
+.invite .link{
+  position: absolute;
+  top: calc(50% + 56px);
+  left: 50%;
+  display: block;
+  width: 3rem;
+  height: .8rem;
+  transform: translate(-50%);
+}
+
+.invite span {
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: 3.5rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    background-image: url('../../assets/images/close.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    transform: translate(-50%);
+  }
+
+.dongtai {
+  position: fixed;
+  position: fixed;
+  right: .3rem;
+  top: 0;
+  width: .5rem;
+  height: 44px;
+  display: block;
+  background-image: url('../../assets/images/release_dynamic.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  z-index: 999;
+}
 .scroll_group{
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -314,6 +480,28 @@ export default {
 .dynamic_context .dynamic_content img{
   max-width: 100%;
   max-height: 3.5rem;
+}
+.dynamic_context .dynamic_content .video_group img{
+  width: 100%;
+  height: 100%;
+  display: block
+}
+
+.dynamic_context .dynamic_content .video_group{
+  position: relative;
+  width: 100%;
+  height: 50%;
+}
+.dynamic_context .dynamic_content .video_group span{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1rem;
+  height: 1rem;
+  background:url('../../assets/images/play.png') no-repeat;
+  background-size: 100% 100%;
+  background-position: center
 }
 .dynamic_title_content i{
   font-style: normal;

@@ -125,7 +125,7 @@ export default {
             if(this.dictionaries === 'incomeRange'){
               this.names = val[0].label
             } else {
-              this.names = val[0].label ?  val.map(el => el.label ? this.isSuffix(el.label) : el.label).join(",") : val.map(el => el.name).join(" ")
+              this.names = val[0].label ?  val.map(el => el.label ? this.isSuffix(el.label) : el.label).join(",") : val[0].code === '-1' ? '不限' : val.map(el => el.name).join(" ")
             }
           }
           this.codes = val[0].value ? val.map(el => el.value) : val.map(el => el.code)

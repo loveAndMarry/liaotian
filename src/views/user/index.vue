@@ -2,7 +2,7 @@
   <div style="height: 100%" v-if="isLoading">
     <div class="title">
       {{user.nickName}}
-      <span class="shezhi" @click="setting"></span>
+      <span class="user_share" @click="userShare"></span>
     </div>
     <div class="overflow">
       <div class="group">
@@ -87,12 +87,29 @@
         </div>
       </Group>
       <CellGroup>
-        <Cell title="我的资产" is-link to="/property"></Cell>
-        <Cell title="我的礼物" is-link to="/gift"></Cell>
-        <Cell title="消息通知" is-link to="/message"></Cell>
-        <Cell title="我的动态" is-link to="/MyDynamic"></Cell>
-        <Cell title="我的订单" is-link to="/order"></Cell>
-        <Cell title="联系客服" is-link to="/service"></Cell>
+        <Cell title="我的资产" is-link to="/property">
+          <span slot="icon" class="icon property"></span>
+        </Cell>
+        <Cell title="我的礼物" is-link to="/gift">
+          <span slot="icon" class="icon gift"></span>
+        </Cell>
+        <Cell title="消息通知" is-link to="/message">
+          <span slot="icon" class="icon message"></span>
+        </Cell>
+        <Cell title="我的动态" is-link to="/MyDynamic">
+          <span slot="icon" class="icon MyDynamic"></span>
+        </Cell>
+        <Cell title="我的订单" is-link to="/order">
+          <span slot="icon" class="icon order"></span>
+        </Cell>
+      </CellGroup>
+      <CellGroup style="margin-top: 5px">
+        <Cell title="联系客服" is-link to="/service">
+          <span slot="icon" class="icon service"></span>
+        </Cell>
+        <Cell title="设置" is-link @click="setting">
+          <span slot="icon" class="icon settings"></span>          
+        </Cell>
       </CellGroup>
       <!-- <div class="group">
         <Cell v-for="(el, index) in List" :key="index" :title="el.menuName" is-link :url="el.linkHref"></Cell>
@@ -116,8 +133,8 @@
 </template>
 <script>
 import Group from "@/components/Group";
-import { ImagePreview , Cell, CellGroup} from 'vant'
-import { personalCenter, uploadPhoto, menuTreeDate} from "@/assets/common/api";
+import { ImagePreview , Cell, CellGroup, Toast} from 'vant'
+import { personalCenter, uploadPhoto, menuTreeDate, getUserRecommendCodeByUserId} from "@/assets/common/api";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -145,6 +162,29 @@ export default {
     }
   },
   methods: {
+    // 分享
+    userShare () {
+      getUserRecommendCodeByUserId({
+        userId: this.user.id
+      }).then(res => {
+        if(res.data) {
+          let url = 'http://yuan.minmai1688.com/webregister/register.html?recommendCode=' + res.data
+          var u = navigator.userAgent;
+          if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+            console.log("安卓手机");
+            window.Android.Share(url)
+          } else if (u.indexOf('iPhone') > -1) {//苹果手机
+            console.log("苹果手机");
+            window.webkit.messageHandlers.Share.postMessage(url)
+          } 
+        } else {
+          Toast({
+            message: '当前不支持分享，请稍后再试',
+            duration: 1000
+          })
+        }
+      })
+    },
     setting () {
        var u = navigator.userAgent;
        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
@@ -228,6 +268,36 @@ export default {
 </script>
 
 <style scoped lang="less">
+.icon {
+  width: .3rem;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-right: .2rem;
+}
+.property{
+  background-image: url('../../assets/images/user_assets.png')
+}
+.gift{
+  background-image: url('../../assets/images/user_gift.png')
+}
+.message{
+  background-image: url('../../assets/images/user_inform.png')
+}
+.MyDynamic{
+  background-image: url('../../assets/images/user_state.png')
+}
+.order{
+  background-image: url('../../assets/images/user_order.png')
+}
+.settings{
+  background-image: url('../../assets/images/user_set.png')
+}
+.service{
+  background-image: url('../../assets/images/user_service.png')
+}
+
+
 .head_img {
   position: absolute;
   height: 100%;
@@ -507,7 +577,7 @@ export default {
   text-align: center;
   background: @base-white
 }
-.title .shezhi {
+.title .user_share {
   width: 0.38rem;
   height: 0.4rem;
   display: block;
@@ -515,8 +585,9 @@ export default {
   right: .3rem;
   top: 50%;
   transform: translate(0, -50%);
+  background-repeat: no-repeat;
   background-size: 100%;
-  background-image: url("../../assets/images/user_set@2x.png");
+  background-image: url("../../assets/images/user_share.png");
 }
 .sanjiao {
   font-size: 0.28rem;

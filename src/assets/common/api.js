@@ -67,6 +67,12 @@ export const listGlobalDynamics = data => HTTP.GET('web/dynamic/listGlobalDynami
 //获取所有权限标识
 export const listJurisdictionPermissionList = data => HTTP.GET('web/userMember/listJurisdictionPermissionList',data)
 
+//验证当前通讯录中好友是否注册
+export const userMailList = data => HTTP.POST('web/userMailList/userMailList',data)
+
+//邀请好友发送短信
+export const invitationSMS = data => HTTP.GET('web/userMailList/invitationSMS',data)
+
 /**
  * 个人中心模块
  */
@@ -135,6 +141,21 @@ export const listMessageNotification = data => HTTP.GET('web/messageNotification
 
 // 获取个人余额
 export const userWallet = data => HTTP.GET('web/userWallet/userWallet',data)
+
+// 获取当前用户推荐码
+export const getUserRecommendCodeByUserId = data => HTTP.GET('web/selectUser/getUserRecommendCodeByUserId',data)
+
+// 获取当前登录人的资产明细
+export const userWalletRecord = data => HTTP.GET('web/userWallet/userWalletRecord',data)
+
+// 获取当前登录人的虚拟币明细
+export const virtualCurrencyRecord = data => HTTP.GET('web/virtualCurrencyPrice/virtualCurrencyRecord',data)
+
+// 虚拟币变现
+export const virtualCurrencyExchange = data => HTTP.GET('web/virtualCurrencyPrice/virtualCurrencyExchange',data)
+
+// 虚拟币变现费率
+export const exchangeRatio = data => HTTP.GET('web/virtualCurrencyPrice/exchangeRatio',data)
 
 /**
  *  海选模块

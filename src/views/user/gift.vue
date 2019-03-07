@@ -12,9 +12,9 @@
       :line-width="width"
       @click="onClick">
         <Tab :title="`我收到的(${receiveTotalCount})`">
-          <giftList type="1" :receiveTotalCount.sync="receiveTotalCount" name="receiveTotalCount"/>
+          <giftList type="1" :receiveTotalCount.sync="receiveTotalCount"/>
         </Tab>
-        <Tab :title="`我送出的(${sendTotalCount})`">
+        <Tab :title="`我送出的(${sendTotalCount})`" ref="sendTotalCount">
           <giftList type="2" :sendTotalCount.sync="sendTotalCount" name="sendTotalCount"/>
         </Tab>
     </Tabs>
@@ -24,6 +24,7 @@
 <script>
 import { NavBar , Tab , Tabs} from 'vant'
 import giftList from './components/giftList'
+import {listGiftRecord} from '@/assets/common/api'
 export default {
   components: {
     NavBar,
@@ -40,6 +41,14 @@ export default {
   },
   mounted () {
     this.width = this.$refs.gift.clientWidth / 2;
+    listGiftRecord({
+      pageCurrent: 1,
+      pageSize: 10,
+      userId: this.$store.state.IM.user.id,
+      type: '2'
+    }).then(res => {
+      this.sendTotalCount = res.data.totalCount
+    })
   },
   methods: {
     onClickLeft () {

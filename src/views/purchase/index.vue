@@ -60,7 +60,7 @@ export default {
       } else if (u.indexOf('iPhone') > -1) {//苹果手机
         console.log("苹果手机");
         window.webkit.messageHandlers.payment.postMessage(this.$route.query.obj)
-      } 
+      }
     }
   },
   components: {

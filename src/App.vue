@@ -30,6 +30,9 @@ export default {
       Loading: state => state.common.Loading
     }),
   },
+  mounted () {
+    localStorage.removeItem('inviteShow')
+  },
   methods: {
     reload () {
       console.log('刷新了')
@@ -48,6 +51,21 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 </script>
 
 <style lang="less">
+// 修改主页tabs标签默认样式
+.dynamic .van-tabs__wrap{
+  background: #fff;
+}
+.dynamic .van-tabs__nav{
+  width: 60%;
+  margin-left: 20%;
+}
+
+
+.setting{
+  font-size: .2rem;
+  color: #8d8d8d;
+  margin-left: .1rem;
+}
 // 设置聊天礼物展示样式（需要全局配置）
 
 .gift_content{
