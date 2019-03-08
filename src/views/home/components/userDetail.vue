@@ -166,8 +166,8 @@
                     <!-- 图文详情 -->
                     <img  v-if="el.type == '4'" :src="el.context + '?imageMogr2/auto-orient'" alt="" @click="imgClick(el.context)">
                     <!-- 视频详情 -->
-                    <div v-if="el.type == '5'" class="video_group">
-                      <span @click="openVideo(el.context, el.firstFramePicture)"></span>
+                    <div v-if="el.type == '5'" class="video_group" @click="openVideo(el.context, el.firstFramePicture)">
+                      <span></span>
                       <img :src="el.firstFramePicture">
                     </div>
                   </template>
@@ -485,25 +485,24 @@ export default {
   -webkit-box-sizing: border-box;
   font-size: .24rem;
   color: #949494;
-  background-color: #f0f0f0
 }
 .dynamic_group .dynamic_content img{
   max-width: 100%;
   max-height: 3.5rem;
 }
-.dynamic_context .dynamic_content .video_group img{
+.dynamic_group .dynamic_content .video_group img{
   width: 100%;
   height: 100%;
   display: block
 }
 
-.dynamic_context .dynamic_content .video_group{
+.dynamic_group .dynamic_content .video_group{
   position: relative;
   width: 100%;
   height: 50%;
 }
 
-.dynamic_context .dynamic_content .video_group span{
+.dynamic_group .dynamic_content .video_group span{
   position: absolute;
   top: 50%;
   left: 50%;
@@ -639,7 +638,7 @@ export default {
   text-align: left;
 }
 .title{
-  border-bottom: .1rem solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
   background: #fff;
   padding: .6rem .3rem .2rem;
   box-sizing: border-box;

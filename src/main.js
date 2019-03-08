@@ -9,6 +9,8 @@ import 'vant/lib/index.css'
 //引入容联云即时通讯
 import IM from '@/assets/common/IM'
 
+// import 'lib-flexible/flexible'
+
 Vue.$IM = IM
 // 时间选择器
 import Calendar from 'vue2-datepick';

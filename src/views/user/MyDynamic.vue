@@ -26,8 +26,8 @@
                   <!-- 图文详情 -->
                   <img  v-if="el.type == '4'" :src="el.context + '?imageMogr2/auto-orient'" alt="" @click="imgClick(el.context)">
                   <!-- 视频详情 -->
-                  <div v-if="el.type == '5'" class="video_group">
-                    <span @click="openVideo(el.context, el.firstFramePicture)"></span>
+                  <div v-if="el.type == '5'" class="video_group" @click="openVideo(el.context, el.firstFramePicture)">
+                    <span></span>
                     <img :src="el.firstFramePicture">
                   </div>
                 </template>
@@ -189,7 +189,7 @@ export default {
   border-bottom: .2rem solid #f0f0f0;
   background-color: #fff;
   text-align: left;
-  padding: 0 .3rem;
+  padding: 0.2rem .3rem 0;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
@@ -203,18 +203,18 @@ export default {
   max-width: 100%;
   max-height: 3.5rem;
 }
-.dynamic_context .dynamic_content .video_group img{
+.dynamic_group .dynamic_content .video_group img{
   width: 100%;
   height: 100%;
   display: block
 }
 
-.dynamic_context .dynamic_content .video_group{
+.dynamic_group .dynamic_content .video_group{
   position: relative;
   width: 100%;
   height: 50%;
 }
-.dynamic_context .dynamic_content .video_group span{
+.dynamic_group .dynamic_content .video_group span{
   position: absolute;
   top: 50%;
   left: 50%;

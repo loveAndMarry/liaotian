@@ -51,6 +51,7 @@ document.documentElement.style.fontSize = (document.documentElement.clientWidth 
 </script>
 
 <style lang="less">
+// 动态视频默认样式，放在这当全局样式
 // 修改主页tabs标签默认样式
 .dynamic .van-tabs__wrap{
   background: #fff;
