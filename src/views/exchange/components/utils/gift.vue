@@ -32,7 +32,8 @@ let gift =  function(data) {
     router,
     data () {
       return {
-        data: data
+        data: data,
+        isDisabled: true
       }
     },
     template:  `<div class="gift-content-back" @click.prevent.stop="close($event)">
@@ -62,6 +63,8 @@ let gift =  function(data) {
         }
       },
       submit () {
+        if(!this.isDisabled){return false}
+        this.isDisabled = false
         let user = this.$store.state.IM.user;
         let friend = this.$store.state.IM.friend;
         let that = this;
@@ -89,6 +92,7 @@ let gift =  function(data) {
                 type: '1'
               }).then(() => {
                  that.$el.remove()
+                 that.isDisabled = true
               })
             })
             

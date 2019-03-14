@@ -6,6 +6,8 @@ import router from './router'
 import store from './store'
 import 'vant/lib/index.css'
 
+// import 'babel-polyfill'
+
 //引入容联云即时通讯
 import IM from '@/assets/common/IM'
 
@@ -48,6 +50,8 @@ Vue.filter("dateTime", function(val) {   //全局方法 Vue.filter() 注册一�
   }
 });
 
+console.log('组件初始化之前')
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -70,6 +74,8 @@ new Vue({
       let route = JSON.parse(a['sss'])
       that.$router.push({path:route.linkAddressRouting, query: { massSelectionId: route.extId, sendUserId: route.sendUserId, acceptUserId: route.acceptUserId, messageType: route.messageType}})
     }
+
+    console.log('组件初始化中...')
   },
   template: '<App/>',
   watch: {

@@ -59,7 +59,7 @@ export default {
         })
         return false
       }
-      if(this.num.replace(/\s/g, '') === '' || this.num == 0){
+      if(("" + this.num).replace(/\s/g, '') === '' || this.num == 0){
          Toast({
           message: '请输入要兑换的数量',
           duration: 1000

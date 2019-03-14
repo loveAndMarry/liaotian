@@ -106,6 +106,7 @@ import test from '@/views/test'
 Vue.use(Router)
 
 const router = new Router({
+  mode: 'hash',
   routes: [
   {
     path: '/view',
